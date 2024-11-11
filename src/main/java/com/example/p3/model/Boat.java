@@ -7,8 +7,8 @@ import jakarta.persistence.Id;
 public class Boat {
 
     @Id
-    private int memberID;
     private int boatID;
+    private int memberID;
     private int berthID;
     private String name;
     private String type;
