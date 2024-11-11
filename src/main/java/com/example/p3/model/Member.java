@@ -1,7 +1,9 @@
 package com.example.p3.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Member {
@@ -15,6 +17,9 @@ public class Member {
     private Long phonenumber;
     private Boolean boatownership;
 
+    @OneToOne(mappedBy = "member")
+    @JsonBackReference
+    private ApprovedMember approvedMember;
 
     public int getMemberID() {
         return memberID;

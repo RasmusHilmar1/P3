@@ -8,5 +8,4 @@ import org.springframework.stereotype.Repository;
 public interface MemberRepository extends JpaRepository<Member, Integer> {
     // Custom method to find a member by ID
     Member findByMemberID(int MemberID);
-
 }
