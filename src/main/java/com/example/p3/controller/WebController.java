@@ -14,4 +14,9 @@ public class WebController {
     public String showApprovedBoatsPage() {
         return "approvedBoats";
     }
+
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
 }
