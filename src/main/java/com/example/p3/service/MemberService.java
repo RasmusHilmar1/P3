@@ -37,4 +37,13 @@ public class MemberService {
         }
         return null;
     }
+
+    public Member updateMemberPhoneNumber(int memberId, Long newPhoneNumber) {
+        Member member = memberRepository.findByMemberID(memberId);
+        if (member != null) {
+            member.setPhonenumber(newPhoneNumber);
+            return memberRepository.save(member);
+        }
+        return null;
+    }
 }

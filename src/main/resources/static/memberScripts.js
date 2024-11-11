@@ -73,3 +73,28 @@ function updateEmail() {
             alert("Error updating member email");
         });
 }
+
+function updatePhoneNumber() {
+    const newPhoneNumber = document.getElementById("newPhoneNumber").value;
+    const memberId = 10;
+
+    fetch(`/members/updatePhoneNumber/${memberId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newPhoneNumber),
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data) {
+                alert("Phone Number updated successfully.")
+            } else {
+                alert("Error: Member not found.");
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("Error updatig member email")
+        });
+}

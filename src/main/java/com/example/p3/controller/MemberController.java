@@ -28,4 +28,9 @@ public class MemberController {
         return memberService.updateMemberEmail(id, newEmail);
     }
 
+    @PutMapping("/updatePhoneNumber/{id}")
+    public Member updateMemberPhoneNumber(@PathVariable int id, @RequestBody Long newPhoneNumber) {
+        return memberService.updateMemberPhoneNumber(id, newPhoneNumber);
+    }
+
 }
