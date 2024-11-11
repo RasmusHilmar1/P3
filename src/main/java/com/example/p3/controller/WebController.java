@@ -9,4 +9,9 @@ public class WebController {
     public String showApprovedMembersPage() {
         return "approvedMembers";
     }
+
+    @GetMapping("/approvedBoats")
+    public String showApprovedBoatsPage() {
+        return "approvedBoats";
+    }
 }
