@@ -14,7 +14,7 @@ public class BoatService {
     public Boat updateBoatName(int boatId, String newName) {
         Boat boat = boatRepository.findByBoatID(boatId);
         if (boat != null) {
-            boat.setName(newName);  // Update name
+            boat.setName(newName.replace("\"",""));  // Update name
             return boatRepository.save(boat);  // Save updated boat
         }
         return null;  // Return null if boat not found
@@ -24,7 +24,7 @@ public class BoatService {
     public Boat updateBoatType(int boatId, String newType) {
         Boat boat = boatRepository.findByBoatID(boatId);
         if (boat != null) {
-            boat.setType(newType);  // Update type
+            boat.setType(newType.replace("\"",""));  // Update type
             return boatRepository.save(boat);  // Save updated boat
         }
         return null;  // Return null if boat not found
@@ -34,7 +34,7 @@ public class BoatService {
     public Boat updateBoatManufacturer(int boatId, String newManufacturer) {
         Boat boat = boatRepository.findByBoatID(boatId);
         if (boat != null) {
-            boat.setManufacturer(newManufacturer);  // Update manufacturer
+            boat.setManufacturer(newManufacturer.replace("\"",""));  // Update manufacturer
             return boatRepository.save(boat);  // Save updated boat
         }
         return null;  // Return null if boat not found
