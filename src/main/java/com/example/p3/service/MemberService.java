@@ -16,6 +16,44 @@ public class MemberService {
         return member.getName();
     }
 
+    public String getMemberAddress(int memberId) {
+        Member member = memberRepository.findByMemberID(memberId);
+        return member.getAddress();
+    }
+
+    public String getMemberEmail(int memberId) {
+        Member member = memberRepository.findByMemberID(memberId);
+        return member.getEmail();
+    }
+
+    public int getMemberDoB(int memberId) {
+        Member member = memberRepository.findByMemberID(memberId);
+        return member.getDateofbirth();
+    }
+
+    public Long getMemberPhoneNumber(int memberId) {
+        Member member = memberRepository.findByMemberID(memberId);
+        return member.getPhonenumber();
+    }
+
+    public Boolean getMemberBoatOwnershipStatus(int memberId) {
+        Member member = memberRepository.findByMemberID(memberId);
+        return member.getBoatownership();
+    }
+
+    // jeg ved ikke hvor nyttigt dette er, men nu er den lavet.
+    public int getMemberId(int memberId) {
+        Member member = memberRepository.findByMemberID(memberId);
+        return member.getMemberID();
+    }
+
+    // finder et helt member, igen jeg ved ikke hvor brugbart det er, men nu findes det.
+    public Member getMember(int memberId) {
+        return memberRepository.findByMemberID(memberId);
+    }
+
+
+    // Methods der opdaterer værdier i databasen
     public Member updateMemberName(int memberId, String newName) {
         Member member = memberRepository.findByMemberID(memberId);
         if (member != null) {
@@ -47,6 +85,15 @@ public class MemberService {
         Member member = memberRepository.findByMemberID(memberId);
         if (member != null) {
             member.setPhonenumber(newPhoneNumber);
+            return memberRepository.save(member);
+        }
+        return null;
+    }
+
+    public Member updateMemberBoatOwnershipStatus(int memberId, Boolean boatOwnership) {
+        Member member = memberRepository.findByMemberID(memberId);
+        if (member != null) {
+            member.setBoatownership(boatOwnership);
             return memberRepository.save(member);
         }
         return null;
