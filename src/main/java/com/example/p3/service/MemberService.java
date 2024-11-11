@@ -11,6 +11,11 @@ public class MemberService {
     @Autowired
     private MemberRepository memberRepository;
 
+    public String getMemberName(int memberId) {
+        Member member = memberRepository.findByMemberID(memberId);
+        return member.getName();
+    }
+
     public Member updateMemberName(int memberId, String newName) {
         Member member = memberRepository.findByMemberID(memberId);
         if (member != null) {

@@ -12,6 +12,10 @@ public class MemberController {
     @Autowired
     private MemberService memberService;
 
+    @GetMapping("/getName/{id}")
+    public String getMember(@PathVariable int id) {
+        return memberService.getMemberName(id);
+    }
     // Endpoint to update member name
     @PutMapping("/updateName/{id}")
     public Member updateMemberName(@PathVariable int id, @RequestBody String newName) {
