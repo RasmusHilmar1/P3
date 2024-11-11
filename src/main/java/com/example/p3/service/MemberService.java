@@ -19,4 +19,31 @@ public class MemberService {
         }
         return null;  // Return null if member not found
     }
+
+    public Member updateMemberAddress(int memberId, String newAddress) {
+        Member member = memberRepository.findByMemberID(memberId);
+        if (member != null) {
+            member.setAddress(newAddress.replace("\"",""));
+            return memberRepository.save(member);
+        }
+        return null;
+    }
+
+    public Member updateMemberEmail(int memberId, String newEmail) {
+        Member member = memberRepository.findByMemberID(memberId);
+        if (member != null) {
+            member.setEmail(newEmail.replace("\"",""));
+            return memberRepository.save(member);
+        }
+        return null;
+    }
+
+    public Member updateMemberPhoneNumber(int memberId, Long newPhoneNumber) {
+        Member member = memberRepository.findByMemberID(memberId);
+        if (member != null) {
+            member.setPhonenumber(newPhoneNumber);
+            return memberRepository.save(member);
+        }
+        return null;
+    }
 }

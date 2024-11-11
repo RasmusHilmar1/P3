@@ -6,14 +6,14 @@ import jakarta.persistence.Id;
 @Entity
 public class Member {
 
-    @Id
+    @Id //Dette fortæller hvad navne på felter er. Så de skal være PRÆCIS som i databasen.
     private int memberID;
     private String name;
     private String address;
     private String email;
-    private int dateOfBirth;
-    private Long phoneNumber;
-    Boolean boatOwnership;
+    private int dateofbirth;
+    private Long phonenumber;
+    private Boolean boatownership;
 
 
     public int getMemberID() {
@@ -32,16 +32,16 @@ public class Member {
         return email;
     }
 
-    public int getDateOfBirth() {
-        return dateOfBirth;
+    public int getDateofbirth() {
+        return dateofbirth;
     }
 
-    public Long getPhoneNumber() {
-        return phoneNumber;
+    public Long getPhonenumber() {
+        return phonenumber;
     }
 
-    public Boolean getBoatOwnership() {
-        return boatOwnership;
+    public Boolean getBoatownership() {
+        return boatownership;
     }
 
     public void setName(String name) {
@@ -56,12 +56,12 @@ public class Member {
         this.email = email;
     }
 
-    public void setPhoneNumber(Long phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setPhonenumber(Long phonenumber) {
+        this.phonenumber = phonenumber;
     }
 
-    public void setBoatOwnership(Boolean boatOwnership) {
-        this.boatOwnership = boatOwnership;
+    public void setBoatownership(Boolean boatownership) {
+        this.boatownership = boatownership;
     }
 
 }

@@ -13,9 +13,24 @@ public class MemberController {
     private MemberService memberService;
 
     // Endpoint to update member name
-    @PutMapping("/update/{id}")
+    @PutMapping("/updateName/{id}")
     public Member updateMemberName(@PathVariable int id, @RequestBody String newName) {
         return memberService.updateMemberName(id, newName);
+    }
+
+    @PutMapping("/updateAddress/{id}")
+    public Member updateMemberAddress(@PathVariable int id, @RequestBody String newAddress) {
+        return memberService.updateMemberAddress(id, newAddress);
+    }
+
+    @PutMapping("/updateEmail/{id}")
+    public Member updateMemberEmail(@PathVariable int id, @RequestBody String newEmail) {
+        return memberService.updateMemberEmail(id, newEmail);
+    }
+
+    @PutMapping("/updatePhoneNumber/{id}")
+    public Member updateMemberPhoneNumber(@PathVariable int id, @RequestBody Long newPhoneNumber) {
+        return memberService.updateMemberPhoneNumber(id, newPhoneNumber);
     }
 
 }
