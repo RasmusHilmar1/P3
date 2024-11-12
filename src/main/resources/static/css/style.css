@@ -1,0 +1,198 @@
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.map {
+    height: 100vh;
+    width: 100%;
+    z-index: 0;
+    position: fixed;
+}
+
+/*HEADER AND NAVIGATION BAR*/
+.header {
+    position: fixed;
+    height: 120px;
+    width: 100%;
+    background: #5c82b5;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+}
+
+.header a{
+    text-decoration: none;
+    font-size: 50px;
+    color: white;
+    position: relative;
+    font-weight: 500;
+    margin-left: 20px;
+}
+
+.header img{
+    padding-top: 10px;
+}
+
+.navbar a {
+    position: relative;
+    font-size: 30px;
+    color: white;
+    font-weight: 500;
+    text-decoration: none;
+    margin-right: 30px;
+}
+
+.navbar a::before{
+    content: '';
+    top: 100%;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: white;
+    transition: 0.3s;
+}
+
+.navbar a:hover::before {
+    width: 100%;
+    position: absolute;
+}
+
+/*SIDEBAR*/
+.sidebar {
+    height: 100%;
+    width: 350px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: white;
+    overflow-x: hidden;
+    transition: width 0.5s;
+    padding-top: 60px;
+}
+
+.sidebar input{
+    margin-top: 70px;
+    margin-left: 15px;
+    width: 300px;
+    font-size: 24px;
+    border:1px solid #5c82b5;
+    border-radius:5px
+}
+
+::placeholder {
+    color: #5c82b5;
+    opacity: 1;
+}
+
+.sidebar button:hover {
+    color: white;
+    background: #5c82b5;
+    border-color: #5c82b5;
+}
+
+.sidebarBtn {
+    font-size: 20px;
+    cursor: pointer;
+    color: white;
+    opacity: 100;
+    background: white;
+    border: none;
+    padding: 10px;
+}
+
+.sidebarBtn:hover {
+    color: black;
+}
+
+.closeSidebar {
+    width: 80px;
+    padding-top: 120px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: transparent;
+    z-index: 30;
+    transition: margin-left 0.5s;
+    margin-left: 350px;
+}
+
+.harbor {
+    width: 250px;
+    padding-top: 120px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: transparent;
+    z-index: 30;
+    transition: margin-left 0.5s;
+    margin-left: 350px;
+}
+
+.btnHarbor {
+    text-decoration: none;
+    font-size: 13px;
+    display: inline;
+    transition: 0.1s;
+    width: 250px;
+    margin-top: 10px;
+    margin-left: 1px;
+    border-radius: 10px;
+    color: #5c82b5;
+    background: white;
+    border-color: #5c82b5;
+}
+
+.btnHarbor.pressed {
+    text-decoration: none;
+    font-size: 13px;
+    width: 250px;
+    margin-top: 10px;
+    margin-left: 1px;
+    border-radius: 10px;
+    color: white;
+    background: #5c82b5;
+    border-color: #5c82b5;
+}
+
+
+.btnSidebar {
+    text-decoration: none;
+    font-size: 25px;
+    display: inline;
+    transition: 0.1s;
+    width: 170px;
+    margin-top: 10px;
+    margin-left: 1px;
+    border-radius: 10px;
+    color: #5c82b5;
+    background: white;
+    border-color: #5c82b5;
+}
+
+
+.btnSidebar.pressed {
+    text-decoration: none;
+    font-size: 25px;
+    display: inline;
+    transition: 0.1s;
+    width: 170px;
+    margin-top: 10px;
+    margin-left: 1px;
+    border-radius: 10px;
+    color: white;
+    background: #5c82b5;
+    border-color: #5c82b5;
+}
