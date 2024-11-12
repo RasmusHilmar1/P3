@@ -19,4 +19,9 @@ public class WebController {
     public String login() {
         return "login";
     }
+
+    @GetMapping("/boat")
+    public String showBoatsPage() {
+        return "boat";
+    }
 }

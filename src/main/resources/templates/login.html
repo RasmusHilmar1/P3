@@ -12,27 +12,13 @@
 
 <div class="login-container">
     <h2>Login</h2>
-    <form action="login-action.php" method="POST" id="login-form">
+    <form action="/login" method="POST" id="login-form">
         <input type="text" name="username" class="input-field" placeholder="Username" required>
         <input type="password" name="password" class="input-field" placeholder="Password" required>
         <button type="submit" class="btn">Login</button>
     </form>
     <div class="error-message" id="error-message"></div>
 </div>
-
-<script>
-    // Example of front-end validation or handling error messages
-    document.getElementById('login-form').addEventListener('submit', function(event) {
-        const username = document.querySelector('input[name="username"]').value;
-        const password = document.querySelector('input[name="password"]').value;
-
-        // Basic validation for empty fields
-        if (!username || !password) {
-            event.preventDefault();
-            document.getElementById('error-message').innerText = 'Both fields are required.';
-        }
-    });
-</script>
 
 </body>
 </html>
