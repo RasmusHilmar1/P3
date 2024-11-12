@@ -7,16 +7,46 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class WebController {
 
     @PreAuthorize("hasRole('BOOKKEEPER_USER')")
-    @GetMapping("/approvedMembers")
-    public String showApprovedMembersPage() {
-        return "approvedMembers";
+    @GetMapping("/bookkeeperBoatRequests")
+    public String showBoatRequests() {
+        return "bookkeeperBoatRequests";
+    }
+
+    @PreAuthorize("hasRole('BOOKKEEPER_USER')")
+    @GetMapping("/bookkeeperMemberList")
+    public String showBookkeeperMemberList() {
+        return "bookkeeperMemberList";
+    }
+
+    @PreAuthorize("hasRole('BOOKKEEPER_USER')")
+    @GetMapping("/bookkeeperMemberRequests")
+    public String showBookkeeperMemberRequests() {
+        return "bookkeeperMemberRequests";
+    }
+
+    @PreAuthorize("hasRole('BOOKKEEPER_USER')")
+    @GetMapping("/bookkeeperStartPage")
+    public String showBookkeeperStartPage() {
+        return "bookkeeperStartPage";
     }
 
     @PreAuthorize("hasRole('VESSEL_USER')")
-    @GetMapping("/approvedBoats")
-    public String showApprovedBoatsPage() {
-        return "approvedBoats";
+    @GetMapping("/vesselInspectorBerthList")
+    public String showBerthListPage() {
+        return "vesselInspectorBerthList";
     }
+
+    @PreAuthorize("hasRole('VESSEL_USER')")
+    @GetMapping("/vesselInspectorBoatRequests")
+    public String showInspectorBoatRequests() {
+        return "vesselInspectorBoatRequests";
+    }
+    @PreAuthorize("hasRole('VESSEL_USER')")
+    @GetMapping("/vesselInspectorStartPage")
+    public String showStartPage() {
+        return "vesselInspectorStartPage";
+    }
+
 
     @GetMapping("/login")
     public String login() {

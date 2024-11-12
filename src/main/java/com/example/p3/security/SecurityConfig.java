@@ -14,6 +14,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -40,6 +42,8 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
@@ -54,9 +58,14 @@ public class SecurityConfig {
                     registry.requestMatchers("/css/**", "/js/**", "/login","/index").permitAll();
 
                     // Kun brugere med rollen VESSEL_USER kan tilgå denne side
-                    registry.requestMatchers("/approvedBoats").hasRole("VESSEL_USER");
+                    registry.requestMatchers("/vesselInspectorBoatRequests").hasRole("VESSEL_USER");
+                    registry.requestMatchers("/vesselInspectorBerthList").hasRole("VESSEL_USER");
+                    registry.requestMatchers("/vesselInspectorStartPage").hasRole("VESSEL_USER");
                     // Kun brugere med rollen BOOKKEEPER_USER kan tilgå denne side
-                    registry.requestMatchers("/approvedMembers").hasRole("BOOKKEEPER_USER");
+                    registry.requestMatchers("/bookkeeperBoatRequests").hasRole("BOOKKEEPER_USER");
+                    registry.requestMatchers("/bookkeeperMemberList").hasRole("BOOKKEEPER_USER");
+                    registry.requestMatchers("/bookkeeperMemberRequests").hasRole("BOOKKEEPER_USER");
+                    registry.requestMatchers("/bookkeeperStartPage").hasRole("BOOKKEEPER_USER");
 
                     registry.anyRequest().authenticated();
                 })
