@@ -24,9 +24,17 @@ public class UsersService implements UserDetailsService {
         Optional<Users> user = usersRepository.findByUsername(username);
         if (user.isPresent()) {
             Users users = user.get();
+
+            String role = switch (username) {
+                case "vessel" -> "VESSEL_USER";
+                case "bookkeeper" -> "BOOKKEEPER_USER";
+                default -> throw new UsernameNotFoundException("User not found with username: " + username);
+            };
+
             return User.builder()
                     .username(users.getUsername())
                     .password(users.getPassword())
+                    .roles(role)
                     .build();
         } else {
             throw new UsernameNotFoundException(username);

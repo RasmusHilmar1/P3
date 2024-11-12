@@ -1,0 +1,48 @@
+/*HEADER AND NAVIGATION BAR*/
+.header {
+    position: fixed;
+    height: 120px;
+    width: 100%;
+    background: #5c82b5;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+}
+
+.header a{
+    text-decoration: none;
+    font-size: 30px;
+    color: white;
+    position: relative;
+    font-weight: 500;
+    margin-left: 20px;
+}
+
+.header img{
+    padding-top: 10px;
+}
+
+.navbar a {
+    position: relative;
+    font-size: 20px;
+    color: white;
+    font-weight: 500;
+    text-decoration: none;
+    margin-right: 30px;
+}
+
+.navbar a::before{
+    content: '';
+    top: 100%;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: white;
+    transition: 0.3s;
+}
+
+.navbar a:hover::before {
+    width: 100%;
+    position: absolute;
+}

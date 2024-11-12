@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>MAP</title>
+    <title>Bogholder</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
           integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
           crossorigin=""/>
@@ -13,15 +13,19 @@
     <link rel="stylesheet" href="../../css/map.css" />
     <link rel="stylesheet" href="../../css/navigationBar.css" />
     <link rel="stylesheet" href="../../css/sidebar.css" />
-
 </head>
 <body>
 <header class="header">
     <a href="#"><img src="../../Images/Logo.png" alt="Logo" height="100"></a>
     <nav class="navbar">
-        <a href="login">Login</a>
+        <a href="bookkeeperStartPage.html">Kort</a>
+        <a href="bookkeeperMemberRequests.html">Medlemskabsanmodninger</a>
+        <a href="bookkeeperBoatRequests.html">Bådanmodninger</a>
+        <a href="bookkeeperMemberList.html">Medlemsliste</a>
+        <a href="../startpage/startPage.html">Log ud</a>
     </nav>
 </header>
+
 <div id="closeSidebar" class="closeSidebar">
     <button id="closeSidebarBtn" class="closeSidebarBtn" onclick="openClose()">
         <img id="sidebarBtn" src="../../Images/Icons/closeIcon.svg" alt="Close sidebar">
@@ -29,26 +33,8 @@
 </div>
 <div id="sidebar" class="sidebar">
     <input type="text" id="searchBar" class="searchBar" placeholder="Søg...">
-    <button href="#" id="memberBtn" class="btnSidebar">Medlemmer</button>
-    <button href="#" id="berthBtn" class="btnSidebar">Bådpladser</button>
-
-    <form>
-        <b>ID:</b><div id="berthId"></div>
-        <b>Name:</b><div id="berthName"></div>
-        <b>status:</b><div id="berthStatus"></div>
-    </form>
-
-    </button>
-    <form id="memberList">
-        <!--
-                    <button id="member1" class="membersInfo">Member1</button>
-                    <button id="member2" class="membersInfo">Member2</button>
-                    <button id="member3" class="membersInfo">Member3</button>
-                    <button id="member4" class="membersInfo">Member4</button>
-        -->
-    </form>
-
-    <form id="berthList"></form>
+    <button href="#" class="btnSidebar">Medlemmer</button>
+    <button href="#" class="btnSidebar">Bådpladser</button>
 </div>
 
 <div id="harbor" class="harbor">
@@ -58,9 +44,8 @@
 
 <!-- kortet -->
 <div id="map" class="map"></div>
-<script type="module" src="../../js/map.js" defer></script>
-<script src="../../js/sidebar.js" defer></script>
-<script src="../../js/navigationbar.js"></script>
-
+<script type="module" src="../../../../P3/P3/src/main/resources/static/js/map.js" defer></script>
+<script src="../../../../P3/P3/src/main/resources/static/js/sidebar.js" defer></script>
+<script src="../../../../P3/P3/src/main/resources/static/js/navigationbar.js"></script>
 </body>
 </html>

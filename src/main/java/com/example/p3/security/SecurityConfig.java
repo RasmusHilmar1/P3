@@ -47,11 +47,17 @@ public class SecurityConfig {
                 .formLogin(httpForm -> {
                     httpForm.loginPage("/login").permitAll();
                     httpForm.loginPage("/index").permitAll();
-                    httpForm.defaultSuccessUrl("/approvedBoats", true);
+                    httpForm.defaultSuccessUrl("/boat", true);
                 })
 
                 .authorizeHttpRequests(registry -> {
                     registry.requestMatchers("/css/**", "/js/**", "/login","/index").permitAll();
+
+                    // Kun brugere med rollen VESSEL_USER kan tilgå denne side
+                    registry.requestMatchers("/approvedBoats").hasRole("VESSEL_USER");
+                    // Kun brugere med rollen BOOKKEEPER_USER kan tilgå denne side
+                    registry.requestMatchers("/approvedMembers").hasRole("BOOKKEEPER_USER");
+
                     registry.anyRequest().authenticated();
                 })
 
