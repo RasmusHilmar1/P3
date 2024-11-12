@@ -1,8 +1,18 @@
 
-//const url = https://localhost8080/members/
+async function fetchMember() {
+    try {
+        const response = await fetch('/members/getName/')
+    }
+}
 
-function getInfo (url) {
-    return fetch(url)
+
+
+
+/*
+const url = "https://localhost:8080/members/"
+
+function getInfo (endpoint) {
+    return fetch(url + endpoint)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP-fejl! Status: ${response.status}`);
@@ -10,24 +20,25 @@ function getInfo (url) {
             return response.text();
         })
         .then(data => {
-            console.log(url);
+            console.log(url + endpoint);
             return data;
         })
-        .catch(error => {console.error(url + ':' + error)});
+        .catch(error => {console.error(url + endpoint + ':' + error)});
 }
 
 
-function fetchMemberNames(memberId) {
+function fetchMemberName(memberId) {
     console.log("fetch memberName:" + memberId)
-    return getInfo("/members/getName/" + memberId);
+    return getInfo("getName/" + memberId);
 }
 
 function fetchMemberAddress(memberId) {
     console.log("fetch memberAddress:" + memberId)
-    return getInfo("/members/getAddress/" + memberId);
+    return getInfo("getAddress/" + memberId);
 }
-
-
+fetchMemberName(11);
+fetchMemberAddress(11);
+*/
 /*
 function fetchAllMemberInfo(memberId) {
     return Promise.all([
@@ -41,3 +52,29 @@ function fetchAllMemberInfo(memberId) {
 }
 */
 
+/*
+function updatePhoneNumber() {
+    const newPhoneNumber = document.getElementById("newPhoneNumber").value;
+    const memberId = 10;
+
+    fetch(`/members/updatePhoneNumber/${memberId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newPhoneNumber),
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data) {
+                alert("Phone Number updated successfully.")
+            } else {
+                alert("Error: Member not found.");
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("Error updatig member email")
+        });
+}
+*/
