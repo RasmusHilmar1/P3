@@ -107,3 +107,11 @@
     border-color: #5c82b5;
 
 }
+
+#memberList {
+    width: 100%;
+    padding: 50px 0;
+    text-align: center;
+    background-color: lightblue;
+    margin-top: 20px;
+}

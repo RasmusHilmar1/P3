@@ -35,25 +35,44 @@ sidebar.addEventListener('click', function (event) {
 });
 
 
-var memberBtn = document.getElementById("memberBtn");
 
+
+
+
+
+/*
+var memberBtn = document.getElementById("memberBtn");
+/*
 memberBtn.addEventListener('click', generateMemberListBtn);
+*/
+
+/*
+function showForm() {
+    const btnMemberList = document.getElementById("memberList");
+    if (btnMemberList.style.display === "none") {
+        btnMemberList.style.display = "block";
+    } else {
+        btnMemberList.style.display = "none";
+    }
+}
 
 
 function generateMemberListBtn () {
     //const btnMemberList = document.getElementById("memberList");
     const btnMemberList = document.querySelector("#memberList");
 
-    const btn = document.createElement("Button");
-    const label = document.createElement("Label");
+    const btn = document.createElement("button");
+    const label = document.createElement("label");
 
-    btn.id = "member" + 1;
+    btn.id = "member";
     btn.classList = "memberInfo";
 
-    label.htmlFor = "member" +1;
-    label.textContent = "member" + 1;
+    label.htmlFor = "member";
+    label.textContent = "member";
 
     btn.appendChild(label);
     btnMemberList.before(btn);
 
 }
+generateMemberListBtn
+*/
