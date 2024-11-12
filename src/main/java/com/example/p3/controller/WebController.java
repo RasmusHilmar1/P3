@@ -7,44 +7,44 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class WebController {
 
     @PreAuthorize("hasRole('BOOKKEEPER_USER')")
-    @GetMapping("/bookkeeperBoatRequests")
+    @GetMapping("/bookkeeper/bookkeeperBoatRequests")
     public String showBoatRequests() {
-        return "bookkeeperBoatRequests";
+        return "bookkeeper/bookkeeperBoatRequests";
     }
 
     @PreAuthorize("hasRole('BOOKKEEPER_USER')")
-    @GetMapping("/bookkeeperMemberList")
+    @GetMapping("/bookkeeper/bookkeeperMemberList")
     public String showBookkeeperMemberList() {
-        return "bookkeeperMemberList";
+        return "bookkeeper/bookkeeperMemberList";
     }
 
     @PreAuthorize("hasRole('BOOKKEEPER_USER')")
-    @GetMapping("/bookkeeperMemberRequests")
+    @GetMapping("/bookkeeper/bookkeeperMemberRequests")
     public String showBookkeeperMemberRequests() {
-        return "bookkeeperMemberRequests";
+        return "bookkeeper/bookkeeperMemberRequests";
     }
 
     @PreAuthorize("hasRole('BOOKKEEPER_USER')")
-    @GetMapping("/bookkeeperStartPage")
+    @GetMapping("/bookkeeper/bookkeeperStartPage")
     public String showBookkeeperStartPage() {
-        return "bookkeeperStartPage";
+        return "bookkeeper/bookkeeperStartPage";
     }
 
     @PreAuthorize("hasRole('VESSEL_USER')")
-    @GetMapping("/vesselInspectorBerthList")
+    @GetMapping("/vesselInspector/vesselInspectorBerthList")
     public String showBerthListPage() {
-        return "vesselInspectorBerthList";
+        return "vesselInspector/vesselInspectorBerthList";
     }
 
     @PreAuthorize("hasRole('VESSEL_USER')")
-    @GetMapping("/vesselInspectorBoatRequests")
+    @GetMapping("/vesselInspector/vesselInspectorBoatRequests")
     public String showInspectorBoatRequests() {
-        return "vesselInspectorBoatRequests";
+        return "vesselInspector/vesselInspectorBoatRequests";
     }
     @PreAuthorize("hasRole('VESSEL_USER')")
-    @GetMapping("/vesselInspectorStartPage")
+    @GetMapping("/vesselInspector/vesselInspectorStartPage")
     public String showStartPage() {
-        return "vesselInspectorStartPage";
+        return "vesselInspector/vesselInspectorStartPage";
     }
 
 
