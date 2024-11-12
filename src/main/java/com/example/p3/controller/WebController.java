@@ -7,44 +7,44 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class WebController {
 
     @PreAuthorize("hasRole('BOOKKEEPER_USER')")
-    @GetMapping("/bookkeeper/bookkeeperBoatRequests")
+    @GetMapping("/bookkeeperBoatRequests")
     public String showBoatRequests() {
-        return "bookkeeper/bookkeeperBoatRequests";
+        return "bookkeeperBoatRequests";
     }
 
     @PreAuthorize("hasRole('BOOKKEEPER_USER')")
-    @GetMapping("/bookkeeper/bookkeeperMemberList")
+    @GetMapping("/bookkeeperMemberList")
     public String showBookkeeperMemberList() {
-        return "bookkeeper/bookkeeperMemberList";
+        return "bookkeeperMemberList";
     }
 
     @PreAuthorize("hasRole('BOOKKEEPER_USER')")
-    @GetMapping("/bookkeeper/bookkeeperMemberRequests")
+    @GetMapping("/bookkeeperMemberRequests")
     public String showBookkeeperMemberRequests() {
-        return "bookkeeper/bookkeeperMemberRequests";
+        return "bookkeeperMemberRequests";
     }
 
     @PreAuthorize("hasRole('BOOKKEEPER_USER')")
-    @GetMapping("/bookkeeper/bookkeeperStartPage")
+    @GetMapping("/bookkeeperStartPage")
     public String showBookkeeperStartPage() {
-        return "bookkeeper/bookkeeperStartPage";
+        return "bookkeeperStartPage";
     }
 
     @PreAuthorize("hasRole('VESSEL_USER')")
-    @GetMapping("/vesselInspector/vesselInspectorBerthList")
+    @GetMapping("/vesselInspectorBerthList")
     public String showBerthListPage() {
-        return "vesselInspector/vesselInspectorBerthList";
+        return "vesselInspectorBerthList";
     }
 
     @PreAuthorize("hasRole('VESSEL_USER')")
-    @GetMapping("/vesselInspector/vesselInspectorBoatRequests")
+    @GetMapping("/vesselInspectorBoatRequests")
     public String showInspectorBoatRequests() {
-        return "vesselInspector/vesselInspectorBoatRequests";
+        return "vesselInspectorBoatRequests";
     }
     @PreAuthorize("hasRole('VESSEL_USER')")
-    @GetMapping("/vesselInspector/vesselInspectorStartPage")
+    @GetMapping("/vesselInspectorStartPage")
     public String showStartPage() {
-        return "vesselInspector/vesselInspectorStartPage";
+        return "vesselInspectorStartPage";
     }
 
 

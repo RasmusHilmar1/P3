@@ -58,14 +58,14 @@ public class SecurityConfig {
                     registry.requestMatchers("/css/**", "/js/**", "/login","/index").permitAll();
 
                     // Kun brugere med rollen VESSEL_USER kan tilgå denne side
-                    registry.requestMatchers("/vesselInspector/vesselInspectorBoatRequests").hasRole("VESSEL_USER");
-                    registry.requestMatchers("/vesselInspector/vesselInspectorBerthList").hasRole("VESSEL_USER");
-                    registry.requestMatchers("/vesselInspector/vesselInspectorStartPage").hasRole("VESSEL_USER");
+                    registry.requestMatchers("/vesselInspectorBoatRequests").hasRole("VESSEL_USER");
+                    registry.requestMatchers("/vesselInspectorBerthList").hasRole("VESSEL_USER");
+                    registry.requestMatchers("/vesselInspectorStartPage").hasRole("VESSEL_USER");
                     // Kun brugere med rollen BOOKKEEPER_USER kan tilgå denne side
-                    registry.requestMatchers("/bookkeeper/bookkeeperBoatRequests").hasRole("BOOKKEEPER_USER");
-                    registry.requestMatchers("/bookkeeper/bookkeeperMemberList").hasRole("BOOKKEEPER_USER");
-                    registry.requestMatchers("/bookkeeper/bookkeeperMemberRequests").hasRole("BOOKKEEPER_USER");
-                    registry.requestMatchers("/bookkeeper/bookkeeperStartPage").hasRole("BOOKKEEPER_USER");
+                    registry.requestMatchers("/bookkeeperBoatRequests").hasRole("BOOKKEEPER_USER");
+                    registry.requestMatchers("/bookkeeperMemberList").hasRole("BOOKKEEPER_USER");
+                    registry.requestMatchers("/bookkeeperMemberRequests").hasRole("BOOKKEEPER_USER");
+                    registry.requestMatchers("/bookkeeperStartPage").hasRole("BOOKKEEPER_USER");
 
                     registry.anyRequest().authenticated();
                 })
