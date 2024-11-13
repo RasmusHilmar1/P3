@@ -30,9 +30,25 @@
     </button>
 </div>
 <div id="sidebar" class="sidebar">
-    <input type="text" id="searchBar" class="searchBar" placeholder="Søg på medlem, båd eller bådplads">
-    <button href="#">Medlemmer</button>
-    <button href="#">Bådpladser</button>
+    <label for="searchBar"></label><input type="text" id="searchBar" class="searchBar" placeholder="Søg på medlem, båd eller bådplads">
+    <button id="memberBtn" class="sidebarMenuBtn">Medlemmer</button>
+    <button id="berthBtn" class="sidebarMenuBtn">Bådpladser</button>
+    <table id="memberList" class="memberList">
+        <thead id="memberTableHeader" class="tableHeader">
+        <!-- Dynamic header is added here -->
+        </thead>
+        <tbody>
+        <!-- Dynamic table is added here -->
+        </tbody>
+    </table>
+    <table id="berthList" class="berthList">
+        <thead id="berthTableHeader" class="tableHeader">
+        <!-- Dynamic header is added here -->
+        </thead>
+        <tbody>
+        <!-- Dynamic table is added here -->
+        </tbody>
+    </table>
 </div>
 <div id="map" class="map"></div>
 <script src="../../Scripts/map.js"></script>

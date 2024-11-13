@@ -115,6 +115,8 @@ L.geoJSON(myGeoJson, {
             fillColor = "red";
         } else if (status === "TempAvailable") {
             fillColor = "orange";
+        } else if (status === "Structure") {
+            fillColor = "white";
         }
 
         return {
@@ -124,27 +126,15 @@ L.geoJSON(myGeoJson, {
             fillColor: fillColor,
             fillOpacity: 0.8   // Adjusts fill opacity
         };
-
-        /*
-        if (status === "Available") {
-            return {color: "#00FF00", weight: 0.3};
-
-        } else if (status === "Unavailable") {
-            return {color: "red", weight: 0.3};
-
-        } else if (status === "TempAvailable") {
-            return {color: "orange", weight: 0.3};
-        }
-        */
     }
 }).addTo(map);
 
 function onEachFeature(feature, layer) {
     console.log(feature.properties);
     layer.on('click', function(e) {
-        document.getElementById("id").innerHTML = feature.properties.id;
-        document.getElementById("name").innerHTML = feature.properties.name;
-        document.getElementById("status").innerHTML = feature.properties.status;
+        document.getElementById("berthId").innerHTML = feature.properties.id;
+        document.getElementById("berthName").innerHTML = feature.properties.name;
+        document.getElementById("berthStatus").innerHTML = feature.properties.status;
     });
 }
 

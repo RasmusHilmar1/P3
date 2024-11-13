@@ -19,7 +19,7 @@
 <header class="header">
     <a href="#"><img src="../../Images/Logo.png" alt="Logo" height="100"></a>
     <nav class="navbar">
-        <a href="login">Login</a>
+        <a href="#">Login</a>
     </nav>
 </header>
 <div id="closeSidebar" class="closeSidebar">
@@ -28,39 +28,44 @@
     </button>
 </div>
 <div id="sidebar" class="sidebar">
-    <input type="text" id="searchBar" class="searchBar" placeholder="Søg...">
-    <button href="#" id="memberBtn" class="btnSidebar">Medlemmer</button>
-    <button href="#" id="berthBtn" class="btnSidebar">Bådpladser</button>
-
+    <input type="text" id="searchBar" class="searchBar" placeholder="Søg på medlem, båd eller bådplads">
+    <button id="memberBtn" class="sidebarMenuBtn">Medlemmer</button>
+    <button id="berthBtn" class="sidebarMenuBtn">Bådpladser</button>
+    <table id="memberList" class="memberList">
+        <thead id="memberTableHeader" class="tableHeader">
+        <!-- Dynamic header is added here -->
+        </thead>
+        <tbody>
+        <!-- Dynamic table is added here -->
+        </tbody>
+    </table>
+    <table id="berthList" class="berthList">
+        <thead id="berthTableHeader" class="tableHeader">
+        <!-- Dynamic header is added here -->
+        </thead>
+        <tbody>
+        <!-- Dynamic table is added here -->
+        </tbody>
+    </table>
     <form>
         <b>ID:</b><div id="berthId"></div>
         <b>Name:</b><div id="berthName"></div>
         <b>status:</b><div id="berthStatus"></div>
     </form>
-
-    </button>
-    <form id="memberList">
-        <!--
-                    <button id="member1" class="membersInfo">Member1</button>
-                    <button id="member2" class="membersInfo">Member2</button>
-                    <button id="member3" class="membersInfo">Member3</button>
-                    <button id="member4" class="membersInfo">Member4</button>
-        -->
-    </form>
-
-    <form id="berthList"></form>
+    <!--<form id="berthList"></form>-->
 </div>
-
 <div id="harbor" class="harbor">
     <button id="vestreBaadehavn" class="btnHarbor pressed">Vestre Bådehavn</button>
     <button id="skudehavn" class="btnHarbor">Skudehavn</button>
 </div>
+
 
 <!-- kortet -->
 <div id="map" class="map"></div>
 <script type="module" src="../../js/map.js" defer></script>
 <script src="../../js/sidebar.js" defer></script>
 <script src="../../js/navigationbar.js"></script>
+
 
 </body>
 </html>
