@@ -33,4 +33,3 @@ sidebar.addEventListener('click', function (event) {
         event.target.classList.add('pressed');
     }
 });
-
