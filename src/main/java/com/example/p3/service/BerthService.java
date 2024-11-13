@@ -20,17 +20,28 @@ public class BerthService {
     public Berth updateBerthName(int berthId, String newName) {
         Berth berth = berthRepository.findByBerthID(berthId);
         if (berth != null) {
-            berth.setName(newName.replace("\"",""));  // Update name
+            berth.setName(newName.replace("\"", ""));  // Update name
             return berthRepository.save(berth);  // Save updated member
         }
         return null;  // Return null if member not found
     }
 
-    public Berth updateBerthInformation(int berthId, int length, int width) {
+    // Function for updating berth information
+    public Berth updateBerthInformation(int berthId, Berth info) {
         Berth berth = berthRepository.findByBerthID(berthId);
         if (berth != null) {
-            berth.setLength(length);
-            berth.setWidth(width);
+            if (info.getName() != null) {
+                berth.setName(info.getName().replace("\"", ""));
+            }
+            if (info.getLength() != 0) {
+                berth.setLength(info.getLength());
+            }
+            if (info.getWidth() != 0) {
+                berth.setWidth(info.getWidth());
+            }
+            if (info.getDepth() != 0) {
+                berth.setDepth(info.getDepth());
+            }
             return berthRepository.save(berth);  // Save updated member
         }
         return null;  // Return null if member not found
