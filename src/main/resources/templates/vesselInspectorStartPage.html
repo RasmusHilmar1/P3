@@ -26,7 +26,7 @@
 </header>
 <div id="closeSidebar" class="closeSidebar">
     <button id="closeSidebarBtn" class="closeSidebarBtn" onclick="openClose()">
-        <img id="sidebarBtn" src="../../Images/Icons/closeIcon.svg" alt="Close sidebar">
+        <img id="sidebarBtn" src="/Images/Icons/closeIcon.svg" alt="Close sidebar">
     </button>
 </div>
 <div id="sidebar" class="sidebar">
@@ -49,10 +49,21 @@
         <!-- Dynamic table is added here -->
         </tbody>
     </table>
+    <form>
+        <b>ID:</b><div id="berthId"></div>
+        <b>Name:</b><div id="berthName"></div>
+        <b>status:</b><div id="berthStatus"></div>
+    </form>
 </div>
+<!-- Knapper til at skifte havn-->
+<div id="harbor" class="harbor">
+    <button id="vestreBaadehavn" class="btnHarbor pressed">Vestre Bådehavn</button>
+    <button id="skudehavn" class="btnHarbor">Skudehavn</button>
+</div>
+<!-- Kort -->
 <div id="map" class="map"></div>
-<script src="../../Scripts/map.js"></script>
-<script src="../../Scripts/sidebar.js"></script>
-<script src="../../Scripts/navigationBar.js"></script>
+<script type="module" src="/js/map.js"></script>
+<script src="/js/sidebar.js"></script>
+<script src="/js/navigationbar.js"></script>
 </body>
 </html>
