@@ -53,7 +53,7 @@ public class SecurityConfig {
                 .formLogin(httpForm -> {
                     httpForm.loginPage("/login").permitAll();
                     httpForm.loginPage("/index").permitAll();
-                    httpForm.defaultSuccessUrl("/boat", true);
+                    httpForm.defaultSuccessUrl("/default", true);
                 })
 
                 .authorizeHttpRequests(registry -> {
