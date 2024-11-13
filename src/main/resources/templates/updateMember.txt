@@ -4,9 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Update Member Name</title>
-    <script src="memberScripts.js" defer></script>
+    <script src="../static/memberScripts.js" defer></script>
 </head>
 <body>
+<header class="header">
+    <nav class="navbar">
+        <a href="login">
+        <button  class="btnLogin-popup">Login</button></a>
+    </nav>
+</header>
 <h1>Update Member Name</h1>
 <label for="newName">Enter New Name:</label>
 <input type="text" id="newName" placeholder="Enter new name" />
@@ -26,6 +32,11 @@
 <label for="newPhoneNumber">Enter New Phone Number:</label>
 <input type="text" id="newPhoneNumber" placeholder="Enter new phone number" />
 <button onclick="updatePhoneNumber()">Update Phone Number</button>
+
+<h1>Update Member Boat ownership status</h1>
+<label for="newBoatOwnershipStatus">Enter New Boat Ownership status:</label>
+<input type="text" id="newBoatOwnershipStatus" placeholder="Enter new boat ownership status" />
+<button onclick="updateBoatOwnershipStatus()">Update Phone Number</button>
 
 </body>
 </html>

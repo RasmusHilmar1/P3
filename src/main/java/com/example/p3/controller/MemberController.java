@@ -9,8 +9,48 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/members")
 public class MemberController {
 
-    @Autowired
+    @Autowired // giver adgang til methods fra MemberService klassen.
     private MemberService memberService;
+
+    @GetMapping("/getName/{id}")
+    public String getMember(@PathVariable int id) {
+        return memberService.getMemberName(id);
+    }
+
+    @GetMapping("/getAddress/{id}")
+    public String getMemberAddress(@PathVariable int id) {
+        return memberService.getMemberAddress(id);
+    }
+
+    @GetMapping("/getEmail/{id}")
+    public String getMemberEmail(@PathVariable int id) {
+        return memberService.getMemberEmail(id);
+    }
+
+    @GetMapping("/getDoB/{id}")
+    public int getMemberDateOfBirth(@PathVariable int id) {
+        return memberService.getMemberDoB(id);
+    }
+
+    @GetMapping("/getPhoneNumber/{id}")
+    public Long getMemberPhoneNumber(@PathVariable int id) {
+        return memberService.getMemberPhoneNumber(id);
+    }
+
+    @GetMapping("/getBoatOwnership/{id}")
+    public Boolean getMemberBoatOwnership(@PathVariable int id) {
+        return memberService.getMemberBoatOwnershipStatus(id);
+    }
+
+    @GetMapping("/getMemberID/{id}")
+    public int getMemberID(@PathVariable int id) {
+        return memberService.getMemberId(id);
+    }
+
+    @GetMapping("/getFullMember/{id}")
+    public Member getFullMember(@PathVariable int id) {
+        return memberService.getMember(id);
+    }
 
     // Endpoint to update member name
     @PutMapping("/updateName/{id}")
@@ -31,6 +71,11 @@ public class MemberController {
     @PutMapping("/updatePhoneNumber/{id}")
     public Member updateMemberPhoneNumber(@PathVariable int id, @RequestBody Long newPhoneNumber) {
         return memberService.updateMemberPhoneNumber(id, newPhoneNumber);
+    }
+
+    @PutMapping("/updateBoatOwnershipStatus/{id}")
+    public Member updateMemberBoatOwnershipStatus(@PathVariable int id, @RequestBody Boolean newStatus) {
+        return memberService.updateMemberBoatOwnershipStatus(id, newStatus);
     }
 
 }

@@ -1,0 +1,49 @@
+.map {
+    height: 100vh;
+    width: 100%;
+    z-index: 0;
+    position: fixed;
+}
+
+
+.harbor {
+    width: 250px;
+    padding-top: 120px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: transparent;
+    z-index: 30;
+    transition: margin-left 0.5s;
+    margin-left: 350px;
+}
+
+.btnHarbor {
+    text-decoration: none;
+    font-size: 13px;
+    display: inline;
+    transition: 0.1s;
+    width: 250px;
+    margin-top: 10px;
+    margin-left: 1px;
+    border-radius: 10px;
+    color: #5c82b5;
+    background: white;
+    border-color: #5c82b5;
+}
+
+.btnHarbor.pressed {
+    text-decoration: none;
+    font-size: 13px;
+    width: 250px;
+    margin-top: 10px;
+    margin-left: 1px;
+    border-radius: 10px;
+    color: white;
+    background: #5c82b5;
+    border-color: #5c82b5;
+}

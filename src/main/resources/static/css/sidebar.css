@@ -1,0 +1,131 @@
+/*SIDEBAR*/
+.sidebar {
+    height: calc(100vh - 120px); /* Height set to max minus the height of the navigation bar. Remember this when size of navigation bar is changed. This also makes it dynamic. */
+    width: 350px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: white;
+    overflow: auto;
+    transition: width 0.5s;
+    margin-top: 120px;
+    overflow-y:scroll;
+}
+
+.sidebar input{
+    margin-top: 10px;
+    margin-left: 15px;
+    width: 300px;
+    font-size: 24px;
+    border:1px solid #5c82b5;
+    border-radius:5px
+}
+
+::placeholder {
+    color: #5c82b5;
+    opacity: 1;
+    font-size: 18px;
+}
+
+.btnSidebar {
+    text-decoration: none;
+    font-size: 17px;
+    display: inline;
+    transition: 0.1s;
+    width: 160px;
+    margin-top: 10px;
+    margin-left: 1px;
+    border-radius: 10px;
+    color: #5c82b5;
+    background: white;
+    border-color: #5c82b5;
+}
+
+
+.btnSidebar.pressed {
+    text-decoration: none;
+    font-size: 17px;
+    display: inline;
+    transition: 0.1s;
+    width: 160px;
+    margin-top: 10px;
+    margin-left: 1px;
+    border-radius: 10px;
+    color: white;
+    background: #5c82b5;
+    border-color: #5c82b5;
+}
+
+
+.sidebar button:hover {
+    color: white;
+    background: #5c82b5;
+    border-color: #5c82b5;
+}
+
+.sidebarBtn {
+    font-size: 20px;
+    cursor: pointer;
+    color: white;
+    opacity: 100;
+    background: white;
+    border: none;
+}
+
+.sidebarBtn:hover {
+    color: black;
+}
+
+.closeSidebar {
+    width: 80px;
+    margin-top: 120px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: transparent;
+    z-index: 30;
+    transition: margin-left 0.5s;
+    margin-left: 350px;
+}
+
+.membersInfo {
+    text-decoration: none;
+    font-size: 15px;
+    display: inline;
+    transition: 0.1s;
+    width: 320px;
+    margin-top: 10px;
+    margin-left: 1px;
+    border-radius: 10px;
+    color: black;
+    background: white;
+    border-color: #5c82b5;
+
+}
+
+
+
+/*
+#memberList {
+    width: 100%;
+    padding: 50px 0;
+    text-align: center;
+    background-color: lightblue;
+    margin-top: 20px;
+}
+
+
+#berthList {
+    width: 100%;
+    padding: 50px 0;
+    text-align: center;
+    background-color: lightblue;
+    margin-top: 20px;
+}
+
+ */
