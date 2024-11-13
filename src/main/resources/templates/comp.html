@@ -134,13 +134,11 @@
             berthDiv.textContent = `${berth.name}`;
 
             // Calculate green intensity based on compatibility score
-            const greenIntensity = Math.round(compatibilityScore * 2.55);  // Map 0-100 to 0-255
-            if(greenIntensity <= 20){
-                berthDiv.style.backgroundColor = `rgb(255,0, 0)`;
-            }
-            else  {
-              berthDiv.style.backgroundColor = `rgb(0, ${greenIntensity}, 0)`;
-            }
+            const greenIntensity = Math.round(compatibilityScore * 2.55);
+            const redIntensity = Math.round(255-greenIntensity)
+
+            berthDiv.style.backgroundColor = `rgb(${redIntensity}, ${greenIntensity}, 0)`;
+
 
             berthsList.appendChild(berthDiv);
         });
