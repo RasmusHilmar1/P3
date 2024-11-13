@@ -62,4 +62,10 @@ public class WebController {
     public String showIndexPage() {
         return "index";
     }
+
+    @GetMapping("/berths")
+    public String showCompatablityScore() {
+        return "comp";
+    }
 }
+

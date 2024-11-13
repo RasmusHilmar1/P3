@@ -13,9 +13,9 @@ public class Boat {
     private String name;
     private String type;
     private String manufacturer;
-    private long length;
-    private long width;
-    private long draught;
+    private double length;
+    private double width;
+    private double draught;
     private String insurance;
 
     // Getters and Setters
@@ -67,27 +67,27 @@ public class Boat {
         this.manufacturer = manufacturer;
     }
 
-    public long getLength() {
+    public double getLength() {
         return length;
     }
 
-    public void setLength(long length) {
+    public void setLength(double length) {
         this.length = length;
     }
 
-    public long getWidth() {
+    public double getWidth() {
         return width;
     }
 
-    public void setWidth(long width) {
+    public void setWidth(double width) {
         this.width = width;
     }
 
-    public long getDraught() {
+    public double getDraught() {
         return draught;
     }
 
-    public void setDraught(long draught) {
+    public void setDraught(double draught) {
         this.draught = draught;
     }
 

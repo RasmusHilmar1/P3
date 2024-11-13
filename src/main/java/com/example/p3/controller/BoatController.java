@@ -5,12 +5,20 @@ import com.example.p3.service.BoatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/boats")
 public class BoatController {
 
     @Autowired
     private BoatService boatService;
+
+    // Endpoint to get all boats
+    @GetMapping
+    public List<Boat> getAllBoats() {
+        return boatService.getAllBoats();
+    }
 
     // Endpoint to update boat name
     @PutMapping("/update/name/{id}")
@@ -66,6 +74,4 @@ public class BoatController {
         return boatService.updateBoatMemberID(id, newMemberID);
     }
 
-
 }
-
