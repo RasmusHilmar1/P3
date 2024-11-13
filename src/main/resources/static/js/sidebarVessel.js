@@ -1,3 +1,4 @@
+import {fetchApprovedMembers, fetchBoats} from "./memberFetch.js";
 
 // Add sidebar -->
 var sidebar = document.getElementById("sidebar");
@@ -35,49 +36,65 @@ sidebar.addEventListener('click', function (event) {
     }
 });
 
-// Test/mockup data for creating the lists
-let memberData = [
-    { id: 1001, name: "Mads Hansen Ludvigsen", boatAssigned: "no", feeSent: "no", feePaid: "no" },
-    { id: 1002, name: "Line Mouritzen", boatAssigned: "yes", feeSent: "yes", feePaid: "no"},
-    { id: 1003, name: "Hans Gudenå Petersen", boatAssigned: "no", feeSent: "yes", feePaid: "yes"},
-];
-
 let berthData =[
     {id: 101, name: "FB13"},
     {id: 102, name: "FB14"},
     {id: 103, name: "FB15"},
 ];
 
+const approvedMembers = await fetchApprovedMembers();
+//console.log("members info:" + approvedMembers);
+
+const boats = await fetchBoats();
+console.log("boats" + boats);
+
 // Create collapsible lists for members and berths
-function createMemberList(data) {
+function createMemberList(approvedMembers) {
     var table = document.getElementById("memberList");
     var tableHeader = table.createTHead();
     tableHeader.textContent = "Medlemmer";
 
-    data.forEach(function (item) {
-        // Creating a row for each member
+    approvedMembers.forEach(approvedMember => {
         var memberRow = table.insertRow();
         var memberCell = memberRow.insertCell();
         memberCell.className = "memberCell";
 
-        // Creating a button for members' names
+        const member = approvedMember.member;
+
         var memberName = document.createElement("button");
-        memberName.textContent = item.name;
-        memberName.className = "nameBtn";
+        memberName.textContent = member.name;
+        //console.log(`Name: ${member.name}, Address: ${member.address}`)
         memberCell.appendChild(memberName);
 
         // Creating a div element under each button
         var infoContainer = document.createElement("div");
         memberCell.appendChild(infoContainer);
 
-        // Creating information cells dynamically within the div container
-        Object.keys(item).forEach(function (key) {
-            if (key !== 'name') {
+
+        for (const key in member) {
+            if (key == 'memberID') {
                 var infoCell = document.createElement("div");
-                infoCell.textContent = key + ":" + item[key];
+                infoCell.textContent = key + " : " + member[key];
                 infoCell.className = "infoCell";
                 infoContainer.appendChild(infoCell);
             }
+        }
+
+        boats.forEach(boat => {
+            approvedMember.forEach(member => {
+                if(member.memberID === boat.memberID) {
+                    for (const key in boat) {
+                        var infoCell = document.querySelector('#infoCell')
+                        infoCell.textContent = key + " : " + boat[key];
+                    }
+                }
+            });
+            //for(const key in boat) {
+            //    if (member.memberID === boat.memberID) {
+            //        console.log("hej");
+            //    }
+            //}
+
         });
 
         // event listener for the collapsable list
@@ -95,7 +112,9 @@ function createMemberList(data) {
     });
 }
 
-createMemberList(memberData);
+createMemberList(approvedMembers);
+
+
 
 function createBerthList(data){
     var table = document.getElementById("berthList");
