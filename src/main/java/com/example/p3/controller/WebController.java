@@ -67,5 +67,10 @@ public class WebController {
     public String showCompatablityScore() {
         return "comp";
     }
+
+    @GetMapping("/approvedMembers")
+    public String showApprovedMembers() {
+        return "approvedMembers";
+    }
 }
 

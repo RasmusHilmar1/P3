@@ -21,10 +21,10 @@ var imageBounds = [
 ];
 
 // Get picture for overlay -->
-var imageUrl = '../../Images/vestre_badelaug_kort_kopi.jpeg';
+//var imageUrl = '../../Images/vestre_badelaug_kort_kopi.jpeg';
 
 // Create image overlay -->
-var imageOverlay = L.imageOverlay(imageUrl, imageBounds).addTo(map);
+//var imageOverlay = L.imageOverlay(imageUrl, imageBounds).addTo(map);
 
 //Initialize bounds for map as the bounds of picture in coordinates -->
 const bounds = L.latLngBounds(
