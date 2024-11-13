@@ -5,6 +5,8 @@ import com.example.p3.repository.BoatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class BoatService {
 
@@ -100,4 +102,9 @@ public class BoatService {
         return null;  // Return null if boat not found
     }
 
+    public List<Boat> getAllBoats() {
+        // Method to fetch all boats
+            return boatRepository.findAll(); // Assuming you have a BoatRepository extending JpaRepository
+
+    }
 }

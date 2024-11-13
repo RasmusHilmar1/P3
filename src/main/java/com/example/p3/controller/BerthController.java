@@ -1,9 +1,13 @@
 package com.example.p3.controller;
 
 import com.example.p3.model.Berth;
+import com.example.p3.model.Boat;
 import com.example.p3.service.BerthService;
+import com.example.p3.service.BerthCompatibilityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/Berths")
@@ -21,5 +25,22 @@ public class BerthController {
     @PutMapping("/update/information/{id}")
     public Berth updateBerthInformation(@PathVariable int id, @RequestBody int length, @RequestBody int width) {
         return berthService.updateBerthInformation(id, length, width);
+    }
+
+    @Autowired
+    private BerthCompatibilityService berthCompatibilityService;
+
+    // Endpoint to find compatible berths using GET
+    @GetMapping("/find")
+    public List<BerthCompatibilityService.BerthWithCompatibility> findCompatibleBerths(
+            @RequestParam double length,
+            @RequestParam double width) {
+
+        Boat boat = new Boat(); // Create the boat object
+        boat.setLength(length); // Set the length
+        boat.setWidth(width);  // Set the width
+
+        // Now correctly call the method on the instance of the service
+        return berthCompatibilityService.findCompatibleBerthsWithScore(boat);
     }
 }

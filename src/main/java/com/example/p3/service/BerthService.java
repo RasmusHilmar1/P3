@@ -5,11 +5,17 @@ import com.example.p3.repository.BerthRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class BerthService {
 
     @Autowired
     private BerthRepository berthRepository;
+
+    public List<Berth> getAllBerths() {
+        return berthRepository.findAll();
+    }
 
     public Berth updateBerthName(int berthId, String newName) {
         Berth berth = berthRepository.findByBerthID(berthId);

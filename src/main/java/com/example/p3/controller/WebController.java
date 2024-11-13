@@ -9,4 +9,10 @@ public class WebController {
     public String showApprovedMembersPage() {
         return "approvedMembers";
     }
+
+    @GetMapping("/berths")
+    public String showCompatablityScore() {
+        return "comp";
+    }
 }
+

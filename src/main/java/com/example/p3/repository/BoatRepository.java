@@ -11,4 +11,6 @@ public interface BoatRepository extends JpaRepository<Boat, Integer> {
     // Custom method to find a boat by ID
     Boat findByBoatID(int BoatID);
 
+    List<Boat> findAll();
+
 }
