@@ -15,7 +15,7 @@ public class Berth {
     private double length;
     private double width;
     private double depth;
-    private int dockID;
+    private int pierId;
 
     // Getters and Setters
     public int getBerthID() {return berthID;}
@@ -39,7 +39,7 @@ public class Berth {
     public double getDepth() {return depth;}
     public void setDepth(double depth) {this.depth = depth;}
 
-    public int getDockID() {return dockID;}
-    public void setDockID(int dockID) {this.dockID = dockID;}
+    public int getPierId() {return pierId;}
+    public void setDockID(int pierId) {this.pierId = pierId;}
 
 }
