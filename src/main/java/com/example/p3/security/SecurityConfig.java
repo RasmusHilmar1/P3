@@ -16,6 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+import org.springframework.security.web.server.authentication.logout.*;
+
 
 @Configuration
 @EnableWebSecurity
@@ -55,7 +57,7 @@ public class SecurityConfig {
                 })
 
                 .authorizeHttpRequests(registry -> {
-                    registry.requestMatchers("/css/**", "/js/**", "/login","/index").permitAll();
+                    registry.requestMatchers("/css/**", "/js/**", "/login","/index", "/approvedBoats").permitAll();
 
                     // Kun brugere med rollen VESSEL_USER kan tilgå denne side
                     registry.requestMatchers("/vesselInspectorBoatRequests").hasRole("VESSEL_USER");
@@ -69,6 +71,12 @@ public class SecurityConfig {
 
                     registry.anyRequest().authenticated();
                 })
+
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/index")
+                        .permitAll()
+                )
 
                 .build();
     }
