@@ -1,6 +1,8 @@
 package com.example.p3.controller;
 
+import com.example.p3.dto.MemberDTO;
 import com.example.p3.model.Member;
+import com.example.p3.repository.MemberRepository;
 import com.example.p3.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +13,10 @@ public class MemberController {
 
     @Autowired // giver adgang til methods fra MemberService klassen.
     private MemberService memberService;
+
+    @Autowired
+    private MemberRepository memberRepository;
+
 
     @GetMapping("/getName/{id}")
     public String getMember(@PathVariable int id) {
@@ -78,4 +84,15 @@ public class MemberController {
         return memberService.updateMemberBoatOwnershipStatus(id, newStatus);
     }
 
+    @GetMapping("/public/{id}")
+    public MemberDTO getConvertDTO(@PathVariable int id) {
+
+        Member member = getPublicMember(id);
+
+        return memberService.convertToDTO(member);
+    }
+
+    public Member getPublicMember(int memberId) {
+        return memberRepository.findByMemberID(memberId); 
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.p3.service;
 
+import com.example.p3.dto.MemberDTO;
 import com.example.p3.model.Member;
 import com.example.p3.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,4 +99,13 @@ public class MemberService {
         }
         return null;
     }
+
+    public MemberDTO convertToDTO(Member member) {
+        if (member == null) {
+            return null;
+        }
+
+        return new MemberDTO(member.getMemberID(), member.getName(), member.getPhonenumber());
+    }
+
 }
