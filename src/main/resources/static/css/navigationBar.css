@@ -46,3 +46,32 @@
     width: 100%;
     position: absolute;
 }
+
+#submit {
+    border: none;
+    background-color: #5c82b5;
+    font-size: 18px;
+    color: white;
+    cursor: pointer;
+    font-weight: 585;
+    text-decoration: none;
+    position: relative;
+    display: inline-flex;
+    padding: 1px 1px; /* Styrer hvor lang stregen under button er. 1px og 1px passer med ordet "log ud". */
+    margin-right: 30px;
+}
+
+#submit::before {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: white;
+    transition: width 0.3s;
+}
+
+#submit:hover::before {
+    width: 100%;
+}
