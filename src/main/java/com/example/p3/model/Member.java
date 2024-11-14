@@ -18,8 +18,8 @@ public class Member {
     private Boolean boatownership;
 
     @OneToOne(mappedBy = "member")
-    @JsonBackReference
-    private ApprovedMember approvedMember;
+    private
+    @JsonBackReference ApprovedMember approvedMember;
 
     public int getMemberID() {
         return memberID;

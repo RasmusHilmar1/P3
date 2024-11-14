@@ -33,8 +33,16 @@
     <label for="searchBar"></label><input type="text" id="searchBar" class="searchBar" placeholder="Søg på medlem, båd eller bådplads">
     <button id="memberBtn" class="sidebarMenuBtn">Medlemmer</button>
     <button id="berthBtn" class="sidebarMenuBtn">Bådpladser</button>
-    <table id="memberList" class="memberList">
-        <thead id="memberTableHeader" class="tableHeader">
+    <table id="memberListWithoutBoat" class="memberList">
+        <thead id="memberWithoutBoatTableHeader" class="tableHeader">
+        <!-- Dynamic header is added here -->
+        </thead>
+        <tbody>
+        <!-- Dynamic table is added here -->
+        </tbody>
+    </table>
+    <table id="memberListBoat" class="memberList">
+        <thead id="memberBoatTableHeader" class="tableHeader">
         <!-- Dynamic header is added here -->
         </thead>
         <tbody>

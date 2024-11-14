@@ -54,10 +54,10 @@ const berths = await fetchBerth();
 console.log("berths" + berths);
 
 // Create collapsible lists for members and berths
-function createMemberList(approvedMembers) {
-    var table = document.getElementById("memberList");
+function createMemberListBoats(approvedMembers) {
+    var table = document.getElementById("memberListBoat");
     var tableHeader = table.createTHead();
-    tableHeader.textContent = "Medlemmer";
+    tableHeader.textContent = "Medlemmer med bådplads";
 
     approvedMembers.forEach(approvedMember => {
         var memberRow = table.insertRow();
@@ -77,7 +77,7 @@ function createMemberList(approvedMembers) {
 
 
         for (const key in member) {
-            if (key == 'memberID') {
+            if (key === 'memberID') {
                 var infoCell = document.createElement("div");
                 infoCell.textContent = key + " : " + member[key];
                 infoCell.className = "infoCell";
@@ -86,21 +86,17 @@ function createMemberList(approvedMembers) {
         }
 
         boats.forEach(boat => {
-           console.log("boatname" + boat.name);
-            /* approvedMember.forEach(member => {
-                if(member.memberID === boat.memberID) {
-                    for (const key in boat) {
-                        var infoCell = document.querySelector('#infoCell')
+            if (member.memberID === boat.memberID) {
+                for (const key in boat) {
+                    if ((key === 'name') || (key === 'berthID') || (key === 'length') || (key === 'width')) {
+                        var infoCell = document.createElement("div");
+                        //console.log("key : " + boat[key]);
                         infoCell.textContent = key + " : " + boat[key];
+                        infoCell.className = "infoCell";
+                        infoContainer.appendChild(infoCell);
                     }
                 }
-            });*/
-            //for(const key in boat) {
-            //    if (member.memberID === boat.memberID) {
-            //        console.log("hej");
-            //    }
-            //}
-
+            }
         });
 
         // event listener for the collapsable list
@@ -118,11 +114,30 @@ function createMemberList(approvedMembers) {
     });
 }
 
-createMemberList(approvedMembers);
+createMemberListBoats(approvedMembers);
 
 
+function createMemberListWithoutBoats(approvedMembers) {
+    var table = document.getElementById("memberListWithoutBoatBoat");
+    var tableHeader = table.createTHead();
+    tableHeader.textContent = "Medlemmer uden bådplads";
 
+    var memberRow = table.insertRow();
+    var memberCell = memberRow.insertCell();
+    memberCell.className = "memberCell";
+    
+    approvedMembers.forEach(approvedMember => {
+        const member = approvedMember.member;
 
+        boats.forEach(boat => {
+            if ((member.memberID === boat.memberID) && (boat.berthID === null)) {
+
+            }
+
+        }
+    });
+
+}
 
 function createBerthList(data){
     var table = document.getElementById("berthList");
