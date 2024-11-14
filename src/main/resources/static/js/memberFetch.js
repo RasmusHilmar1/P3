@@ -1,9 +1,9 @@
 
-export {fetchApprovedMembers, fetchBoats};
+export {fetchApprovedMembers, fetchBoats, fetchBerth};
 
-var memberBtn = document.getElementById("memberBtn");
+//var memberBtn = document.getElementById("memberBtn");
 
-memberBtn.addEventListener("click", fetchApprovedMembers);
+//memberBtn.addEventListener("click", fetchApprovedMembers);
 
 async function fetchApprovedMembers() {
     try {
@@ -41,7 +41,7 @@ async function fetchBoats() {
         }
 
         const boats = await response.json();
-        console.log("Fetched approved members:", boats); // Debug output
+        console.log("Fetched boats:", boats); // Debug output
 
         return boats;
 
@@ -51,3 +51,20 @@ async function fetchBoats() {
     }
 }
 
+async function fetchBerth() {
+    try {
+        const response = await fetch('Berths/get');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const berths = await response.json();
+        console.log("Fetched berths:", berths); // Debug output
+
+        return berths;
+
+
+    } catch (error) {
+        console.error('Error fetching berths:', error);
+    }
+}

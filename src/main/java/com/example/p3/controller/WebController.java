@@ -72,5 +72,10 @@ public class WebController {
     public String showApprovedMembers() {
         return "approvedMembers";
     }
+
+    @GetMapping("/Berths")
+    public String showBerths() {
+        return "Berths";
+    }
 }
 

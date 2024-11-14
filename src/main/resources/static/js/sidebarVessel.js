@@ -1,4 +1,4 @@
-import {fetchApprovedMembers, fetchBoats} from "./memberFetch.js";
+import {fetchApprovedMembers, fetchBoats, fetchBerth} from "./memberFetch.js";
 
 // Add sidebar -->
 var sidebar = document.getElementById("sidebar");
@@ -47,6 +47,11 @@ const approvedMembers = await fetchApprovedMembers();
 
 const boats = await fetchBoats();
 console.log("boats" + boats);
+//console.log("boatID" + boats.name);
+
+
+const berths = await fetchBerth();
+console.log("berths" + berths);
 
 // Create collapsible lists for members and berths
 function createMemberList(approvedMembers) {
@@ -81,14 +86,15 @@ function createMemberList(approvedMembers) {
         }
 
         boats.forEach(boat => {
-            approvedMember.forEach(member => {
+           console.log("boatname" + boat.name);
+            /* approvedMember.forEach(member => {
                 if(member.memberID === boat.memberID) {
                     for (const key in boat) {
                         var infoCell = document.querySelector('#infoCell')
                         infoCell.textContent = key + " : " + boat[key];
                     }
                 }
-            });
+            });*/
             //for(const key in boat) {
             //    if (member.memberID === boat.memberID) {
             //        console.log("hej");
@@ -113,6 +119,8 @@ function createMemberList(approvedMembers) {
 }
 
 createMemberList(approvedMembers);
+
+
 
 
 
