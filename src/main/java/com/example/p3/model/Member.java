@@ -71,4 +71,19 @@ public class Member {
         this.boatownership = boatownership;
     }
 
+    public void setMemberID(int i) {
+        memberID = i;
+    }
+
+    public void setDateOfBirth(LocalDate of) {
+        dateofbirth = of;
+    }
+
+    public void setPhoneNumber(long l) {
+        phonenumber = l;
+    }
+
+    public void setBoatOwnership(boolean b) {
+        boatownership = b;
+    }
 }
