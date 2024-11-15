@@ -1,6 +1,9 @@
 package com.example.p3.controller;
 
+import com.example.p3.dto.BoatDTO;
+import com.example.p3.dto.MemberDTO;
 import com.example.p3.model.Boat;
+import com.example.p3.model.Member;
 import com.example.p3.service.BoatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -74,4 +77,8 @@ public class BoatController {
         return boatService.updateBoatMemberID(id, newMemberID);
     }
 
+    @GetMapping("/public/{memberId}")
+    public List<BoatDTO> getBoatsByMemberId(@PathVariable int memberId) {
+        return boatService.getBoatsByMemberId(memberId);
+    }
 }
