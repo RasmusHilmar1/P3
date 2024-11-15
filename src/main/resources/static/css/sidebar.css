@@ -193,6 +193,10 @@ td {
     content: '\2796';
 }
 
+.assignBtn {
+    display: none;
+}
+
 
 /*
 #memberList {
