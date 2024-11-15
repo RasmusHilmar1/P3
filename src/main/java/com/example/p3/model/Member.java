@@ -71,6 +71,7 @@ public class Member {
         this.boatownership = boatownership;
     }
 
+    // bliver bare brugt til testing. Bliver ikke brugt af programmet
     public void setMemberID(int i) {
         memberID = i;
     }
