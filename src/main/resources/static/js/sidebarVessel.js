@@ -532,3 +532,7 @@ function createBerthListUnavailable(member, boat, berths) {
         }
     });
 }
+
+
+
+//prøv at giv addBtn's forskellige id, for så kan man sige at man vælger id for kun den ene.
