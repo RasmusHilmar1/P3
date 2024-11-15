@@ -303,5 +303,13 @@ switchHeader();
 
 
 function showBerthsForBoat() {
-    var addBtn = document.
+    var memberTableNoBoat = document.getElementById("memberListWithoutBoat");
+    var memberTableBoat = document.getElementById("memberListBoat");
+    var berthList = document.getElementById("berthBtn");
+    var addBtn = document.getElementById("addBtn");
+    addBtn.onclick = function () {
+        berthTable.style.display = 'none';
+        memberTableNoBoat.style.display = 'table';
+        memberTableBoat.style.display = 'table'
+    }
 }
