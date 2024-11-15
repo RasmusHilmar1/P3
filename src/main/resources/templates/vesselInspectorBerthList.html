@@ -27,16 +27,16 @@
         </form>
     </nav>
 </header>
-<div id="listSearchBarContainer">
-    <input type="text" id="berthListSearchBar" class="searchBar" placeholder="Søg på medlem, båd eller bådplads">
-</div>
 <div id="berthListContainer">
     <table id="berthList">
         <thead>
-        <tr>
+        <tr id="berthListHeader">
             <th colspan="15">Bådpladser</th>
         </tr>
         <tr>
+            <th colspan="15" id="searchBarCell"><input type="text" id="berthListSearchBar" class="searchBar" placeholder="Søg på medlem, båd eller bådplads..."></th>
+        </tr>
+        <tr id="berthListHeaders">
             <th id="berthNumber" class="berthListInfo">Plads nr.</th>
             <th id="berthAddress" class="berthListInfo">Plads</th>
             <th id="berthLength" class="berthListInfo">Længde</th>

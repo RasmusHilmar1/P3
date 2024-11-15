@@ -1,18 +1,27 @@
 #listSearchBarContainer {
     z-index: 20;
     background-color: white;
-    gap: 10px;
     padding-top: 120px; /*Dette skal passe med navigationsbaren når det laves om*/
-    font-size: 25px;
     width: 100%;
 }
 
-input {
-    margin: 0 50%;
+#berthListSearchBar {
+    font-size: 18px;
+    width: 300px;
+    left: 50%;
+}
+
+#searchBarCell {
+    text-align: center;
+    margin: 0 auto;
 }
 
 #berthListContainer {
+    padding-top: 120px;
+}
 
+#berthHeader, #berthListHeaders {
+    padding-top: 40px;
 }
 
 .berthListInfo{

@@ -72,17 +72,24 @@ function calculateUtilization(){
 
 calculateUtilization();
 
+//create an array for the cells
+const cells = [];
 
 function addCells(tr, data){
+    let td;
     // Iterate over the data
     data.forEach(function(item){
-        var td = tr.insertCell();
+        td = tr.insertCell();
         td.textContent = item;
+        td.id = item;
+        cells.push(td);
     });
+    console.log(cells);
 }
 
 function getBerthList(){
     const table = document.getElementById("berthListBody");
+    let infoCellsBerths, infoCellsMembersAndBoats, berthInfoCell, memberAndBoatInfoCell;
     // For each berth, find corresponding boat and member
     berths.forEach(berth => {
         berth.correspondingBoat = boats.find(boat => boat.berthID === berth.berthID);
@@ -98,23 +105,98 @@ function getBerthList(){
     });
     //For each berth, create a row and add the data
     berths.forEach(berth => {
-        var row = table.insertRow();
-        addCells(row, [berth.berthID, berth.name, berth.length + "m", berth.width + "m", berth.areal + "m", berth.depth + "m", berth.utilizationPercentage]);
-        // find boat assigned to berth and corresponding member
-        if (berth.correspondingMember && berth.correspondingBoat){
-            if (berth.correspondingBoat.memberID === berth.correspondingMember.member.memberID && berth.correspondingBoat.berthID === berth.berthID){
-                addCells(row, [berth.correspondingMember.member.name, berth.correspondingBoat.memberID, berth.correspondingBoat.name, berth.correspondingBoat.length, berth.correspondingBoat.width, berth.correspondingBoat.areal, berth.correspondingMember.member.phonenumber, berth.correspondingMember.member.phonenuber2]);
+        if (berth.berthID !== 9999){
+            var row = table.insertRow();
+            row.className = "berthTableRow";
+            const berthData = [berth.berthID, berth.name, berth.length + "m", berth.width + "m", berth.areal + "m", berth.depth + "m", berth.utilizationPercentage]
+            addCells(row, berthData);
+            for (let i = 0; i < 6; i++){
+                infoCellsBerths = cells[i];
+                console.log(infoCellsBerths);
             }
-        } else {
-            addCells(row, ["", "", "", "", "", "", "", ""]);
+            for (let i = 0; i < infoCellsBerths.length; i++){
+                berthInfoCell.textContent = infoCellsBerths[i].value;
+                berthInfoCell.className = "berthInfo";
+            }
+            let berthInfoCells = document.getElementsByClassName("berthInfo");
+            console.log(berthInfoCells);
+            // find boat assigned to berth and corresponding member
+            if (berth.correspondingMember && berth.correspondingBoat){
+                if (berth.correspondingBoat.memberID === berth.correspondingMember.member.memberID && berth.correspondingBoat.berthID === berth.berthID){
+                    const memberAndBoatData = [berth.correspondingMember.member.name, berth.correspondingBoat.memberID, berth.correspondingBoat.name, berth.correspondingBoat.length, berth.correspondingBoat.width, berth.correspondingBoat.areal, berth.correspondingMember.member.phonenumber, berth.correspondingMember.member.phonenumber2]
+                    addCells(row, memberAndBoatData);
+                    for (let i = 6; i < 15; i++){
+                        infoCellsMembersAndBoats = cells[i];
+                        for (let i = 0; i < infoCellsMembersAndBoats.length; i++){
+                            memberAndBoatInfoCell.textContent = infoCellsMembersAndBoats[i].value;
+                            memberAndBoatInfoCell.className = "memberAndBoatInfo";
+                        }
+                        let memberAndBoatInfoCells = document.getElementsByClassName("memberAndBoatInfo");
+                        console.log(memberAndBoatInfoCells);
+                    }
+                }
+            } else {
+                addCells(row, ["", "", "", "", "", "", "", ""]);
+            }
         }
     });
 }
 
 getBerthList();
 
+/*
+let berthInfo = document.getElementsByClassName("berthInfo");
+console.log(berthInfo);
+let memberAndBoatInfo = document.getElementsByClassName("memberAndBoatInfo");
+console.log(memberAndBoatInfo);
+let input = document.getElementById("berthListSearchBar"); //input
+let filter = input.value.toLowerCase(); //filter
+let table = document.getElementById("berthListBody"); //ul
+console.log(filter);
+console.log(input);
+console.log(table);*/
+// Search function for the search bar
 
-// Ensure the function runs after the DOM is fully loaded
-/*window.onload = function() {
-    getBerthList();
-};*/
+/* function searchBarBerthList() {
+    console.log("Search function triggered"); //console logging to make sure that the function runs
+    let input, filter, table, tableRow, berthInfo, memberAndBoatInfo, berthInfoContent, memberAndBoatInfoContent, result, tableRows;
+    input = document.getElementById("berthListSearchBar"); //input
+    filter = input.value.toLowerCase(); //filter
+    table = document.getElementById("berthListBody"); //ul
+    console.log(filter);
+    tableRow = document.getElementsByTagName("")
+    berthInfo = document.getElementsByClassName("berthInfo");
+    console.log(berthInfo);
+    memberAndBoatInfo = document.getElementsByClassName("memberAndBoatInfo");
+    console.log(memberAndBoatInfo);
+    for (let i = 0; i < berthInfo.length; i++){
+        berthInfoContent = berthInfo[i];
+        if (berthInfoContent.innerHTML !== ""){
+            berthInfoContent.className = "berthInfoContent";
+            console.log(berthInfoContent);
+        }
+        memberAndBoatInfoContent = memberAndBoatInfo[i];
+        if (memberAndBoatInfoContent){
+            if (memberAndBoatInfoContent.innerHTML !== ""){ // not all berths have corresponding boat and member
+                memberAndBoatInfoContent.className = "memberAndBoatInfoContent";
+                console.log(memberAndBoatInfoContent);
+            }
+        }
+        tableRows = table.getElementsByClassName("berthTableRow");
+        for (let i = 0; i < tableRows.length; i++) {
+            if (result) {
+                tableRows[i].style.display = "table-row";
+            } else {
+                tableRows[i].style.display = "none";
+            }
+        }
+    }
+}
+
+function searchBarEvent(){
+    const berthSearchBar = document.getElementById("berthListSearchBar");
+    berthSearchBar.addEventListener("keyup", searchBarBerthList);
+}
+
+searchBarEvent();*/
+
