@@ -7,6 +7,10 @@
     width: 100%;
 }
 
+input {
+    margin: 0 50%;
+}
+
 #berthListContainer {
 
 }

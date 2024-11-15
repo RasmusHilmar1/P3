@@ -80,22 +80,37 @@ function addCells(tr, data){
 }
 
 function getBerthList(){
-    var table = document.getElementById("berthListBody");
+    const table = document.getElementById("berthListBody");
+    // For each berth, find corresponding boat and member
+    berths.forEach(berth => {
+        berth.correspondingBoat = boats.find(boat => boat.berthID === berth.berthID);
+        console.log(JSON.stringify(berth.correspondingBoat));
+        if (berth.correspondingBoat){
+            console.log(JSON.stringify(berth.correspondingBoat.memberID));
+            berth.correspondingMember = members.find(member => member.member.memberID === berth.correspondingBoat.memberID);
+            console.log(JSON.stringify(berth.correspondingMember));
+            if (berth.correspondingMember){
+                console.log(JSON.stringify(berth.correspondingMember.member.memberID));
+            }
+        }
+    });
     //For each berth, create a row and add the data
     berths.forEach(berth => {
         var row = table.insertRow();
         addCells(row, [berth.berthID, berth.name, berth.length + "m", berth.width + "m", berth.areal + "m", berth.depth + "m", berth.utilizationPercentage]);
-        members.forEach(member => {
-            let boat = boats.find(boat => boat.memberID === member.memberID);
-            console.log(JSON.stringify(boat?.name));
-            if (boat){
-                addCells(row, member.name, member.memberID)
+        // find boat assigned to berth and corresponding member
+        if (berth.correspondingMember && berth.correspondingBoat){
+            if (berth.correspondingBoat.memberID === berth.correspondingMember.member.memberID && berth.correspondingBoat.berthID === berth.berthID){
+                addCells(row, [berth.correspondingMember.member.name, berth.correspondingBoat.memberID, berth.correspondingBoat.name, berth.correspondingBoat.length, berth.correspondingBoat.width, berth.correspondingBoat.areal, berth.correspondingMember.member.phonenumber, berth.correspondingMember.member.phonenuber2]);
             }
-        });
+        } else {
+            addCells(row, ["", "", "", "", "", "", "", ""]);
+        }
     });
 }
 
 getBerthList();
+
 
 // Ensure the function runs after the DOM is fully loaded
 /*window.onload = function() {
