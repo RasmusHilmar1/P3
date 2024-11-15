@@ -19,7 +19,7 @@ let berthData = [
     { id: 1003, address: "FiskerboPlads 03", length: "5", width: "4", areal: "20"},
 ]; */
 
-import {fetchApprovedMembers, fetchBoats, fetchBerth} from "./memberFetch.js";
+import {fetchApprovedMembers, fetchBoats, fetchBerth, fetchPendingMembers} from "./memberFetch.js";
 
 const members = await fetchApprovedMembers();
 console.log(members);
@@ -27,6 +27,8 @@ const boats = await fetchBoats();
 console.log(boats);
 const berths = await fetchBerth();
 console.log(berths);
+const pendingMembers = await fetchPendingMembers();
+console.log(pendingMembers);
 
 function calculateAreal(){
     berths.forEach(berth => {
