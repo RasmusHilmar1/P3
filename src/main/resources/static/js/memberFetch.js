@@ -1,5 +1,5 @@
 
-export {fetchApprovedMembers, fetchBoats, fetchBerth};
+export {fetchApprovedMembers, fetchBoats, fetchBerth, fetchPendingMembers};
 
 //var memberBtn = document.getElementById("memberBtn");
 
@@ -66,5 +66,21 @@ async function fetchBerth() {
 
     } catch (error) {
         console.error('Error fetching berths:', error);
+    }
+}
+
+async function fetchPendingMembers(){
+    try {
+        const response = await fetch("/members/");
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const members = await response.json();
+        console.log("Fetched members:", members);
+
+        return members;
+
+    } catch (error) {
+        console.error("Error fetch berths:", error);
     }
 }
