@@ -2,6 +2,7 @@ package com.example.p3.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Boat {
@@ -17,6 +18,8 @@ public class Boat {
     private double width;
     private double draught;
     private String insurance;
+
+
 
     // Getters and Setters
     public int getMemberID() {

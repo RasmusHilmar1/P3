@@ -57,7 +57,7 @@ public class SecurityConfig {
                 })
 
                 .authorizeHttpRequests(registry -> {
-                    registry.requestMatchers("/css/**", "/js/**", "/login","/index", "/approvedBoats").permitAll();
+                    registry.requestMatchers("/css/**", "/js/**", "/login","/index", "/members/public/**", "/boats/public/**").permitAll();
 
                     // Kun brugere med rollen VESSEL_USER kan tilgå denne side
                     registry.requestMatchers("/vesselInspectorBoatRequests").hasRole("VESSEL_USER");

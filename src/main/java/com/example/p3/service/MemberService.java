@@ -1,9 +1,12 @@
 package com.example.p3.service;
 
+import com.example.p3.dto.MemberDTO;
 import com.example.p3.model.Member;
 import com.example.p3.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 
 @Service
 public class MemberService {
@@ -26,7 +29,7 @@ public class MemberService {
         return member.getEmail();
     }
 
-    public int getMemberDoB(int memberId) {
+    public LocalDate getMemberDoB(int memberId) {
         Member member = memberRepository.findByMemberID(memberId);
         return member.getDateofbirth();
     }
@@ -98,4 +101,13 @@ public class MemberService {
         }
         return null;
     }
+
+    public MemberDTO convertToDTO(Member member) {
+        if (member == null) {
+            return null;
+        }
+
+        return new MemberDTO(member.getMemberID(), member.getName(), member.getPhonenumber());
+    }
+
 }
