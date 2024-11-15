@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 
+import java.time.LocalDate;
+
 @Entity
 public class Member {
 
@@ -13,7 +15,7 @@ public class Member {
     private String name;
     private String address;
     private String email;
-    private int dateofbirth;
+    private LocalDate dateofbirth;
     private Long phonenumber;
     private Boolean boatownership;
 
@@ -37,7 +39,7 @@ public class Member {
         return email;
     }
 
-    public int getDateofbirth() {
+    public LocalDate getDateofbirth() {
         return dateofbirth;
     }
 

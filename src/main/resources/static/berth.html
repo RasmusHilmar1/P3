@@ -12,10 +12,17 @@
 <button onclick="updateBerthName()">Update Name</button>
 
 <h1>Update Berth Information</h1>
-<label for="newLength">Enter New Length:</label>
-<input type="number" id="newLength" placeholder="Enter new length" />
-<label for="newWidth">Enter New Width:</label>
-<input type="number" id="newWidth" placeholder="Enter new width" />
+<label for="name">Name:</label>
+<input type="text" id="name" placeholder="Enter name">
+
+<label for="length">Length:</label>
+<input type="number" id="length" placeholder="Enter length">
+
+<label for="width">Width:</label>
+<input type="number" id="width" placeholder="Enter width">
+
+<label for="depth">Depth:</label>
+<input type="number" id="depth" placeholder="Enter depth">
 <button onclick="updateBerthInformation()">Update information</button>
 
 <script>
@@ -45,26 +52,37 @@
             });
   }
   function updateBerthInformation() {
-    const newLength = document.getElementById("newLength").value;
-    const newWidth = document.getElementById("newWidth").value;
-    const berthId = 9999;  // ID of the member you want to update (for example, Member 10)
+    const newName = document.getElementById("name").value
+    const newLength = document.getElementById("length").value;
+    const newWidth = document.getElementById("width").value;
+    const newDepth = document.getElementById("depth").value
+    const berthId = 9999;  // ID of berth to update
 
-    const updatedInfo = {
-      length: newLength,
-      width: newWidth
+    const updatedInfo = {};
+    if (newName) {
+      updatedInfo.name = newName;
     }
-    // Send a PUT request to the backend to update the name
+    if (newLength) {
+      updatedInfo.length = newLength;
+    }
+    if (newWidth) {
+      updatedInfo.width = newWidth;
+    }
+    if (newDepth) {
+      updatedInfo.depth = newDepth;
+    }
+    // Send a PUT request to the backend to update the Berth information
     fetch(`/Berths/update/information/${berthId}`, {
       method: 'PUT',
-      headers: {
+              headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(updatedInfo)  // Send the length and width as JSON
+      body: JSON.stringify(updatedInfo)  // Send the updated info in json format
     })
-            .then(response => response.json())
+  .then(response => response.json())
             .then(data => {
               if (data) {
-                alert("information updated successfully to");
+                alert("information successfully updated");
               } else {
                 alert("Error: Member not found.");
               }

@@ -26,10 +26,10 @@ public class BerthController {
     public Berth updateBerthName(@PathVariable int id, @RequestBody String newName) {
         return berthService.updateBerthName(id, newName);
     }
-
+    // Endpoint for updating information of berth
     @PutMapping("/update/information/{id}")
-    public Berth updateBerthInformation(@PathVariable int id, @RequestBody int length, @RequestBody int width) {
-        return berthService.updateBerthInformation(id, length, width);
+    public Berth updateBerthInformation(@PathVariable int id, @RequestBody Berth info) {
+        return berthService.updateBerthInformation(id, info);
     }
 
     @Autowired

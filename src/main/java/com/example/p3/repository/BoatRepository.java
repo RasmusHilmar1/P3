@@ -13,4 +13,6 @@ public interface BoatRepository extends JpaRepository<Boat, Integer> {
 
     List<Boat> findAll();
 
+    List<Boat> findByMemberID(int memberId);
+
 }
