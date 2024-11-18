@@ -130,7 +130,7 @@ L.geoJSON(myGeoJson, {
 }).addTo(map);
 
 function onEachFeature(feature, layer) {
-    console.log(feature.properties);
+    //console.log(feature.properties);
     layer.on('click', function(e) {
         document.getElementById("berthId").innerHTML = feature.properties.id;
         document.getElementById("berthName").innerHTML = feature.properties.name;

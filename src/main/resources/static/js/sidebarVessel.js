@@ -43,7 +43,7 @@ let berthData =[
 ];
 
 const approvedMembers = await fetchApprovedMembers();
-//console.log("members info:" + approvedMembers);
+console.log("members info:" + JSON.stringify(approvedMembers));
 
 const boats = await fetchBoats();
 console.log("boats" + boats);
@@ -180,7 +180,7 @@ function createMemberListWithoutBoats(approvedMembers, boats, berths) {
 
                         var addBtn = document.createElement("button");
                         addBtn.textContent = "tilføj";
-                        addBtn.onclick = showBerthsForBoat(member, boat, berths);
+                        //addBtn.onclick = createBerthListAv(member);
                         addBtn.id = "addBtn" + member.memberID;
                         //addBtn.id = "addBtn";
                         addBtn.classList = "addBtn";
@@ -310,6 +310,7 @@ function switchHeader(){
         berthListSmall.style.display = 'none'
         berthListUnavailable.style.display = 'none'
     };
+    /*
     addBtn.onclick = function () {
         berthList.style.display = 'none';
         memberTableNoBoat.style.display = 'none';
@@ -318,35 +319,93 @@ function switchHeader(){
         berthListSmall.style.display = 'table'
         berthListUnavailable.style.display = 'table';
     }
+     */
 }
 
 switchHeader();
 
-function showBerthsForBoat() {
+function showThreeTables(member, addBtn) {
+    var memberTableNoBoat = document.getElementById("memberListWithoutBoat");
+    var memberTableBoat = document.getElementById("memberListBoat");
+    var berthTable = document.getElementById("berthList");
+    var berthListAvailable = document.getElementById(`berthListAv${member}`);
 
-    var json = approvedMembers;
+    console.log("listen: "+ `berthListAv${member}`);
+    //console.log("listen2: "+ berthListAvailable.style.display);
 
-    for (let i = 0, l = Object.keys(json).length; i < l; i++) {
-        var addBtnID = document.getElementById("abbBtn" + i);
-
-        if (addBtnID === )
+    addBtn.onclick = function() {
+        createBerthListAv(member, addBtn);
+        berthTable.style.display = 'none';
+        memberTableNoBoat.style.display = 'none';
+        memberTableBoat.style.display = 'none';
+        berthListAvailable.style.display = 'table';
     }
-
-
-    createBerthListAvailable(member, boat, berths);
-    createBerthListSmall(member, boat, berths);
-    createBerthListUnavailable(member, boat, berths);
 }
 
-/*
-function showBerthsForBoat(member, boat, berths) {
-    //console.log("showBerthsForBoat");
+function showBerthsForBoat() {
+
+    console.log("memberinfo: " + approvedMembers);
+
+    console.log("objectLength:" + Object.keys(approvedMembers).length);
 
 
-    createBerthListAvailable(member, boat, berths);
-    createBerthListSmall(member, boat, berths);
-    createBerthListUnavailable(member, boat, berths);
-}*/
+    //for (let i = 0, l = Object.keys(approvedMembers).length; i < l; i++) {
+
+        approvedMembers.forEach(approvedMember => {
+            var members = approvedMember.member;
+            var memberID = members.memberID;
+
+            var addBtn = document.getElementById("addBtn" + memberID);
+
+            if (addBtn) {
+                if (addBtn.id === "addBtn" + members.memberID) {
+                    console.log("her kommer memeber:" + members.memberID);
+
+                    console.log("1:", memberID);
+                    console.log("2:", addBtn);
+                    //console.log("3:", addBtnID);
+
+                    var addBtnID = addBtn.id;
+
+                    showThreeTables(memberID, addBtn)
+
+                }
+
+            }
+
+
+
+            //console.log("1: " + addBtnID);
+            //console.log("2: " + "addBtn" + members.memberID);
+            //console.log("3: " + addBtn.id === "addBtn" + members.memberID);
+
+        })
+
+        //console.log("mem:" + Object.keys(approvedMembers));
+
+
+   // createBerthListAvailable(member, boat, berths);
+   // createBerthListSmall(member, boat, berths);
+   // createBerthListUnavailable(member, boat, berths);
+}
+showBerthsForBoat();
+
+function createBerthListAv (member) {
+    var table = document.createElement("table");
+    table.id = `berthListAv${member}`;
+    table.classList = "berthList";
+
+    var thead = document.createElement("thead");
+    thead.textContent = "Tilgængelige bådpladser"
+    thead.id = `BerthListAv${member}`;
+    thead.classList = "tableHeader";
+    table.appendChild(thead);
+
+    var tbody = document.createElement("tbody");
+    table.appendChild(tbody);
+
+    document.body.appendChild(table);
+}
 
 function createBerthListAvailable(member, boat, berths) {
     var table = document.getElementById("berthListAvailable");
