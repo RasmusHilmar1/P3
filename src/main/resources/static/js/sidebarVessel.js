@@ -329,6 +329,8 @@ function showThreeTables(member, addBtn) {
     var memberTableBoat = document.getElementById("memberListBoat");
     var berthTable = document.getElementById("berthList");
     var berthListAvailable = document.getElementById(`berthListAv${member}`);
+    var berthListSmall = document.getElementById(`berthListSmall${member}`);
+    var berthListUav = document.getElementById(`berthListUav${member}`);
     //var berthListAvailable = document.querySelector(".berthListAv")
 
     console.log("listen: "+ `berthListAv${member}`);
@@ -339,6 +341,8 @@ function showThreeTables(member, addBtn) {
         memberTableNoBoat.style.display = 'none';
         memberTableBoat.style.display = 'none';
         berthListAvailable.style.display = 'table';
+        berthListSmall.style.display = 'table';
+        berthListUav.style.display = 'table';
     }
 }
 
@@ -366,37 +370,24 @@ function showBerthsForBoat() {
                     //console.log("3:", addBtnID);
 
                     var addBtnID = addBtn.id;
-                    createBerthListAv(memberID);
+                    createBerthListAvailable(memberID);
+                    createBerthListSmall (memberID);
+                    createBerthListUnavailable(memberID);
 
                     showThreeTables(memberID, addBtn)
-
                 }
-
             }
-
-
-
-            //console.log("1: " + addBtnID);
-            //console.log("2: " + "addBtn" + members.memberID);
-            //console.log("3: " + addBtn.id === "addBtn" + members.memberID);
-
         })
-
-        //console.log("mem:" + Object.keys(approvedMembers));
-
-
-   // createBerthListAvailable(member, boat, berths);
-   // createBerthListSmall(member, boat, berths);
-   // createBerthListUnavailable(member, boat, berths);
 }
 showBerthsForBoat();
 
-function createBerthListAv (member) {
+function createBerthListAvailable (member) {
     var sidebar = document.getElementById("sidebar");
 
     var table = document.createElement("table");
     table.id = `berthListAv${member}`;
-    table.classList = "berthListAv";
+    table.classList = "berthList";
+    sidebar.appendChild(table);
 
     var thead = table.createTHead();
     thead.textContent = "Tilgængelige bådpladser"
@@ -407,213 +398,235 @@ function createBerthListAv (member) {
     var tbody = document.createElement("tbody");
     table.appendChild(tbody);
 
+    boats.forEach(boat => {
+        if ((member === boat.memberID) && (boat.berthID === 9999)) {
+            berths.forEach(berth => {
+                if ((berth.availability === 1) && (berth.length >= boat.length) && (berth.width >= boat.width)) {
+                    // Creating a row for each berth
+                    var berthRow = table.insertRow();
+                    var berthCell = berthRow.insertCell();
+                    berthCell.className = "berthCell";
+
+                    // Creating a button for berths' names
+                    var berthName = document.createElement("button");
+                    berthName.textContent = berth.name;
+                    berthName.className = "berthBtn";
+                    berthCell.appendChild(berthName);
+
+                    // Creating a div element under each button
+                    var infoContainer = document.createElement("div");
+                    berthCell.appendChild(infoContainer);
+
+                    var size = document.createElement("div");
+                    size.textContent = "størrelse";
+                    size.className = "infoCell";
+
+                    for (const key in berth) {
+                        if (key === 'availability') {
+                            var infoCell = document.createElement("div");
+                            infoCell.textContent = "status: tilgængelig";
+                            infoCell.className = "infoCell";
+                            infoCell.id = berth.name;
+                            infoContainer.appendChild(infoCell);
+                        }
+                        if ((key === 'length') || (key === 'width') || (key === 'depth')) {
+                            var infoSize = document.createElement("div");
+                            infoSize.textContent = " - " + key + ": " + berth[key] + " m";
+                            //infoSize.className = "infoCell";
+                            //infoSize.id = berth.name;
+                            size.appendChild(infoSize);
+                            infoContainer.appendChild(size);
+                        }
+                    }
+
+                    var assignBtn = document.createElement("button");
+                    assignBtn.textContent = "tildel";
+                    assignBtn.classList = "assignBtn";
+                    assignBtn.id = "assignBtn";
+                    infoContainer.appendChild(assignBtn);
+
+                    // event listener for the collapsable list
+
+                    berthName.addEventListener("click", function () {
+                        const infoCells = infoContainer.querySelectorAll(".infoCell");
+                        berthName.classList.toggle('selectedNameBtn');
+                        infoCells.forEach(cell => {
+                            if (cell.style.maxHeight) {
+                                cell.style.maxHeight = null;
+                                assignBtn.style.display = 'none';
+                            } else {
+                                cell.style.maxHeight = cell.scrollHeight + "px";
+                                assignBtn.style.display = 'block';
+                            }
+                        });
+                    });
+                }
+            });
+        }
+    });
+}
+
+function createBerthListSmall (member) {
+    var sidebar = document.getElementById("sidebar");
+
+    var table = document.createElement("table");
+    table.id = `berthListSmall${member}`;
+    table.classList = "berthList";
     sidebar.appendChild(table);
-}
 
-function createBerthListAvailable(member, boat, berths) {
-    var table = document.getElementById("berthListAvailable");
-    var tableHeader = table.createTHead();
-    tableHeader.textContent = "Tilgængelige bådpladser";
+    var thead = table.createTHead();
+    thead.textContent = "For små bådpladser"
+    thead.id = `berthListSmall${member}`;
+    thead.classList = "tableHeader";
+    table.appendChild(thead);
 
+    var tbody = document.createElement("tbody");
+    table.appendChild(tbody);
 
-    berths.forEach(berth => {
-       if((berth.availability === 1) && (berth.length >= boat.length) && (berth.width >= boat.width)) {
-           // Creating a row for each berth
-           var berthRow = table.insertRow();
-           var berthCell = berthRow.insertCell();
-           berthCell.className = "berthCell";
+    boats.forEach(boat => {
+        if ((member === boat.memberID) && (boat.berthID === 9999)) {
+            berths.forEach(berth => {
+                if ((berth.availability === 1) && (
+                    ((berth.length <= boat.length) && (berth.width < boat.width)) || ((berth.length < boat.length) && (berth.width <= boat.width)) ||
+                    ((berth.length <= boat.length) && (berth.width > boat.width)) || ((berth.length < boat.length) && (berth.width >= boat.width)) ||
+                    ((berth.length >= boat.length) && (berth.width < boat.width)) || ((berth.length > boat.length) && (berth.width <= boat.width)))) {
+                    // Creating a row for each berth
+                    var berthRow = table.insertRow();
+                    var berthCell = berthRow.insertCell();
+                    berthCell.className = "berthCell";
 
-           // Creating a button for berths' names
-           var berthName = document.createElement("button");
-           berthName.textContent = berth.name;
-           berthName.className = "berthBtn";
-           berthCell.appendChild(berthName);
+                    // Creating a button for berths' names
+                    var berthName = document.createElement("button");
+                    berthName.textContent = berth.name;
+                    berthName.className = "berthBtn";
+                    berthCell.appendChild(berthName);
 
-           // Creating a div element under each button
-           var infoContainer = document.createElement("div");
-           berthCell.appendChild(infoContainer);
+                    // Creating a div element under each button
+                    var infoContainer = document.createElement("div");
+                    berthCell.appendChild(infoContainer);
 
-           var size = document.createElement("div");
-           size.textContent = "størrelse";
-           size.className = "infoCell";
+                    var size = document.createElement("div");
+                    size.textContent = "størrelse";
+                    size.className = "infoCell";
 
-           for (const key in berth) {
-               if (key === 'availability') {
-                   var infoCell = document.createElement("div");
-                   infoCell.textContent = "status: tilgængelig";
-                   infoCell.className = "infoCell";
-                   infoCell.id = berth.name;
-                   infoContainer.appendChild(infoCell);
-               }
-               if ((key === 'length') || (key === 'width') || (key === 'depth')) {
-                   var infoSize = document.createElement("div");
-                   infoSize.textContent = " - " + key + ": " + berth[key] + " m";
-                   //infoSize.className = "infoCell";
-                   //infoSize.id = berth.name;
-                   size.appendChild(infoSize);
-                   infoContainer.appendChild(size);
-               }
-           }
+                    for (const key in berth) {
+                        if (key === 'availability') {
+                            var infoCell = document.createElement("div");
+                            infoCell.textContent = "status: tilgængelig";
+                            infoCell.className = "infoCell";
+                            infoCell.id = berth.name;
+                            infoContainer.appendChild(infoCell);
+                        }
+                        if ((key === 'length') || (key === 'width') || (key === 'depth')) {
+                            var infoSize = document.createElement("div");
+                            infoSize.textContent = " - " + key + ": " + berth[key] + " m";
+                            //infoSize.className = "infoCell";
+                            //infoSize.id = berth.name;
+                            size.appendChild(infoSize);
+                            infoContainer.appendChild(size);
 
-           var assignBtn =  document.createElement("button");
-           assignBtn.textContent = "tildel";
-           assignBtn.classList = "assignBtn";
-           assignBtn.id = "assignBtn";
-           infoContainer.appendChild(assignBtn);
-
-           // event listener for the collapsable list
-
-           berthName.addEventListener("click", function () {
-               const infoCells = infoContainer.querySelectorAll(".infoCell");
-               berthName.classList.toggle('selectedNameBtn');
-               infoCells.forEach(cell => {
-                   if (cell.style.maxHeight) {
-                       cell.style.maxHeight = null;
-                       assignBtn.style.display = 'none';
-                   } else {
-                       cell.style.maxHeight = cell.scrollHeight + "px";
-                       assignBtn.style.display = 'block';
-                   }
-               });
-           });
-       }
-    });
-
-}
-
-function createBerthListSmall(member, boat, berths) {
-    var table = document.getElementById("berthListSmall");
-    var tableHeader = table.createTHead();
-    tableHeader.textContent = "tilgængelige bådpladser men for små";
-
-    berths.forEach(berth => {
-        if((berth.availability === 1) && (berth.length < boat.length) && (berth.width < boat.width)) {
-            // Creating a row for each berth
-            var berthRow = table.insertRow();
-            var berthCell = berthRow.insertCell();
-            berthCell.className = "berthCell";
-
-            // Creating a button for berths' names
-            var berthName = document.createElement("button");
-            berthName.textContent = berth.name;
-            berthName.className = "berthBtn";
-            berthCell.appendChild(berthName);
-
-            // Creating a div element under each button
-            var infoContainer = document.createElement("div");
-            berthCell.appendChild(infoContainer);
-
-            var size = document.createElement("div");
-            size.textContent = "størrelse";
-            size.className = "infoCell";
-
-            for (const key in berth) {
-                if (key === 'availability') {
-                    var infoCell = document.createElement("div");
-                    infoCell.textContent = "status: tilgængelig";
-                    infoCell.className = "infoCell";
-                    infoCell.id = berth.name;
-                    infoContainer.appendChild(infoCell);
-                }
-                if ((key === 'length') || (key === 'width') || (key === 'depth')) {
-                    var infoSize = document.createElement("div");
-                    infoSize.textContent = " - " + key + ": " + berth[key] + " m";
-                    //infoSize.className = "infoCell";
-                    //infoSize.id = berth.name;
-                    size.appendChild(infoSize);
-                    infoContainer.appendChild(size);
-
-                }
-            }
-
-            var assignBtn =  document.createElement("button");
-            assignBtn.textContent = "tildel";
-            assignBtn.classList = "assignBtn";
-            assignBtn.id = "assignBtn";
-            infoContainer.appendChild(assignBtn);
-
-            // event listener for the collapsable list
-
-            berthName.addEventListener("click", function () {
-                const infoCells = infoContainer.querySelectorAll(".infoCell");
-                berthName.classList.toggle('selectedNameBtn');
-                infoCells.forEach(cell => {
-                    if (cell.style.maxHeight) {
-                        cell.style.maxHeight = null;
-                        assignBtn.style.display = 'none';
-                    } else {
-                        cell.style.maxHeight = cell.scrollHeight + "px";
-                        assignBtn.style.display = 'block';
+                        }
                     }
-                });
-            });
-        }
-    });
 
-}
+                    var assignBtn = document.createElement("button");
+                    assignBtn.textContent = "tildel";
+                    assignBtn.classList = "assignBtn";
+                    assignBtn.id = "assignBtn";
+                    infoContainer.appendChild(assignBtn);
 
-function createBerthListUnavailable(member, boat, berths) {
-    var table = document.getElementById("berthListUnavailable");
-    var tableHeader = table.createTHead();
-    tableHeader.textContent = "Utilgængelige bådpladser";
+                    // event listener for the collapsable list
 
-    berths.forEach(berth => {
-        if((berth.availability === 0) && (berth.berthID !== 9999)) {
-            // Creating a row for each berth
-            var berthRow = table.insertRow();
-            var berthCell = berthRow.insertCell();
-            berthCell.className = "berthCell";
-
-            // Creating a button for berths' names
-            var berthName = document.createElement("button");
-            berthName.textContent = berth.name;
-            berthName.className = "berthBtn";
-            berthCell.appendChild(berthName);
-
-            // Creating a div element under each button
-            var infoContainer = document.createElement("div");
-            berthCell.appendChild(infoContainer);
-
-            var size = document.createElement("div");
-            size.textContent = "størrelse";
-            size.className = "infoCell";
-
-            for (const key in berth) {
-                if (key === 'availability') {
-                    var infoCell = document.createElement("div");
-                    infoCell.textContent = "status: utilgængelig";
-                    infoCell.className = "infoCell";
-                    infoCell.id = berth.name;
-                    infoContainer.appendChild(infoCell);
+                    berthName.addEventListener("click", function () {
+                        const infoCells = infoContainer.querySelectorAll(".infoCell");
+                        berthName.classList.toggle('selectedNameBtn');
+                        infoCells.forEach(cell => {
+                            if (cell.style.maxHeight) {
+                                cell.style.maxHeight = null;
+                                assignBtn.style.display = 'none';
+                            } else {
+                                cell.style.maxHeight = cell.scrollHeight + "px";
+                                assignBtn.style.display = 'block';
+                            }
+                        });
+                    });
                 }
-                if ((key === 'length') || (key === 'width') || (key === 'depth')) {
-                    var infoSize = document.createElement("div");
-                    infoSize.textContent = " - " + key + ": " + berth[key] + " m";
-                    //infoSize.className = "infoCell";
-                    //infoSize.id = berth.name;
-                    size.appendChild(infoSize);
-                    infoContainer.appendChild(size);
-
-                }
-            }
-
-            berthName.addEventListener("click", function () {
-                const infoCells = infoContainer.querySelectorAll(".infoCell");
-                berthName.classList.toggle('selectedNameBtn');
-                infoCells.forEach(cell => {
-                    if (cell.style.maxHeight) {
-                        cell.style.maxHeight = null;
-                        assignBtn.style.display = 'none';
-                    } else {
-                        cell.style.maxHeight = cell.scrollHeight + "px";
-                        assignBtn.style.display = 'block';
-                    }
-                });
             });
         }
     });
 }
 
+function createBerthListUnavailable(member) {
+    var sidebar = document.getElementById("sidebar");
 
+    var table = document.createElement("table");
+    table.id = `berthListUav${member}`;
+    table.classList = "berthList";
+    sidebar.appendChild(table);
 
-//prøv at giv addBtn's forskellige id, for så kan man sige at man vælger id for kun den ene.
+    var thead = table.createTHead();
+    thead.textContent = "For små bådpladser"
+    thead.id = `berthListUav${member}`;
+    thead.classList = "tableHeader";
+    table.appendChild(thead);
+
+    var tbody = document.createElement("tbody");
+    table.appendChild(tbody);
+
+    boats.forEach(boat => {
+        if ((member === boat.memberID) && (boat.berthID === 9999)) {
+            berths.forEach(berth => {
+                if((berth.availability === 0) && (berth.berthID !== 9999)) {
+                    // Creating a row for each berth
+                    var berthRow = table.insertRow();
+                    var berthCell = berthRow.insertCell();
+                    berthCell.className = "berthCell";
+
+                    // Creating a button for berths' names
+                    var berthName = document.createElement("button");
+                    berthName.textContent = berth.name;
+                    berthName.className = "berthBtn";
+                    berthCell.appendChild(berthName);
+
+                    // Creating a div element under each button
+                    var infoContainer = document.createElement("div");
+                    berthCell.appendChild(infoContainer);
+
+                    var size = document.createElement("div");
+                    size.textContent = "størrelse";
+                    size.className = "infoCell";
+
+                    for (const key in berth) {
+                        if (key === 'availability') {
+                            var infoCell = document.createElement("div");
+                            infoCell.textContent = "status: utilgængelig";
+                            infoCell.className = "infoCell";
+                            infoCell.id = berth.name;
+                            infoContainer.appendChild(infoCell);
+                        }
+                        if ((key === 'length') || (key === 'width') || (key === 'depth')) {
+                            var infoSize = document.createElement("div");
+                            infoSize.textContent = " - " + key + ": " + berth[key] + " m";
+                            //infoSize.className = "infoCell";
+                            //infoSize.id = berth.name;
+                            size.appendChild(infoSize);
+                            infoContainer.appendChild(size);
+
+                        }
+                    }
+
+                    berthName.addEventListener("click", function () {
+                        const infoCells = infoContainer.querySelectorAll(".infoCell");
+                        berthName.classList.toggle('selectedNameBtn');
+                        infoCells.forEach(cell => {
+                            if (cell.style.maxHeight) {
+                                cell.style.maxHeight = null;
+                            } else {
+                                cell.style.maxHeight = cell.scrollHeight + "px";
+                            }
+                        });
+                    });
+                }
+            });
+        }
+    });
+}

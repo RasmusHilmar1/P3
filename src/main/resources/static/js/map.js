@@ -44,9 +44,9 @@ harbor1.addEventListener("click", function(event) {
         [57.05692, 9.90523]  // Bottom-right
     ];
 
-    var imageUrl = '../../Images/vestre_badelaug_kort_kopi.jpeg';
+    //var imageUrl = '../../Images/vestre_badelaug_kort_kopi.jpeg';
 
-    var imageOverlay = L.imageOverlay(imageUrl, imageBounds).addTo(map);
+    //var imageOverlay = L.imageOverlay(imageUrl, imageBounds).addTo(map);
 
     const bounds = L.latLngBounds(
         [57.05861, 9.89969],
@@ -69,8 +69,8 @@ harbor2.addEventListener("click", function(event) {
         [57.057100, 9.898600]  // Bottom-right
     ];
 
-    var imageUrl2 = '../../Images/skudehavn.jpeg';
-    var imageOverlay2 = L.imageOverlay(imageUrl2, imageBounds2).addTo(map);
+    //var imageUrl2 = '../../Images/skudehavn.jpeg';
+    //var imageOverlay2 = L.imageOverlay(imageUrl2, imageBounds2).addTo(map);
 
     const bounds2 = L.latLngBounds(
         [57.060017, 9.893899], // Top-left
