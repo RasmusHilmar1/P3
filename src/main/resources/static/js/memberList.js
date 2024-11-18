@@ -10,6 +10,7 @@ async function initialize() {
 
     // Now call calculateAreal() after fetching the data
     calculateAreal(boats); // Pass boats data to the function
+    calculatePrice(boats);
     getMemberList(members, boats, berths); // Pass all the required data
 }
 
@@ -19,6 +20,13 @@ function calculateAreal(boats) {
     boats.forEach(boat => {
         boat.areal = boat.length * boat.width;
         console.log("Boat ID:" + boat.boatID + " Boat areal: " + boat.areal);
+    });
+}
+
+function calculatePrice(boats) {
+    boats.forEach(boat => {
+        boat.price = boat.areal * 50;
+        console.log("Boat ID:" + boat.boatID + " Boat price: " + boat.price);
     });
 }
 
@@ -74,15 +82,29 @@ function getMemberList(members, boats, berths) {
                     boat.areal,         // Boat area (assuming you have calculated this already)
                     boat.price,         // Boat price
                 ]);
+
+                // Now check if the boat has an associated berth
+                if (boat.berthID) {
+                    const berth = berths.find(berth => berth.berthID === boat.berthID);
+                    if (berth) {
+                        // If a berth is found, add berth name to the row
+                        addCells(row, [berth.name]);
+                    } else {
+                        // If no berth is found, display a placeholder
+                        addCells(row, ["No berth assigned"]);
+                    }
+                } else {
+                    // If no berthID is found on the boat, display a placeholder
+                    addCells(row, ["No berth assigned"]);
+                }
+
             } else {
                 // If no boat is found, add empty values or a placeholder
-                addCells(row, ["No boat assigned", "", "", "", ""]);
+                addCells(row, ["No boat assigned", "", "", "", "", ""]);
             }
         } else {
             // If the member does not own a boat, add empty values for boat details
-            addCells(row, ["No boat ownership", "", "", "", ""]);
+            addCells(row, ["No boat ownership", "", "", "", "", ""]);
         }
-
-        // Optionally, you can add logic to find and display berth data related to the member
     });
 }
