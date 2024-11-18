@@ -100,38 +100,44 @@ harbors.addEventListener('click', function (event) {
         event.target.classList.add('pressed');
     }
 });
-// Fetch the GeoJSON data from the berths.geojson file
-fetch('../../Scripts/dist/berths.geojson')
-    .then(response => response.json())
-    .then(geojsonData => {
-        // Add the GeoJSON layer to the map
-        L.geoJSON(geojsonData, {
-            onEachFeature: onEachFeature,
-            style: function(feature) {
-                var status = feature.properties.status;
-                var fillColor;
 
-                if (status === "Available") {
-                    fillColor = "#00FF00";
-                } else if (status === "Unavailable") {
-                    fillColor = "red";
-                } else if (status === "TempAvailable") {
-                    fillColor = "orange";
-                }
 
-                return {
-                    color: "black",
-                    weight: 0.1,
-                    fillColor: fillColor,
-                    fillOpacity: 0.8
-                };
-            }
-        }).addTo(map);
-    })
-    .catch(error => {
-        console.error('Error loading GeoJSON data:', error);
-    });
+L.geoJSON(myGeoJson, {
+    onEachFeature: onEachFeature,
+    style: function(feature) {
+        var status = feature.properties.status;
 
+        var fillColor;
+
+        if (status === "Available") {
+            fillColor = "#00FF00";
+        } else if (status === "Unavailable") {
+            fillColor = "red";
+        } else if (status === "TempAvailable") {
+            fillColor = "orange";
+        }
+
+        return {
+            //color: "#00bfff",    // Sets the border color to black
+            color: "black",
+            weight: 0.1,         // Adjusts border thickness
+            fillColor: fillColor,
+            fillOpacity: 0.8   // Adjusts fill opacity
+        };
+
+        /*
+        if (status === "Available") {
+            return {color: "#00FF00", weight: 0.3};
+
+        } else if (status === "Unavailable") {
+            return {color: "red", weight: 0.3};
+
+        } else if (status === "TempAvailable") {
+            return {color: "orange", weight: 0.3};
+        }
+        */
+    }
+}).addTo(map);
 
 function onEachFeature(feature, layer) {
     console.log(feature.properties);
