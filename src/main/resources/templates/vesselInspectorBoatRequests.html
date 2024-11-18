@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="/css/navigationBar.css" />
     <link rel="stylesheet" href="/css/sidebar.css" />
     <link rel="stylesheet" href="/css/map.css" />
+    <link rel="stylesheet" href="/css/boatRequests.css"/>
 </head>
 <body>
 <header class="header">
@@ -26,9 +27,26 @@
         </form>
     </nav>
 </header>
-<div id="boatRequests" class="boatRequests">
-    <button id="acceptRequestBtn" class="acceptRequestBtn"></button>
-    <button id="denyRequestBtn" class="denyRequestBtn"></button>
+<div id="boatRequestsContainer" class="boatRequestsContainer">
+    <table id="boatRequests" class="boatRequests">
+        <thead>
+        <tr>
+            <th colspan="5">Bådanmodninger</th>
+        </tr>
+        <tr>
+            <th id="boatRequestsID" class="boatRequestsID">ID</th>
+            <th id="boatRequestsName" class="boatRequestsName">Navn</th>
+            <th id="boatAssigned" class="boatAssigned">Tildelt båd</th>
+            <th id="feeSent" class="feeSent">Sendt faktura</th>
+            <th id="feePaid" class="feePaid">Betalt faktura</th>
+        </tr>
+        </thead>
+        <tbody id="boatRequestsBody">
+        <!-- Dynamic cells are added here through JavaScript -->
+        </tbody>
+    </table>
 </div>
+<script src="/js/navigationbar.js"></script>
+<script src="/js/boatRequests.js"></script>
 </body>
 </html>

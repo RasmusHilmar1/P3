@@ -16,6 +16,11 @@ public class BerthController {
     @Autowired
     private BerthService berthService;
 
+    @GetMapping("/get")
+    public List<Berth> getBerths() {
+        return berthService.getAllBerths();
+    }
+
     // Endpoint to update member name
     @PutMapping("/update/{id}")
     public Berth updateBerthName(@PathVariable int id, @RequestBody String newName) {

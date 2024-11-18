@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="/css/navigationBar.css" />
     <link rel="stylesheet" href="/css/sidebar.css" />
     <link rel="stylesheet" href="/css/map.css" />
+    <link rel="stylesheet" href="/css/berthList.css">
 </head>
 <body>
 <header class="header">
@@ -26,5 +27,40 @@
         </form>
     </nav>
 </header>
+<div id="listSearchBarContainer">
+    <input type="text" id="berthListSearchBar" class="searchBar" placeholder="Søg på medlem, båd eller bådplads">
+</div>
+<div id="berthListContainer">
+    <table id="berthList">
+        <thead>
+        <tr>
+            <th colspan="15">Bådpladser</th>
+        </tr>
+        <tr>
+            <th id="berthNumber" class="berthListInfo">Plads nr.</th>
+            <th id="berthAddress" class="berthListInfo">Plads</th>
+            <th id="berthLength" class="berthListInfo">Længde</th>
+            <th id="berthWidth" class="berthListInfo">Bredde</th>
+            <th id="berthAreal" class="berthListInfo">Areal</th>
+            <th id="berthDepth" class="berthListInfo">Dybde</th>
+            <th id="berthUtil" class="berthListInfo">Udnyttelse i %</th>
+            <th id="memberName" class="berthListInfo">Navn</th>
+            <th id="memberNumber" class="berthListInfo">Medlems nr.</th>
+            <th id="boatName" class="berthListInfo">Bådnavn</th>
+            <th id="boatLength" class="berthListInfo">Længde</th>
+            <th id="boatWidth" class="berthListInfo">Bredde</th>
+            <th id="boatAreal" class="berthListInfo">Areal</th>
+            <th id="memberPhoneNumber1" class="berthListInfo">Telefon nr.</th>
+            <th id="memberPhoneNumber2" class="berthListInfo">Telefon nr. 2</th>
+        </tr>
+        </thead>
+        <tbody id="berthListBody">
+        <!-- Dynamic table is created through javaScript -->
+        </tbody>
+    </table>
+</div>
+<script src="/js/navigationbar.js"></script>
+<script type="module" src="/js/berthList.js"></script>
+<script type="module" src="/js/memberFetch.js"></script>
 </body>
 </html>

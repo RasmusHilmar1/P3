@@ -1,3 +1,4 @@
+import {fetchApprovedMembers} from "./memberFetch.js";
 
 // Add sidebar -->
 var sidebar = document.getElementById("sidebar");
@@ -48,37 +49,42 @@ let berthData =[
     {id: 103, name: "FB15"},
 ];
 
+const approvedMembers = await fetchApprovedMembers();
+
+//const parseApprovedMembers = JSON.parse(approvedMembers);
+
+console.log("members info:" + approvedMembers);
+
 // Create collapsible lists for members and berths
-function createMemberList(data) {
+function createMemberList(approvedMembers) {
     var table = document.getElementById("memberList");
     var tableHeader = table.createTHead();
     tableHeader.textContent = "Medlemmer";
 
-    data.forEach(function (item) {
-        // Creating a row for each member
+    approvedMembers.forEach(approvedMember => {
         var memberRow = table.insertRow();
         var memberCell = memberRow.insertCell();
         memberCell.className = "memberCell";
 
-        // Creating a button for members' names
+        const member = approvedMember.member;
+
         var memberName = document.createElement("button");
-        memberName.textContent = item.name;
-        memberName.className = "nameBtn";
+        memberName.textContent = member.name;
+        console.log(`Name: ${member.name}, Address: ${member.address}`)
         memberCell.appendChild(memberName);
 
         // Creating a div element under each button
         var infoContainer = document.createElement("div");
         memberCell.appendChild(infoContainer);
 
-        // Creating information cells dynamically within the div container
-        Object.keys(item).forEach(function (key) {
+        for (const key in member) {
             if (key !== 'name') {
                 var infoCell = document.createElement("div");
-                infoCell.textContent = key + ":" + item[key];
+                infoCell.textContent = key + " : " + member[key];
                 infoCell.className = "infoCell";
                 infoContainer.appendChild(infoCell);
             }
-        });
+        }
 
         // event listener for the collapsable list
         memberName.addEventListener("click", function () {
@@ -95,7 +101,9 @@ function createMemberList(data) {
     });
 }
 
-createMemberList(memberData);
+createMemberList(approvedMembers);
+
+
 
 function createBerthList(data){
     var table = document.getElementById("berthList");

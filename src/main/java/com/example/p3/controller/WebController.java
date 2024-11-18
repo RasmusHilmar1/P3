@@ -70,6 +70,17 @@ public class WebController {
         return "comp";
     }
 
+
+    @GetMapping("/approvedMembers")
+    public String showApprovedMembers() {
+        return "approvedMembers";
+    }
+
+    @GetMapping("/Berths")
+    public String showBerths() {
+        return "Berths";
+    }
+
     @RequestMapping("/default")
     public String showDefaultPageAfterLogin(HttpServletRequest request) {
         if(request.isUserInRole("VESSEL_USER")) {
@@ -79,6 +90,5 @@ public class WebController {
         }
         return "default";
     }
-
 }
 
