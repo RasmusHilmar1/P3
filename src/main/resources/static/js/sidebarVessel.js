@@ -329,12 +329,12 @@ function showThreeTables(member, addBtn) {
     var memberTableBoat = document.getElementById("memberListBoat");
     var berthTable = document.getElementById("berthList");
     var berthListAvailable = document.getElementById(`berthListAv${member}`);
+    //var berthListAvailable = document.querySelector(".berthListAv")
 
     console.log("listen: "+ `berthListAv${member}`);
     //console.log("listen2: "+ berthListAvailable.style.display);
 
     addBtn.onclick = function() {
-        createBerthListAv(member, addBtn);
         berthTable.style.display = 'none';
         memberTableNoBoat.style.display = 'none';
         memberTableBoat.style.display = 'none';
@@ -366,6 +366,7 @@ function showBerthsForBoat() {
                     //console.log("3:", addBtnID);
 
                     var addBtnID = addBtn.id;
+                    createBerthListAv(memberID);
 
                     showThreeTables(memberID, addBtn)
 
@@ -391,11 +392,13 @@ function showBerthsForBoat() {
 showBerthsForBoat();
 
 function createBerthListAv (member) {
+    var sidebar = document.getElementById("sidebar");
+
     var table = document.createElement("table");
     table.id = `berthListAv${member}`;
-    table.classList = "berthList";
+    table.classList = "berthListAv";
 
-    var thead = document.createElement("thead");
+    var thead = table.createTHead();
     thead.textContent = "Tilgængelige bådpladser"
     thead.id = `BerthListAv${member}`;
     thead.classList = "tableHeader";
@@ -404,7 +407,7 @@ function createBerthListAv (member) {
     var tbody = document.createElement("tbody");
     table.appendChild(tbody);
 
-    document.body.appendChild(table);
+    sidebar.appendChild(table);
 }
 
 function createBerthListAvailable(member, boat, berths) {
