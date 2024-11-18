@@ -1,23 +1,4 @@
-/*
-//Test/mock up data
-let memberData = [
-    { id: 2001, name: "Mads Hansen Ludvigsen", boatOwner: "yes", boatId: 3001, phoneNumber1: "xxxxxxxx", phoneNumber2: "xxxxxxxx"},
-    { id: 2002, name: "Line Mouritzen", boatOwner: "yes", boatId: 3002, phoneNumber1: "xxxxxxxx", phoneNumber2: null},
-    { id: 2003, name: "Hans Gudenå Petersen", boatOwner: "yes", boatId: 3003, phoneNumber1: "xxxxxxxx", phoneNumber2: null},
-    { id: 2004, name: "Karsten Peter Schou", boatOwner: "no", boatId: null, phoneNumber1: "xxxxxxxx", phoneNumber2: null }
-];
 
-let boatData =[
-    {id: 3001, owner: "Mads Hansen Ludvigsen", name:"Frida", length: "2", width: "1.5", areal: "3", berthId: 1001},
-    {id: 3002, owner: "Line Mouritzen", name: "Silje", length: "3", width: "2", areal: "6", berthId: 1002},
-    {id: 3003, owner: "Hans Gudenå Petersen", name: "Maja", length: "4", width: "3", areal: "12", berthId: 1003},
-];
-
-let berthData = [
-    { id: 1001, address: "Fiskerbo Plads 01", length: "3", width: "2", areal: "6"},
-    { id: 1002, address: "Fiskerbo Plads 02", length: "4", width: "3", areal: "12"},
-    { id: 1003, address: "FiskerboPlads 03", length: "5", width: "4", areal: "20"},
-]; */
 
 import {fetchApprovedMembers, fetchBoats, fetchBerth} from "./memberFetch.js";
 
@@ -29,10 +10,6 @@ const berths = await fetchBerth();
 console.log(berths);
 
 function calculateAreal(){
-    berths.forEach(berth => {
-        berth.areal = berth.length * berth.width;
-        console.log("berth ID:" + berth.berthID +"berth areal:" + berth.areal);
-    });
     boats.forEach(boat => {
         boat.areal = boat.length * boat.width;
         console.log("boats berth ID:" + boat.berthID + "boat areal:" + boat.areal);
@@ -82,22 +59,19 @@ function getMemberList(){
     //For each berth, create a row and add the data
     members.forEach(member => {
         var row = table.insertRow();
-        addCells(row, [berth.berthID, berth.name, berth.length + "m", berth.width + "m", berth.areal + "m", berth.depth + "m", berth.utilizationPercentage]);
+        addCells(row, [member.memberID, member.name, member.address, member.email, member.phonenumber]);
         // find boat assigned to berth and corresponding member
-        if (berth.correspondingMember && berth.correspondingBoat){
-            if (berth.correspondingBoat.memberID === berth.correspondingMember.member.memberID && berth.correspondingBoat.berthID === berth.berthID){
-                addCells(row, [berth.correspondingMember.member.name, berth.correspondingBoat.memberID, berth.correspondingBoat.name, berth.correspondingBoat.length, berth.correspondingBoat.width, berth.correspondingBoat.areal, berth.correspondingMember.member.phonenumber, berth.correspondingMember.member.phonenuber2]);
+        if (member.correspondingBoat ){
+                addCells(row, [member.correspondingBoat.boat.name,member.correspondingBoat.boat.length + "m", member.correspondingBoat.boat.width + "m", member.correspondingBoat.boat.areal + "m^2", "hey"])
+            if (member.correspondingBerth){
+                addCells(row, [member.correspondingBerth.berth.name,]);
             }
         } else {
-            addCells(row, ["", "", "", "", "", "", "", ""]);
+            addCells(row, ["", "", "", "", "", ""]);
         }
     });
 }
 
 getMemberList();
 
-
-// Ensure the function runs after the DOM is fully loaded
-/*window.onload = function() {
-    getBerthList();
-};*/
+//chatgpt was here
