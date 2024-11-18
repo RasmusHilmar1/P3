@@ -442,7 +442,7 @@ function createBerthListAvailable (member) {
                     var assignBtn = document.createElement("button");
                     assignBtn.textContent = "tildel";
                     assignBtn.classList = "assignBtn";
-                    assignBtn.id = "assignBtn";
+                    assignBtn.id = `assignBtn${member}`;
                     infoContainer.appendChild(assignBtn);
 
                     // event listener for the collapsable list
@@ -531,7 +531,7 @@ function createBerthListSmall (member) {
                     var assignBtn = document.createElement("button");
                     assignBtn.textContent = "tildel";
                     assignBtn.classList = "assignBtn";
-                    assignBtn.id = "assignBtn";
+                    assignBtn.id = `assignBtn${member}`;
                     infoContainer.appendChild(assignBtn);
 
                     // event listener for the collapsable list
