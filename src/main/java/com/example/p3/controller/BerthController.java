@@ -4,6 +4,7 @@ import com.example.p3.model.Berth;
 import com.example.p3.model.Boat;
 import com.example.p3.service.BerthService;
 import com.example.p3.service.BerthCompatibilityService;
+import com.example.p3.service.ScriptRunnerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +17,9 @@ public class BerthController {
     @Autowired
     private BerthService berthService;
 
+    @Autowired
+    private ScriptRunnerService scriptRunnerService;
+
     // Endpoint to update member name
     @PutMapping("/update/{id}")
     public Berth updateBerthName(@PathVariable int id, @RequestBody String newName) {
@@ -24,6 +28,7 @@ public class BerthController {
     // Endpoint for updating information of berth
     @PutMapping("/update/information/{id}")
     public Berth updateBerthInformation(@PathVariable int id, @RequestBody Berth info) {
+        scriptRunnerService.runPythonScript();
         return berthService.updateBerthInformation(id, info);
     }
 
