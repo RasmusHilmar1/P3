@@ -1,8 +1,10 @@
 package com.example.p3.model;
 
+import jakarta.persistence.Id;
+
 public class PublicMemberDTO {
 
-    @id
+    @Id
     private int id;
     private String memberName;
     private String phoneNumber;
