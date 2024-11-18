@@ -181,7 +181,9 @@ function createMemberListWithoutBoats(approvedMembers, boats, berths) {
                         var addBtn = document.createElement("button");
                         addBtn.textContent = "tilføj";
                         addBtn.onclick = showBerthsForBoat(member, boat, berths);
-                        addBtn.id = "addBtn";
+                        addBtn.id = "addBtn" + member.memberID;
+                        //addBtn.id = "addBtn";
+                        addBtn.classList = "addBtn";
                         infoCell.appendChild(addBtn);
 
                     }
@@ -320,14 +322,31 @@ function switchHeader(){
 
 switchHeader();
 
+function showBerthsForBoat() {
+
+    var json = approvedMembers;
+
+    for (let i = 0, l = Object.keys(json).length; i < l; i++) {
+        var addBtnID = document.getElementById("abbBtn" + i);
+
+        if (addBtnID === )
+    }
 
 
-function showBerthsForBoat(member, boat, berths) {
-    //console.log("showBerthsForBoat");
     createBerthListAvailable(member, boat, berths);
     createBerthListSmall(member, boat, berths);
     createBerthListUnavailable(member, boat, berths);
 }
+
+/*
+function showBerthsForBoat(member, boat, berths) {
+    //console.log("showBerthsForBoat");
+
+
+    createBerthListAvailable(member, boat, berths);
+    createBerthListSmall(member, boat, berths);
+    createBerthListUnavailable(member, boat, berths);
+}*/
 
 function createBerthListAvailable(member, boat, berths) {
     var table = document.getElementById("berthListAvailable");
