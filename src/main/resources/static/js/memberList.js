@@ -2,7 +2,7 @@ import { fetchApprovedMembers, fetchBoats, fetchBerth } from "./memberFetch.js";
 
 async function initialize() {
     const members = await fetchApprovedMembers();
-    console.log(members);
+    console.log(members); // Check the structure of members data
     const boats = await fetchBoats();
     console.log(boats);
     const berths = await fetchBerth();
@@ -15,14 +15,14 @@ async function initialize() {
 
 initialize();
 
-function calculateAreal(boats){
+function calculateAreal(boats) {
     boats.forEach(boat => {
         boat.areal = boat.length * boat.width;
         console.log("Boat ID:" + boat.boatID + " Boat areal: " + boat.areal);
     });
 }
 
-function convertKeys(members, boats, berths){
+function convertKeys(members, boats, berths) {
     berths.forEach(berth => {
         console.log(Object.keys(berth));
     });
@@ -34,45 +34,30 @@ function convertKeys(members, boats, berths){
     });
 }
 
-function addCells(tr, data){
+function addCells(tr, data) {
     // Iterate over the data
-    data.forEach(function(item){
+    data.forEach(function(item) {
         var td = tr.insertCell();
         td.textContent = item;
     });
 }
 
-function getMemberList(members, boats, berths){
+function getMemberList(members, boats, berths) {
     const table = document.getElementById("memberListBody");
-    // For each member, find corresponding boat and berth
-    members.forEach(member => {
-        member.correspondingBoat = boats.find(boat => boat.memberID === member.memberID);
-        console.log("Corresponding Boat for Member:", JSON.stringify(member.correspondingBoat));
-
-        if (member.correspondingBoat){
-            console.log("Boat's Berth ID:", member.correspondingBoat.berthID);
-            member.correspondingBerth = berths.find(berth => berth.berthID === member.correspondingBoat.berthID);
-            console.log("Corresponding Berth:", JSON.stringify(member.correspondingBerth));
-        }
-    });
-
     // For each member, create a row and add the data
-    members.forEach(member => {
-        console.log(member)
+    members.forEach(memberObj => {
+        const member = memberObj.member;  // Access the 'member' property
+        console.log(member);  // This should now log the member data correctly
         var row = table.insertRow();
-        addCells(row, [member.memberID, member.name, member.address, member.email, member.phonenumber,"","","","","",""]);
+        addCells(row, [
+            member.memberID,
+            member.name,
+            member.address,
+            member.email,
+            member.phonenumber,
+        ]);
+        if (member.b)
 
-        // find boat assigned to berth and corresponding member
-
+        // Optionally, you can add logic to find and display boat and berth data related to the member
     });
 }
-
-/*        if (member.correspondingBoat){
-            // Since correspondingBoat is the boat object, access its properties directly
-            addCells(row, [member.correspondingBoat.name, member.correspondingBoat.length + "m", member.correspondingBoat.width + "m", member.correspondingBoat.areal + "m^2"]);
-            if (member.correspondingBerth){
-                addCells(row, [member.correspondingBerth.name]);
-            }
-        } else {
-            addCells(row, ["", "", "", "", "", ""]);
-        }*/
