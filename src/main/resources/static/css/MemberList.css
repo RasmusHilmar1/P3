@@ -1,0 +1,28 @@
+#listSearchBarContainer {
+    z-index: 20;
+    background-color: white;
+    gap: 10px;
+    padding-top: 120px; /*Dette skal passe med navigationsbaren når det laves om*/
+    font-size: 25px;
+    width: 100%;
+}
+
+input {
+    margin: 0 50%;
+}
+
+#memberListContainer {
+
+}
+
+.memberListInfo{
+    font-size: 15px;
+}
+
+.table {
+    border: 1px solid;
+    border-collapse: separate;
+    table-border-color-dark: #222222;
+    width: 100%;
+    table-layout: auto;
+}

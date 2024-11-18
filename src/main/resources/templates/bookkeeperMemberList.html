@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="/css/map.css" />
     <link rel="stylesheet" href="/css/navigationBar.css" />
     <link rel="stylesheet" href="/css/sidebar.css" />
+    <link rel="stylesheet" href="/css/MemberList.css" />
 </head>
 <body>
 <header class="header">
@@ -27,6 +28,36 @@
         </form>
     </nav>
 </header>
-
+<div id="listSearchBarContainer">
+    <input type="text" id="memberListSearchBar" class="searchBar" placeholder="Søg på medlem, båd eller bådplads">
+</div>
+<div id="MemberListContainer">
+    <table id="MemberList">
+        <thead>
+        <tr>
+            <th colspan="12">Medlemmer</th>
+        </tr>
+        <tr>
+            <th id="memberNumber" class="memberListInfo">Medlemsnummer</th>
+            <th id="memberName" class="memberListInfo">Medlemsnavn</th>
+            <th id="boatName" class="memberListInfo">Bådnavn</th>
+            <th id="boatLength" class="memberListInfo">Længde</th>
+            <th id="boatWidth" class="memberListInfo">Bredde</th>
+            <th id="boatAreal" class="memberListInfo">Areal</th>
+            <th id="boatPrice" class="memberListInfo">Pris på båden</th>
+            <th id="berthName" class="memberListInfo">Plads</th>
+            <th id="memberAddress" class="memberListInfo">Medlem adresse</th>
+            <th id="memberEmail" class="memberListInfo">E-mail</th>
+            <th id="memberPhoneNumber1" class="medlemListInfo">Telefon nr.</th>
+            <th id="memberPhoneNumber2" class="medlemListInfo">Telefon nr. 2</th>
+        </tr>
+        </thead>
+        <tbody id="memberListBody">
+        <!-- Dynamic table is created through javaScript -->
+        </tbody>
+    </table>
+</div>
+<script type="module" src="/js/berthList.js"></script>
+<script type="module" src="/js/memberFetch.js"></script>
 </body>
 </html>
