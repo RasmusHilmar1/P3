@@ -44,11 +44,14 @@ function addCells(tr, data) {
 
 function getMemberList(members, boats, berths) {
     const table = document.getElementById("memberListBody");
+
     // For each member, create a row and add the data
     members.forEach(memberObj => {
         const member = memberObj.member;  // Access the 'member' property
         console.log(member);  // This should now log the member data correctly
         var row = table.insertRow();
+
+        // Add member details to the row
         addCells(row, [
             member.memberID,
             member.name,
@@ -56,8 +59,30 @@ function getMemberList(members, boats, berths) {
             member.email,
             member.phonenumber,
         ]);
-        if (member.b)
 
-        // Optionally, you can add logic to find and display boat and berth data related to the member
+        // Check if the member owns a boat
+        if (member.boatownership == 1) {
+            // Find the boat associated with the member by matching memberID
+            const boat = boats.find(boat => boat.memberID === member.memberID);
+
+            if (boat) {
+                // If a boat is found, add boat details to the row
+                addCells(row, [
+                    boat.name,          // Boat name
+                    boat.length,        // Boat length
+                    boat.width,         // Boat width
+                    boat.areal,         // Boat area (assuming you have calculated this already)
+                    boat.price,         // Boat price
+                ]);
+            } else {
+                // If no boat is found, add empty values or a placeholder
+                addCells(row, ["No boat assigned", "", "", "", ""]);
+            }
+        } else {
+            // If the member does not own a boat, add empty values for boat details
+            addCells(row, ["No boat ownership", "", "", "", ""]);
+        }
+
+        // Optionally, you can add logic to find and display berth data related to the member
     });
 }
