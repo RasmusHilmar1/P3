@@ -110,7 +110,7 @@ function searchBarBerthList() {
                 break;
             }
         }
-        // make sure the rows with no match are hidden while the onew with a match are displayed
+        // make sure the rows with no match are hidden while the one with a match are displayed
         if (result){
             tableRows[i].style.display = "table-row";
         } else {
