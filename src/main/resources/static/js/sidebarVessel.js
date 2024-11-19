@@ -564,7 +564,7 @@ function createBerthListUnavailable(member) {
     sidebar.appendChild(table);
 
     var thead = table.createTHead();
-    thead.textContent = "For små bådpladser"
+    thead.textContent = "Utilgængelige bådpladser"
     thead.id = `berthListUav${member}`;
     thead.classList = "tableHeader";
     table.appendChild(thead);
