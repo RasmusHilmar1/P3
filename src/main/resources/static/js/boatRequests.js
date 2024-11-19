@@ -1,10 +1,38 @@
-//Test data
-let requestsData = [
-    { id: 1001, name: "Mads Hansen Ludvigsen", boatAssigned: "no", feeSent: "no", feePaid: "no" },
-    { id: 1002, name: "Line Mouritzen", boatAssigned: "yes", feeSent: "yes", feePaid: "no"},
-    { id: 1003, name: "Hans Gudenå Petersen", boatAssigned: "no", feeSent: "yes", feePaid: "yes"},
-];
 
+//import and fetch the pending members
+import {fetchApprovedMembers, fetchBoats, fetchBerth, fetchPendingMembers} from "./memberFetch.js";
+import {Berth, Boat, Member} from "./objects.js";
+
+async function parseData(method, object, array){
+
+    const parsedData = await method;
+    console.log(parsedData);
+
+     parsedData.map(objectData => {
+        if (object === Berth){
+            array.push(new object(objectData.berthID, objectData.name, objectData.availability, objectData.length, objectData.width, objectData.depth, objectData.pierId));
+        } else if(object === Boat){
+            array.push(new Boat(objectData.boatID, objectData.memberID, objectData.berthID, objectData.name, objectData.type, objectData.manufacturer, objectData.length, objectData.width, objectData.draught, objectData.insurance));
+        } else if (object === Member) {
+            array.push(new object(objectData.id, objectData.member));
+        }
+    });
+    console.log(array);
+}
+
+let boats = [], approvedMembers = [], pendingMembers = [], berths = [];
+
+boats = parseData(fetchBoats(), Boat, boats);
+console.log(boats);
+approvedMembers = parseData(fetchApprovedMembers(), Member, approvedMembers);
+console.log(approvedMembers);
+pendingMembers = parseData(fetchPendingMembers(), Member, pendingMembers);
+console.log(pendingMembers);
+berths = parseData(fetchBerth(), Berth, berths);
+console.log(berths);
+
+
+/*
 //Helper function for adding cells to a table dynamically
 function addCells(tr, data){
     // Iterate over the data
@@ -45,10 +73,10 @@ function getBoatRequests(){
     var table = document.getElementById("boatRequestsBody");
 
     //For each element in the array of data there is added a new row with the data
-    requestsData.forEach(function (item){
+    pendingMembers.forEach(function (item){
         var row = table.insertRow();
-        addCells(row, [item.id, item.name, item.boatAssigned, item.feeSent,  item.feePaid]);
+        addCells(row, [item.item.memberID, item.item.name]);
     });
 }
 
-getBoatRequests();
+getBoatRequests(); */
