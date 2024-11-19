@@ -33,8 +33,13 @@
 </div>
 <div id="sidebar" class="sidebar">
     <label for="searchBar"></label><input type="text" id="searchBar" class="searchBar" placeholder="Søg på medlem, båd eller bådplads">
-    <button id="memberBtn" class="sidebarMenuBtn">Medlemmer</button>
-    <button id="berthBtn" class="sidebarMenuBtn">Bådpladser</button>
+
+    <form action="/default" method="post" style="display:inline;">
+        <button id="memberBtn" class="sidebarMenuBtn">Medlemmer</button>
+        <button id="berthBtn" class="sidebarMenuBtn">Bådpladser</button>
+    </form>
+
+
     <table id="memberListWithoutBoat" class="memberList">
         <thead id="memberWithoutBoatTableHeader" class="tableHeader">
         <!-- Dynamic header is added here -->
