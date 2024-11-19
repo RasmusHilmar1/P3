@@ -1,37 +1,62 @@
-#listSearchBarContainer {
-    z-index: 20;
-    background-color: white;
-    padding-top: 120px; /*Dette skal passe med navigationsbaren når det laves om*/
-    width: 100%;
-}
-
 #berthListSearchBar {
     font-size: 18px;
-    width: 300px;
+    width: 500px;
     left: 50%;
 }
 
 #searchBarCell {
     text-align: center;
     margin: 0 auto;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 
 #berthListContainer {
-    padding-top: 120px;
+    padding-top: 110px;
 }
 
-#berthHeader, #berthListHeaders {
-    padding-top: 40px;
+#berthListHeader {
+    font-size: 25px;
 }
 
 .berthListInfo{
-    font-size: 15px;
+    font-size: 20px;
+    text-align: center;
 }
 
-.table {
+#berthList {
     border: 1px solid;
     border-collapse: separate;
     table-border-color-dark: #222222;
     width: 100%;
     table-layout: auto;
+    margin-top: 10px;
+}
+
+#berthListBody {
+    font-size: 18px;
+}
+
+tr {
+    border: 1px solid;
+    border-collapse: separate;
+    table-border-color-dark: #222222;
+    width: 100%;
+}
+
+th {
+    border: 1px solid;
+    border-collapse: separate;
+    table-border-color-dark: #222222;
+}
+
+td {
+    border: 1px solid;
+    border-collapse: separate;
+    table-border-color-dark: #222222;
+    vertical-align: middle;
+}
+
+.berthTableRow:hover {
+    background-color: #5c82b5;
 }
