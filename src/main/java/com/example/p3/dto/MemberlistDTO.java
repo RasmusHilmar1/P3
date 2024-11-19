@@ -13,6 +13,8 @@ public class MemberlistDTO {
     private double boatPrice;
     private String berthName;
 
+    private double AREAL_PRICE_PR_SQM = 50;
+
     public MemberlistDTO(int memberID, String Name, String Address, String Email, long phoneNumber, String boatName,
                               double boatLength, double boatWidth, String berthName) {
         this.memberID = memberID;
@@ -24,7 +26,7 @@ public class MemberlistDTO {
         this.boatLength = boatLength;
         this.boatWidth = boatWidth;
         this.boatAreal = boatLength * boatWidth;
-        this.boatPrice = boatAreal*50;
+        this.boatPrice = boatAreal*AREAL_PRICE_PR_SQM;
         this.berthName = berthName;
     }
     public int getMemberID() {return memberID;}
