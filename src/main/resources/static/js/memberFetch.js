@@ -69,18 +69,18 @@ async function fetchBerth() {
     }
 }
 
-async function allMembers(){
+async function fetchPendingMembers(){
     try {
-        const response = await fetch("/members");
+        const response = await fetch("/api/pendingMembers");
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const members = await response.json();
-        console.log("Fetched members:", members);
+        console.log("Fetched pending members:", members);
 
         return members;
 
     } catch (error) {
-        console.error("Error fetch berths:", error);
+        console.error("Error fetching pending members:", error);
     }
 }
