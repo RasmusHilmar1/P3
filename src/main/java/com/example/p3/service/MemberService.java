@@ -56,7 +56,6 @@ public class MemberService {
         return memberRepository.findByMemberID(memberId);
     }
 
-
     // Methods der opdaterer værdier i databasen
     public Member updateMemberName(int memberId, String newName) {
         Member member = memberRepository.findByMemberID(memberId);
