@@ -35,3 +35,6 @@ build/
 # Ignore .env files containing sensitive credentials
 .env
 
+# Virtual environment folders
+venv/
+.venv/
