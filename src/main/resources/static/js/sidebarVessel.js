@@ -439,11 +439,18 @@ function createBerthListAvailable (member) {
                         }
                     }
 
+                    var formForRedirect = document.createElement("form");
+                    formForRedirect.action = "/default";
+                    formForRedirect.method = "post";
+                    formForRedirect.style ="display:inline;"
+
                     var assignBtn = document.createElement("button");
                     assignBtn.textContent = "tildel";
                     assignBtn.classList = "assignBtn";
                     assignBtn.id = `assignBtn${member}`;
-                    infoContainer.appendChild(assignBtn);
+
+                    formForRedirect.appendChild(assignBtn);
+                    infoContainer.appendChild(formForRedirect);
 
                     // event listener for the collapsable list
 
@@ -528,11 +535,18 @@ function createBerthListSmall (member) {
                         }
                     }
 
+                    var formForRedirect = document.createElement("form");
+                    formForRedirect.action = "/default";
+                    formForRedirect.method = "post";
+                    formForRedirect.style ="display:inline;"
+
                     var assignBtn = document.createElement("button");
                     assignBtn.textContent = "tildel";
                     assignBtn.classList = "assignBtn";
                     assignBtn.id = `assignBtn${member}`;
-                    infoContainer.appendChild(assignBtn);
+
+                    formForRedirect.appendChild(assignBtn);
+                    infoContainer.appendChild(formForRedirect);
 
                     // event listener for the collapsable list
 
