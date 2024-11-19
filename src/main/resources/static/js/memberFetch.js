@@ -69,9 +69,9 @@ async function fetchBerth() {
     }
 }
 
-async function fetchPendingMembers(){
+async function allMembers(){
     try {
-        const response = await fetch("/members/");
+        const response = await fetch("/members");
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class MemberService {
@@ -108,6 +109,12 @@ public class MemberService {
         }
 
         return new MemberDTO(member.getMemberID(), member.getName(), member.getPhonenumber());
+    }
+
+    public List<Member> getAllMembers() {
+        // Method to fetch all members
+        return memberRepository.findAll(); // Assuming you have a MemberRepository extending JpaRepository
+
     }
 
 }

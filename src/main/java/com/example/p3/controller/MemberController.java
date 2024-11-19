@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("/members")
@@ -97,4 +98,11 @@ public class MemberController {
     public Member getPublicMember(int memberId) {
         return memberRepository.findByMemberID(memberId); 
     }
+
+    // endpoint to get all members
+    @GetMapping("/get")
+    public List<Member> getAllMembers() {
+        return memberService.getAllMembers();
+    }
+
 }
