@@ -1,6 +1,7 @@
 package com.example.p3.controller;
 
 import com.example.p3.dto.MemberDTO;
+import com.example.p3.model.Berth;
 import com.example.p3.model.Member;
 import com.example.p3.repository.MemberRepository;
 import com.example.p3.service.MemberService;
@@ -92,6 +93,12 @@ public class MemberController {
         Member member = getPublicMember(id);
 
         return memberService.convertToDTO(member);
+    }
+
+    // Endpoint for updating information of berth
+    @PutMapping("/update/information/{id}")
+    public Member updateMemberInformation(@PathVariable int id, @RequestBody Member info) {
+        return memberService.updateMemberInformation(id, info);
     }
 
     public Member getPublicMember(int memberId) {

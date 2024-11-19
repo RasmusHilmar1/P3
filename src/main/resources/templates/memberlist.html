@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Member List</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0-alpha1/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+  <h1 class="my-4">Member List</h1>
+
+    <!-- Display members in a table -->
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th scope="col">Member ID</th>
+        <th scope="col">Name</th>
+        <th scope="col">Address</th>
+        <th scope="col">Email</th>
+        <th scope="col">Phone Number</th>
+        <th scope="col">Boat Name</th>
+        <th scope="col">Boat Length</th>
+        <th scope="col">Boat Width</th>
+        <th scope="col">Berth Name</th>
+      </tr>
+      </thead>
+      <tbody>
+      <!-- Iterate over the member list and display each member's details -->
+      <tr th:each="member : ${memberlist}">
+        <td th:text="${member.memberID}"></td>
+        <td th:text="${member.memberName}"></td>
+        <td th:text="${member.memberAddress}"></td>
+        <td th:text="${member.memberEmail}"></td>
+        <td th:text="${member.memberPhoneNumber}"></td>
+        <td th:text="${member.boatName}"></td>
+        <td th:text="${member.boatLength}"></td>
+        <td th:text="${member.boatWidth}"></td>
+        <td th:text="${member.berthName}"></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

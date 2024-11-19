@@ -1,6 +1,7 @@
 package com.example.p3.service;
 
 import com.example.p3.dto.MemberDTO;
+import com.example.p3.model.Berth;
 import com.example.p3.model.Member;
 import com.example.p3.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,4 +111,26 @@ public class MemberService {
         return new MemberDTO(member.getMemberID(), member.getName(), member.getPhonenumber());
     }
 
+    // Function for updating berth information
+    public Member updateMemberInformation(int memberId, Member info) {
+        Member member = memberRepository.findByMemberID(memberId);
+        if (member != null) {
+            if (info.getName() != null) {
+                member.setName(info.getName().replace("\"", ""));
+            }
+            if (info.getAddress() != null) {
+                member.setAddress(info.getAddress().replace("\"",""));
+            }
+            if (info.getEmail() != null) {
+                member.setEmail(info.getEmail().replace("\"",""));
+            }
+            if (info.getPhonenumber() != null) {
+                member.setPhonenumber(info.getPhonenumber());
+            }
+            return memberRepository.save(member);  // Save updated member
+        }
+        return null;  // Return null if member not found
+    }
 }
+
+
