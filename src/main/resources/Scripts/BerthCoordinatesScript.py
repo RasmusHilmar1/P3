@@ -8,8 +8,14 @@ import mysql.connector  # For connecting to the MySQL database
 from mysql.connector import Error  # For handling MySQL errors
 from dotenv import load_dotenv  # For loading environment variables from a .env file
 
-# Load environment variables (e.g., database credentials) from a .env file
-load_dotenv()
+# Get the path to the directory containing the script
+script_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Define the path to the .env file in the src directory
+env_path = os.path.join(script_dir, '..', '..', '..', '.env')
+
+# Load the .env file
+load_dotenv(dotenv_path=env_path)
 
 # --------------------------------------------
 # Database Connection Functions

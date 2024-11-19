@@ -34,7 +34,17 @@ build/
 
 # Ignore .env files containing sensitive credentials
 .env
+src/.env
 
 # Virtual environment folders
 venv/
 .venv/
+
+# Ignore Python cache files
+__pycache__/
+*.py[cod]
+
+# Ignore OS generated files
+.DS_Store
+Thumbs.db
+
