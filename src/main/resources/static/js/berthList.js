@@ -37,7 +37,7 @@ calculateUtilization();
 
 function addCells(tr, data){
     let td;
-    // Iterate over the data
+    // insert a new cell for each of the item in the data
     data.forEach(function(item){
         td = tr.insertCell();
         td.textContent = item;
@@ -85,7 +85,7 @@ function getBerthList(){
 
 getBerthList();
 
-
+// IMPORTANT: Maybe add such that users can only search for names and IDs, not areal, length and width
 function searchBarBerthList() {
     console.log("Search function triggered"); //console logging to make sure that the function runs
     let input, filter, table, tableRows;
@@ -102,7 +102,7 @@ function searchBarBerthList() {
         let result = false;
         const rowCells = tableRows[i].cells;
 
-        //Iterate through all cells in the respective ros
+        //Iterate through all cells in the respective row
         for (let j = 0; j < rowCells.length; j++) {
             const cellText = rowCells[j].textContent.toLowerCase(); //have all cell content converted into lowercase since input is also converted to lowercase
             if (cellText.includes(filter)){
@@ -110,7 +110,7 @@ function searchBarBerthList() {
                 break;
             }
         }
-        // make sure the rows with no match are hidden
+        // make sure the rows with no match are hidden while the one with a match are displayed
         if (result){
             tableRows[i].style.display = "table-row";
         } else {
