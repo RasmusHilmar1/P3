@@ -8,7 +8,7 @@ console.log(boats);
 const berths = await fetchBerth();
 console.log(berths);
 
-// Calculate areal for berth and boats for the dynamic table and calculating the utilization percentage
+// calculate areal for berth and boats for the dynamic table and calculating the utilization percentage
 function calculateAreal(){
     berths.forEach(berth => {
         berth.areal = berth.length * berth.width;
@@ -35,55 +35,162 @@ function calculateUtilization(){
 
 calculateUtilization();
 
-function addCells(tr, data){
+function addCells(tr, data, editableIndexes = []){
     let td;
     // insert a new cell for each of the item in the data
-    data.forEach(function(item){
+    data.forEach((item, index) => {
         td = tr.insertCell();
         td.textContent = item;
-        td.id = item;
-        console.log(td.id);
+
+        if (editableIndexes.includes(index)) {
+            td.contentEditable = "true"; // make the cell editable
+
+            if (index === 2 || index === 3) { // if the edited cells are length or width column
+                td.addEventListener('input', () => {
+                    // update the areal after length or width is edited
+                    const length = parseFloat(tr.cells[2].textContent);
+                    const width = parseFloat(tr.cells[3].textContent);
+                    const newAreal = (length * width).toFixed(2); // recalculate areal
+                    tr.cells[4].textContent = newAreal + "m"; // update cell
+                });
+            }
+        }
+        console.log(item);
     });
 }
 
-function getBerthList(){
+function getBerthList() {
     const table = document.getElementById("berthListBody"); // get the HTML element for the dynamic table
+
     // For each berth, find corresponding boat and member
     berths.forEach(berth => {
         berth.correspondingBoat = boats.find(boat => boat.berthID === berth.berthID);
         console.log(berth.correspondingBoat);
-        if (berth.correspondingBoat){
-            berth.correspondingMember = members.find(member => member.member.memberID === berth.correspondingBoat.memberID); //if there is found a boat, find the corresponding member
-            if (berth.correspondingMember){
+
+        if (berth.correspondingBoat) {
+            berth.correspondingMember = members.find(member =>
+                member.member.memberID === berth.correspondingBoat.memberID); //if there is found a boat, find the corresponding member
+
+            if (berth.correspondingMember) {
                 console.log(berth.correspondingMember.member.memberID);
             }
         }
     });
+
     //For each berth, create a row and add cells with the data
     berths.forEach(berth => {
-        if (berth.berthID !== 9999){
+        // do not include the default berth
+        if (berth.berthID !== 9999) {
             var row = table.insertRow();
             row.className = "berthTableRow";
-            const berthData = [berth.berthID, berth.name, berth.length + "m", berth.width + "m", berth.areal + "m", berth.depth + "m", berth.utilizationPercentage]
-            addCells(row, berthData);
+            const berthData = [berth.berthID, berth.name, berth.length + "m", berth.width + "m", berth.areal + "m", berth.depth + "m", berth.utilizationPercentage];
+
+            // set name, length and width as editable
+            const editableColumns = [1, 2, 3];
+            addCells(row, berthData, editableColumns);
             berth.correspondingBerthCells = berthData;
+
             // find boat assigned to berth and corresponding member
-            if (berth.correspondingMember && berth.correspondingBoat){
-                if (berth.correspondingBoat.memberID === berth.correspondingMember.member.memberID && berth.correspondingBoat.berthID === berth.berthID){
-                    const memberAndBoatData = [berth.correspondingMember.member.name, berth.correspondingBoat.memberID, berth.correspondingBoat.name, berth.correspondingBoat.length, berth.correspondingBoat.width, berth.correspondingBoat.areal, berth.correspondingMember.member.phonenumber, berth.correspondingMember.member.phonenumber2]
+            if (berth.correspondingMember && berth.correspondingBoat) {
+                if (berth.correspondingBoat.memberID === berth.correspondingMember.member.memberID && berth.correspondingBoat.berthID === berth.berthID) {
+
+                    const memberAndBoatData = [
+                        berth.correspondingMember.member.name,
+                        berth.correspondingBoat.memberID,
+                        berth.correspondingBoat.name,
+                        berth.correspondingBoat.length,
+                        berth.correspondingBoat.width,
+                        berth.correspondingBoat.areal,
+                        berth.correspondingMember.member.phonenumber];
+
                     addCells(row, memberAndBoatData);
                     berth.correspondingMemberAndBoatCells = memberAndBoatData;
                 }
             }
             // else add empty cells
             else {
-                addCells(row, ["", "", "", "", "", "", "", ""]);
+                addCells(row, ["", "", "", "", "", "", ""]);
             }
+
+            // add a cell  with a save button for each row
+            const saveCell = row.insertCell(); // Insert a final cell for the Save button
+            const saveButton = document.createElement("button");
+            saveButton.textContent = "Gem Ændringer";
+            saveButton.className = "saveBtn";
+            saveCell.appendChild(saveButton); // Append the Save button to the last cell
+
+            // Add click event to the save button
+            saveButton.addEventListener("click", () => saveBerthChanges(row, berth));
         }
     });
 }
-
 getBerthList();
+
+// function for saving the changes
+async function saveBerthChanges(row, berth) {
+
+    // collect updated values from the row's cells
+    const cells = row.cells;
+
+    //calculate new areal
+    const length = parseFloat(cells[2].textContent); // length
+    const width = parseFloat(cells[3].textContent); // width
+
+    const updatedBerth = {
+        berthID: berth.berthID,
+        name: cells[1].textContent, // name
+        length: parseFloat(cells[2].textContent), // length
+        width: parseFloat(cells[3].textContent), // width
+    };
+
+    // send PUT request to update the berth data
+    try {
+        const response = await fetch(`/berths/update/information/${berth.berthID}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updatedBerth),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error updating berth: ${response.status}`);
+        }
+
+        const updatedBerthData = await response.json();
+        console.log("Berth updated successfully:", updatedBerthData);
+
+        // update the local berths array to reflect the changes
+        const index = berths.findIndex(b => b.berthID === updatedBerthData.berthID);
+        if (index !== -1) {
+            berths[index] = updatedBerthData; // Update the corresponding berth in the array
+        }
+        // recalculate areal after save
+        const newAreal = (length * width).toFixed(2);
+
+        // recalculate utilization percentage
+        const boat = boats.find(boat => boat.berthID === updatedBerthData.berthID);
+        let newUtilizationPercentage = ""; // Default to 0% if no boat is assigned
+
+        if (boat) {
+            const boatAreal = (boat.length * boat.width).toFixed(2); // calculate boat's areal
+            newUtilizationPercentage = ((boatAreal / newAreal) * 100).toFixed(2) + "%"; // calculate utilization percentage
+        }
+
+        // update the row
+        row.cells[1].textContent = updatedBerthData.name;
+        row.cells[2].textContent = updatedBerthData.length + "m";
+        row.cells[3].textContent = updatedBerthData.width + "m";
+        row.cells[4].textContent = newAreal + "m";
+        row.cells[6].textContent = newUtilizationPercentage;
+
+        alert("Ændringer på bådplads gemt!");
+
+    } catch (error) {
+        console.error("Kunne ikke gemme ændringer:", error);
+        alert("Ændringer kunne ikke gemmes!");
+    }
+}
 
 // IMPORTANT: Maybe add such that users can only search for names and IDs, not areal, length and width
 function searchBarBerthList() {
@@ -126,3 +233,4 @@ function searchBarEvent(){
 }
 
 searchBarEvent();
+
