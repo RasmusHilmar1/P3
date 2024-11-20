@@ -25,7 +25,36 @@
 <input type="number" id="depth" placeholder="Enter depth">
 <button onclick="updateBerthInformation()">Update information</button>
 
+<label for="availability">Availability:</label>
+<button id="availability" onclick="updateBerthAvailability()">Update availability</button>
+
 <script>
+  function updateBerthAvailability() {
+    var avaBtn = 0;
+    const berthId = 2;  // ID of the member you want to update (for example, Member 10)
+
+
+    fetch(`/berths/update/availability/${berthId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(avaBtn),
+    })
+            .then(response => response.json())
+            .then(data => {
+              if (data) {
+                alert("Availability updated successfully");
+              } else {
+                alert("Error: Member not found.");
+              }
+            })
+            .catch(error => {
+              console.error("Error:", error);
+              alert("Error updating availability.");
+            });
+  }
+
   function updateBerthName() {
     const newName = document.getElementById("newName").value;
     const berthId = 9999;  // ID of the member you want to update (for example, Member 10)

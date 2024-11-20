@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/Berths")
+@RequestMapping("/berths")
 public class BerthController {
 
     @Autowired
@@ -30,6 +30,11 @@ public class BerthController {
     @PutMapping("/update/information/{id}")
     public Berth updateBerthInformation(@PathVariable int id, @RequestBody Berth info) {
         return berthService.updateBerthInformation(id, info);
+    }
+
+    @PutMapping("/update/availability/{id}")
+    public Berth updateBerthAvailability(@PathVariable int id, @RequestBody int availability) {
+        return berthService.updateBerthAvailability(id, availability);
     }
 
     @Autowired

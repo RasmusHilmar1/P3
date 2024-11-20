@@ -53,7 +53,7 @@ async function fetchBoats() {
 
 async function fetchBerth() {
     try {
-        const response = await fetch('Berths/get');
+        const response = await fetch('berths/get');
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }

@@ -46,4 +46,14 @@ public class BerthService {
         }
         return null;  // Return null if member not found
     }
+
+    public Berth updateBerthAvailability(int berthId, int availability) {
+        Berth berth = berthRepository.findByBerthID(berthId);
+
+        if (berth != null) {
+            berth.setAvailability(availability);
+            return berthRepository.save(berth);
+        }
+        return null;
+    }
 }

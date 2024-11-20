@@ -1,4 +1,5 @@
 import {fetchApprovedMembers, fetchBoats, fetchBerth} from "./memberFetch.js";
+import {updateAvailability} from "./update.js";
 
 // Add sidebar -->
 var sidebar = document.getElementById("sidebar");
@@ -448,6 +449,9 @@ function createBerthListAvailable (member) {
                     assignBtn.textContent = "tildel";
                     assignBtn.classList = "assignBtn";
                     assignBtn.id = `assignBtn${member}`;
+                    assignBtn.onclick = function () {
+                        updateAvailability(berth.berthID, 0);
+                    };
 
                     formForRedirect.appendChild(assignBtn);
                     infoContainer.appendChild(formForRedirect);

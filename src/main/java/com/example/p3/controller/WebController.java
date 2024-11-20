@@ -65,7 +65,7 @@ public class WebController {
         return "index";
     }
 
-    @GetMapping("/berths")
+    @GetMapping("/berthscomp")
     public String showCompatablityScore() {
         return "comp";
     }
@@ -76,9 +76,9 @@ public class WebController {
         return "approvedMembers";
     }
 
-    @GetMapping("/Berths")
+    @GetMapping("/berths")
     public String showBerths() {
-        return "Berths";
+        return "berths";
     }
 
     @RequestMapping("/default")
