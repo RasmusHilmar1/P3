@@ -192,11 +192,11 @@ td {
 .selectedNameBtn:after {
     content: '\2796';
 }
-
+/*
 .assignBtn {
     display: none;
 }
-
+*/
 .berthListAv {
     display: none;
 }

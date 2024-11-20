@@ -11,16 +11,16 @@ function updateAvailability(berthId, availability) {
         body: JSON.stringify(availability),
     })
         .then(response => response.json())
-        .then(data => {
+        /*.then(data => {
             if (data) {
                 alert("Availability updated successfully");
             } else {
                 alert("Error: Member not found.");
             }
-        })
+        })*/
         .catch(error => {
-            console.error("Error:", error);
-            alert("Error updating availability.");
+            //console.error("Error:", error);
+            //alert("Error updating availability.");
         });
 }
 
@@ -34,15 +34,15 @@ function updateBoatBerthId(boatId, berthId) {
         body: JSON.stringify(berthId),
     })
     .then(response => response.json())
-        .then(data => {
+        /*.then(data => {
             if (data) {
                 alert("BerthID updated succesfully");
             } else {
                 alert("Error: Member not found");
             }
-        })
+        })*/
         .catch(error => {
-            console.error("Error:", error);
-            alert("Error updating berthID.");
+            //console.error("Error:", error);
+            //alert("Error updating berthID.");
         })
 }

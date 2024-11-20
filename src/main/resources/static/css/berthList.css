@@ -60,3 +60,7 @@ td {
 .berthTableRow:hover {
     background-color: #5c82b5;
 }
+
+.berthList {
+    display: none;
+}

@@ -52,20 +52,20 @@ console.log("boats" + boats);
 
 const berths = await fetchBerth();
 console.log("berths" + berths);
-/*
+
 function updateWhenRemoving(boat) {
     berths.forEach(berth => {
         if(berth.berthID === boat.berthID) {
+            console.log("berth == boat fundet");
             updateAvailability(berth.berthID, 1);
-            updateBoatBerthId(boat.berthID, berth);
         }
         if(berth.berthID === 9999) {
-
+            console.log("berth === 9999 fundet");
+            updateBoatBerthId(boat.boatID, berth.berthID);
         }
 
     })
 }
-*/
 
 function createMemberListBoats(approvedMembers, boats, berths) {
     var table = document.getElementById("memberListBoat");
@@ -123,13 +123,10 @@ function createMemberListBoats(approvedMembers, boats, berths) {
                             var removeBtn = document.createElement("button");
                             removeBtn.textContent = "fjern";
                             removeBtn.id = "removeBtn";
-                            /*
                             removeBtn.onclick = function() {
-                                updateWhenRemoving(boat.boatID);
+                                updateWhenRemoving(boat);
                             }
-                             */
-                            //infoCell.appendChild(removeBtn);
-
+                            infoCell.appendChild(removeBtn);
 
                             formForRedirect.appendChild(removeBtn);
                             infoCell.appendChild(formForRedirect);
@@ -139,17 +136,7 @@ function createMemberListBoats(approvedMembers, boats, berths) {
                 }
 
                 // event listener for the collapsable list
-                memberName.addEventListener("click", function () {
-                    const infoCells = infoContainer.querySelectorAll(".infoCell");
-                    memberName.classList.toggle('selectedNameBtn');
-                    infoCells.forEach(cell => {
-                        if (cell.style.maxHeight) {
-                            cell.style.maxHeight = null;
-                        } else {
-                            cell.style.maxHeight = cell.scrollHeight + "px";
-                        }
-                    });
-                });
+                collapsableListEventListener(memberName, infoContainer);
             }
         });
 
@@ -217,17 +204,7 @@ function createMemberListWithoutBoats(approvedMembers, boats, berths) {
 
                     }
                 }
-                memberName.addEventListener("click", function () {
-                    const infoCells = infoContainer.querySelectorAll(".infoCell");
-                    memberName.classList.toggle('selectedNameBtn');
-                    infoCells.forEach(cell => {
-                        if (cell.style.maxHeight) {
-                            cell.style.maxHeight = null;
-                        } else {
-                            cell.style.maxHeight = cell.scrollHeight + "px";
-                        }
-                    });
-                });
+                collapsableListEventListener(memberName, infoContainer);
             }
 
         });
@@ -291,19 +268,8 @@ function createBerthList(berths){
             }
         }
 
-
         // event listener for the collapsable list
-        berthName.addEventListener("click", function () {
-            const infoCells = infoContainer.querySelectorAll(".infoCell");
-            berthName.classList.toggle('selectedNameBtn');
-            infoCells.forEach(cell => {
-                if (cell.style.maxHeight) {
-                    cell.style.maxHeight = null;
-                } else {
-                    cell.style.maxHeight = cell.scrollHeight + "px";
-                }
-            });
-        });
+        collapsableListEventListener(berthName, infoContainer);
     });
 }
 
@@ -317,40 +283,29 @@ function switchHeader(){
 
     var memberBtn = document.getElementById("memberBtn");
     var berthBtn = document.getElementById("berthBtn");
-    var addBtn = document.getElementById("addBtn");
-
-    var berthListAvailable = document.getElementById("berthListAvailable");
-    var berthListSmall = document.getElementById("berthListSmall");
-    var berthListUnavailable = document.getElementById("berthListUnavailable");
 
     memberBtn.onclick = function (){
         memberTableNoBoat.style.display = 'table';
         memberTableBoat.style.display = 'table'
-        berthTable.style.display = 'none';
-        berthListAvailable.style.display = 'none';
-        berthListSmall.style.display = 'none'
-        berthListUnavailable.style.display = 'none'
+        berthTable.style.display = 'none'
     };
-    berthBtn.onclick = function (){
-        berthTable.style.display = 'table';
-        memberTableNoBoat.style.display = 'none';
-        memberTableBoat.style.display = 'none';
-        berthListAvailable.style.display = 'none';
-        berthListSmall.style.display = 'none'
-        berthListUnavailable.style.display = 'none'
-    };
-    /*
-    addBtn.onclick = function () {
-        berthList.style.display = 'none';
-        memberTableNoBoat.style.display = 'none';
-        memberTableBoat.style.display = 'none';
-        berthListAvailable.style.display = 'table';
-        berthListSmall.style.display = 'table'
-        berthListUnavailable.style.display = 'table';
-    }
-     */
-}
+    berthBtn.onclick = function () {
+        // Finder alle elementer med klassen berthList
+        const berthTables = document.querySelectorAll('.berthList');
 
+        // Loop gennem og skjul hver tabel
+        berthTables.forEach((table) => {
+            table.style.display = 'none';
+        });
+
+        // Vis den rigtige tabel
+        berthTable.style.display = 'table';
+
+        // Skjul medlemslisterne
+        memberTableNoBoat.style.display = 'none';
+        memberTableBoat.style.display = 'none';
+    };
+}
 switchHeader();
 
 function showThreeTables(member, addBtn) {
@@ -419,19 +374,9 @@ function updateWhenAssigning(berth, boat) {
 function createBerthListAvailable (member) {
     var sidebar = document.getElementById("sidebar");
 
-    var table = document.createElement("table");
-    table.id = `berthListAv${member}`;
-    table.classList = "berthList";
-    sidebar.appendChild(table);
+    createTable(member, sidebar, "berthListAv", "Tilgængelige");
 
-    var thead = table.createTHead();
-    thead.textContent = "Tilgængelige bådpladser"
-    thead.id = `BerthListAv${member}`;
-    thead.classList = "tableHeader";
-    table.appendChild(thead);
-
-    var tbody = document.createElement("tbody");
-    table.appendChild(tbody);
+    var table = document.getElementById(`berthListAv${member}`);
 
     boats.forEach(boat => {
         if ((member === boat.memberID) && (boat.berthID === 9999)) {
@@ -467,8 +412,6 @@ function createBerthListAvailable (member) {
                         if ((key === 'length') || (key === 'width') || (key === 'depth')) {
                             var infoSize = document.createElement("div");
                             infoSize.textContent = " - " + key + ": " + berth[key] + " m";
-                            //infoSize.className = "infoCell";
-                            //infoSize.id = berth.name;
                             size.appendChild(infoSize);
                             infoContainer.appendChild(size);
                         }
@@ -477,7 +420,7 @@ function createBerthListAvailable (member) {
                     var formForRedirect = document.createElement("form");
                     formForRedirect.action = "/default";
                     formForRedirect.method = "post";
-                    formForRedirect.style ="display:inline;"
+                    formForRedirect.classList = "infoCell";
 
                     var assignBtn = document.createElement("button");
                     assignBtn.textContent = "tildel";
@@ -491,20 +434,7 @@ function createBerthListAvailable (member) {
                     infoContainer.appendChild(formForRedirect);
 
                     // event listener for the collapsable list
-
-                    berthName.addEventListener("click", function () {
-                        const infoCells = infoContainer.querySelectorAll(".infoCell");
-                        berthName.classList.toggle('selectedNameBtn');
-                        infoCells.forEach(cell => {
-                            if (cell.style.maxHeight) {
-                                cell.style.maxHeight = null;
-                                assignBtn.style.display = 'none';
-                            } else {
-                                cell.style.maxHeight = cell.scrollHeight + "px";
-                                assignBtn.style.display = 'block';
-                            }
-                        });
-                    });
+                    collapsableListEventListener(berthName, infoContainer);
                 }
             });
         }
@@ -514,19 +444,9 @@ function createBerthListAvailable (member) {
 function createBerthListSmall (member) {
     var sidebar = document.getElementById("sidebar");
 
-    var table = document.createElement("table");
-    table.id = `berthListSmall${member}`;
-    table.classList = "berthList";
-    sidebar.appendChild(table);
+    createTable(member, sidebar, "berthListSmall", "Tilgængelige men for små");
 
-    var thead = table.createTHead();
-    thead.textContent = "For små bådpladser"
-    thead.id = `berthListSmall${member}`;
-    thead.classList = "tableHeader";
-    table.appendChild(thead);
-
-    var tbody = document.createElement("tbody");
-    table.appendChild(tbody);
+    var table = document.getElementById(`berthListSmall${member}`);
 
     boats.forEach(boat => {
         if ((member === boat.memberID) && (boat.berthID === 9999)) {
@@ -565,8 +485,6 @@ function createBerthListSmall (member) {
                         if ((key === 'length') || (key === 'width') || (key === 'depth')) {
                             var infoSize = document.createElement("div");
                             infoSize.textContent = " - " + key + ": " + berth[key] + " m";
-                            //infoSize.className = "infoCell";
-                            //infoSize.id = berth.name;
                             size.appendChild(infoSize);
                             infoContainer.appendChild(size);
 
@@ -576,31 +494,20 @@ function createBerthListSmall (member) {
                     var formForRedirect = document.createElement("form");
                     formForRedirect.action = "/default";
                     formForRedirect.method = "post";
-                    formForRedirect.style ="display:inline;"
+                    formForRedirect.classList = "infoCell";
 
                     var assignBtn = document.createElement("button");
                     assignBtn.textContent = "tildel";
                     assignBtn.classList = "assignBtn";
                     assignBtn.id = `assignBtn${member}`;
+                    assignBtn.onclick = function () {
+                        updateWhenAssigning(berth.berthID, boat.boatID);
+                    };
 
                     formForRedirect.appendChild(assignBtn);
                     infoContainer.appendChild(formForRedirect);
 
-                    // event listener for the collapsable list
-
-                    berthName.addEventListener("click", function () {
-                        const infoCells = infoContainer.querySelectorAll(".infoCell");
-                        berthName.classList.toggle('selectedNameBtn');
-                        infoCells.forEach(cell => {
-                            if (cell.style.maxHeight) {
-                                cell.style.maxHeight = null;
-                                assignBtn.style.display = 'none';
-                            } else {
-                                cell.style.maxHeight = cell.scrollHeight + "px";
-                                assignBtn.style.display = 'block';
-                            }
-                        });
-                    });
+                    collapsableListEventListener(berthName, infoContainer);
                 }
             });
         }
@@ -610,24 +517,14 @@ function createBerthListSmall (member) {
 function createBerthListUnavailable(member) {
     var sidebar = document.getElementById("sidebar");
 
-    var table = document.createElement("table");
-    table.id = `berthListUav${member}`;
-    table.classList = "berthList";
-    sidebar.appendChild(table);
+    createTable(member, sidebar, "berthListUav", "Utilgængelige bådpladser");
 
-    var thead = table.createTHead();
-    thead.textContent = "Utilgængelige bådpladser"
-    thead.id = `berthListUav${member}`;
-    thead.classList = "tableHeader";
-    table.appendChild(thead);
-
-    var tbody = document.createElement("tbody");
-    table.appendChild(tbody);
+    var table = document.getElementById(`berthListUav${member}`);
 
     boats.forEach(boat => {
         if ((member === boat.memberID) && (boat.berthID === 9999)) {
             berths.forEach(berth => {
-                if((berth.availability === 0) && (berth.berthID !== 9999)) {
+                if(((berth.availability === 0) || (berth.availability === 2)) && (berth.berthID !== 9999)) {
                     // Creating a row for each berth
                     var berthRow = table.insertRow();
                     var berthCell = berthRow.insertCell();
@@ -665,20 +562,39 @@ function createBerthListUnavailable(member) {
 
                         }
                     }
-
-                    berthName.addEventListener("click", function () {
-                        const infoCells = infoContainer.querySelectorAll(".infoCell");
-                        berthName.classList.toggle('selectedNameBtn');
-                        infoCells.forEach(cell => {
-                            if (cell.style.maxHeight) {
-                                cell.style.maxHeight = null;
-                            } else {
-                                cell.style.maxHeight = cell.scrollHeight + "px";
-                            }
-                        });
-                    });
+                    collapsableListEventListener(berthName, infoContainer);
                 }
             });
         }
     });
+}
+
+function collapsableListEventListener(berthName, infoContainer) {
+    berthName.addEventListener("click", function () {
+        const infoCells = infoContainer.querySelectorAll(".infoCell");
+        berthName.classList.toggle('selectedNameBtn');
+        infoCells.forEach(cell => {
+            if (cell.style.maxHeight) {
+                cell.style.maxHeight = null;
+            } else {
+                cell.style.maxHeight = cell.scrollHeight + "px";
+            }
+        });
+    });
+}
+
+function createTable(member, sidebar, berthList, ListTitel){
+    var table = document.createElement("table");
+    table.id = berthList + member;
+    table.classList = "berthList";
+    sidebar.appendChild(table);
+
+    var thead = table.createTHead();
+    thead.textContent = ListTitel;
+    thead.id = berthList + member;
+    thead.classList = "tableHeader";
+    table.appendChild(thead);
+
+    var tbody = document.createElement("tbody");
+    table.appendChild(tbody);
 }
