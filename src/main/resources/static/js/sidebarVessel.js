@@ -1,5 +1,5 @@
 import {fetchApprovedMembers, fetchBoats, fetchBerth} from "./memberFetch.js";
-import {updateAvailability} from "./update.js";
+import {updateAvailability, updateBoatBerthId} from "./update.js";
 
 // Add sidebar -->
 var sidebar = document.getElementById("sidebar");
@@ -52,6 +52,20 @@ console.log("boats" + boats);
 
 const berths = await fetchBerth();
 console.log("berths" + berths);
+/*
+function updateWhenRemoving(boat) {
+    berths.forEach(berth => {
+        if(berth.berthID === boat.berthID) {
+            updateAvailability(berth.berthID, 1);
+            updateBoatBerthId(boat.berthID, berth);
+        }
+        if(berth.berthID === 9999) {
+
+        }
+
+    })
+}
+*/
 
 function createMemberListBoats(approvedMembers, boats, berths) {
     var table = document.getElementById("memberListBoat");
@@ -101,10 +115,24 @@ function createMemberListBoats(approvedMembers, boats, berths) {
                             infoCell.className = "infoCell";
                             infoContainer.appendChild(infoCell);
 
+                            var formForRedirect = document.createElement("form");
+                            formForRedirect.action = "/default";
+                            formForRedirect.method = "post";
+                            formForRedirect.style ="display:inline;"
+
                             var removeBtn = document.createElement("button");
                             removeBtn.textContent = "fjern";
                             removeBtn.id = "removeBtn";
-                            infoCell.appendChild(removeBtn);
+                            /*
+                            removeBtn.onclick = function() {
+                                updateWhenRemoving(boat.boatID);
+                            }
+                             */
+                            //infoCell.appendChild(removeBtn);
+
+
+                            formForRedirect.appendChild(removeBtn);
+                            infoCell.appendChild(formForRedirect);
 
                         }
                     }
@@ -382,6 +410,12 @@ function showBerthsForBoat() {
 }
 showBerthsForBoat();
 
+function updateWhenAssigning(berth, boat) {
+    updateAvailability(berth, 0);
+    updateBoatBerthId(boat, berth);
+}
+
+
 function createBerthListAvailable (member) {
     var sidebar = document.getElementById("sidebar");
 
@@ -450,7 +484,7 @@ function createBerthListAvailable (member) {
                     assignBtn.classList = "assignBtn";
                     assignBtn.id = `assignBtn${member}`;
                     assignBtn.onclick = function () {
-                        updateAvailability(berth.berthID, 0);
+                        updateWhenAssigning(berth.berthID, boat.boatID);
                     };
 
                     formForRedirect.appendChild(assignBtn);
