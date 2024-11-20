@@ -1,72 +1,156 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Medlemsliste</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-          crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-            crossorigin=""></script>
-    <link rel="stylesheet" href="/css/main.css" />
-    <link rel="stylesheet" href="/css/map.css" />
-    <link rel="stylesheet" href="/css/navigationBar.css" />
-    <link rel="stylesheet" href="/css/sidebar.css" />
-    <link rel="stylesheet" href="/css/MemberList.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Member List</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0-alpha1/css/bootstrap.min.css">
+
+  <link rel="stylesheet" href="/css/navigationBar.css" />
+
 </head>
 <body>
 <header class="header">
-    <a href="#"><img src="/Images/Logo.png" alt="Logo" height="100"></a>
-    <nav class="navbar">
-        <a href="bookkeeperStartPage">Kort</a>
-        <a href="bookkeeperMemberRequests">Medlemskabsanmodninger</a>
-        <a href="bookkeeperBoatRequests">Bådanmodninger</a>
-        <a href="bookkeeperMemberList">Medlemsliste</a>
-        <form action="/logout" method="post" style="display:inline;">
-            <button type="submit" id="submit">Log ud</button>
-        </form>
-    </nav>
+  <a href="#"><img src="/Images/Logo.png" alt="Logo" height="100"></a>
+  <nav class="navbar">
+    <a href="bookkeeperStartPage">Kort</a>
+    <a href="bookkeeperMemberRequests">Medlemskabsanmodninger</a>
+    <a href="bookkeeperBoatRequests">Bådanmodninger</a>
+    <a href="bookkeeperMemberList">Medlemsliste</a>
+    <form action="/logout" method="post" style="display:inline;">
+      <button type="submit" id="submit">Log ud</button>
+    </form>
+  </nav>
 </header>
-<div id="listSearchBarContainer">
-    <input type="text" id="memberListSearchBar" class="searchBar" placeholder="Søg på medlem, båd eller bådplads">
-</div>
-<div th:if="${memberlist != null and memberlist.size() > 0}">
-<div id="MemberListContainer">
-    <h1>Members List</h1>
-    <table border="1">
-        <thead>
-        <tr>
-            <th>Member Name</th>
-            <th>Address</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Boat Name</th>
-            <th>Boat Length</th>
-            <th>Boat Width</th>
-            <th>Boat Area</th>
-            <th>Boat Price</th>
-            <th>Berth Name</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="member : ${memberlist}">
-            <td th:text="${member.Name}"></td>
-            <td th:text="${member.Address}"></td>
-            <td th:text="${member.Email}"></td>
-            <td th:text="${member.PhoneNumber}"></td>
-            <td th:text="${member.boatName}"></td>
-            <td th:text="${member.boatLength}"></td>
-            <td th:text="${member.boatWidth}"></td>
-            <td th:text="${member.boatAreal}"></td>
-            <td th:text="${member.boatPrice}"></td>
-            <td th:text="${member.berthName}"></td>
-        </tr>
-        </tbody>
-    </table>
-</div></div>
-<script type="module" src="/js/memberList.js"></script>
-<script type="module" src="/js/memberFetch.js"></script>
+<div class="container">
+  <h1 class="my-4">Member List</h1>
 
+  <!-- Display members in a table -->
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th scope="col">Member ID</th>
+        <th scope="col">Name</th>
+        <th scope="col">Address</th>
+        <th scope="col">Email</th>
+        <th scope="col">Phone Number</th>
+        <th scope="col">Boat Name</th>
+        <th scope="col">Boat Length</th>
+        <th scope="col">Boat Width</th>
+        <th scope="col">Boat Areal</th>
+        <th scope="col">Boat Price</th>
+        <th scope="col">Berth Name</th>
+        <th scope="col"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <!-- Iterate over the member list and display each member's details in input fields -->
+      <tr th:each="member, iterStat : ${memberlist}">
+        <td>
+          <input type="number" name="memberID" th:value="${member.memberID}" class="form-control" th:data-row="${iterStat.index}" readonly>
+        </td>
+        <td>
+          <input type="text" name="memberName" th:value="${member.memberName}" class="form-control" th:data-row="${iterStat.index}">
+        </td>
+        <td>
+          <input type="text" name="memberAddress" th:value="${member.memberAddress}" class="form-control" th:data-row="${iterStat.index}">
+        </td>
+        <td>
+          <input type="text" name="memberEmail" th:value="${member.memberEmail}" class="form-control" th:data-row="${iterStat.index}">
+        </td>
+        <td>
+          <input type="text" name="memberPhonenumber" th:value="${member.memberPhonenumber}" class="form-control" th:data-row="${iterStat.index}">
+        </td>
+        <td hidden>
+          <input type="number" name="boatID" th:value="${member.boatID}" class="form-control" th:data-row="${iterStat.index}" readonly>
+        </td>
+        <td>
+          <input type="text" name="boatName" th:value="${member.boatName}" class="form-control" th:data-row="${iterStat.index}">
+        </td>
+        <td>
+          <input type="number" name="boatLength" th:value="${member.boatLength}" class="form-control" th:data-row="${iterStat.index}">
+        </td>
+        <td>
+          <input type="number" name="boatWidth" th:value="${member.boatWidth}" class="form-control" th:data-row="${iterStat.index}">
+        </td>
+        <td>
+          <input type="number" name="boatAreal" th:value="${member.boatAreal}" class="form-control" th:data-row="${iterStat.index}" readonly>
+        </td>
+        <td>
+          <input type="number" name="boatPrice" th:value="${member.boatPrice}" class="form-control" th:data-row="${iterStat.index}" readonly>
+        </td>
+        <td hidden>
+          <input type="number" name="berthID" th:value="${member.berthID}" class="form-control" th:data-row="${iterStat.index}" readonly>
+        </td>
+        <td>
+          <input type="text" name="berthName" th:value="${member.berthName}" class="form-control" th:data-row="${iterStat.index}" readonly>
+        </td>
+        <td>
+          <button th:onclick="'updateMemberInformation(' + ${iterStat.index} + ')'" th:data-row="${iterStat.index}">Update information</button>
+        </td>
+      </tr>
+
+      </tbody>
+    </table>
+  </form>
+</div>
+<script>
+  function updateMemberInformation(rowIndex) {
+    const updatedInfo = {
+      memberID: document.querySelector(`input[name="memberID"][data-row="${rowIndex}"]`).value,
+      memberName: document.querySelector(`input[name="memberName"][data-row="${rowIndex}"]`).value,
+      memberAddress: document.querySelector(`input[name="memberAddress"][data-row="${rowIndex}"]`).value,
+      memberEmail: document.querySelector(`input[name="memberEmail"][data-row="${rowIndex}"]`).value,
+      memberPhonenumber: document.querySelector(`input[name="memberPhonenumber"][data-row="${rowIndex}"]`).value,
+      boatID: document.querySelector(`input[name="boatID"][data-row="${rowIndex}"]`).value,
+      boatName: document.querySelector(`input[name="boatName"][data-row="${rowIndex}"]`).value,
+      boatLength: document.querySelector(`input[name="boatLength"][data-row="${rowIndex}"]`).value,
+      boatWidth: document.querySelector(`input[name="boatWidth"][data-row="${rowIndex}"]`).value,
+      boatAreal: document.querySelector(`input[name="boatAreal"][data-row="${rowIndex}"]`).value,
+      boatPrice: document.querySelector(`input[name="boatPrice"][data-row="${rowIndex}"]`).value,
+      berthID: document.querySelector(`input[name="berthID"][data-row="${rowIndex}"]`).value,
+      berthName: document.querySelector(`input[name="berthName"][data-row="${rowIndex}"]`).value,
+    };
+
+    console.log(updatedInfo);
+
+    // Send a POST request to the backend
+    fetch(`/bookkeeperMemberList/updateMember`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(updatedInfo),
+    })
+            .then(response => response.json())
+            .then(data => {
+              if (data) {
+                alert("Information successfully updated");
+
+                // Call the function to refresh the member list from the backend
+                refreshMemberList();
+              } else {
+                alert("Error: Member not found.");
+              }
+            })
+            .catch(error => {
+              console.error("Error:", error);
+              alert("Error updating member information.");
+            });
+  }
+
+  // Function to refresh the member list from the backend
+  function refreshMemberList() {
+    fetch('/bookkeeperMemberList')
+            .then(response => response.text())
+            .then(data => {
+              document.querySelector('.container').innerHTML = data;
+            })
+            .catch(error => {
+              console.error("Error refreshing the member list:", error);
+            });
+  }
+
+</script>
 </body>
 </html>

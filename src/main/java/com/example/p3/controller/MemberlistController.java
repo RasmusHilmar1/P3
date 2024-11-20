@@ -15,13 +15,8 @@ public class MemberlistController {
     @Autowired
     private MemberlistService memberlistService;
 
-    @GetMapping("/memberlist")
-    public String getAllMembers(Model model) {
-        model.addAttribute("memberlist", service.getAllMemberlistDetails());
-        return "memberlist";
-    }
 
-    @PostMapping("/memberlist/updateMember")
+    @PostMapping("/bookkeeperMemberList/updateMember")
     @ResponseBody
     public MemberlistDTO updateMember(@RequestBody MemberlistDTO dto) {
         System.out.println(dto);
