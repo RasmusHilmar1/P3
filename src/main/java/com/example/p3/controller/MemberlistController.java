@@ -21,7 +21,7 @@ public class MemberlistController {
         return "memberlist";
     }
 
-    @PostMapping("/updateMember")
+    @PostMapping("/memberlist/updateMember")
     @ResponseBody
     public MemberlistDTO updateMember(@RequestBody MemberlistDTO dto) {
         System.out.println(dto);
