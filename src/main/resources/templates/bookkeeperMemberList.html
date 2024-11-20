@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0-alpha1/css/bootstrap.min.css">
 
   <link rel="stylesheet" href="/css/navigationBar.css" />
-
+  <link rel="stylesheet" href="/css/MemberList.css" />
 </head>
 <body>
 <header class="header">
@@ -23,23 +23,23 @@
   </nav>
 </header>
 <div class="container">
-  <h1 class="my-4">Member List</h1>
+  <h1 class="my-4">Medlemsliste</h1>
 
   <!-- Display members in a table -->
     <table class="table table-striped">
       <thead>
       <tr>
-        <th scope="col">Member ID</th>
-        <th scope="col">Name</th>
-        <th scope="col">Address</th>
-        <th scope="col">Email</th>
-        <th scope="col">Phone Number</th>
-        <th scope="col">Boat Name</th>
-        <th scope="col">Boat Length</th>
-        <th scope="col">Boat Width</th>
-        <th scope="col">Boat Areal</th>
-        <th scope="col">Boat Price</th>
-        <th scope="col">Berth Name</th>
+        <th scope="col">Medlemsnr.</th>
+        <th scope="col">Navn</th>
+        <th scope="col">Adresse</th>
+        <th scope="col">E-mail</th>
+        <th scope="col">Telefonnr.</th>
+        <th scope="col">Bådens navn</th>
+        <th scope="col">Bådens længde</th>
+        <th scope="col">Bådens bredde</th>
+        <th scope="col">Bådens areal</th>
+        <th scope="col">Bådpris</th>
+        <th scope="col">Pladsnavn</th>
         <th scope="col"></th>
       </tr>
       </thead>
@@ -47,7 +47,7 @@
       <!-- Iterate over the member list and display each member's details in input fields -->
       <tr th:each="member, iterStat : ${memberlist}">
         <td>
-          <input type="number" name="memberID" th:value="${member.memberID}" class="form-control" th:data-row="${iterStat.index}" readonly>
+          <input type="text" name="memberID" th:value="${member.memberID}" class="form-control" th:data-row="${iterStat.index}" readonly>
         </td>
         <td>
           <input type="text" name="memberName" th:value="${member.memberName}" class="form-control" th:data-row="${iterStat.index}">
@@ -74,10 +74,10 @@
           <input type="number" name="boatWidth" th:value="${member.boatWidth}" class="form-control" th:data-row="${iterStat.index}">
         </td>
         <td>
-          <input type="number" name="boatAreal" th:value="${member.boatAreal}" class="form-control" th:data-row="${iterStat.index}" readonly>
+          <input type="text" name="boatAreal" th:value="${member.boatAreal}" class="form-control" th:data-row="${iterStat.index}" readonly>
         </td>
         <td>
-          <input type="number" name="boatPrice" th:value="${member.boatPrice}" class="form-control" th:data-row="${iterStat.index}" readonly>
+          <input type="text" name="boatPrice" th:value="${member.boatPrice}" class="form-control" th:data-row="${iterStat.index}" readonly>
         </td>
         <td hidden>
           <input type="number" name="berthID" th:value="${member.berthID}" class="form-control" th:data-row="${iterStat.index}" readonly>
@@ -86,7 +86,7 @@
           <input type="text" name="berthName" th:value="${member.berthName}" class="form-control" th:data-row="${iterStat.index}" readonly>
         </td>
         <td>
-          <button th:onclick="'updateMemberInformation(' + ${iterStat.index} + ')'" th:data-row="${iterStat.index}">Update information</button>
+          <button th:onclick="'updateMemberInformation(' + ${iterStat.index} + ')'" th:data-row="${iterStat.index}">Gem Ændringer</button>
         </td>
       </tr>
 
