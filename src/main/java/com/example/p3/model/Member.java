@@ -16,7 +16,7 @@ public class Member {
     private String address;
     private String email;
     private LocalDate dateofbirth;
-    private Long phonenumber;
+    private String phonenumber;
     private Boolean boatownership;
 
     @OneToOne(mappedBy = "member")
@@ -43,7 +43,7 @@ public class Member {
         return dateofbirth;
     }
 
-    public Long getPhonenumber() {
+    public String getPhonenumber() {
         return phonenumber;
     }
 
@@ -63,7 +63,7 @@ public class Member {
         this.email = email;
     }
 
-    public void setPhonenumber(Long phonenumber) {
+    public void setPhonenumber(String phonenumber) {
         this.phonenumber = phonenumber;
     }
 

@@ -1,7 +1,6 @@
 package com.example.p3.controller;
 
 import com.example.p3.dto.MemberDTO;
-import com.example.p3.model.Berth;
 import com.example.p3.model.Member;
 import com.example.p3.repository.MemberRepository;
 import com.example.p3.service.MemberService;
@@ -42,7 +41,7 @@ public class MemberController {
     }
 
     @GetMapping("/getPhoneNumber/{id}")
-    public Long getMemberPhoneNumber(@PathVariable int id) {
+    public String getMemberPhoneNumber(@PathVariable int id) {
         return memberService.getMemberPhoneNumber(id);
     }
 
@@ -78,7 +77,7 @@ public class MemberController {
     }
 
     @PutMapping("/updatePhoneNumber/{id}")
-    public Member updateMemberPhoneNumber(@PathVariable int id, @RequestBody Long newPhoneNumber) {
+    public Member updateMemberPhoneNumber(@PathVariable int id, @RequestBody String newPhoneNumber) {
         return memberService.updateMemberPhoneNumber(id, newPhoneNumber);
     }
 

@@ -6,10 +6,10 @@ public class MemberDTO {
     private String name;
     private Long phonenumber;
 
-    public MemberDTO(int memberID, String name, Long phonenumber) {
+    public MemberDTO(int memberID, String name, String phonenumber) {
         this.memberID = memberID;
         this.name = name;
-        this.phonenumber = phonenumber;
+        this.phonenumber = Long.valueOf(phonenumber);
     }
 
     public int getMemberID() {
