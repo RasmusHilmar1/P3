@@ -22,7 +22,8 @@ function calculateAreal(){
 
 calculateAreal();
 
-// calculating the utilization of occupied berth in percentage
+// calculating the utilization of occupied berth in percentage - should be connected to back-end
+//IMPORTANT: cannot find function in back-end that calculates utilization in percentage
 function calculateUtilization(){
     calculateAreal();
     berths.forEach(berth => {
