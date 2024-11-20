@@ -34,7 +34,7 @@ public class MemberService {
         return member.getDateofbirth();
     }
 
-    public Long getMemberPhoneNumber(int memberId) {
+    public String getMemberPhoneNumber(int memberId) {
         Member member = memberRepository.findByMemberID(memberId);
         return member.getPhonenumber();
     }
@@ -83,7 +83,7 @@ public class MemberService {
         return null;
     }
 
-    public Member updateMemberPhoneNumber(int memberId, Long newPhoneNumber) {
+    public Member updateMemberPhoneNumber(int memberId, String newPhoneNumber) {
         Member member = memberRepository.findByMemberID(memberId);
         if (member != null) {
             member.setPhonenumber(newPhoneNumber);

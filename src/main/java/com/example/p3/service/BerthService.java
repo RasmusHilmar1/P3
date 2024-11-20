@@ -13,6 +13,10 @@ public class BerthService {
     @Autowired
     private BerthRepository berthRepository;
 
+    public Berth findBerthByBerthId(int berthID) { return berthRepository.findByBerthID(berthID); }
+
+    public Berth findBerthByMemberID(int memberID) { return berthRepository.findByMemberID(memberID); }
+
     public List<Berth> getAllBerths() {
         return berthRepository.findAll();
     }

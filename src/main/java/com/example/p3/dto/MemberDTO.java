@@ -1,38 +1,34 @@
 package com.example.p3.dto;
 
 public class MemberDTO {
-
-    private int memberID;
+    private final int memberID;
     private String name;
-    private Long phonenumber;
+    private String PhoneNumber;
 
-    public MemberDTO(int memberID, String name, Long phonenumber) {
+    // Constructor
+    public MemberDTO(int memberID, String name, String phoneNumber) {
         this.memberID = memberID;
         this.name = name;
-        this.phonenumber = phonenumber;
+        this.PhoneNumber = phoneNumber;
     }
 
-    public int getMemberID() {
+    public int getMemberID(){
         return memberID;
     }
-
+    // Getters and Setters
     public String getName() {
         return name;
-    }
-
-    public Long getPhonenumber() {
-        return phonenumber;
-    }
-
-    public void setMemberID(int memberID) {
-        this.memberID = memberID;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setPhonenumber(Long phonenumber) {
-        this.phonenumber = phonenumber;
+    public String getPhoneNumber() {
+        return PhoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.PhoneNumber = phoneNumber;
     }
 }

@@ -17,6 +17,7 @@ public class ApprovedMember {
     @JoinColumn(name = "memberid", referencedColumnName = "memberid")
     private Member member;
 
+    // Getters and Setters
     public int getId() {
         return id;
     }

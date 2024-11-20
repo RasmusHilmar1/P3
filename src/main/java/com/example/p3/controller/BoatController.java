@@ -81,4 +81,7 @@ public class BoatController {
     public List<BoatDTO> getBoatsByMemberId(@PathVariable int memberId) {
         return boatService.getBoatsByMemberId(memberId);
     }
+
+    @GetMapping("/get/{id}")
+    public Boat getBoatById(@PathVariable int id) { return boatService.getBoatsByBerthID(id); } // Endpoint to get a specific berth by ID
 }

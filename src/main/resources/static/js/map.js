@@ -1,6 +1,5 @@
-import {myGeoJson} from "./geojson.js";
+import { myGeoJson } from "./geojson.js";
 
-// Create map for leaflet -->
 var map = L.map('map', {
     minZoom: 17,
     maxZoom: 23
@@ -101,44 +100,94 @@ harbors.addEventListener('click', function (event) {
     }
 });
 
-
-L.geoJSON(myGeoJson, {
-    onEachFeature: onEachFeature,
-    style: function(feature) {
-        var status = feature.properties.status;
-
-        var fillColor;
-
-        if (status === "Available") {
-            fillColor = "#00FF00";
-        } else if (status === "Unavailable") {
-            fillColor = "red";
-        } else if (status === "TempAvailable") {
-            fillColor = "orange";
-        } else if (status === "Structure") {
-            fillColor = "white";
-        }
-
-        return {
-            //color: "#00bfff",    // Sets the border color to black
-            color: "black",
-            weight: 0.1,         // Adjusts border thickness
-            fillColor: fillColor,
-            fillOpacity: 0.8   // Adjusts fill opacity
-        };
+// Load berth data from the backend
+async function loadBerthData() {
+    try {
+        const response = await fetch('Berths/get'); // Replace with your actual API endpoint
+        const berths = await response.json();
+        return berths;
+    } catch (error) {
+        console.error('Error fetching berth data:', error);
+        return [];
     }
-}).addTo(map);
-
-function onEachFeature(feature, layer) {
-    console.log(feature.properties);
-    layer.on('click', function(e) {
-        document.getElementById("berthId").innerHTML = feature.properties.id;
-        document.getElementById("berthName").innerHTML = feature.properties.name;
-        document.getElementById("berthStatus").innerHTML = feature.properties.status;
-    });
 }
 
+// Update GeoJSON data with berth status
+async function updateGeoJsonWithStatus() {
+    const berths = await loadBerthData();
 
+    // Map berth data to GeoJSON features
+    myGeoJson.features.forEach(feature => {
+        const berthStatus = berths.find(b => b.name === feature.properties.id);
+        feature.properties.status = berthStatus ? berthStatus.availability : 'Unknown';
+    });
 
+    // Render updated GeoJSON with styles based on status
+    L.geoJSON(myGeoJson, {
+        onEachFeature: onEachFeature,
+        style: function (feature) {
+            const status = feature.properties.status;
+            let fillColor;
 
+            switch (status) {
+                case 1:
+                    fillColor = "#00FF00";
+                    break;
+                case 0:
+                    fillColor = "red";
+                    break;
+                case 2:
+                    fillColor = "orange";
+                    break;
+                default:
+                    fillColor = "white"; // Default color if status is unknown
+            }
 
+            return {
+                color: "black",
+                weight: 0.1,
+                fillColor: fillColor,
+                fillOpacity: 0.8
+            };
+        }
+    }).addTo(map);
+}
+
+// Initial load and update
+updateGeoJsonWithStatus();
+
+function onEachFeature(feature, layer) {
+    const berthId = feature.properties.id;
+
+    layer.on('click', function () {
+        updateSidebarWithBerth(feature.properties);
+    });
+
+    // Bind popup with updated status
+    const status = feature.properties.status === 1 ? "Tilgængelig" : feature.properties.status === 0 ? "Optaget" : feature.properties.status === 2 ? "Midlertidig Utilgængelig" : "Unknown";
+
+const popupContent = `
+        <div>
+            <b>Address:</b> ${berthId || 'N/A'}<br>
+            <b>Name:</b> ${feature.properties.name || 'N/A'}<br>
+            <b>Status:</b> ${status}
+        </div>
+    `;
+    layer.bindPopup(popupContent);
+}
+
+// Function to update the sidebar with the clicked berth details
+function updateSidebarWithBerth(berth) {
+    const berthList = document.getElementById("berthList");
+    const rows = berthList.querySelectorAll('tr');
+
+    rows.forEach(row => {
+        const berthNameBtn = row.querySelector(".berthBtn");
+        if (berthNameBtn) {
+            const berthName = berthNameBtn.textContent.trim();
+            if (berthName === berth.id) {
+                berthNameBtn.click();
+            }
+        }
+    });
+}

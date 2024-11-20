@@ -16,6 +16,12 @@ public class BerthController {
     @Autowired
     private BerthService berthService;
 
+    @GetMapping("/getBerth/{id}")
+    public Berth getBerthByBerthID(@PathVariable int id) { return berthService.findBerthByBerthId(id); } // Endpoint to get a specific berth by IDId(@PathVariable int id) {
+
+    @GetMapping("/get/{id}")
+    public Berth getBerthById(@PathVariable int id) { return berthService.findBerthByMemberID(id); } // Endpoint to get a specific berth by ID
+
     @GetMapping("/get")
     public List<Berth> getBerths() {
         return berthService.getAllBerths();

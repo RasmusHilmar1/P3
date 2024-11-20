@@ -41,7 +41,7 @@ public class MemberController {
     }
 
     @GetMapping("/getPhoneNumber/{id}")
-    public Long getMemberPhoneNumber(@PathVariable int id) {
+    public String getMemberPhoneNumber(@PathVariable int id) {
         return memberService.getMemberPhoneNumber(id);
     }
 
@@ -77,7 +77,7 @@ public class MemberController {
     }
 
     @PutMapping("/updatePhoneNumber/{id}")
-    public Member updateMemberPhoneNumber(@PathVariable int id, @RequestBody Long newPhoneNumber) {
+    public Member updateMemberPhoneNumber(@PathVariable int id, @RequestBody String newPhoneNumber) {
         return memberService.updateMemberPhoneNumber(id, newPhoneNumber);
     }
 
