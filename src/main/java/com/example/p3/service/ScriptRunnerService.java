@@ -13,7 +13,7 @@ public class ScriptRunnerService {
         try {
             // Specify the path to the Python executable in the virtual environment
             String projectRoot = System.getProperty("user.dir");
-            String scriptsDir = projectRoot + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "Scripts";
+            String scriptsDir = projectRoot + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "scripts";
             String pythonExecutable = scriptsDir + File.separator + "venv" + File.separator + "Scripts" + File.separator + "python.exe";
 
             // Build the command
