@@ -1,29 +1,20 @@
-// geojson.js
+let myGeoJson = null;
 
+// Fetch GeoJSON file
 async function fetchGeoJson() {
     try {
-        // Assuming the server serves files from /static/data/
-        const response = await fetch('/static/data/berths.geojson');
-
+        const response = await fetch('/berths.geojson'); // Adjust the path as needed
         if (!response.ok) {
-            throw new Error('Network response was not ok ' + response.statusText);
+            throw new Error('Failed to load GeoJSON file');
         }
-
-        const geoJsonData = await response.json();
-        console.log(geoJsonData); // To verify the data
-
-        // Call a function to process or display the GeoJSON data
-        processGeoJson(geoJsonData);
+        myGeoJson = await response.json();
     } catch (error) {
-        console.error('There was a problem fetching the GeoJSON:', error);
+        console.error('Error fetching GeoJSON:', error);
     }
 }
 
-// Example function to use the GeoJSON data (customize as needed)
-function processGeoJson(geoJsonData) {
-    // Your logic here to render the GeoJSON on the map or use it otherwise
-    console.log('Processing GeoJSON:', geoJsonData);
-}
-
-// Call the fetch function
+// Call fetchGeoJson to initialize `myGeoJson` as soon as possible
 fetchGeoJson();
+
+// Export the GeoJSON (note: it will be `null` initially, until fetched)
+export { myGeoJson, fetchGeoJson };

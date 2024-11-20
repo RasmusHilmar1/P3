@@ -1,4 +1,4 @@
-import {myGeoJson} from "./geojson.js";
+import { myGeoJson, fetchGeoJson } from "./geojson.js";
 
 // Create map for leaflet -->
 var map = L.map('map', {
@@ -21,10 +21,10 @@ var imageBounds = [
 ];
 
 // Get picture for overlay -->
-var imageUrl = '../../Images/vestre_badelaug_kort_kopi.jpeg';
+//var imageUrl = '../../Images/vestre_badelaug_kort_kopi.jpeg';
 
 // Create image overlay -->
-var imageOverlay = L.imageOverlay(imageUrl, imageBounds).addTo(map);
+//var imageOverlay = L.imageOverlay(imageUrl, imageBounds).addTo(map);
 
 //Initialize bounds for map as the bounds of picture in coordinates -->
 const bounds = L.latLngBounds(
@@ -44,9 +44,9 @@ harbor1.addEventListener("click", function(event) {
         [57.05692, 9.90523]  // Bottom-right
     ];
 
-    var imageUrl = '../../Images/vestre_badelaug_kort_kopi.jpeg';
+    //var imageUrl = '../../Images/vestre_badelaug_kort_kopi.jpeg';
 
-    var imageOverlay = L.imageOverlay(imageUrl, imageBounds).addTo(map);
+    //var imageOverlay = L.imageOverlay(imageUrl, imageBounds).addTo(map);
 
     const bounds = L.latLngBounds(
         [57.05861, 9.89969],
@@ -69,8 +69,8 @@ harbor2.addEventListener("click", function(event) {
         [57.057100, 9.898600]  // Bottom-right
     ];
 
-    var imageUrl2 = '../../Images/skudehavn.jpeg';
-    var imageOverlay2 = L.imageOverlay(imageUrl2, imageBounds2).addTo(map);
+    //var imageUrl2 = '../../Images/skudehavn.jpeg';
+    //var imageOverlay2 = L.imageOverlay(imageUrl2, imageBounds2).addTo(map);
 
     const bounds2 = L.latLngBounds(
         [57.060017, 9.893899], // Top-left
@@ -102,49 +102,50 @@ harbors.addEventListener('click', function (event) {
 });
 
 
-L.geoJSON(myGeoJson, {
-    onEachFeature: onEachFeature,
-    style: function(feature) {
-        var status = feature.properties.status;
+// Wait for GeoJSON to be fetched before using it
+async function initializeMap() {
+    await fetchGeoJson(); // Ensure that the GeoJSON is fetched
+    if (myGeoJson) {
+        // Existing code to add GeoJSON to the map
+        L.geoJSON(myGeoJson, {
+            onEachFeature: onEachFeature,
+            style: function (feature) {
+                const status = feature.properties.status;
+                let fillColor;
 
-        var fillColor;
+                switch (status) {
+                    case 'Available':
+                        fillColor = "#00FF00";
+                        break;
+                    case 'Unavailable':
+                        fillColor = "red";
+                        break;
+                    case 'TempAvailable':
+                        fillColor = "orange";
+                        break;
+                    default:
+                        fillColor = "white"; // Default color if status is unknown
+                }
 
-        if (status === "Available") {
-            fillColor = "#00FF00";
-        } else if (status === "Unavailable") {
-            fillColor = "red";
-        } else if (status === "TempAvailable") {
-            fillColor = "orange";
-        }
-
-        return {
-            //color: "#00bfff",    // Sets the border color to black
-            color: "black",
-            weight: 0.1,         // Adjusts border thickness
-            fillColor: fillColor,
-            fillOpacity: 0.8   // Adjusts fill opacity
-        };
-
-        /*
-        if (status === "Available") {
-            return {color: "#00FF00", weight: 0.3};
-
-        } else if (status === "Unavailable") {
-            return {color: "red", weight: 0.3};
-
-        } else if (status === "TempAvailable") {
-            return {color: "orange", weight: 0.3};
-        }
-        */
+                return {
+                    color: "black",
+                    weight: 0.1,
+                    fillColor: fillColor,
+                    fillOpacity: 0.8
+                };
+            }
+        }).addTo(map);
     }
-}).addTo(map);
+}
+
+initializeMap();
 
 function onEachFeature(feature, layer) {
-    console.log(feature.properties);
+    //console.log(feature.properties);
     layer.on('click', function(e) {
-        document.getElementById("id").innerHTML = feature.properties.id;
-        document.getElementById("name").innerHTML = feature.properties.name;
-        document.getElementById("status").innerHTML = feature.properties.status;
+        document.getElementById("berthId").innerHTML = feature.properties.id;
+        document.getElementById("berthName").innerHTML = feature.properties.name;
+        document.getElementById("berthStatus").innerHTML = feature.properties.status;
     });
 }
 
