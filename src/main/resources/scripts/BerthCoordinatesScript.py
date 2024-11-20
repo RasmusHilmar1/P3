@@ -289,8 +289,17 @@ def generate_geojson(piers):
         "features": features  # List of all features (piers and berths)
     }
 
-    # Write the GeoJSON data to a file
-    with open('berths.geojson', 'w') as geojson_file:
+
+
+    # Define the path to the `static` folder
+    static_folder_path = os.path.join(os.path.dirname(__file__), '..', 'static')
+
+    # Construct the full path to `berths.geojson`
+    geojson_file_path = os.path.join(static_folder_path, 'berths.geojson')
+
+
+    # Write the GeoJSON data to a file in the `static` folder
+    with open(geojson_file_path, 'w') as geojson_file:
         json.dump(geojson, geojson_file, indent=2)  # Indent for readability
 
     print("GeoJSON file 'berths.geojson' has been created.")
