@@ -111,6 +111,9 @@
             .then(data => {
               if (data) {
                 alert("Information successfully updated");
+
+                // Call the function to refresh the member list from the backend
+                refreshMemberList();
               } else {
                 alert("Error: Member not found.");
               }
@@ -118,6 +121,18 @@
             .catch(error => {
               console.error("Error:", error);
               alert("Error updating member information.");
+            });
+  }
+
+  // Function to refresh the member list from the backend
+  function refreshMemberList() {
+    fetch('/memberlist')
+            .then(response => response.text())
+            .then(data => {
+              document.querySelector('.container').innerHTML = data; 
+            })
+            .catch(error => {
+              console.error("Error refreshing the member list:", error);
             });
   }
 
