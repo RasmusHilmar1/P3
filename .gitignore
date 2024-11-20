@@ -48,3 +48,6 @@ __pycache__/
 .DS_Store
 Thumbs.db
 
+#Ignore generated berths.geojson
+src/main/resources/scripts/berths.geojson
+
