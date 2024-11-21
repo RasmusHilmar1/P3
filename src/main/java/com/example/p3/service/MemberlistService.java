@@ -81,4 +81,8 @@ public class MemberlistService {
         // Return the updated DTO
         return dto;
     }
+
+    public List<MemberlistDTO> searchMembers(String query) {
+        return memberlistRepository.searchMembers(query);
+    }
 }
