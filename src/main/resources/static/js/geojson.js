@@ -70,7 +70,7 @@ var myGeoJson =
                     ]
                 },
                 "properties": {
-                    "id": "Gedernes",
+                    "id": "1",
                     "name": "Berth Gedernes",
                     "status": "Available"
                 }
@@ -105,7 +105,7 @@ var myGeoJson =
                     ]
                 },
                 "properties": {
-                    "id": "Rizzlers",
+                    "id": "2",
                     "name": "Berth Rizzlers",
                     "status": "Available"
                 }
@@ -140,7 +140,7 @@ var myGeoJson =
                     ]
                 },
                 "properties": {
-                    "id": "RH24",
+                    "id": "3",
                     "name": "Berth RH24",
                     "status": "Available"
                 }
@@ -175,7 +175,7 @@ var myGeoJson =
                     ]
                 },
                 "properties": {
-                    "id": "Hawk Tuah",
+                    "id": "4",
                     "name": "Berth Hawk Tuah",
                     "status": "Available"
                 }
@@ -210,7 +210,7 @@ var myGeoJson =
                     ]
                 },
                 "properties": {
-                    "id": "We Bring The BOOM",
+                    "id": "5",
                     "name": "Berth We Bring The BOOM",
                     "status": "Available"
                 }

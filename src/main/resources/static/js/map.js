@@ -1,4 +1,5 @@
 import {myGeoJson} from "./geojson.js";
+import {fetchApprovedMembers, fetchBoats, fetchBerth} from "./memberFetch.js";
 
 // Create map for leaflet -->
 var map = L.map('map', {
@@ -129,12 +130,53 @@ L.geoJSON(myGeoJson, {
     }
 }).addTo(map);
 
+
+const approvedMembers = await fetchApprovedMembers();
+console.log("members info:" + JSON.stringify(approvedMembers));
+
+const boats = await fetchBoats();
+console.log("boats" + boats);
+//console.log("boatID" + boats.name);
+
+const berths = await fetchBerth();
+console.log("berths" + berths);
+
+
 function onEachFeature(feature, layer) {
     //console.log(feature.properties);
     layer.on('click', function(e) {
+        var memberList = document.getElementById("memberListBoat");
+        const rows = memberList.querySelectorAll('tr');
+        console.log("memberList: " + memberList);
+        console.log("rows: " + rows);
+
+        rows.forEach(row => {
+            const memberCell = row.querySelector(".memberCell");
+            console.log("memberCell: " + memberCell);
+
+            if (memberCell) {
+                const memberName = memberCell.textContent.trim();
+                console.log("memberName:" + memberName);
+                approvedMembers.forEach(approvedMember => {
+                    if(memberName === approvedMember.member.name) {
+                        console.log("memberName: " + memberName);
+                        boats.forEach(boat => {
+                            if ((approvedMember.member.memberID === boat.memberID) && (boat.berthID !== 9999) && (boat.berthID === feature.properties.id)) {
+                                memberCell.click();
+                                console.log("membercell clicked");
+                            }
+                        });
+                    }
+                });
+
+            }
+        });
+
+        /*
         document.getElementById("berthId").innerHTML = feature.properties.id;
         document.getElementById("berthName").innerHTML = feature.properties.name;
         document.getElementById("berthStatus").innerHTML = feature.properties.status;
+         */
     });
 }
 
