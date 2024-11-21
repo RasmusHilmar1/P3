@@ -1,295 +1,113 @@
-import { fetchApprovedMembers, fetchBoats, fetchBerth } from "./memberFetch.js";
+// Opdaterer medlemsinformationer
+function updateMemberInformation(rowIndex) {
+    // Indsamler alle ændringer i input-felterne
+    const updatedInfo = {
+        memberID: document.querySelector(`input[name="memberID"][data-row="${rowIndex}"]`).value,
+        memberName: document.querySelector(`input[name="memberName"][data-row="${rowIndex}"]`).value,
+        memberAddress: document.querySelector(`input[name="memberAddress"][data-row="${rowIndex}"]`).value,
+        memberEmail: document.querySelector(`input[name="memberEmail"][data-row="${rowIndex}"]`).value,
+        memberPhonenumber: document.querySelector(`input[name="memberPhonenumber"][data-row="${rowIndex}"]`).value,
+        boatID: document.querySelector(`input[name="boatID"][data-row="${rowIndex}"]`).value,
+        boatName: document.querySelector(`input[name="boatName"][data-row="${rowIndex}"]`).value,
+        boatLength: document.querySelector(`input[name="boatLength"][data-row="${rowIndex}"]`).value,
+        boatWidth: document.querySelector(`input[name="boatWidth"][data-row="${rowIndex}"]`).value,
+        boatAreal: document.querySelector(`input[name="boatAreal"][data-row="${rowIndex}"]`).value,
+        boatPrice: document.querySelector(`input[name="boatPrice"][data-row="${rowIndex}"]`).value,
+        berthID: document.querySelector(`input[name="berthID"][data-row="${rowIndex}"]`).value,
+        berthName: document.querySelector(`input[name="berthName"][data-row="${rowIndex}"]`).value,
+    };
 
-async function initialize() {
-    const members = await fetchApprovedMembers();
-    console.log(members); // Check the structure of members data
-    const boats = await fetchBoats();
-    console.log(boats);
-    const berths = await fetchBerth();
-    console.log(berths);
+    console.log(updatedInfo);
 
-    // Now call calculateAreal() after fetching the data
-    calculateAreal(boats); // Pass boats data to the function
-    calculatePrice(boats);
-    getMemberList(members, boats, berths); // Pass all the required data
-}
-
-initialize();
-
-function calculateAreal(boats) {
-    boats.forEach(boat => {
-        boat.areal = boat.length * boat.width;
-        console.log("Boat ID:" + boat.boatID + " Boat areal: " + boat.areal);
-    });
-}
-
-function calculatePrice(boats) {
-    boats.forEach(boat => {
-        boat.price = boat.areal * 50;
-        console.log("Boat ID:" + boat.boatID + " Boat price: " + boat.price);
-    });
-}
-
-function convertKeys(members, boats, berths) {
-    berths.forEach(berth => {
-        console.log(Object.keys(berth));
-    });
-    boats.forEach(boat => {
-        console.log(Object.keys(boat));
-    });
-    members.forEach(member => {
-        console.log(Object.keys(member));
-    });
-}
-
-function getMemberList(members, boats, berths) {
-    const table = document.getElementById("memberListBody");
-
-    members.forEach(memberObj => {
-        const member = memberObj.member;
-        var row = table.insertRow();
-
-        // Add editable member details
-        addEditableCells(row, [
-            { value: member.memberID, editable: false, type: "number"}, // Member ID is not editable
-            { value: member.name, editable: true, },
-            { value: member.address, editable: true },
-            { value: member.email, editable: true },
-            { value: member.phonenumber, editable: true },
-        ]);
-
-        if (member.boatownership == 1) {
-            const boat = boats.find(boat => boat.memberID === member.memberID);
-
-            if (boat) {
-                addEditableCells(row, [
-                    { value: boat.name, editable: true },
-                    { value: boat.length, editable: true, type: "number" },
-                    { value: boat.width, editable: true, type: "number" },
-                    { value: boat.areal, editable: false }, // Areal is calculated
-                    { value: boat.price, editable: false }, // Price is calculated
-                ]);
-
-                if (boat.berthID) {
-                    const berth = berths.find(berth => berth.berthID === boat.berthID);
-                    if (berth) {
-                        addEditableCells(row, [
-                            { value: berth.name, editable: false }, // Berth name is not editable
-                        ]);
-                    } else {
-                        addEditableCells(row, [
-                            { value: "No berth assigned", editable: false },
-                        ]);
-                    }
-                } else {
-                    addEditableCells(row, [
-                        { value: "No berth assigned", editable: false },
-                    ]);
-                }
-            } else {
-                addEditableCells(row, [
-                    { value: "No boat assigned", editable: false },
-                    { value: "", editable: false },
-                    { value: "", editable: false },
-                    { value: "", editable: false },
-                    { value: "", editable: false },
-                ]);
-            }
-        } else {
-            addEditableCells(row, [
-                { value: "No boat ownership", editable: false },
-                { value: "", editable: false },
-                { value: "", editable: false },
-                { value: "", editable: false },
-                { value: "", editable: false },
-            ]);
-        }
-    });
-
-    // Attach input change listener for dynamic updates
-    table.addEventListener("input", handleTableEdit);
-}
-
-function addEditableCells(tr, data) {
-    data.forEach(function(cell) {
-        const td = tr.insertCell();
-        const input = document.createElement("input");
-        input.type = cell.type || "text"; // Default to "text" if no type is provided
-        input.value = cell.value;
-            input.dataset.fieldName = cell.id || ""; // Save field name for backend update
-            td.appendChild(input);
-        }
-    );
-}
-
-function handleTableEdit(event) {
-    const target = event.target;
-    if (target.tagName === "INPUT") {
-        const newValue = target.value;
-        const fieldName = target.dataset.fieldName;
-        const memberID = target.closest("tr").querySelector("input").value; // Assuming MemberID is the first cell
-
-        // Optional: Update local members array (not shown in your snippet)
-        // Optional: Update backend
-        updateMemberData(memberID, fieldName, newValue);
-    }
-}
-
-function updateMemberData(memberID, fieldName, newValue) {
-    console.log(memberID, fieldName, newValue);
-    fetch(`/members/update/information/${memberID}`, {
-        method: "PUT",
+    // Sender POST request til endpoint
+    fetch(`/bookkeeperMemberList/updateMember`, {
+        method: 'POST',
         headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ newValue }), // Update specific field
+        // Konverterer til JSON string
+        body: JSON.stringify(updatedInfo),
     })
+        // Tjekker server respons
         .then(response => response.json())
         .then(data => {
-            console.log(`Updated for Member ID ${memberID}:`, data);
+            if (data) {
+                alert("Information successfully updated");
+
+                // Genindlæser siden så man kan se ændringer
+                refreshMemberList();
+            } else {
+                alert("Error: Member not found.");
+            }
         })
         .catch(error => {
-            console.error("Error updating member data:", error);
+            console.error("Error:", error);
+            alert("Error updating member information.");
         });
 }
 
-/*import { fetchApprovedMembers, fetchBoats, fetchBerth } from "./memberFetch.js";
-
-async function initialize() {
-    const members = await fetchApprovedMembers();
-    console.log(members); // Check the structure of members data
-    const boats = await fetchBoats();
-    console.log(boats);
-    const berths = await fetchBerth();
-    console.log(berths);
-
-    // Now call calculateAreal() after fetching the data
-    calculateAreal(boats); // Pass boats data to the function
-    calculatePrice(boats);
-    getMemberList(members, boats, berths); // Pass all the required data
+// Funktion der genindlæser siden
+function refreshMemberList() {
+    //Henter data fra endpoint og indsætter det i html input-fælterne
+    fetch('/bookkeeperMemberList')
+        .then(response => response.text())
+        .then(data => {
+            document.querySelector('.container').innerHTML = data;
+        })
+        .catch(error => {
+            console.error("Error refreshing the member list:", error);
+        });
 }
 
-initialize();
-
-function calculateAreal(boats) {
-    boats.forEach(boat => {
-        boat.areal = boat.length * boat.width;
-        console.log("Boat ID:" + boat.boatID + " Boat areal: " + boat.areal);
-    });
-}
-
-function calculatePrice(boats) {
-    boats.forEach(boat => {
-        boat.price = boat.areal * 50;
-        console.log("Boat ID:" + boat.boatID + " Boat price: " + boat.price);
-    });
-}
-
-function convertKeys(members, boats, berths) {
-    berths.forEach(berth => {
-        console.log(Object.keys(berth));
-    });
-    boats.forEach(boat => {
-        console.log(Object.keys(boat));
-    });
-    members.forEach(member => {
-        console.log(Object.keys(member));
-    });
-}
-
-function addCells(tr, data) {
-    // Iterate over the data
-    data.forEach(function(item) {
-        var td = tr.insertCell();
-        td.textContent = item;
-    });
-}
-
-function getMemberList(members, boats, berths) {
-    const table = document.getElementById("memberListBody");
-
-    // For each member, create a row and add the data
-    members.forEach(memberObj => {
-        const member = memberObj.member;  // Access the 'member' property
-        console.log(member);  // This should now log the member data correctly
-        var row = table.insertRow();
-
-        // Add member details to the row
-        addCells(row, [
-            member.memberID,
-            member.name,
-            member.address,
-            member.email,
-            member.phonenumber,
-        ]);
-
-        // Check if the member owns a boat
-        if (member.boatownership == 1) {
-            // Find the boat associated with the member by matching memberID
-            const boat = boats.find(boat => boat.memberID === member.memberID);
-
-            if (boat) {
-                // If a boat is found, add boat details to the row
-                addCells(row, [
-                    boat.name,          // Boat name
-                    boat.length,        // Boat length
-                    boat.width,         // Boat width
-                    boat.areal,         // Boat area (assuming you have calculated this already)
-                    boat.price,         // Boat price
-                ]);
-
-                // Now check if the boat has an associated berth
-                if (boat.berthID) {
-                    const berth = berths.find(berth => berth.berthID === boat.berthID);
-                    if (berth) {
-                        // If a berth is found, add berth name to the row
-                        addCells(row, [berth.name]);
-                    } else {
-                        // If no berth is found, display a placeholder
-                        addCells(row, ["No berth assigned"]);
-                    }
-                } else {
-                    // If no berthID is found on the boat, display a placeholder
-                    addCells(row, ["No berth assigned"]);
-                }
-
-            } else {
-                // If no boat is found, add empty values or a placeholder
-                addCells(row, ["No boat assigned", "", "", "", "", ""]);
+// Function der henter og filtrerer søgning
+function searchMembers() {
+    // Henter værdi fra input-feltet med søgning
+    const searchQuery = document.getElementById('searchInput').value;
+    //Sender GET request med søgequery
+    fetch('/bookkeeperMemberList/search?query=' + encodeURIComponent(searchQuery))
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
             }
-        } else {
-            // If the member does not own a boat, add empty values for boat details
-            addCells(row, ["No boat ownership", "", "", "", "", ""]);
-        }
-    });
-/*
-    function updateMemberData(memberID, fieldName, newValue) {
-        // Find the member object in the members array by memberID
-        const memberIndex = members.findIndex(member => member.memberID === memberID);
-        if (memberIndex > -1) {
-            members[memberIndex].member[fieldName] = newValue;
-        }
-            // Send a PUT request to the backend to update the name
-            fetch(`/members/update/${memberID}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(newValue),  // Send the new name in the body
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data) {
-                        alert("Name updated successfully to: " + data.name);
-                    } else {
-                        alert("Error: Member not found.");
-                    }
-                })
-                .catch(error => {
-                    console.error("Error:", error);
-                    alert("Error updating member name.");
-                });
-        }
-        */
+            return response.json();
+        })
+        //Opdaterer tabel baseret på søgning
+        .then(data => {
+            const tableBody = document.querySelector('tbody');
+            if (!tableBody) {
+                console.error('Table body not found!');
+                return;
+            }
 
+            // Fjerner alle rækker
+            tableBody.innerHTML = '';
 
+            // Generer nye felter med medlemmer der opfylder søgeresultat
+            data.forEach((member, index) => {
+                const row = `
+                <tr>
+                    <td><input type="text" name="memberID" value="${member.memberID}" class="form-control" data-row="${index}" readonly></td>
+                    <td><input type="text" name="memberName" value="${member.memberName}" class="form-control" data-row="${index}"></td>
+                    <td><input type="text" name="memberAddress" value="${member.memberAddress}" class="form-control" data-row="${index}"></td>
+                    <td><input type="text" name="memberEmail" value="${member.memberEmail}" class="form-control" data-row="${index}"></td>
+                    <td><input type="text" name="memberPhonenumber" value="${member.memberPhonenumber}" class="form-control" data-row="${index}"></td>
+                    <td hidden><input type="number" name="boatID" value="${member.boatID}" class="form-control" data-row="${index}" readonly></td>
+                    <td><input type="text" name="boatName" value="${member.boatName}" class="form-control" data-row="${index}"></td>
+                    <td><input type="number" name="boatLength" value="${member.boatLength}" class="form-control" data-row="${index}"></td>
+                    <td><input type="number" name="boatWidth" value="${member.boatWidth}" class="form-control" data-row="${index}"></td>
+                    <td><input type="text" name="boatAreal" value="${member.boatAreal}" class="form-control" data-row="${index}" readonly></td>
+                    <td><input type="text" name="boatPrice" value="${member.boatPrice}" class="form-control" data-row="${index}" readonly></td>
+                    <td hidden><input type="number" name="berthID" value="${member.berthID}" class="form-control" data-row="${index}" readonly></td>
+                    <td><input type="text" name="berthName" value="${member.berthName}" class="form-control" data-row="${index}" readonly></td>
+                    <td>
+                        <button onclick="updateMemberInformation(${index})" data-row="${index}">Gem Ændringer</button>
+                    </td>
+                </tr>`;
+                tableBody.insertAdjacentHTML('beforeend', row);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching members:', error);
+            alert('Could not fetch members. Please try again.');
+        });
+}
