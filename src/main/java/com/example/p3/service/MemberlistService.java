@@ -1,25 +1,22 @@
 package com.example.p3.service;
 
 import com.example.p3.dto.MemberlistDTO;
-import com.example.p3.model.Member;        // Entity for Member table
-import com.example.p3.model.Boat;         // Entity for Boat table
-import com.example.p3.model.Berth;        // Entity for Berth table
+import com.example.p3.model.Member;
+import com.example.p3.model.Boat;
+import com.example.p3.model.Berth;
 import com.example.p3.repository.MemberRepository;
 import com.example.p3.repository.BoatRepository;
 import com.example.p3.repository.BerthRepository;
 import com.example.p3.repository.MemberlistRepository;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class MemberlistService {
@@ -87,26 +84,50 @@ public class MemberlistService {
         // Return the updated DTO
         return dto;
     }
-    public void generateExcel(HttpServletResponse response) throws Exception {
+
+    private HSSFFont createFont(HSSFWorkbook workbook, boolean isBold, short fontSize, String fontName) {
+        HSSFFont font = workbook.createFont();
+        font.setBold(isBold);
+        font.setFontHeightInPoints(fontSize);
+        font.setFontName(fontName);
+        return font;
+    }
+
+    private HSSFCellStyle createCellStyle(HSSFWorkbook workbook, HSSFFont font, BorderStyle borderStyle) {
+        HSSFCellStyle style = workbook.createCellStyle();
+        style.setFont(font);
+        style.setBorderTop(borderStyle);
+        style.setBorderBottom(borderStyle);
+        style.setBorderLeft(borderStyle);
+        style.setBorderRight(borderStyle);
+        return style;
+    }
+
+    public void generateMemberlistExcel(HttpServletResponse response) throws Exception {
 
         List<MemberlistDTO> members = memberlistRepository.fetchAllMemberlistDetails();
 
         HSSFWorkbook workbook = new HSSFWorkbook();
-        HSSFSheet sheet = workbook.createSheet("Courses Info");
-        HSSFRow row = sheet.createRow(0);
+        HSSFSheet sheet = workbook.createSheet("Memberlist");
 
-        row.createCell(0).setCellValue("MemberID");
-        row.createCell(1).setCellValue("Name");
-        row.createCell(2).setCellValue("Adress");
-        row.createCell(3).setCellValue("Phonenumber");
-        row.createCell(4).setCellValue("Email");
-        row.createCell(5).setCellValue("Boatname");
-        row.createCell(6).setCellValue("Boatlength");
-        row.createCell(7).setCellValue("Boatwidth");
-        row.createCell(8).setCellValue("Boatareal");
-        row.createCell(9).setCellValue("Price");
-        row.createCell(10).setCellValue("Berthname");
+        // Create header font and style using helper methods
+        HSSFFont headerFont = createFont(workbook, true, (short) 12, "Arial");
+        HSSFCellStyle headerStyle = createCellStyle(workbook, headerFont, BorderStyle.MEDIUM);
 
+        // Create data font and style using helper methods
+        HSSFFont dataFont = createFont(workbook, false, (short) 12, "Arial");
+        HSSFCellStyle dataStyle = createCellStyle(workbook, dataFont, BorderStyle.THIN);
+
+
+        // Create header row
+        HSSFRow headerRow = sheet.createRow(0);
+        String[] headers = {"MemberID", "Name", "Address", "Phone Number", "Email", "Boat Name",
+                "Boat Length", "Boat Width", "Boat Area", "Price", "Berth Name"};
+        for (int i = 0; i < headers.length; i++) {
+            HSSFCell cell = headerRow.createCell(i);
+            cell.setCellValue(headers[i]);
+            cell.setCellStyle(headerStyle); // Apply header style
+        }
 
         int dataRowIndex = 1;
 
@@ -124,8 +145,17 @@ public class MemberlistService {
             dataRow.createCell(9).setCellValue(memberlistDTO.getBoatPrice());
             dataRow.createCell(10).setCellValue(memberlistDTO.getBerthName());
 
+            // Apply data style with highlighted borders to each cell
+            for (int i = 0; i <= 10; i++) {
+                dataRow.getCell(i).setCellStyle(dataStyle);
+            }
 
             dataRowIndex++;
+        }
+
+        // Auto-size all columns to fit content
+        for (int i = 0; i < headers.length; i++) {
+            sheet.autoSizeColumn(i);
         }
 
         ServletOutputStream ops = response.getOutputStream();
@@ -133,5 +163,58 @@ public class MemberlistService {
         workbook.close();
         ops.close();
 
+    }
+
+    public void generateEmailExcel(HttpServletResponse response) throws Exception {
+
+        List<MemberlistDTO> members = memberlistRepository.fetchAllMemberlistDetails();
+
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        HSSFSheet sheet = workbook.createSheet("EmailList");
+
+        // Create header font and style using helper methods
+        HSSFFont headerFont = createFont(workbook, true, (short) 12, "Arial");
+        HSSFCellStyle headerStyle = createCellStyle(workbook, headerFont, BorderStyle.MEDIUM);
+
+        // Create data font and style using helper methods
+        HSSFFont dataFont = createFont(workbook, false, (short) 12, "Arial");
+        HSSFCellStyle dataStyle = createCellStyle(workbook, dataFont, BorderStyle.THIN);
+
+
+        // Create header row
+        HSSFRow headerRow = sheet.createRow(0);
+        String[] headers = {"MemberID", "Name", "Email", "Phone Number"};
+        for (int i = 0; i < headers.length; i++) {
+            HSSFCell cell = headerRow.createCell(i);
+            cell.setCellValue(headers[i]);
+            cell.setCellStyle(headerStyle); // Apply header style
+        }
+
+        int dataRowIndex = 1;
+
+        for (MemberlistDTO memberlistDTO : members) {
+            HSSFRow dataRow = sheet.createRow(dataRowIndex);
+            dataRow.createCell(0).setCellValue(memberlistDTO.getMemberID());
+            dataRow.createCell(1).setCellValue(memberlistDTO.getMemberName());
+            dataRow.createCell(2).setCellValue(memberlistDTO.getMemberEmail());
+            dataRow.createCell(3).setCellValue(memberlistDTO.getMemberPhonenumber());
+
+            // Apply data style with highlighted borders to each cell
+            for (int i = 0; i <= 3; i++) {
+                dataRow.getCell(i).setCellStyle(dataStyle);
+            }
+
+            dataRowIndex++;
+        }
+
+        // Auto-size all columns to fit content
+        for (int i = 0; i < headers.length; i++) {
+            sheet.autoSizeColumn(i);
+        }
+
+        ServletOutputStream ops = response.getOutputStream();
+        workbook.write(ops);
+        workbook.close();
+        ops.close();
     }
 }
