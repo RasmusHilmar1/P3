@@ -16,27 +16,9 @@ class BoatRequestTableBook extends BoatRequestTable {
         super.findCorrespondingMember(memberID);
     }
     addCells(row, data) {
-        console.log("addCells called with data:", data);
-        let boatIdCell = row.insertCell();
-        boatIdCell.innerHTML = data.boat.boatID;// access boat ID property
-        let boatNameCell = row.insertCell();
-        boatNameCell.innerHTML = data.boat.name; // access boat name property
-        let memberIdCell = row.insertCell();
-        memberIdCell.innerHTML = data.boat.memberID; // access member id property
-        console.log(data);
-
-        //get members name with use of the boat's memberID
-        let memberNameCell = row.insertCell();
-        console.log(memberNameCell);
-        let correspondingMember = this.findCorrespondingMember(data.boat.memberID);
-        if (correspondingMember) {
-            memberNameCell.innerHTML = correspondingMember.member.name;
-        } else {
-            memberNameCell.innerHTML = "Unknown Member";
-            console.log("No member found with memberID:", data.boat.memberID);
-        }
-        console.log(correspondingMember);
-
+        super.addCells(row, data);
+    }
+    addSpecificCells(row, data) {
         // add icon cell for "tildelt"
         createIcons(row);
 

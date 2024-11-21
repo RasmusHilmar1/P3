@@ -60,6 +60,7 @@ export class Table {
             let row = tableBody.insertRow();
             row.id = "row_" + array.indexOf(item);
             this.addCells(row, item);
+            this.addSpecificCells(row, item);
             console.log(item);
         });
     }
@@ -69,8 +70,13 @@ export class Table {
             td.innerHTML = value;// Access data using item within forEach
         });
     }
+    addSpecificCells(row, data){
+        let newCell = row.insertCell();
+        newCell.innerHTML = data;
+    }
 }
 
+// new class for specific boat request table
 export class BoatRequestTable extends Table {
     constructor(elementId, title, headers, firstArray, secondArray, colspan) {
         super(elementId, title, headers, firstArray, secondArray, colspan);// call parent constructor
@@ -91,6 +97,7 @@ export class BoatRequestTable extends Table {
             let row = tableBody.insertRow();
             row.id = "row_" + firstArray.indexOf(item);
             this.addCells(row, item);
+            this.addSpecificCells(row, item);
             console.log(item);
         });
     }
@@ -102,7 +109,29 @@ export class BoatRequestTable extends Table {
         return member;
     }
     addCells(row, data) {
-        super.addCells(row, data);
+        console.log("addCells called with data:", data);
+        let boatIdCell = row.insertCell();
+        boatIdCell.innerHTML = data.boat.boatID;// access boat ID property
+        let boatNameCell = row.insertCell();
+        boatNameCell.innerHTML = data.boat.name; // access boat name property
+        let memberIdCell = row.insertCell();
+        memberIdCell.innerHTML = data.boat.memberID; // access member id property
+        console.log(data);
+
+        let memberNameCell = row.insertCell();
+        console.log(memberNameCell);
+        let correspondingMember = this.secondArray.find(member => member.member.memberID === data.boat.memberID);
+        console.log(correspondingMember);
+        if (correspondingMember) {
+            memberNameCell.innerHTML = correspondingMember.member.name;
+        } else {
+            memberNameCell.innerHTML = "Unknown Member";
+            console.log("No member found with memberID:", data.boat.memberID);
+        }
+        console.log(correspondingMember);
+    }
+    addSpecificCells(row, data){
+        super.addSpecificCells(row, data);
     }
 }
 
