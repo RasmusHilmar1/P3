@@ -84,3 +84,19 @@ async function fetchPendingMembers(){
         console.error("Error fetching pending members:", error);
     }
 }
+
+export async function fetchPendingBoats(){
+    try {
+        const response = await fetch("/api/pendingBoats");
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const boats = await response.json();
+        console.log("Fetched pending boats:", boats);
+
+        return boats;
+
+    } catch (error) {
+        console.error("Error fetching pending boats:", error);
+    }
+}

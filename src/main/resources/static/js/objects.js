@@ -1,4 +1,4 @@
-export {Berth, Boat, Member};
+export {Berth, Boat, PendingBoat, Member};
 
 // Classes for the different objects from database
 class Berth {
@@ -28,6 +28,24 @@ class Boat {
     }
 }
 
+class PendingBoat {
+    constructor(id, boat){
+        this.id = id;
+        this.boat = {
+            boatID: boat.boatID,
+            memberID: boat.memberID,
+            berthID: boat.berthID,
+            name: boat.name,
+            type: boat.type,
+            manufacturer: boat.manufacturer,
+            length: boat.length,
+            width: boat.width,
+            draught: boat.draught,
+            insurance: boat.insurance,
+        }
+    }
+}
+
 class Member {
     constructor(id, member){
         this.id = id;
@@ -42,6 +60,7 @@ class Member {
         }
     }
 }
+
 
 
 

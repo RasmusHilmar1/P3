@@ -1,15 +1,20 @@
 
 //import fetch function and objects
-import {fetchApprovedMembers, fetchBoats, fetchBerth, fetchPendingMembers} from "./memberFetch.js";
-import {Berth, Boat, Member} from "./objects.js";
+import {fetchApprovedMembers, fetchBoats, fetchBerth, fetchPendingMembers, fetchPendingBoats} from "./memberFetch.js";
+import {Berth, Boat, PendingBoat, Member} from "./objects.js";
 
 // class for a table
 export class Table {
-    constructor(elementId, title, headers, array) {
+    constructor(elementId, title, headers, firstArray, secondArray, colspan) {
         this.element = document.getElementById(elementId);
+        console.log(this.element);
         this.title = title;
         this.headers = headers;
-        this.array = array;
+        this.firstArray = firstArray;
+        console.log("Data parsed to createTable:", this.firstArray);
+        this.secondArray = secondArray;
+        console.log("Data parsed as second array:", this.secondArray);
+        this.colspan = colspan;
 
         this.createTable();
     }
@@ -25,7 +30,8 @@ export class Table {
         const tableHeadRow = tableHead.insertRow();
         const tableHeadCell = tableHeadRow.insertCell();
         tableHeadCell.innerHTML = this.title;
-        tableHeadCell.colSpan = 5;
+        console.log(this.title);
+        tableHeadCell.colSpan = this.colspan;
         tableHead.appendChild(tableHeadCell);
         table.appendChild(tableHead);
 
@@ -39,11 +45,15 @@ export class Table {
         table.appendChild(headerRow);
 
         //creating rows for the data
-        this.addDataRows(this.array, tableBody);
+        this.addDataRows(this.firstArray, tableBody);
 
         table.appendChild(tableBody);
 
         this.element.appendChild(table);
+    }
+    findCorrespondingMember(memberID){ // could maybe be edited into a more general "findCorrespondingObject" or something
+        const member = this.secondArray.find(member => member.memberID === memberID);
+        return member? member.name : "Unknown Member";
     }
     addDataRows(array, tableBody) {
         array.forEach(item => {
@@ -62,7 +72,7 @@ export class Table {
 }
 
 //function for creating button element
-export function createBtn(row, member, btnText) {
+export function createBtn(row, boat, btnText) {
     let buttonCell = row.insertCell();
     let buttonContainer = document.createElement("a");
     let buttonElement = document.createElement("button");
@@ -71,12 +81,10 @@ export function createBtn(row, member, btnText) {
     buttonElement.classList.add("addBtn");
     buttonElement.textContent = btnText;
 
-    buttonElement.id = "addBtn" + member.member.memberID;
+    buttonElement.id = "addBtn" + boat.boat.boatID;
 
     buttonContainer.appendChild(buttonElement);
     buttonCell.appendChild(buttonContainer);
-
-    //REMEMBER TO ADD EVENT LISTENER HERE IN ORDER TO CREATE FEATURE WITH ICONS
 }
 
 // function for creating icons
@@ -97,6 +105,9 @@ export async function parseData(method, object, array){
             array.push(new object(objectData.berthID, objectData.name, objectData.availability, objectData.length, objectData.width, objectData.depth, objectData.pierId));
         } else if(object === Boat){
             array.push(new Boat(objectData.boatID, objectData.memberID, objectData.berthID, objectData.name, objectData.type, objectData.manufacturer, objectData.length, objectData.width, objectData.draught, objectData.insurance));
+        } else if(object === PendingBoat){
+            array.push(new object(objectData.id, objectData.boat));
+            console.log(objectData.id, objectData.boat);
         } else if (object === Member) {
             array.push(new object(objectData.id, objectData.member));
         }
@@ -105,26 +116,22 @@ export async function parseData(method, object, array){
     return array;
 }
 
-// function for updating corresponding rows in each roles' respective table
-// IMPORTANT: the corresponding row can be found, but the state of the cells cannot be saved without serverside
-export function updateCorrespondingRow(rowId, targetCell, action) {
-    // CHECK COMMENT ABOVE
-}
-
 // function to call with window.onload
-export async function createTable(boatsArray, approvedMembersArray, pendingMembersArray, berthsArray, Table, array){
+export async function createTable(boatsArray, approvedMembersArray, pendingMembersArray, pendingBoatsArray, berthsArray, Table, elementId, title, headers, firstArray, secondArray, colspan){
     try {
         boatsArray = await parseData(fetchBoats(), Boat, boatsArray);
+        pendingBoatsArray = await  parseData(fetchPendingBoats(), PendingBoat, pendingBoatsArray)
         approvedMembersArray = await parseData(fetchApprovedMembers(), Member, approvedMembersArray);
         pendingMembersArray = await parseData(fetchPendingMembers(), Member, pendingMembersArray);
         berthsArray = await parseData(fetchBerth(), Berth, berthsArray);
         console.log(boatsArray);
+        console.log(pendingBoatsArray);
         console.log(approvedMembersArray);
         console.log(pendingMembersArray);
         console.log(berthsArray);
 
         console.log("data loaded!");
-        new Table("boatRequestsContainer",  "Bådanmodninger", ["ID", "Navn", "Tildelt Båd", "Sendt Faktura", "Faktura Betalt"], array);
+        new Table(elementId, title, headers, firstArray, secondArray, colspan);
 
     } catch (error){
         console.log("data not found and table not created.");

@@ -2,23 +2,45 @@
 //import functions
 import {createBtn, createIcons,  Table, createTable} from "./boatRequests.js";
 
-// create new Table constructor that overrides the one from objects.js
+// create new Table constructor that overrides the one from boatRequests.js
 class BoatRequestTableVessel extends Table {
-    constructor(elementId, title, headers, array) {
-        super(elementId, title, headers, array);// Call parent constructor
+    constructor(elementId, title, headers, firstArray, secondArray, colspan) {
+        super(elementId, title, headers, firstArray, secondArray, colspan);// call parent constructor
     }
     createTable() {
         super.createTable();
     }
-    addDataRows(array, tableBody) {
-        super.addDataRows(array, tableBody); //IMPORTANT: husk at lav sådan at det kun er dem der mangler at betale og få tildelt plads der kommer frem (PENDING BOATS)
+    addDataRows(firstArray, tableBody) {
+        super.addDataRows(firstArray, tableBody);
+    }
+    findCorrespondingMember(memberID){
+        console.log("searching for member with memberID:", memberID);
+        console.log("in array:", this.secondArray);
+        const member = this.secondArray.find(member => member.member.memberID === memberID);
+        console.log("found member:", member);
+        return member;
     }
     addCells(row, data) {
-        let idCell = row.insertCell();
-        idCell.innerHTML = data.member.memberID; // access ID property
-        let nameCell = row.insertCell();
-        nameCell.innerHTML = data.member.name; // access name property
+        console.log("addCells called with data:", data);
+        let boatIdCell = row.insertCell();
+        boatIdCell.innerHTML = data.boat.boatID;// access boat ID property
+        let boatNameCell = row.insertCell();
+        boatNameCell.innerHTML = data.boat.name; // access boat name property
+        let memberIdCell = row.insertCell();
+        memberIdCell.innerHTML = data.boat.memberID; // access member id property
         console.log(data);
+
+        //get members name with use of the boat's memberID
+        let memberNameCell = row.insertCell();
+        console.log(memberNameCell);
+        let correspondingMember = this.findCorrespondingMember(data.boat.memberID);
+        if (correspondingMember) {
+            memberNameCell.innerHTML = correspondingMember.member.name;
+        } else {
+            memberNameCell.innerHTML = "Unknown Member";
+            console.log("No member found with memberID:", data.boat.memberID);
+        }
+        console.log(correspondingMember);
 
         // add button for "tildelt"
         createBtn(row, data, "Tildelt");
@@ -31,9 +53,21 @@ class BoatRequestTableVessel extends Table {
 }
 
 // initialize the empty arrays for the data
-let boats = [], approvedMembers = [], pendingMembers = [], berths = [];
+let boats = [], approvedMembers = [], pendingMembers = [], berths = [], pendingBoats=[];
 
 // make sure that the calls to fetch are made after the window has finished loading all content
 window.onload = async () => {
-    await createTable(boats, approvedMembers, pendingMembers, berths, BoatRequestTableVessel, approvedMembers);
+    await createTable(
+        boats,
+        approvedMembers,
+        pendingMembers,
+        pendingBoats,
+        berths,
+        BoatRequestTableVessel,
+        "boatRequestsContainer",
+        "Bådanmodninger",
+        ["Båd ID", "Båd Navn", "Medlemsnr.", "Medlems Navn", "Tildelt Båd", "Sendt Faktura", "Faktura Betalt"],
+        pendingBoats,
+        approvedMembers, // IMPORTANT: only boat requests, not sure if it must be approved members, pending members or all members?
+        7 );
 };
