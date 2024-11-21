@@ -1,9 +1,136 @@
 
-//import and fetch the pending members
-import {fetchApprovedMembers, fetchBoats, fetchBerth, fetchPendingMembers} from "./memberFetch.js";
-import {Berth, Boat, Member} from "./objects.js";
+//import fetch function and objects
+import {fetchApprovedMembers, fetchBoats, fetchBerth, fetchPendingMembers, fetchPendingBoats} from "./memberFetch.js";
+import {Berth, Boat, PendingBoat, Member} from "./objects.js";
 
-async function parseData(method, object, array){
+// class for a table
+export class Table {
+    constructor(elementId, title, headers, firstArray, secondArray, colspan) {
+        this.element = document.getElementById(elementId);
+        console.log(this.element);
+        this.title = title;
+        this.headers = headers;
+        this.firstArray = firstArray;
+        console.log("Data parsed to createTable:", this.firstArray);
+        this.secondArray = secondArray;
+        console.log("Data parsed as second array:", this.secondArray);
+        this.colspan = colspan;
+
+        this.createTable();
+    }
+
+    // function for creating table
+    createTable() {
+        // creating the structure of the table
+        const table = document.createElement("table");
+        const tableHead = document.createElement("thead");
+        const tableBody = document.createElement("tbody");
+
+        // creating the header for the table
+        const tableHeadRow = tableHead.insertRow();
+        const tableHeadCell = tableHeadRow.insertCell();
+        tableHeadCell.innerHTML = this.title;
+        console.log(this.title);
+        tableHeadCell.colSpan = this.colspan;
+        tableHead.appendChild(tableHeadCell);
+        table.appendChild(tableHead);
+
+        //Adding header rows to differentiate between content
+        const headerRow = document.createElement("tr");
+        this.headers.forEach(item => {
+            let th = headerRow.insertCell();
+            th.innerHTML = item;
+            console.log(item);
+        });
+        table.appendChild(headerRow);
+
+        //creating rows for the data
+        this.addDataRows(this.firstArray, tableBody);
+
+        table.appendChild(tableBody);
+
+        this.element.appendChild(table);
+    }
+    findCorrespondingMember(memberID){ // could maybe be edited into a more general "findCorrespondingObject" or something
+        const member = this.secondArray.find(member => member.memberID === memberID);
+        return member? member.name : "Unknown Member";
+    }
+    addDataRows(array, tableBody) {
+        array.forEach(item => {
+            let row = tableBody.insertRow();
+            row.id = "row_" + array.indexOf(item);
+            this.addCells(row, item);
+            console.log(item);
+        });
+    }
+    addCells(row, data){
+        Object.values(data).forEach(value => {
+            let td = row.insertCell();
+            td.innerHTML = value;// Access data using item within forEach
+        });
+    }
+}
+
+export class BoatRequestTable extends Table {
+    constructor(elementId, title, headers, firstArray, secondArray, colspan) {
+        super(elementId, title, headers, firstArray, secondArray, colspan);// call parent constructor
+    }
+    createTable() {
+        super.createTable();
+    }
+    addDataRows(firstArray, tableBody) {
+        // filter the pending boats
+        const filteredBoats = firstArray.filter(boat => {
+            const correspondingMember = this.findCorrespondingMember(boat.boat.memberID);
+            return correspondingMember !== "Unknown Member"; // only include pending boats with approved members
+        });
+        console.log(filteredBoats);
+
+        // only create rows for the filtered boats
+        filteredBoats.forEach(item => {
+            let row = tableBody.insertRow();
+            row.id = "row_" + firstArray.indexOf(item);
+            this.addCells(row, item);
+            console.log(item);
+        });
+    }
+    findCorrespondingMember(memberID){
+        console.log("searching for member with memberID:", memberID);
+        console.log("in array:", this.secondArray);
+        const member = this.secondArray.find(member => member.member.memberID === memberID);
+        console.log("found member:", member);
+        return member;
+    }
+    addCells(row, data) {
+        super.addCells(row, data);
+    }
+}
+
+//function for creating button element
+export function createBtn(row, boat, btnText) {
+    let buttonCell = row.insertCell();
+    let buttonContainer = document.createElement("a");
+    let buttonElement = document.createElement("button");
+
+    // give the buttons a class name
+    buttonElement.classList.add("addBtn");
+    buttonElement.textContent = btnText;
+
+    buttonElement.id = "addBtn" + boat.boat.boatID;
+
+    buttonContainer.appendChild(buttonElement);
+    buttonCell.appendChild(buttonContainer);
+}
+
+// function for creating icons
+export function createIcons(row){
+        let iconCell = row.insertCell();
+        iconCell.innerHTML = "";
+        console.log(iconCell);
+}
+
+// parsing the data from fetch
+export async function parseData(method, object, array){
 
     const parsedData = await method;
     console.log(parsedData);
@@ -13,70 +140,36 @@ async function parseData(method, object, array){
             array.push(new object(objectData.berthID, objectData.name, objectData.availability, objectData.length, objectData.width, objectData.depth, objectData.pierId));
         } else if(object === Boat){
             array.push(new Boat(objectData.boatID, objectData.memberID, objectData.berthID, objectData.name, objectData.type, objectData.manufacturer, objectData.length, objectData.width, objectData.draught, objectData.insurance));
+        } else if(object === PendingBoat){
+            array.push(new object(objectData.id, objectData.boat));
+            console.log(objectData.id, objectData.boat);
         } else if (object === Member) {
             array.push(new object(objectData.id, objectData.member));
         }
     });
-    console.log(array);
+    // return the array with elements
+    return array;
 }
 
-let boats = [], approvedMembers = [], pendingMembers = [], berths = [];
+// function to call with window.onload
+export async function createTable(boatsArray, approvedMembersArray, pendingMembersArray, pendingBoatsArray, berthsArray, Table, elementId, title, headers, firstArray, secondArray, colspan){
+    try {
+        boatsArray = await parseData(fetchBoats(), Boat, boatsArray);
+        pendingBoatsArray = await  parseData(fetchPendingBoats(), PendingBoat, pendingBoatsArray)
+        approvedMembersArray = await parseData(fetchApprovedMembers(), Member, approvedMembersArray);
+        pendingMembersArray = await parseData(fetchPendingMembers(), Member, pendingMembersArray);
+        berthsArray = await parseData(fetchBerth(), Berth, berthsArray);
+        console.log(boatsArray);
+        console.log(pendingBoatsArray);
+        console.log(approvedMembersArray);
+        console.log(pendingMembersArray);
+        console.log(berthsArray);
 
-boats = parseData(fetchBoats(), Boat, boats);
-console.log(boats);
-approvedMembers = parseData(fetchApprovedMembers(), Member, approvedMembers);
-console.log(approvedMembers);
-pendingMembers = parseData(fetchPendingMembers(), Member, pendingMembers);
-console.log(pendingMembers);
-berths = parseData(fetchBerth(), Berth, berths);
-console.log(berths);
+        console.log("data loaded!");
+        new Table(elementId, title, headers, firstArray, secondArray, colspan);
 
-
-/*
-//Helper function for adding cells to a table dynamically
-function addCells(tr, data){
-    // Iterate over the data
-    data.forEach(function(item, index){
-        var td = tr.insertCell();
-
-        // Create buttons in the cells from index 2 and up, else add the data from the array
-        if (index === 2) {
-            //create buttons for distributing berths
-            var buttonContainer = document.createElement("a");
-            var buttonElement = document.createElement("button");
-            buttonElement.textContent = "Tildel plads";
-            buttonElement.classList.add("distributeBerthsBtn");
-            buttonElement.id = "distributeBerthsBtn";
-            buttonContainer.appendChild(buttonElement);
-            td.appendChild(buttonContainer);
-            buttonContainer.setAttribute("href", "vesselInspectorStartPage.html"); //Remember to change this to the correct page. Should the vessel inspector be able to distribute berths from his startpage?
-        } else if (index > 2) {
-            //create icons to see the progress of the tasks of the bookkeeper
-            var cellIcon = document.createElement("img");
-            cellIcon.id = "iconsBoatRequests";
-            cellIcon.classList.add("iconsBoatRequests");
-            if (data[index] === 'yes'){
-                cellIcon.src = '/Images/Icons/AcceptBtnIcon.png'; // Remember to find correct icons and add them to the folder
-            } else if (data[index] === 'no'){
-                cellIcon.src = '/Images/Icons/DenyBtnIcon.png'; // Remember to find correct icons and add them to the folder
-            }
-            td.appendChild(cellIcon);
-        } else {
-            //create text-content of data
-            td.textContent = item;
-        }
-    });
+    } catch (error){
+        console.log("data not found and table not created.");
+    }
 }
 
-//Function for getting information and adding it to the table
-function getBoatRequests(){
-    var table = document.getElementById("boatRequestsBody");
-
-    //For each element in the array of data there is added a new row with the data
-    pendingMembers.forEach(function (item){
-        var row = table.insertRow();
-        addCells(row, [item.item.memberID, item.item.name]);
-    });
-}
-
-getBoatRequests(); */
