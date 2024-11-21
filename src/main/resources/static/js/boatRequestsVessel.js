@@ -1,9 +1,9 @@
 
 //import functions
-import {createBtn, createIcons,  Table, createTable} from "./boatRequests.js";
+import {createBtn, createIcons, createTable, BoatRequestTable} from "./boatRequests.js";
 
 // create new Table constructor that overrides the one from boatRequests.js
-class BoatRequestTableVessel extends Table {
+class BoatRequestTableVessel extends BoatRequestTable {
     constructor(elementId, title, headers, firstArray, secondArray, colspan) {
         super(elementId, title, headers, firstArray, secondArray, colspan);// call parent constructor
     }
@@ -14,11 +14,7 @@ class BoatRequestTableVessel extends Table {
         super.addDataRows(firstArray, tableBody);
     }
     findCorrespondingMember(memberID){
-        console.log("searching for member with memberID:", memberID);
-        console.log("in array:", this.secondArray);
-        const member = this.secondArray.find(member => member.member.memberID === memberID);
-        console.log("found member:", member);
-        return member;
+        super.findCorrespondingMember(memberID);
     }
     addCells(row, data) {
         console.log("addCells called with data:", data);
@@ -68,6 +64,6 @@ window.onload = async () => {
         "Bådanmodninger",
         ["Båd ID", "Båd Navn", "Medlemsnr.", "Medlems Navn", "Tildelt Båd", "Sendt Faktura", "Faktura Betalt"],
         pendingBoats,
-        approvedMembers, // IMPORTANT: only boat requests, not sure if it must be approved members, pending members or all members?
+        approvedMembers,
         7 );
 };

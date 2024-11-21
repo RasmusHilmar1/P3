@@ -71,6 +71,41 @@ export class Table {
     }
 }
 
+export class BoatRequestTable extends Table {
+    constructor(elementId, title, headers, firstArray, secondArray, colspan) {
+        super(elementId, title, headers, firstArray, secondArray, colspan);// call parent constructor
+    }
+    createTable() {
+        super.createTable();
+    }
+    addDataRows(firstArray, tableBody) {
+        // filter the pending boats
+        const filteredBoats = firstArray.filter(boat => {
+            const correspondingMember = this.findCorrespondingMember(boat.boat.memberID);
+            return correspondingMember !== "Unknown Member"; // only include pending boats with approved members
+        });
+        console.log(filteredBoats);
+
+        // only create rows for the filtered boats
+        filteredBoats.forEach(item => {
+            let row = tableBody.insertRow();
+            row.id = "row_" + firstArray.indexOf(item);
+            this.addCells(row, item);
+            console.log(item);
+        });
+    }
+    findCorrespondingMember(memberID){
+        console.log("searching for member with memberID:", memberID);
+        console.log("in array:", this.secondArray);
+        const member = this.secondArray.find(member => member.member.memberID === memberID);
+        console.log("found member:", member);
+        return member;
+    }
+    addCells(row, data) {
+        super.addCells(row, data);
+    }
+}
+
 //function for creating button element
 export function createBtn(row, boat, btnText) {
     let buttonCell = row.insertCell();
