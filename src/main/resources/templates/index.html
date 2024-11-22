@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="/css/map.css" />
     <link rel="stylesheet" href="/css/navigationBar.css" />
     <link rel="stylesheet" href="/css/sidebar.css" />
-
 </head>
 <body>
 <header class="header">
@@ -29,30 +28,26 @@
 </div>
 <div id="sidebar" class="sidebar">
     <input type="text" id="searchBar" class="searchBar" placeholder="Søg på medlem, båd eller bådplads">
-    <button id="memberBtn" class="sidebarMenuBtn">Medlemmer</button>
+    <button id="memberBtn" class="sidebarMenuBtn" onclick="toggleMemberList()">Medlemmer</button>
     <button id="berthBtn" class="sidebarMenuBtn">Bådpladser</button>
+
+    <!-- Member List Table (Initially hidden, shown when "Medlemmer" button is clicked) -->
     <table id="memberList" class="memberList">
         <thead id="memberTableHeader" class="tableHeader">
-        <!-- Dynamic header is added here -->
         </thead>
         <tbody>
-        <!-- Dynamic table is added here -->
+        <!-- Dynamic table rows will be added here -->
         </tbody>
     </table>
+
+    <!-- Berth List Table (Initially hidden, can be implemented similarly) -->
     <table id="berthList" class="berthList">
         <thead id="berthTableHeader" class="tableHeader">
-        <!-- Dynamic header is added here -->
         </thead>
         <tbody>
-        <!-- Dynamic table is added here -->
+        <!-- Dynamic berth rows will be added here -->
         </tbody>
     </table>
-    <form>
-        <b>ID:</b><div id="berthId"></div>
-        <b>Name:</b><div id="berthName"></div>
-        <b>status:</b><div id="berthStatus"></div>
-    </form>
-    <!--<form id="berthList"></form>-->
 </div>
 <div id="harbor" class="harbor">
     <button id="vestreBaadehavn" class="btnHarbor pressed">Vestre Bådehavn</button>
@@ -61,10 +56,10 @@
 
 <!-- kortet -->
 <div id="map" class="map"></div>
+
 <script type="module" src="/js/map.js" defer></script>
 <script src="/js/sidebar.js" defer></script>
 <script src="/js/navigationbar.js"></script>
-
 
 </body>
 </html>

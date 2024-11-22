@@ -15,4 +15,6 @@ public interface BoatRepository extends JpaRepository<Boat, Integer> {
 
     List<Boat> findByMemberID(int memberId);
 
+    Boat getBoatByBerthID(int berthID); // Custom method to find a boat by berth ID
+
 }

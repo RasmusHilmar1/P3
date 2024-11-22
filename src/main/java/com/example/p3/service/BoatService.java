@@ -116,7 +116,7 @@ public class BoatService {
         }
 
         // Convert Boat entity to BoatDTO
-        return new BoatDTO(boat.getBoatID(), boat.getName());
+        return new BoatDTO(boat.getBoatID(), boat.getName(), boat.getBerthID());
     }
 
     // Method to get all boats for a specific member
@@ -127,4 +127,9 @@ public class BoatService {
                 .map(this::convertToDTO) // Convert each Boat entity to BoatDTO
                 .collect(Collectors.toList()); // Return a list of BoatDTOs
     }
+
+    public Boat getBoatsByBerthID(int berthID) { // Custom method to find a boat by berth ID
+        return boatRepository.getBoatByBerthID(berthID);
+    }
 }
+

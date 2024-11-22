@@ -11,6 +11,8 @@ public interface BerthRepository extends JpaRepository<Berth, Integer> {
     // Custom method to find a Berth by ID
     Berth findByBerthID(int BerthID);
 
+    Berth findByMemberID(int MemberId);
+
     List<Berth> findAll();
 
 }
