@@ -111,3 +111,50 @@ function searchMembers() {
             alert('Could not fetch members. Please try again.');
         });
 }
+
+function exportSelectedList() {
+    const selectedList = document.getElementById('listSelect').value;
+    console.log(`Selected List: ${selectedList}`);
+
+    if (!selectedList) {
+        alert("Please select a list first.");
+        return; // Stop the function if no list is selected
+    }
+
+    // Determine the endpoint based on selected option
+    let url = '';
+    if (selectedList === 'memberList') {
+        url = '/bookkeeperMemberlist/MemberExcel';
+    } else if (selectedList === 'emailList') {
+        url = '/bookkeeperMemberlist/EmailExcel';
+    } else {
+        console.error('Invalid selection');
+        alert('Invalid selection');
+        return;
+    }
+
+    // Fetch the endpoint and handle response as a file download
+    fetch(url, { method: 'GET' })
+        .then(response => {
+            if (response.ok) {
+                return response.blob();  // Convert the response to a Blob (binary data)
+            } else {
+                throw new Error(`Request failed with status ${response.status}`);
+            }
+        })
+        .then(blob => {
+            // Create a link element
+            const link = document.createElement('a');
+            const url = window.URL.createObjectURL(blob); // Create a URL for the Blob
+            link.href = url;
+            link.download = selectedList === 'memberList' ? 'MemberList.xls' : 'EmailList.xls'; // Name the file based on selection
+            link.click(); // Programmatically click the link to trigger the download
+
+            // Clean up
+            window.URL.revokeObjectURL(url);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Failed to fetch the list. Please try again.');
+        });
+}
