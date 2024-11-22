@@ -1,5 +1,5 @@
-import {fetchApprovedMembers, fetchBoats, fetchBerth} from "./memberFetch.js";
-import {updateAvailability, updateBoatBerthId} from "./update.js";
+import {fetchApprovedMembers, fetchBoats, fetchBerth} from "./fetchMethods.js";
+import {updateAvailability, updateBoatBerthId} from "./updateMethods.js";
 
 // Add sidebar -->
 var sidebar = document.getElementById("sidebar");

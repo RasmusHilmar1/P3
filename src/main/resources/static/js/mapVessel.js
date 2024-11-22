@@ -1,5 +1,5 @@
 import {myGeoJson} from "./geojson.js";
-import {fetchApprovedMembers, fetchBoats, fetchBerth} from "./memberFetch.js";
+import {fetchApprovedMembers, fetchBoats, fetchBerth} from "./fetchMethods.js";
 
 // Create map for leaflet -->
 var map = L.map('map', {
@@ -61,7 +61,6 @@ harbor1.addEventListener("click", function(event) {
 
 //Hvis knappen for "skudehavn" trykket vil kortet for den havn vises
 const harbor2 = document.getElementById("skudehavn");
-
 
 harbor2.addEventListener("click", function(event) {
 

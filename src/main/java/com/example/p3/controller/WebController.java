@@ -65,11 +65,6 @@ public class WebController {
         return "login";
     }
 
-    @GetMapping("/boat")
-    public String showBoatsPage() {
-        return "boat";
-    }
-
     @GetMapping("/index")
     public String showIndexPage() {
         return "index";
@@ -78,17 +73,6 @@ public class WebController {
     @GetMapping("/berthscomp")
     public String showCompatablityScore() {
         return "comp";
-    }
-
-
-    @GetMapping("/approvedMembers")
-    public String showApprovedMembers() {
-        return "approvedMembers";
-    }
-
-    @GetMapping("/berths")
-    public String showBerths() {
-        return "berths";
     }
 
     @RequestMapping("/default")

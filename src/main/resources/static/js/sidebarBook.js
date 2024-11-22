@@ -1,4 +1,4 @@
-import {fetchApprovedMembers} from "./memberFetch.js";
+import {fetchApprovedMembers} from "./fetchMethods.js";
 
 // Add sidebar -->
 var sidebar = document.getElementById("sidebar");

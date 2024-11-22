@@ -1,5 +1,5 @@
 // import fetch functions
-import {fetchApprovedMembers, fetchBoats, fetchBerth} from "./memberFetch.js";
+import {fetchApprovedMembers, fetchBoats, fetchBerth} from "./fetchMethods.js";
 
 const members = await fetchApprovedMembers();
 console.log(members);

@@ -1,5 +1,5 @@
 import {myGeoJson} from "./geojson.js";
-import {fetchApprovedMembers, fetchBoats, fetchBerth} from "./memberFetch.js";
+import {fetchApprovedMembers, fetchBoats, fetchBerth} from "./fetchMethods.js";
 
 // Create map for leaflet -->
 var map = L.map('map', {

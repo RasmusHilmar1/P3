@@ -1,4 +1,4 @@
-import {fetchApprovedMembers, fetchBoats, fetchBerth, fetchPendingMembers} from "./memberFetch.js";
+import {fetchApprovedMembers, fetchBoats, fetchBerth, fetchPendingMembers} from "./fetchMethods.js";
 import {createBtn, createIcons, Table, createTable} from "./boatRequests.js";
 
 class MemberRequestTable extends Table {

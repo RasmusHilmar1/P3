@@ -69,7 +69,7 @@ var myGeoJson =
                     ]
                 },
                 "properties": {
-                    "id": "FB01",
+                    "id": "1",
                     "name": "Berth FB01"
                 }
             },
@@ -103,7 +103,7 @@ var myGeoJson =
                     ]
                 },
                 "properties": {
-                    "id": "FB02",
+                    "id": "2",
                     "name": "Berth FB02"
                 }
             },
@@ -137,7 +137,7 @@ var myGeoJson =
                     ]
                 },
                 "properties": {
-                    "id": "FB03",
+                    "id": "3",
                     "name": "Berth FB03"
                 }
             },
@@ -171,7 +171,7 @@ var myGeoJson =
                     ]
                 },
                 "properties": {
-                    "id": "FB04",
+                    "id": "4",
                     "name": "Berth FB04"
                 }
             },
@@ -205,7 +205,7 @@ var myGeoJson =
                     ]
                 },
                 "properties": {
-                    "id": "FB05",
+                    "id": "5",
                     "name": "Berth FB05"
                 }
             },
@@ -239,7 +239,7 @@ var myGeoJson =
                     ]
                 },
                 "properties": {
-                    "id": "FB06",
+                    "id": "6",
                     "name": "Berth FB06"
                 }
             },
@@ -273,7 +273,7 @@ var myGeoJson =
                     ]
                 },
                 "properties": {
-                    "id": "FB07",
+                    "id": "7",
                     "name": "Berth FB07"
                 }
             },
@@ -307,7 +307,7 @@ var myGeoJson =
                     ]
                 },
                 "properties": {
-                    "id": "FB08",
+                    "id": "8",
                     "name": "Berth FB08"
                 }
             },
@@ -341,7 +341,7 @@ var myGeoJson =
                     ]
                 },
                 "properties": {
-                    "id": "FB09",
+                    "id": "9",
                     "name": "Berth FB09"
                 }
             },
@@ -375,7 +375,7 @@ var myGeoJson =
                     ]
                 },
                 "properties": {
-                    "id": "FB10",
+                    "id": "10",
                     "name": "Berth FB10"
                 }
             },
