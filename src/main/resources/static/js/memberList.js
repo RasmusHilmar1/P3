@@ -48,16 +48,11 @@ function updateMemberInformation(rowIndex) {
 
 // Funktion der genindlæser siden
 function refreshMemberList() {
-    //Henter data fra endpoint og indsætter det i html input-fælterne
-    fetch('/bookkeeperMemberList')
-        .then(response => response.text())
-        .then(data => {
-            document.querySelector('.container').innerHTML = data;
-        })
-        .catch(error => {
-            console.error("Error refreshing the member list:", error);
-        });
+    // Redirects the page to /bookkeeperMemberList
+    window.location.href = '/bookkeeperMemberList'; // or use window.location.replace('/bookkeeperMemberList') to avoid adding the page to history
 }
+
+
 
 // Function der henter og filtrerer søgning
 function searchMembers() {
