@@ -1,5 +1,6 @@
 package com.example.p3.dto;
 
+// DTO som får de nødvendige værdier fra Member, Boat og Berth klasserne
 public class MemberlistDTO {
 
     private int memberID;
@@ -48,6 +49,7 @@ public class MemberlistDTO {
     public double getBoatPrice() {return boatPrice;}
     public int getBerthID() {return berthID;}
     public String getBerthName() {return berthName;}
+
     public void setMemberID(int memberID) {this.memberID = memberID;}
     public void setMemberName(String memberName) {this.Name = memberName;}
     public void setMemberAddress(String memberAddress) {this.Address = memberAddress;}

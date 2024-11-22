@@ -29,32 +29,35 @@ public class MemberlistService {
     @Autowired
     private MemberlistRepository memberlistRepository;
 
-    // Fetch all member list details
+    // Fetch alle member list detaljer
     public List<MemberlistDTO> getAllMemberlistDetails() {
         return memberlistRepository.fetchAllMemberlistDetails();
     }
 
-    // Function for updating member details across multiple tables
+    // Funktion til at opdaterer forskellige klasser på baggrund af DTO
+    // Bruger transactional tagget for at alle de 3 saves sker i databasen på samme tid fremfor hver især
+    // på den måde undgår vi, at den opdaterer en tabel uden de andre, in case noget går galt med de andre klasser
     @Transactional
     public MemberlistDTO updateMemberlist(MemberlistDTO dto) {
-        System.out.println(dto);
+        // initierer 3 ID'er på baggrund af værdierne i DTO'en
         int memberID = dto.getMemberID();
         int boatID = dto.getBoatID();
         int berthID = dto.getBerthID();
 
-        // Update Member table
+        // Opdater member tabel ved brug af klassen. Finder de rigtige member objekt gennem DTO ID
         Member member = memberRepository.findByMemberID(memberID);
         if (member == null) {
             throw new IllegalArgumentException("Member not found with ID: " + memberID);
         }
+        // Opdaterer objektets værdier på baggrund af DTO og gemmer
         member.setName(dto.getMemberName());
         member.setEmail(dto.getMemberEmail());
         member.setAddress(dto.getMemberAddress());
         member.setPhonenumber(dto.getMemberPhonenumber());
         memberRepository.save(member);
 
-        // Update Boat table (only if boatID is provided and valid)
-        if (boatID != 0) {
+        // Opdater den tilhørende båd, hvis der er en til stede, samme måde som før
+            if (boatID != 0) {
             Boat boat = boatRepository.findByBoatID(boatID);
             if (boat == null) {
                 throw new IllegalArgumentException("Boat not found with ID: " + boatID);
@@ -66,7 +69,7 @@ public class MemberlistService {
             boatRepository.save(boat);
         }
 
-        // Update Berth table (only if berthID is provided and valid)
+        // Opdater berth på samme måde som båd
         if (berthID != 0) {
             Berth berth = berthRepository.findByBerthID(berthID);
             if (berth == null) {
@@ -77,7 +80,7 @@ public class MemberlistService {
             berthRepository.save(berth);
         }
 
-        // Return the updated DTO
+        // Return den opdatered DTO
         return dto;
     }
 

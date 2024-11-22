@@ -19,11 +19,10 @@ public class MemberlistController {
     @Autowired
     private PrintService printService;
 
-
+    // Post kald for at opdaterer et medlems informationgennem listen
     @PostMapping("/bookkeeperMemberList/updateMember")
     @ResponseBody
     public MemberlistDTO updateMember(@RequestBody MemberlistDTO dto) {
-        System.out.println(dto);
         return memberlistService.updateMemberlist(dto);
     }
 
@@ -32,6 +31,7 @@ public class MemberlistController {
         List<MemberlistDTO> members = memberlistService.searchMembers(query);
         return ResponseEntity.ok(members);
     }
+
     @GetMapping("/bookkeeperMemberlist/MemberExcel")
     public void generateMemberlistExcel(HttpServletResponse response) throws Exception{
 

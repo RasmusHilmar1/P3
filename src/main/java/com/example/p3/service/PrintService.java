@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+// Service til at håndterer export (hedder print, fordi det var det jeg forbandt det med MB)
 @Service
 public class PrintService {
 
