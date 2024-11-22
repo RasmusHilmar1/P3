@@ -174,23 +174,13 @@ function onEachFeature(feature, layer) {
     //console.log(feature.properties);
     layer.on('click', function(e) {
 
-        highlightSchool(e, feature.style);
+        highlightBerth(e);
 
-       /* if(e.layer.selected) {
-            e.layer.setStyle(feature.style);
-            e.layer.selected = false;
-        } else {
-            e.layer.setStyle({
-                fillColor: "blue",
-                fillOpacity: 0.5
-            });
-            e.layer.selected = true;
-        }
-        */
-        //layer.setStyle({
-        //    fillColor: "blue",
-        //    fillOpacity: 0.5
-        //});
+        const memberListBoat = document.getElementById("memberListBoat");
+        const memberListWithoutBoat = document.getElementById("memberListWithoutBoat");
+        var berthListAvailable = document.getElementById(`berthListAv${member}`);
+        var berthListSmall = document.getElementById(`berthListSmall${member}`);
+        var berthListUav = document.getElementById(`berthListUav${member}`);
 
         const berthList = document.getElementById("berthList");
         const rows = berthList.querySelectorAll('tr');
@@ -200,6 +190,12 @@ function onEachFeature(feature, layer) {
             if (berthNameBtn) {
                 const berthName = berthNameBtn.textContent.trim();
                 if (berthName === feature.properties.name) {
+                    berthList.style.display = "table";
+                    memberListBoat.style.display = "none";
+                    memberListWithoutBoat.style.display = "none";
+                    berthListAvailable.style.display = "none";
+                    berthListSmall.style.display = "none";
+                    berthListUav.style.display = "none";
                     berthNameBtn.click();
                     berthNameBtn.scrollIntoView();
                 }
@@ -257,11 +253,11 @@ function onEachFeature(feature, layer) {
 //    });
 }
 
-var selectedLayer;
+let selectedLayer;
 
-function highlightSchool(e, feature) {
+function highlightBerth(e) {
     var layer = e.target;
-    removeHighlight(layer, feature);
+    removeHighlight(layer);
     layer.setStyle({
         color: "blue",
         weight: 2,
@@ -270,7 +266,7 @@ function highlightSchool(e, feature) {
     selectedLayer = layer;
 }
 
-function removeHighlight(layer, feature) {
+function removeHighlight(layer) {
     if (selectedLayer && (selectedLayer !== layer)){
         selectedLayer.setStyle({
             color: "black",
