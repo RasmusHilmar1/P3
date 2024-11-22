@@ -1,6 +1,5 @@
 import {myGeoJson} from "./geojson.js";
 import {fetchApprovedMembers, fetchBoats, fetchBerth} from "./memberFetch.js";
-import { myGeoJson } from "./geojson.js";
 
 // Create map for leaflet -->
 var map = L.map('map', {
@@ -108,7 +107,7 @@ harbors.addEventListener('click', function (event) {
 // Load berth data from the backend
 async function loadBerthData() {
     try {
-        const response = await fetch('Berths/get'); // Replace with your actual API endpoint
+        const response = await fetch('berths/get'); // Replace with your actual API endpoint
         const berths = await response.json();
         return berths;
     } catch (error) {

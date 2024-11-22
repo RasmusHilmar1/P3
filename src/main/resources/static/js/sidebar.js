@@ -114,7 +114,7 @@ class MemberList {
     }
 
     fetchBerthByMemberId(BerthID, infoContainer) {
-        fetch(`/Berths/getBerth/${BerthID}`)
+        fetch(`/berths/getBerth/${BerthID}`)
             .then(response => response.json())
             .then(berth => {
                 const berthCell = document.createElement("div");
@@ -287,7 +287,7 @@ class HeaderSwitch {
 // Instantiate and initialize objects
 const sidebar = new Sidebar();
 const memberList = new MemberList('/api/sidebar/approved-members');
-const berthList = new BerthList('/Berths/get');
+const berthList = new BerthList('/berths/get');
 const headerSwitch = new HeaderSwitch(memberList, berthList);
 
 // Fetch and display data
