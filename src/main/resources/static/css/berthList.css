@@ -1,7 +1,13 @@
-#berthListSearchBar {
-    font-size: 18px;
-    width: 500px;
-    left: 50%;
+/* General body and container styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+#berthListContainer {
+    padding-top: 130px;
+    overflow-x: auto;
+    margin: 0;
 }
 
 #searchBarCell {
@@ -11,56 +17,86 @@
     padding-bottom: 5px;
 }
 
-#berthListContainer {
-    padding-top: 110px;
+.editableCells {
+    border-color: #5c82b5;
 }
 
-#berthListHeader {
-    font-size: 25px;
-}
-
-.berthListInfo{
-    font-size: 20px;
-    text-align: center;
-}
-
+/* Table styling */
 #berthList {
-    border: 1px solid;
-    border-collapse: separate;
-    table-border-color-dark: #222222;
-    width: 100%;
-    table-layout: auto;
-    margin-top: 10px;
-}
-
-#berthListBody {
-    font-size: 18px;
-}
-
-tr {
-    border: 1px solid;
-    border-collapse: separate;
-    table-border-color-dark: #222222;
+    /*border-collapse: collapse;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
     width: 100%;
 }
 
-th {
-    border: 1px solid;
-    border-collapse: separate;
-    table-border-color-dark: #222222;
-}
-
-td {
-    border: 1px solid;
-    border-collapse: separate;
-    table-border-color-dark: #222222;
+.table th, .table td {
+    padding: 6px;
+    text-align: center;
     vertical-align: middle;
+    border: 1px solid #ddd; /* Light border */
+    font-size: 14px;
 }
 
-.berthTableRow:hover {
-    background-color: #5c82b5;
+.table th {
+    background-color: #5c82b5; /* Primary blue for header */
+    color: white;
+    font-weight: bold;
 }
 
-.berthList {
-    display: none;
+.table td {
+    background-color: #f9f9f9;
+}
+
+/* Row styling */
+.berthTableRow:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* Button styling */
+button.saveBtn {
+    padding: 4px 8px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background-color 0.3s ease;
+}
+
+button.saveBtn:hover {
+    background-color: #45a049;
+}
+
+button.saveBtn:focus {
+    outline: none;
+}
+
+/* Save button specific styling */
+button {
+    font-size: 12px;
+    padding: 5px 10px;
+    background-color: #5c82b5; /* Matching primary blue */
+    color: white;
+    border-radius: 3px;
+}
+
+button {
+    background-color: #0056b3;
+}
+
+/* Search bar styling */
+#berthListSearchBar {
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    font-size: 14px;
+    margin: 10px auto;
+    display: block;
+    transition: border-color 0.3s ease;
+}
+
+#berthListSearchBar:focus {
+    border-color: #5c82b5;
+    outline: none;
 }

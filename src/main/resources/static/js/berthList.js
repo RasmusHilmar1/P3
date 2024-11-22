@@ -11,11 +11,11 @@ console.log(berths);
 // calculate areal for berth and boats for the dynamic table and calculating the utilization percentage
 function calculateAreal(){
     berths.forEach(berth => {
-        berth.areal = berth.length * berth.width;
+        berth.areal = (berth.length * berth.width).toFixed(2);
         console.log("berth ID:" + berth.berthID +"berth areal:" + berth.areal); // console logging each berth and corresponding areal
     });
     boats.forEach(boat => {
-        boat.areal = boat.length * boat.width;
+        boat.areal = (boat.length * boat.width).toFixed(2);
         console.log("boats berth ID:" + boat.berthID + "boat areal:" + boat.areal); // console logging each boat and corresponding areal
     })
 }
@@ -45,6 +45,7 @@ function addCells(tr, data, editableIndexes = []){
 
         if (editableIndexes.includes(index)) {
             td.contentEditable = "true"; // make the cell editable
+            td.className = "editableCells";
 
             if (index === 2 || index === 3) { // if the edited cells are length or width column
                 td.addEventListener('input', () => {
