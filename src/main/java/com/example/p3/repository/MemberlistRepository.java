@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface MemberlistRepository extends JpaRepository<Member, Integer> {
     @Query("SELECT new com.example.p3.dto.MemberlistDTO(m.memberID, m.name, m.address, m.email, m.phonenumber, " +
-            "b.boatID, COALESCE(b.name, 'No Boat'), COALESCE(b.length, 0), COALESCE(b.width, 0), " +
+            "COALESCE(b.boatID, 0), COALESCE(b.name, 'No Boat'), COALESCE(b.length, 0), COALESCE(b.width, 0), " +
             "br.berthID, COALESCE(br.name, 'No Berth')) " +
             "FROM Member m " +
             "JOIN ApprovedMember am ON am.member = m " +

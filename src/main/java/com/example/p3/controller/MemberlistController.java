@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import com.example.p3.service.MemberlistService;
+import com.example.p3.service.PrintService;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 
@@ -14,9 +15,9 @@ import org.springframework.http.ResponseEntity;
 public class MemberlistController {
 
     @Autowired
-    private MemberlistService service;
-    @Autowired
     private MemberlistService memberlistService;
+    @Autowired
+    private PrintService printService;
 
 
     @PostMapping("/bookkeeperMemberList/updateMember")
@@ -41,7 +42,7 @@ public class MemberlistController {
 
         response.setHeader(headerKey, headerValue);
 
-        memberlistService.generateMemberlistExcel(response);
+        printService.generateMemberlistExcel(response);
 
         response.flushBuffer();
     }
@@ -56,7 +57,21 @@ public class MemberlistController {
 
         response.setHeader(headerKey, headerValue);
 
-        memberlistService.generateEmailExcel(response);
+        printService.generateEmailExcel(response);
+
+        response.flushBuffer();
+    }
+
+    @GetMapping("/bookkeeperMemberlist/PladsExcel")
+    public void generatePladsExcel(HttpServletResponse response) throws Exception{
+        response.setContentType("application/octet-stream");
+
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment;filename=Plads liste.xls";
+
+        response.setHeader(headerKey, headerValue);
+
+        printService.generateBerthlistExcel(response);
 
         response.flushBuffer();
     }
