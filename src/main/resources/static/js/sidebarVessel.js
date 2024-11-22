@@ -84,6 +84,7 @@ function createMemberListBoats(approvedMembers, boats, berths) {
                 var memberName = document.createElement("button");
                 memberName.textContent = member.name;
                 memberName.id = `memberName${member.memberID}`;
+                memberName.className = "nameBtn";
                 //console.log(`Name: ${member.name}, Address: ${member.address}`);
                 memberCell.appendChild(memberName);
 
@@ -135,7 +136,6 @@ function createMemberListBoats(approvedMembers, boats, berths) {
                         }
                     }
                 }
-
                 // event listener for the collapsable list
                 collapsableListEventListener(memberName, infoContainer);
             }
@@ -163,6 +163,7 @@ function createMemberListWithoutBoats(approvedMembers, boats, berths) {
 
                 var memberName = document.createElement("button");
                 memberName.textContent = member.name;
+                memberName.className = "nameBtn";
                 //console.log(`Name: ${member.name}, Address: ${member.address}`)
                 memberCell.appendChild(memberName);
 
@@ -223,8 +224,11 @@ function createBerthList(berths){
     berths.forEach(berth => {
         // Creating a row for each berth
         var berthRow = table.insertRow();
+        berthRow.className = "rowsBerthList";
         var berthCell = berthRow.insertCell();
         berthCell.className = "berthCell";
+        berthCell.id = "berthCellBerth" + berth.berthID;
+        console.log(berthCell.id);
 
         // Creating a button for berths' names
         var berthName = document.createElement("button");
@@ -234,6 +238,7 @@ function createBerthList(berths){
 
         // Creating a div element under each button
         var infoContainer = document.createElement("div");
+        infoContainer.className = "infoContainerBerthList"
         berthCell.appendChild(infoContainer);
 
         var size = document.createElement("div");
@@ -255,7 +260,6 @@ function createBerthList(berths){
                     infoCell.textContent = "status: midlertidig tilgængelig";
                 }
                 infoCell.className = "infoCell";
-                infoCell.id = berth.name;
                 infoContainer.appendChild(infoCell);
             }
             if ((key === 'length') || (key === 'width') || (key === 'depth')) {
@@ -264,8 +268,9 @@ function createBerthList(berths){
                 //infoSize.className = "infoCell";
                 //infoSize.id = berth.name;
                 size.appendChild(infoSize);
+                infoSize.className = "infoSize";
+                infoSize.id = berth.berthID;
                 infoContainer.appendChild(size);
-
             }
         }
 
@@ -560,7 +565,7 @@ function createBerthListUnavailable(member) {
                             //infoSize.id = berth.name;
                             size.appendChild(infoSize);
                             infoContainer.appendChild(size);
-
+                            infoSize.className= "infoSize";
                         }
                     }
                     collapsableListEventListener(berthName, infoContainer);
@@ -573,11 +578,12 @@ function createBerthListUnavailable(member) {
 function collapsableListEventListener(berthName, infoContainer) {
     berthName.addEventListener("click", function () {
         const infoCells = infoContainer.querySelectorAll(".infoCell");
-        berthName.classList.toggle('selectedNameBtn');
         infoCells.forEach(cell => {
             if (cell.style.maxHeight) {
+                berthName.classList.remove('selectedNameBtn');
                 cell.style.maxHeight = null;
             } else {
+                berthName.classList.add('selectedNameBtn');
                 cell.style.maxHeight = cell.scrollHeight + "px";
             }
         });
@@ -599,3 +605,56 @@ function createTable(member, sidebar, berthList, ListTitel){
     var tbody = document.createElement("tbody");
     table.appendChild(tbody);
 }
+
+function searchBarSidebar() {
+    console.log("Search function triggered"); //console logging to make sure that the function runs
+
+    let input, filter, table, tableRows;
+    input = document.getElementById("searchBarSidebar"); // input field
+
+    filter = input.value.toLowerCase(); // input entered by user converted to lowercase
+
+    table = document.getElementById("berthListSidebarBody"); // get the dynamic created table
+
+    tableRows = table.getElementsByClassName("rowsBerthList");
+
+    for (let i = 0; i < tableRows.length; i++) {
+        let row = tableRows[i], berthName, infoContainer, rowBtn, infoCells;
+
+        berthName = row.querySelector(".berthBtn").textContent.toLowerCase(); // Get text content of button
+
+        infoContainer = row.querySelector(".infoContainerBerthList");
+
+        rowBtn = row.querySelector(".berthBtn");
+
+        infoCells = infoContainer.querySelectorAll(".infoCell");
+
+        //collapse all  cells from start of search
+        infoCells.forEach(cell => {
+            cell.style.maxHeight = null;
+        })
+
+        //make sure all buttons are deselected
+        rowBtn.classList.remove('selectedNameBtn');
+
+        if (berthName.includes(filter)) {
+            row.style.display = "table-row"; // show the rows that match the input
+            if (berthName === filter){ // if the full berth name is written, expand the info cell
+                rowBtn.classList.add('selectedNameBtn');
+                infoCells.forEach(cell => {
+                    cell.style.maxHeight = cell.scrollHeight + "px";
+                });
+            }
+        } else {
+            row.style.display = "none"; // hide the rows that doesn't match the input
+        }
+    }
+}
+
+//event handler for the search function
+function searchBarEvent(){
+    const berthSearchBar = document.getElementById("searchBarSidebar");
+    berthSearchBar.addEventListener("keyup", searchBarSidebar);
+}
+
+searchBarEvent(berths);

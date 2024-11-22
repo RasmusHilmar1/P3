@@ -193,6 +193,9 @@ async function saveBerthChanges(row, berth) {
     }
 }
 
+
+
+// IMPLEMENT THIS SEARCH FUNCTION IN SIDEBAR:
 // IMPORTANT: Maybe add such that users can only search for names and IDs, not areal, length and width
 function searchBarBerthList() {
     console.log("Search function triggered"); //console logging to make sure that the function runs
@@ -234,4 +237,3 @@ function searchBarEvent(){
 }
 
 searchBarEvent();
-
