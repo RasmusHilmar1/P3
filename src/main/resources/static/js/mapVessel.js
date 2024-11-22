@@ -101,34 +101,61 @@ harbors.addEventListener('click', function (event) {
     }
 });
 
-
-L.geoJSON(myGeoJson, {
-    onEachFeature: onEachFeature,
-    style: function(feature) {
-        var status = feature.properties.status;
-
-        var fillColor;
-
-        if (status === "Available") {
-            fillColor = "#00FF00";
-        } else if (status === "Unavailable") {
-            fillColor = "red";
-        } else if (status === "TempAvailable") {
-            fillColor = "orange";
-        } else if (status === "Structure") {
-            fillColor = "white";
-        }
-
-        return {
-            //color: "#00bfff",    // Sets the border color to black
-            color: "black",
-            weight: 0.1,         // Adjusts border thickness
-            fillColor: fillColor,
-            fillOpacity: 0.8   // Adjusts fill opacity
-        };
+// Load berth data from the backend
+async function loadBerthData() {
+    try {
+        const response = await fetch('berths/get'); // Replace with your actual API endpoint
+        const berths = await response.json();
+        return berths;
+    } catch (error) {
+        console.error('Error fetching berth data:', error);
+        return [];
     }
-}).addTo(map);
+}
 
+// Update GeoJSON data with berth status
+async function updateGeoJsonWithStatus() {
+    const berths = await loadBerthData();
+
+    // Map berth data to GeoJSON features
+    myGeoJson.features.forEach(feature => {
+        const berthStatus = berths.find(berth => berth.berthID === Number(feature.properties.id));
+        feature.properties.status = berthStatus ? berthStatus.availability : 'Unknown';
+    });
+
+    // Render updated GeoJSON with styles based on status
+    L.geoJSON(myGeoJson, {
+        onEachFeature: onEachFeature,
+        style: function (feature) {
+            const status = feature.properties.status;
+            let fillColor;
+
+            switch (status) {
+                case 1:
+                    fillColor = "#00FF00";
+                    break;
+                case 0:
+                    fillColor = "red";
+                    break;
+                case 2:
+                    fillColor = "orange";
+                    break;
+                default:
+                    fillColor = "white"; // Default color if status is unknown
+            }
+
+            return {
+                color: "black",
+                weight: 0.1,
+                fillColor: fillColor,
+                fillOpacity: 0.8
+            };
+        }
+    }).addTo(map);
+}
+
+// Initial load and update
+updateGeoJsonWithStatus();
 
 const approvedMembers = await fetchApprovedMembers();
 console.log("members info:" + JSON.stringify(approvedMembers));
@@ -142,12 +169,50 @@ console.log("berths" + berths);
 
 
 function onEachFeature(feature, layer) {
+    //const status = feature.properties.status === 1 ? "Tilgængelig" : feature.properties.status === 0 ? "Optaget" : feature.properties.status === 2 ? "Midlertidig Utilgængelig" : "Unknown";
+
     //console.log(feature.properties);
     layer.on('click', function(e) {
+
+        highlightSchool(e, feature.style);
+
+       /* if(e.layer.selected) {
+            e.layer.setStyle(feature.style);
+            e.layer.selected = false;
+        } else {
+            e.layer.setStyle({
+                fillColor: "blue",
+                fillOpacity: 0.5
+            });
+            e.layer.selected = true;
+        }
+        */
+        //layer.setStyle({
+        //    fillColor: "blue",
+        //    fillOpacity: 0.5
+        //});
+
+        const berthList = document.getElementById("berthList");
+        const rows = berthList.querySelectorAll('tr');
+
+        rows.forEach(row => {
+            const berthNameBtn = row.querySelector(".berthBtn");
+            if (berthNameBtn) {
+                const berthName = berthNameBtn.textContent.trim();
+                if (berthName === feature.properties.name) {
+                    berthNameBtn.click();
+                    berthNameBtn.scrollIntoView();
+                }
+            }
+        });
+
+/*
         var memberList = document.getElementById("memberListBoat");
         const rows = memberList.querySelectorAll('tr');
         console.log("memberList: " + memberList);
         console.log("rows: " + rows);
+
+
 
         rows.forEach(row => {
             const memberCell = row.querySelector(".memberCell");
@@ -178,7 +243,7 @@ function onEachFeature(feature, layer) {
             });
 
             //}
-        });
+        });*/
 
         /*
         document.getElementById("berthId").innerHTML = feature.properties.id;
@@ -186,9 +251,30 @@ function onEachFeature(feature, layer) {
         document.getElementById("berthStatus").innerHTML = feature.properties.status;
          */
     });
+
+    //layer.on('unclick', function(e) {
+//
+//    });
 }
 
+var selectedLayer;
 
+function highlightSchool(e, feature) {
+    var layer = e.target;
+    removeHighlight(layer, feature);
+    layer.setStyle({
+        color: "blue",
+        weight: 2,
+        //fillOpacity: 0.5
+    });
+    selectedLayer = layer;
+}
 
-
-
+function removeHighlight(layer, feature) {
+    if (selectedLayer && (selectedLayer !== layer)){
+        selectedLayer.setStyle({
+            color: "black",
+            weight: 0.1,
+        });
+    }
+}
