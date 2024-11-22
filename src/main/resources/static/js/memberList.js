@@ -52,8 +52,6 @@ function refreshMemberList() {
     window.location.href = '/bookkeeperMemberList'; // or use window.location.replace('/bookkeeperMemberList') to avoid adding the page to history
 }
 
-
-
 // Function der henter og filtrerer søgning
 function searchMembers() {
     // Henter værdi fra input-feltet med søgning

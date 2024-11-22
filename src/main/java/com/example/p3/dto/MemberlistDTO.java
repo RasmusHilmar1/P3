@@ -6,7 +6,7 @@ public class MemberlistDTO {
     private String Name;
     private String Address;
     private String Email;
-    private String phoneNumber;
+    private String phonenumber;
     private int boatID;
     private String boatName;
     private double boatLength;
@@ -18,14 +18,14 @@ public class MemberlistDTO {
 
     private double AREAL_PRICE_PR_SQM = 50;
 
-    public MemberlistDTO(int memberID, String Name, String Address, String Email, String phoneNumber, int boatID, String boatName,
+    public MemberlistDTO(int memberID, String Name, String Address, String Email, String phonenumber, int boatID, String boatName,
                               double boatLength, double boatWidth, int berthID, String berthName) {
 
         this.memberID = memberID;
         this.Name = Name;
         this.Address = Address;
         this.Email = Email;
-        this.phoneNumber = phoneNumber;
+        this.phonenumber = phonenumber;
         this.boatID = boatID;
         this.boatName = boatName;
         this.boatLength = boatLength;
@@ -39,7 +39,7 @@ public class MemberlistDTO {
     public String getMemberName() {return Name;}
     public String getMemberAddress() {return Address;}
     public String getMemberEmail() {return Email;}
-    public String getMemberPhonenumber() {return phoneNumber;}
+    public String getMemberPhonenumber() {return phonenumber;}
     public int getBoatID() {return boatID;}
     public String getBoatName() {return boatName;}
     public double getBoatLength() {return boatLength;}
@@ -52,7 +52,7 @@ public class MemberlistDTO {
     public void setMemberName(String memberName) {this.Name = memberName;}
     public void setMemberAddress(String memberAddress) {this.Address = memberAddress;}
     public void setMemberEmail(String memberEmail) {this.Email = memberEmail;}
-    public void setMemberPhoneNumber(String memberPhoneNumber) {this.phoneNumber = memberPhoneNumber;}
+    public void setMemberPhonenumber(String memberPhonenumber) {this.phonenumber = memberPhonenumber;}
     public void setBoatID(int boatID) {this.boatID = boatID;}
     public void setBoatName(String boatName) {this.boatName = boatName;}
     public void setBoatLength(double boatLength) {this.boatLength = boatLength;}
