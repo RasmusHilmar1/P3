@@ -77,6 +77,17 @@ public class BoatController {
         return boatService.updateBoatMemberID(id, newMemberID);
     }
 
+    //Endpoints to update boat fee status
+    @PutMapping("/update/feeSent/{id}")
+    public Boat updateBoatFeeSent(@PathVariable int id, @RequestBody int newFeeStatus) {
+        return boatService.updateBoatFeeSent(id, newFeeStatus);
+    }
+
+    @PutMapping("/update/feePaid/{id}")
+    public Boat updateBoatFeePaid(@PathVariable int id, @RequestBody int newFeeStatus) {
+        return boatService.updateBoatFeePaid(id, newFeeStatus);
+    }
+
     @GetMapping("/public/{memberId}")
     public List<BoatDTO> getBoatsByMemberId(@PathVariable int memberId) {
         return boatService.getBoatsByMemberId(memberId);

@@ -41,11 +41,18 @@ function addCells(tr, data, editableIndexes = []){
     // insert a new cell for each of the item in the data
     data.forEach((item, index) => {
         td = tr.insertCell();
-        td.textContent = item;
+        tr.className = "berthTableRow";
 
         if (editableIndexes.includes(index)) {
-            td.contentEditable = "true"; // make the cell editable
+            /* td.contentEditable = "true"; // make the cell editable
+            td.className = "editableCells"; */
+            // create input fields in the cells
+            const input = document.createElement("input");
+            td.appendChild(input);
             td.className = "editableCells";
+            input.type = "text";
+            input.value = item;
+            input.className = "editableInput"; // Custom class for styling
 
             if (index === 2 || index === 3) { // if the edited cells are length or width column
                 td.addEventListener('input', () => {
@@ -56,6 +63,8 @@ function addCells(tr, data, editableIndexes = []){
                     tr.cells[4].textContent = newAreal + "m"; // update cell
                 });
             }
+        } else {
+            td.textContent = item;
         }
         console.log(item);
     });
@@ -118,6 +127,7 @@ function getBerthList() {
             const saveCell = row.insertCell(); // Insert a final cell for the Save button
             const saveButton = document.createElement("button");
             saveButton.textContent = "Gem Ændringer";
+            saveCell.className = "saveBtnCell";
             saveButton.className = "saveBtn";
             saveCell.appendChild(saveButton); // Append the Save button to the last cell
 
@@ -216,12 +226,20 @@ function searchBarBerthList() {
 
         //Iterate through all cells in the respective row
         for (let j = 0; j < rowCells.length; j++) {
-            const cellText = rowCells[j].textContent.toLowerCase(); //have all cell content converted into lowercase since input is also converted to lowercase
+            const cell = rowCells[j];
+            let cellText = cell.textContent.toLowerCase(); // check content of the cell
+
+            // check if there is an input field inside the cell
+            const inputField = cell.querySelector('input');
+            if (inputField){
+                cellText = inputField.value.toLowerCase();
+            }
             if (cellText.includes(filter)){
                 result = true;
                 break;
             }
         }
+
         // make sure the rows with no match are hidden while the one with a match are displayed
         if (result){
             tableRows[i].style.display = "table-row";

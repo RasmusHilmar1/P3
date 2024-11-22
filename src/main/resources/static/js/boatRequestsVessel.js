@@ -1,6 +1,9 @@
-
-//import functions
-import {createBtn, createIcons, createTable, BoatRequestTable} from "./boatRequests.js";
+// arrays
+import {boats, pendingBoats, approvedMembers, pendingMembers, berths} from "./boatRequests.js";
+// classes
+import {BoatRequestTable, BtnCreator, IconCreator, EventManager} from "./boatRequests.js";
+// function
+import {createTable} from "./boatRequests.js"
 
 // create new Table constructor that overrides the one from boatRequests.js
 class BoatRequestTableVessel extends BoatRequestTable {
@@ -21,45 +24,51 @@ class BoatRequestTableVessel extends BoatRequestTable {
     }
     addSpecificCells(row, data) {
         // add button for "tildelt"
-        createBtn(row, data, "Tildelt");
+        let assignBtn = new BtnCreator(row, data, "Tildelt");
+        assignBtn.createBtn();
 
-        // add icon rows ready for feature with icons
-        for (let i = 0; i < 2; i++) {
-            createIcons(row);
-        }
+        // add icon rows for bookkeeper's respective "sendt" and "betalt"
+        let iconFeeSent = new IconCreator(row, data);
+        iconFeeSent.createCell();
+        iconFeeSent.createIcons(data.boat.feeSent);
+        let iconFeePaid = new IconCreator(row, data);
+        iconFeePaid.createCell();
+        iconFeePaid.createIcons(data.boat.feePaid);
     }
 }
 
-function boatAssignedEvent(boats, members){
-    const filteredBoats = boats.filter(boat => {
-        const correspondingMember = members.find(member => member.member.memberID === boat.boat.memberID);
-        return correspondingMember !== "Unknown Member";// only include pending boats with approved members
-    });
-    console.log(filteredBoats);
-    filteredBoats.forEach(boat => {
-        let btn = document.querySelector('.addBtn');
-        console.log(btn);
-        console.log(btn.id);
-        let btnId = "addBtn" + boat.boat.boatID;
-        console.log(btnId);
-        console.log(btn.id === btnId);
-        if (btn) {
-            boat.assigned = boat.boat.berthID !== 9999;
-            console.log(boat.assigned);
+class BoatAssignedEvent extends EventManager {
+    constructor (boats, members) {
+        super(boats, members);
+    }
+    filterBoats() {
+        return super.filterBoats();
+    }
+    createEvent() {
+        this.filterBoats();
 
-            if (boat.assigned) {
-                btn.classList.add('buttonAssigned');
-                btn.disabled = true;
-            } else {
-                btn.classList.remove('buttonAssigned');
-                btn.disabled = false;
+        this.filteredBoats.forEach(boat => {
+            let addBtn = document.querySelector('.addBtn');
+            console.log(addBtn);
+            console.log(addBtn.id);
+            let addBtnId = "addBtn" + boat.boat.boatID;
+            console.log(addBtnId);
+            console.log(addBtn.id === addBtnId);
+            if (addBtn) {
+                boat.assigned = boat.boat.berthID !== 9999;
+                console.log(boat.assigned);
+
+                if (boat.assigned) {
+                    addBtn.classList.add('buttonAssigned');
+                    addBtn.disabled = true;
+                } else {
+                    addBtn.classList.remove('buttonAssigned');
+                    addBtn.disabled = false;
+                }
             }
-        }
-    });
+        });
+    }
 }
-
-// initialize the empty arrays for the data
-let boats = [], approvedMembers = [], pendingMembers = [], berths = [], pendingBoats=[];
 
 // make sure that the calls to fetch are made after the window has finished loading all content
 window.onload = async () => {
@@ -76,5 +85,7 @@ window.onload = async () => {
         pendingBoats,
         approvedMembers,
         7 );
-    boatAssignedEvent(pendingBoats, approvedMembers);
+    // call event class
+    let boatAssignedEvent = new BoatAssignedEvent(pendingBoats, approvedMembers);
+    boatAssignedEvent.createEvent();
 };

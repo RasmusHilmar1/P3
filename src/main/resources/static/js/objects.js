@@ -91,6 +91,7 @@ class Table {
         // creating the header for the table
         const tableHeadRow = tableHead.insertRow();
         const tableHeadCell = tableHeadRow.insertCell();
+        tableHeadCell.className = "tableTitle";
         tableHeadCell.innerHTML = this.title;
         console.log(this.title);
         tableHeadCell.colSpan = this.colspan;
@@ -99,8 +100,9 @@ class Table {
 
         //Adding header rows to differentiate between content
         const headerRow = document.createElement("tr");
-        this.headers.forEach(item => {
+        this.headers.forEach((item, index) => {
             let th = headerRow.insertCell();
+            th.className = index < 4 ? "headerCellsLeft" : "headerCellsCenter";
             th.innerHTML = item;
             console.log(item);
         });
@@ -121,6 +123,7 @@ class Table {
         array.forEach(item => {
             let row = tableBody.insertRow();
             row.id = "row_" + array.indexOf(item);
+            row.className = "infoRows";
             this.addCells(row, item);
             this.addSpecificCells(row, item);
             console.log(item);
@@ -129,6 +132,7 @@ class Table {
     addCells(row, data){
         Object.values(data).forEach(value => {
             let td = row.insertCell();
+            td.className = "infoCells";
             td.innerHTML = value;// Access data using item within forEach
         });
     }

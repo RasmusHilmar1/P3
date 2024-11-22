@@ -104,6 +104,24 @@ public class BoatService {
         return null;  // Return null if boat not found
     }
 
+    public Boat updateBoatFeeSent(int boatId, int newFeeSent) {
+        Boat boat = boatRepository.findByBoatID(boatId);
+        if (boat != null) {
+            boat.setFeeSent(newFeeSent);
+            return boatRepository.save(boat);
+        }
+        return null;
+    }
+
+    public Boat updateBoatFeePaid(int boatId, int newFeePaid) {
+        Boat boat = boatRepository.findByBoatID(boatId);
+        if (boat != null) {
+            boat.setFeePaid(newFeePaid);
+            return boatRepository.save(boat);
+        }
+        return null;
+    }
+
     public List<Boat> getAllBoats() {
         // Method to fetch all boats
             return boatRepository.findAll(); // Assuming you have a BoatRepository extending JpaRepository

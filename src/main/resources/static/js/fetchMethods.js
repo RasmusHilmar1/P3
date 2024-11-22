@@ -1,5 +1,6 @@
 
-export {fetchApprovedMembers, fetchBoats, fetchBerth, fetchPendingMembers};
+export {fetchApprovedMembers, fetchBoats, fetchBerth, fetchPendingMembers, fetchPendingBoats, parseData};
+import {Boat, PendingBoat, Berth, Member} from "./objects.js";
 
 //var memberBtn = document.getElementById("memberBtn");
 
@@ -85,7 +86,7 @@ async function fetchPendingMembers(){
     }
 }
 
-export async function fetchPendingBoats(){
+async function fetchPendingBoats(){
     try {
         const response = await fetch("/api/pendingBoats");
         if (!response.ok) {
@@ -104,4 +105,26 @@ export async function fetchPendingBoats(){
     } catch (error) {
         console.error("Error fetching pending boats:", error);
     }
+}
+
+// parsing the data from fetch
+async function parseData(method, object, array){
+
+    const parsedData = await method;
+    console.log(parsedData);
+
+    parsedData.map(objectData => {
+        if (object === Berth){
+            array.push(new object(objectData.berthID, objectData.name, objectData.availability, objectData.length, objectData.width, objectData.depth, objectData.pierId));
+        } else if(object === Boat){
+            array.push(new Boat(objectData.boatID, objectData.memberID, objectData.berthID, objectData.name, objectData.type, objectData.manufacturer, objectData.length, objectData.width, objectData.draught, objectData.insurance, objectData.feeSent, objectData.feePaid));
+        } else if(object === PendingBoat){
+            array.push(new object(objectData.id, objectData.boat));
+            console.log(objectData.id, objectData.boat);
+        } else if (object === Member) {
+            array.push(new object(objectData.id, objectData.member));
+        }
+    });
+    // return the array with elements
+    return array;
 }
