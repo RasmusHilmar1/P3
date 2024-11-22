@@ -83,7 +83,8 @@ function createMemberListBoats(approvedMembers, boats, berths) {
                 
                 var memberName = document.createElement("button");
                 memberName.textContent = member.name;
-                //console.log(`Name: ${member.name}, Address: ${member.address}`)
+                memberName.id = `memberName${member.memberID}`;
+                //console.log(`Name: ${member.name}, Address: ${member.address}`);
                 memberCell.appendChild(memberName);
 
                 // Creating a div element under each button

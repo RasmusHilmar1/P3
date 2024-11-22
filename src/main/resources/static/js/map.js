@@ -152,24 +152,33 @@ function onEachFeature(feature, layer) {
 
         rows.forEach(row => {
             const memberCell = row.querySelector(".memberCell");
-            console.log("memberCell: " + memberCell);
+            console.log("memberCell: " + memberCell.innerHTML);
 
-            if (memberCell) {
-                const memberName = memberCell.textContent.trim();
-                console.log("memberName:" + memberName);
+            //if (memberCell) {
+                //const memberName = memberCell.textContent.trim();
+                //console.log("memberName:" + memberName);
                 approvedMembers.forEach(approvedMember => {
-                    if(memberName === approvedMember.member.name) {
-                        console.log("memberName: " + memberName);
-                        boats.forEach(boat => {
-                            if ((approvedMember.member.memberID === boat.memberID) && (boat.berthID !== 9999) && (boat.berthID === feature.properties.id)) {
-                                memberCell.click();
-                                console.log("membercell clicked");
-                            }
-                        });
+                    const memberName = row.querySelector(`#memberName${approvedMember.member.memberID}`);
+                    //console.log("memberCell: " + memberCell.innerHTML);
+
+                    if(memberName) {
+                        const memberNameId = memberName.id;
+                        const id = memberNameId.replace("memberName", "");
+                        console.log(id);
+
+                        //if (id === approvedMember.member.memberID) {
+                          //  console.log("id match member");
+                            boats.forEach(boat => {
+                                if ((Number(id) === boat.memberID) && (boat.berthID !== 9999) && (boat.berthID === Number(feature.properties.id))) {
+                                    memberCell.click();
+                                    console.log("membercell clicked");
+                                }
+                            });
+                        //}
                     }
                 });
 
-            }
+            //}
         });
 
         /*
