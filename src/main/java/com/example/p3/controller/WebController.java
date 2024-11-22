@@ -1,12 +1,20 @@
 package com.example.p3.controller;
+import com.example.p3.service.MemberlistService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class WebController {
+
+    @Autowired
+    private MemberlistService service;
+    @Autowired
+    private MemberlistService memberlistService;
 
     @PreAuthorize("hasRole('BOOKKEEPER_USER')")
     @GetMapping("/bookkeeperBoatRequests")
@@ -16,9 +24,11 @@ public class WebController {
 
     @PreAuthorize("hasRole('BOOKKEEPER_USER')")
     @GetMapping("/bookkeeperMemberList")
-    public String showBookkeeperMemberList() {
+    public String getAllMembers(Model model) {
+        model.addAttribute("memberlist", service.getAllMemberlistDetails());
         return "bookkeeperMemberList";
     }
+
 
     @PreAuthorize("hasRole('BOOKKEEPER_USER')")
     @GetMapping("/bookkeeperMemberRequests")

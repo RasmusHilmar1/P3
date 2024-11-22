@@ -1,0 +1,153 @@
+    /* General body and container styling */
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+    }
+    /* Remove default margin and padding */
+    html, body {
+        margin: 0;
+        padding: 0;
+    }
+
+
+
+    /* Button Styling */
+    button {
+        padding: 4px 8px; /* Reduce padding for smaller buttons */
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 3px; /* Slightly smaller border radius for compact look */
+        cursor: pointer;
+        font-size: 12px; /* Decrease font size to match the smaller button */
+    }
+
+    button:hover {
+        background-color: #45a049;
+        font-size: 12px; /* Keep hover state consistent */
+    }
+
+    /* Table cell layout for smaller rows */
+    th, td {
+        padding: 6px; /* Reduce padding inside cells */
+        text-align: center;
+        vertical-align: middle;
+    }
+
+
+    /* Form layout */
+    form {
+        display: inline;
+    }
+
+    .container {
+        padding-top: 120px;
+        max-width: 100%; /* Ensure the container doesn't exceed the page width */
+    }
+
+    .table-container {
+        overflow-x: auto; /* Enable horizontal scrolling if necessary */
+        max-width: 100%; /* Restrict the table container to the page width */
+    }
+
+    .table {
+        width: 100%; /* Make the table span the full width of the container */
+        margin: 0 auto; /* Center the table */
+    }
+
+
+
+    input.form-control {
+        width: 100%; /* Ensure input fields adapt to their column width */
+    }
+
+
+
+    input[name="memberID"] {
+        width: 70px; /* Adjust width for names */
+    }
+    input[name="memberName"] {
+        width: 140px; /* Adjust width for names */
+    }
+    input[name="memberAddress"] {
+        width: 110px; /* Adjust width for names */
+    }
+
+
+    input[name="memberEmail"] {
+        width: 220px; /* Larger width for email */
+    }
+    input[name="memberPhonenumber"] {
+        width: 110px; /* Adjust width for names */
+    }
+    input[name="boatName"] {
+        width: 120px; /* Adjust width for names */
+    }
+
+    input[name="boatLength"] {
+        width: 85px; /* Smaller width for "Bådens længde" */
+    }
+
+    /* Add more input-specific styling if needed */
+    input[name="boatWidth"] {
+        width: 85px; /* Keep similar width for related fields */
+    }
+    /* Add more input-specific styling if needed */
+    input[name="boatAreal"] {
+        width: 75px; /* Keep similar width for related fields */
+    }
+    /* Add more input-specific styling if needed */
+    input[name="boatPrice"] {
+        width: 80px; /* Keep similar width for related fields */
+    }
+
+    input[name="boatName"] {
+        width: 85px; /* Keep similar width for related fields */
+    }
+
+
+    /* Styling the search input field */
+    #searchInput {
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        padding: 10px;
+        font-size: 16px;
+        width: 30%; /* Adjust width as per requirement */
+        margin-right: 10px;
+        transition: border-color 0.3s ease;
+    }
+
+    #searchInput:focus {
+        border-color: #5c82b5; /* Blue border on focus */
+        outline: none;
+    }
+
+    /* Styling the search button */
+    button.btn.btn-primary.mt-2 {
+        background-color: #5c82b5; /* Primary blue color */
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    button.btn.btn-primary.mt-2:hover {
+        background-color: #0056b3; /* Darker blue on hover */
+    }
+
+    button.btn.btn-primary.mt-2:focus {
+        outline: none; /* Removes focus outline */
+    }
+
+    /* Optional: Center the search bar and button */
+    .mb-3 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+    }

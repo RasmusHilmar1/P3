@@ -1,32 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Medlemsliste</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-          crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-            crossorigin=""></script>
-    <link rel="stylesheet" href="/css/main.css" />
-    <link rel="stylesheet" href="/css/map.css" />
-    <link rel="stylesheet" href="/css/navigationBar.css" />
-    <link rel="stylesheet" href="/css/sidebar.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Member List</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0-alpha1/css/bootstrap.min.css">
+
+  <link rel="stylesheet" href="/css/navigationBar.css" />
+  <link rel="stylesheet" href="/css/MemberList.css" />
 </head>
 <body>
 <header class="header">
-    <a href="#"><img src="/Images/Logo.png" alt="Logo" height="100"></a>
-    <nav class="navbar">
-        <a href="bookkeeperStartPage">Kort</a>
-        <a href="bookkeeperMemberRequests">Medlemskabsanmodninger</a>
-        <a href="bookkeeperBoatRequests">Bådanmodninger</a>
-        <a href="bookkeeperMemberList">Medlemsliste</a>
-        <form action="/logout" method="post" style="display:inline;">
-            <button type="submit" id="submit">Log ud</button>
-        </form>
-    </nav>
+  <a href="#"><img src="/Images/Logo.png" alt="Logo" height="100"></a>
+  <nav class="navbar">
+    <a href="bookkeeperStartPage">Kort</a>
+    <a href="bookkeeperMemberRequests">Medlemskabsanmodninger</a>
+    <a href="bookkeeperBoatRequests">Bådanmodninger</a>
+    <a href="bookkeeperMemberList">Medlemsliste</a>
+    <form action="/logout" method="post" style="display:inline;">
+      <button type="submit" id="submit">Log ud</button>
+    </form>
+  </nav>
 </header>
+<div class="container">
+  <h1 class="my-4">Medlemsliste</h1>
 
+  <div class="mb-3">
+    <label for="listSelect" class="form-label">Vælg hvilken liste du vil eksportere:</label>
+    <select id="listSelect" class="form-select">
+      <option value="memberList">Medlemsliste</option>
+      <option value="emailList">E-mailliste</option>
+    </select>
+    <button class="btn btn-success mt-2" onclick="exportSelectedList()">Eksporter til Excel</button>
+  </div>
+
+  <div class="mb-3">
+    <input type="text" id="searchInput" class="form-control" placeholder="Søg efter medlemsnr. eller navn!">
+    <button class="btn btn-primary mt-2" onclick="searchMembers()">Search</button>
+  </div>
+
+  <!-- Display members in a table -->
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th scope="col">Medlemsnr.</th>
+        <th scope="col">Navn</th>
+        <th scope="col">Adresse</th>
+        <th scope="col">E-mail</th>
+        <th scope="col">Telefonnr.</th>
+        <th scope="col">Bådens navn</th>
+        <th scope="col">Bådens længde</th>
+        <th scope="col">Bådens bredde</th>
+        <th scope="col">Bådens areal</th>
+        <th scope="col">Bådpris</th>
+        <th scope="col">Pladsnavn</th>
+        <th scope="col"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <!-- Iterate over the member list and display each member's details in input fields -->
+      <tr th:each="member, iterStat : ${memberlist}">
+        <td>
+          <input type="text" name="memberID" th:value="${member.memberID}" class="form-control" th:data-row="${iterStat.index}" readonly>
+        </td>
+        <td>
+          <input type="text" name="memberName" th:value="${member.memberName}" class="form-control" th:data-row="${iterStat.index}">
+        </td>
+        <td>
+          <input type="text" name="memberAddress" th:value="${member.memberAddress}" class="form-control" th:data-row="${iterStat.index}">
+        </td>
+        <td>
+          <input type="text" name="memberEmail" th:value="${member.memberEmail}" class="form-control" th:data-row="${iterStat.index}">
+        </td>
+        <td>
+          <input type="text" name="memberPhonenumber" th:value="${member.memberPhonenumber}" class="form-control" th:data-row="${iterStat.index}">
+        </td>
+        <td hidden>
+          <input type="number" name="boatID" th:value="${member.boatID}" class="form-control" th:data-row="${iterStat.index}" readonly>
+        </td>
+        <td>
+          <input type="text" name="boatName" th:value="${member.boatName}" class="form-control" th:data-row="${iterStat.index}">
+        </td>
+        <td>
+          <input type="number" name="boatLength" th:value="${member.boatLength}" class="form-control" th:data-row="${iterStat.index}">
+        </td>
+        <td>
+          <input type="number" name="boatWidth" th:value="${member.boatWidth}" class="form-control" th:data-row="${iterStat.index}">
+        </td>
+        <td>
+          <input type="text" name="boatAreal" th:value="${member.boatAreal}" class="form-control" th:data-row="${iterStat.index}" readonly>
+        </td>
+        <td>
+          <input type="text" name="boatPrice" th:value="${member.boatPrice}" class="form-control" th:data-row="${iterStat.index}" readonly>
+        </td>
+        <td hidden>
+          <input type="number" name="berthID" th:value="${member.berthID}" class="form-control" th:data-row="${iterStat.index}" readonly>
+        </td>
+        <td>
+          <input type="text" name="berthName" th:value="${member.berthName}" class="form-control" th:data-row="${iterStat.index}" readonly>
+        </td>
+        <td>
+          <button th:onclick="'updateMemberInformation(' + ${iterStat.index} + ')'" th:data-row="${iterStat.index}">Gem Ændringer</button>
+        </td>
+      </tr>
+
+      </tbody>
+    </table>
+  </form>
+</div>
+<script src="/js/memberList.js"></script>
 </body>
 </html>

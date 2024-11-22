@@ -95,6 +95,12 @@ public class MemberController {
         return memberService.convertToDTO(member);
     }
 
+    // Endpoint for updating information of berth
+    @PutMapping("/update/information/{id}")
+    public Member updateMemberInformation(@PathVariable int id, @RequestBody Member info) {
+        return memberService.updateMemberInformation(id, info);
+    }
+
     public Member getPublicMember(int memberId) {
         return memberRepository.findByMemberID(memberId); 
     }
