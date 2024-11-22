@@ -1,4 +1,4 @@
-export {Berth, Boat, PendingBoat, Member};
+export {Berth, Boat, PendingBoat, Member, Table};
 
 // Classes for the different objects from database
 class Berth {
@@ -58,6 +58,79 @@ class Member {
             phonenumber: member.phonenumber,
             boatownership: member.boatownership,
         }
+    }
+}
+
+// class for a table
+class Table {
+    constructor(elementId, title, headers, firstArray, secondArray, colspan) {
+        this.element = document.getElementById(elementId);
+        console.log(this.element);
+        this.title = title;
+        this.headers = headers;
+        this.firstArray = firstArray;
+        console.log("Data parsed to createTable:", this.firstArray);
+        this.secondArray = secondArray;
+        console.log("Data parsed as second array:", this.secondArray);
+        this.colspan = colspan;
+
+        this.createTable();
+    }
+
+    // function for creating table
+    createTable() {
+        // creating the structure of the table
+        const table = document.createElement("table");
+        const tableHead = document.createElement("thead");
+        const tableBody = document.createElement("tbody");
+
+        // creating the header for the table
+        const tableHeadRow = tableHead.insertRow();
+        const tableHeadCell = tableHeadRow.insertCell();
+        tableHeadCell.innerHTML = this.title;
+        console.log(this.title);
+        tableHeadCell.colSpan = this.colspan;
+        tableHead.appendChild(tableHeadCell);
+        table.appendChild(tableHead);
+
+        //Adding header rows to differentiate between content
+        const headerRow = document.createElement("tr");
+        this.headers.forEach(item => {
+            let th = headerRow.insertCell();
+            th.innerHTML = item;
+            console.log(item);
+        });
+        table.appendChild(headerRow);
+
+        //creating rows for the data
+        this.addDataRows(this.firstArray, tableBody);
+
+        table.appendChild(tableBody);
+
+        this.element.appendChild(table);
+    }
+    findCorrespondingMember(memberID){ // could maybe be edited into a more general "findCorrespondingObject" or something
+        const member = this.secondArray.find(member => member.memberID === memberID);
+        return member? member.name : "Unknown Member";
+    }
+    addDataRows(array, tableBody) {
+        array.forEach(item => {
+            let row = tableBody.insertRow();
+            row.id = "row_" + array.indexOf(item);
+            this.addCells(row, item);
+            this.addSpecificCells(row, item);
+            console.log(item);
+        });
+    }
+    addCells(row, data){
+        Object.values(data).forEach(value => {
+            let td = row.insertCell();
+            td.innerHTML = value;// Access data using item within forEach
+        });
+    }
+    addSpecificCells(row, data){
+        let newCell = row.insertCell();
+        newCell.innerHTML = data;
     }
 }
 

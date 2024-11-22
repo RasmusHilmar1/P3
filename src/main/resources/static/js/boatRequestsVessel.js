@@ -30,6 +30,28 @@ class BoatRequestTableVessel extends BoatRequestTable {
     }
 }
 
+//event handler for when the boat has been assigned to a berth
+function boatAssignedEvent(boats, members){
+    const filteredBoats = boats.filter(boat => {
+        const correspondingMember = members.find(member => member.member.memberID === boat.boat.memberID);
+        return correspondingMember !== "Unknown Member";// only include pending boats with approved members
+    });
+    console.log(filteredBoats);
+    filteredBoats.forEach(boat => {
+        let btn = document.querySelector('.addBtn');
+        console.log(btn);
+        console.log(btn.id);
+        let btnId = "addBtn" + boat.boat.boatID;
+        console.log(btnId);
+        console.log(btn.id === btnId);
+        boat.assigned = boat.boat.berthID !== 9999;
+        console.log(boat.assigned);
+        if (boat.assigned){
+            btn.classList.add("")
+        }
+    });
+}
+
 // initialize the empty arrays for the data
 let boats = [], approvedMembers = [], pendingMembers = [], berths = [], pendingBoats=[];
 
@@ -48,4 +70,5 @@ window.onload = async () => {
         pendingBoats,
         approvedMembers,
         7 );
+    boatAssignedEvent(pendingBoats, approvedMembers);
 };

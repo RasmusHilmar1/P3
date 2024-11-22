@@ -57,3 +57,7 @@ td button.distributeBerthsBtn:hover{
 a {
     text-decoration: none;
 }
+
+button:active{
+    background-color: #5c82b5;
+}
