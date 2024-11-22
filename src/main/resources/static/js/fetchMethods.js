@@ -93,7 +93,12 @@ export async function fetchPendingBoats(){
         }
         const boats = await response.json();
         console.log("Fetched pending boats:", boats);
-
+        boats.forEach(boat => {
+            console.log(boat);
+            console.log("Boat ID:", boat.boat.boatID);
+            console.log("Fee Sent:", boat.boat.feeSent);
+            console.log("Fee Paid:", boat.boat.feePaid);
+        });
         return boats;
 
     } catch (error) {

@@ -14,7 +14,7 @@ class Berth {
 }
 
 class Boat {
-    constructor(boatID, memberID, berthID, name, type, manufacturer, length, width, draught, insurance){
+    constructor(boatID, memberID, berthID, name, type, manufacturer, length, width, draught, insurance, feeSent, feePaid){
         this.boatID = boatID;
         this.memberID = memberID;
         this.berthID = berthID;
@@ -25,6 +25,8 @@ class Boat {
         this.width = width;
         this.draught = draught;
         this.insurance = insurance;
+        this.feeSent = feeSent;
+        this.feePaid = feePaid;
     }
 }
 
@@ -42,6 +44,8 @@ class PendingBoat {
             width: boat.width,
             draught: boat.draught,
             insurance: boat.insurance,
+            feeSent: boat.feeSent,
+            feePaid: boat.feePaid,
         }
     }
 }

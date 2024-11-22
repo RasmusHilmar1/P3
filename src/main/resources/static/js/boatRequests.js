@@ -72,7 +72,17 @@ export function createBtn(row, boat, btnText) {
     buttonElement.classList.add("addBtn");
     buttonElement.textContent = btnText;
 
-    buttonElement.id = "addBtn" + boat.boat.boatID;
+    if (btnText === "Tildelt") {
+        buttonElement.id = "addBtn" + boat.boat.boatID;
+        console.log(buttonElement.id);
+    } else if (btnText === "Sendt") {
+        buttonElement.id = "feeSentBtn" + boat.boat.boatID;
+        console.log(buttonElement.id);
+    } else if (btnText === "Betalt") {
+        buttonElement.id = "feePaidBtn" + boat.boat.boatID;
+        console.log(buttonElement.id);
+    }
+
 
     buttonContainer.appendChild(buttonElement);
     buttonCell.appendChild(buttonContainer);
@@ -95,7 +105,7 @@ export async function parseData(method, object, array){
         if (object === Berth){
             array.push(new object(objectData.berthID, objectData.name, objectData.availability, objectData.length, objectData.width, objectData.depth, objectData.pierId));
         } else if(object === Boat){
-            array.push(new Boat(objectData.boatID, objectData.memberID, objectData.berthID, objectData.name, objectData.type, objectData.manufacturer, objectData.length, objectData.width, objectData.draught, objectData.insurance));
+            array.push(new Boat(objectData.boatID, objectData.memberID, objectData.berthID, objectData.name, objectData.type, objectData.manufacturer, objectData.length, objectData.width, objectData.draught, objectData.insurance, objectData.feeSent, objectData.feePaid));
         } else if(object === PendingBoat){
             array.push(new object(objectData.id, objectData.boat));
             console.log(objectData.id, objectData.boat);

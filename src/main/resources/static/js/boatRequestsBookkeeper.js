@@ -28,6 +28,25 @@ class BoatRequestTableBook extends BoatRequestTable {
     }
 }
 
+//event handler for when the boat has been assigned to a berth
+function feeEvent(boats, members){
+    const filteredBoats = boats.filter(boat => {
+        const correspondingMember = members.find(member => member.member.memberID === boat.boat.memberID);
+        return correspondingMember !== "Unknown Member";// only include pending boats with approved members
+    });
+    console.log(filteredBoats);
+    filteredBoats.forEach(boat => {
+        console.log(boat.boat.feeSent);
+        console.log(boat.boat.feePaid);
+        let feeSentBtnId = "feeSentBtn" + boat.boat.boatID;
+        let feeSentBtn = document.getElementById(feeSentBtnId);
+        console.log(feeSentBtn);
+        let feePaidBtnId = "feePaidBtn" + boat.boat.boatID;
+        let feePaidBtn = document.getElementById(feePaidBtnId);
+        console.log(feePaidBtn);
+    });
+}
+
 // initialize the empty arrays for the data
 let boats = [], approvedMembers = [], pendingMembers = [], berths = [], pendingBoats = [];
 
@@ -46,4 +65,5 @@ window.onload = async () => {
         pendingBoats,
         approvedMembers,
         7 );
+    feeEvent(pendingBoats, approvedMembers);
 };

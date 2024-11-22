@@ -57,7 +57,14 @@ td button.distributeBerthsBtn:hover{
 a {
     text-decoration: none;
 }
-
-button:active{
+ /* Button styling for vessel inspector "tildel" */
+.buttonAssigned{
     background-color: #5c82b5;
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.2);
+    cursor: not-allowed;
+}
+
+button[disabled] {
+    opacity: 90%;
+    cursor: not-allowed;
 }
