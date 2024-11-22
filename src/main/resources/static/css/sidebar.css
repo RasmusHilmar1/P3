@@ -28,7 +28,7 @@
     font-size: 18px;
 }
 
-.btnSidebar {
+.sidebarMenuBtn {
     text-decoration: none;
     font-size: 17px;
     display: inline;
@@ -43,7 +43,7 @@
 }
 
 
-.btnSidebar.pressed {
+.sidebarMenuBtn.pressed {
     text-decoration: none;
     font-size: 17px;
     display: inline;
@@ -58,7 +58,7 @@
 }
 
 
-.sidebar button:hover {
+.sidebarMenuBtn:hover {
     color: white;
     background: #5c82b5;
     border-color: #5c82b5;
@@ -93,6 +93,7 @@
     margin-left: 350px;
 }
 
+
 .membersInfo {
     text-decoration: none;
     font-size: 15px;
@@ -108,6 +109,97 @@
 
 }
 
+/* css for tables in sidebar */
+
+.berthList {
+    display: none;
+}
+
+.memberBtn:active{
+    background-color: #5c82b5;
+    color: white;
+}
+
+table {
+    border: 1px solid;
+    border-collapse: separate;
+    table-border-color-dark: #222222;
+    width: 100%;
+    table-layout: auto;
+    margin-top: 10px;
+}
+
+thead {
+    font-size: 25px;
+    text-align: center;
+}
+
+tr {
+    border: 1px solid;
+    border-collapse: separate;
+    table-border-color-dark: #222222;
+    width: 100%;
+}
+
+th {
+    border: 1px solid;
+    border-collapse: separate;
+    table-border-color-dark: #222222;
+}
+
+td {
+    border: 1px solid;
+    border-collapse: separate;
+    table-border-color-dark: #222222;
+    vertical-align: middle;
+}
+
+.nameBtn, .berthBtn {
+    font-size: 18px;
+    cursor: pointer;
+    width: 100%;
+    border: none;
+    background-color: white;
+    height: 100%;
+}
+
+.nameBtn:after, .berthBtn:after {
+    content: '\02795'; /* Unicode character for "plus" sign (+) */
+    font-size: 10px;
+    float: right;
+    margin-left: 5px;
+    margin-top: 2px;
+}
+
+.nameBtn:hover, .berthBtn:hover{
+    background-color: #5c82b5;
+    color: white;
+}
+
+.infoCell {
+    padding: 0 18px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+    background-color: white;
+}
+
+.selectedNameBtn, .selected {
+    background-color: #5c82b5;
+    color: white;
+}
+
+.selectedNameBtn:after {
+    content: '\2796';
+}
+/*
+.assignBtn {
+    display: none;
+}
+*/
+.berthListAv {
+    display: none;
+}
 
 
 /*

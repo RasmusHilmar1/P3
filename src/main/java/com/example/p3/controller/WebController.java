@@ -1,7 +1,9 @@
 package com.example.p3.controller;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class WebController {
@@ -62,4 +64,31 @@ public class WebController {
     public String showIndexPage() {
         return "index";
     }
+
+    @GetMapping("/berthscomp")
+    public String showCompatablityScore() {
+        return "comp";
+    }
+
+
+    @GetMapping("/approvedMembers")
+    public String showApprovedMembers() {
+        return "approvedMembers";
+    }
+
+    @GetMapping("/berths")
+    public String showBerths() {
+        return "berths";
+    }
+
+    @RequestMapping("/default")
+    public String showDefaultPageAfterLogin(HttpServletRequest request) {
+        if(request.isUserInRole("VESSEL_USER")) {
+            return "redirect:/vesselInspectorStartPage";
+        } else if (request.isUserInRole("BOOKKEEPER_USER")) {
+            return "redirect:/bookkeeperStartPage";
+        }
+        return "default";
+    }
 }
+

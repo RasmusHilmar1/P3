@@ -1,0 +1,47 @@
+.memberRequestsContainer {
+    z-index: 20;
+    background-color: white;
+    gap: 10px;
+    padding-top: 110px; /*Dette skal passe med navigationsbaren når det laves om*/
+    font-size: 25px;
+}
+
+table {
+    border: 1px solid;
+    border-collapse: separate;
+    table-border-color-dark: #222222;
+    width: 100%;
+    table-layout: auto;
+}
+
+tr {
+    border: 1px solid;
+    border-collapse: separate;
+    table-border-color-dark: #222222;
+    width: 100%;
+}
+
+th {
+    border: 1px solid;
+    border-collapse: separate;
+    table-border-color-dark: #222222;
+}
+
+td {
+    border: 1px solid;
+    border-collapse: separate;
+    table-border-color-dark: #222222;
+    vertical-align: middle;
+    padding: 8px;
+}
+
+.iconsBoatRequests {
+    margin: 0 auto;
+    display: block;
+    width: 30px;
+    height: 30px;
+}
+
+a {
+    text-decoration: none;
+}

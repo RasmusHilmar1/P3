@@ -1,9 +1,13 @@
 package com.example.p3.service;
 
+import com.example.p3.dto.BoatDTO;
 import com.example.p3.model.Boat;
 import com.example.p3.repository.BoatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BoatService {
@@ -100,4 +104,32 @@ public class BoatService {
         return null;  // Return null if boat not found
     }
 
+    public List<Boat> getAllBoats() {
+        // Method to fetch all boats
+            return boatRepository.findAll(); // Assuming you have a BoatRepository extending JpaRepository
+
+    }
+
+    public BoatDTO convertToDTO(Boat boat) {
+        if (boat == null) {
+            return null;
+        }
+
+        // Convert Boat entity to BoatDTO
+        return new BoatDTO(boat.getBoatID(), boat.getName(), boat.getBerthID());
+    }
+
+    // Method to get all boats for a specific member
+    public List<BoatDTO> getBoatsByMemberId(int memberId) {
+        List<Boat> boats = boatRepository.findByMemberID(memberId);
+
+        return boats.stream()
+                .map(this::convertToDTO) // Convert each Boat entity to BoatDTO
+                .collect(Collectors.toList()); // Return a list of BoatDTOs
+    }
+
+    public Boat getBoatsByBerthID(int berthID) { // Custom method to find a boat by berth ID
+        return boatRepository.getBoatByBerthID(berthID);
+    }
 }
+

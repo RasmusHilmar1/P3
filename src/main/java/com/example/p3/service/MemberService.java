@@ -1,9 +1,13 @@
 package com.example.p3.service;
 
+import com.example.p3.dto.MemberDTO;
 import com.example.p3.model.Member;
 import com.example.p3.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class MemberService {
@@ -26,12 +30,12 @@ public class MemberService {
         return member.getEmail();
     }
 
-    public int getMemberDoB(int memberId) {
+    public LocalDate getMemberDoB(int memberId) {
         Member member = memberRepository.findByMemberID(memberId);
         return member.getDateofbirth();
     }
 
-    public Long getMemberPhoneNumber(int memberId) {
+    public String getMemberPhoneNumber(int memberId) {
         Member member = memberRepository.findByMemberID(memberId);
         return member.getPhonenumber();
     }
@@ -51,7 +55,6 @@ public class MemberService {
     public Member getMember(int memberId) {
         return memberRepository.findByMemberID(memberId);
     }
-
 
     // Methods der opdaterer værdier i databasen
     public Member updateMemberName(int memberId, String newName) {
@@ -81,7 +84,7 @@ public class MemberService {
         return null;
     }
 
-    public Member updateMemberPhoneNumber(int memberId, Long newPhoneNumber) {
+    public Member updateMemberPhoneNumber(int memberId, String newPhoneNumber) {
         Member member = memberRepository.findByMemberID(memberId);
         if (member != null) {
             member.setPhonenumber(newPhoneNumber);
@@ -98,4 +101,19 @@ public class MemberService {
         }
         return null;
     }
+
+    public MemberDTO convertToDTO(Member member) {
+        if (member == null) {
+            return null;
+        }
+
+        return new MemberDTO(member.getMemberID(), member.getName(), member.getPhonenumber());
+    }
+
+    public List<Member> getAllMembers() {
+        // Method to fetch all members
+        return memberRepository.findAll(); // Assuming you have a MemberRepository extending JpaRepository
+
+    }
+
 }

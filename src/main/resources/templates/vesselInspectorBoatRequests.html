@@ -13,20 +13,27 @@
     <link rel="stylesheet" href="/css/navigationBar.css" />
     <link rel="stylesheet" href="/css/sidebar.css" />
     <link rel="stylesheet" href="/css/map.css" />
+    <link rel="stylesheet" href="/css/boatRequests.css"/>
 </head>
 <body>
 <header class="header">
-    <a href="#"><img src="../../Images/Logo.png" alt="Logo" height="100"></a>
+    <a href="#"><img src="/Images/Logo.png" alt="Logo" height="100"></a>
     <nav class="navbar">
-        <a href="vesselInspectorStartPage.html">Kort</a>
-        <a href="vesselInspectorBoatRequests.html">Bådanmodning</a>
-        <a href="vesselInspectorBerthList.html">Pladsliste</a>
-        <a href="../StartPage/startPage.html">Log ud</a>
+        <a href="vesselInspectorStartPage">Kort</a>
+        <a href="vesselInspectorBoatRequests">Bådanmodning</a>
+        <a href="vesselInspectorBerthList">Pladsliste</a>
+        <form action="/logout" method="post" style="display:inline;">
+            <button type="submit" id="submit">Log ud</button>
+        </form>
     </nav>
 </header>
-<div id="boatRequests" class="boatRequests">
-    <button id="acceptRequestBtn" class="acceptRequestBtn"></button>
-    <button id="denyRequestBtn" class="denyRequestBtn"></button>
+<div id="boatRequestsContainer" class="boatRequestsContainer">
+    <!-- Dynamic table created her -->
 </div>
+<script src="/js/navigationbar.js"></script>
+<script type="module" src="/js/boatRequestsVessel.js"></script>
+<script type="module" src="/js/boatRequests.js"></script>
+<script type="module" src="/js/memberFetch.js"></script>
+<script type="module" src="/js/objects.js"></script>
 </body>
 </html>

@@ -1,9 +1,14 @@
 package com.example.p3.controller;
 
+import com.example.p3.dto.MemberDTO;
 import com.example.p3.model.Member;
+import com.example.p3.repository.MemberRepository;
 import com.example.p3.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("/members")
@@ -11,6 +16,10 @@ public class MemberController {
 
     @Autowired // giver adgang til methods fra MemberService klassen.
     private MemberService memberService;
+
+    @Autowired
+    private MemberRepository memberRepository;
+
 
     @GetMapping("/getName/{id}")
     public String getMember(@PathVariable int id) {
@@ -28,12 +37,12 @@ public class MemberController {
     }
 
     @GetMapping("/getDoB/{id}")
-    public int getMemberDateOfBirth(@PathVariable int id) {
+    public LocalDate getMemberDateOfBirth(@PathVariable int id) {
         return memberService.getMemberDoB(id);
     }
 
     @GetMapping("/getPhoneNumber/{id}")
-    public Long getMemberPhoneNumber(@PathVariable int id) {
+    public String getMemberPhoneNumber(@PathVariable int id) {
         return memberService.getMemberPhoneNumber(id);
     }
 
@@ -69,13 +78,31 @@ public class MemberController {
     }
 
     @PutMapping("/updatePhoneNumber/{id}")
-    public Member updateMemberPhoneNumber(@PathVariable int id, @RequestBody Long newPhoneNumber) {
+    public Member updateMemberPhoneNumber(@PathVariable int id, @RequestBody String newPhoneNumber) {
         return memberService.updateMemberPhoneNumber(id, newPhoneNumber);
     }
 
     @PutMapping("/updateBoatOwnershipStatus/{id}")
     public Member updateMemberBoatOwnershipStatus(@PathVariable int id, @RequestBody Boolean newStatus) {
         return memberService.updateMemberBoatOwnershipStatus(id, newStatus);
+    }
+
+    @GetMapping("/public/{id}")
+    public MemberDTO getConvertDTO(@PathVariable int id) {
+
+        Member member = getPublicMember(id);
+
+        return memberService.convertToDTO(member);
+    }
+
+    public Member getPublicMember(int memberId) {
+        return memberRepository.findByMemberID(memberId); 
+    }
+
+    // endpoint to get all members
+    @GetMapping("/get")
+    public List<Member> getAllMembers() {
+        return memberService.getAllMembers();
     }
 
 }

@@ -4,14 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="/css/stylesFakeLogin.css">
-
-
+    <link rel="stylesheet" href="/css/login.css">
 </head>
 <body>
 
 <div class="login-container">
-    <h2>Login</h2>
+    <button class="close-btn" onclick="navigateToPage()">&times;</button> <!-- &times er kryds tegnet direkte i html.-->
+    <h2>Login for administrator</h2>
     <form action="/login" method="POST" id="login-form">
         <input type="text" name="username" class="input-field" placeholder="Username" required>
         <input type="password" name="password" class="input-field" placeholder="Password" required>
@@ -20,5 +19,11 @@
     <div class="error-message" id="error-message"></div>
 </div>
 
+<script>
+    // funktion som navigerer brugeren hen til index.html hvis der trkkes på det lille kryds.
+    function navigateToPage() {
+        location.href = '/index';
+    }
+</script>
 </body>
 </html>

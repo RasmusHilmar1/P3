@@ -12,10 +12,10 @@ public class Berth {
     private String name;
     private int availability;
     private int memberID;
-    private int length;
-    private int width;
-    private int depth;
-    private int dockID;
+    private double length;
+    private double width;
+    private double depth;
+    private int pierId;
 
     // Getters and Setters
     public int getBerthID() {return berthID;}
@@ -30,16 +30,16 @@ public class Berth {
     public int getMemberID() {return memberID;}
     public void setMemberID(int memberID) {this.memberID = memberID;}
 
-    public int getLength() {return length;}
-    public void setLength(int length) {this.length = length;}
+    public double getLength() {return length;}
+    public void setLength(double length) {this.length = length;}
 
-    public int getWidth() {return width;}
-    public void setWidth(int width) {this.width = width;}
+    public double getWidth() {return width;}
+    public void setWidth(double width) {this.width = width;}
 
-    public int getDepth() {return depth;}
-    public void setDepth(int depth) {this.depth = depth;}
+    public double getDepth() {return depth;}
+    public void setDepth(double depth) {this.depth = depth;}
 
-    public int getDockID() {return dockID;}
-    public void setDockID(int dockID) {this.dockID = dockID;}
+    public int getPierId() {return pierId;}
+    public void setDockID(int pierId) {this.pierId = pierId;}
 
 }

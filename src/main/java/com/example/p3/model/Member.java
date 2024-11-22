@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 
+import java.time.LocalDate;
+
 @Entity
 public class Member {
 
@@ -13,13 +15,13 @@ public class Member {
     private String name;
     private String address;
     private String email;
-    private int dateofbirth;
-    private Long phonenumber;
+    private LocalDate dateofbirth;
+    private String phonenumber;
     private Boolean boatownership;
 
     @OneToOne(mappedBy = "member")
-    @JsonBackReference
-    private ApprovedMember approvedMember;
+    private
+    @JsonBackReference ApprovedMember approvedMember;
 
     public int getMemberID() {
         return memberID;
@@ -37,11 +39,11 @@ public class Member {
         return email;
     }
 
-    public int getDateofbirth() {
+    public LocalDate getDateofbirth() {
         return dateofbirth;
     }
 
-    public Long getPhonenumber() {
+    public String getPhonenumber() {
         return phonenumber;
     }
 
@@ -61,7 +63,7 @@ public class Member {
         this.email = email;
     }
 
-    public void setPhonenumber(Long phonenumber) {
+    public void setPhonenumber(String phonenumber) {
         this.phonenumber = phonenumber;
     }
 
