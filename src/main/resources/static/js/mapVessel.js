@@ -1,6 +1,10 @@
 import {myGeoJson} from "./geojson.js";
 import {fetchApprovedMembers, fetchBoats, fetchBerth} from "./fetchMethods.js";
 
+const approvedMembers = await fetchApprovedMembers();
+const boats = await fetchBoats();
+const berths = await fetchBerth();
+
 // Create map for leaflet -->
 var map = L.map('map', {
     minZoom: 17,
@@ -46,7 +50,6 @@ harbor1.addEventListener("click", function(event) {
     ];
 
     //var imageUrl = '../../Images/vestre_badelaug_kort_kopi.jpeg';
-
     //var imageOverlay = L.imageOverlay(imageUrl, imageBounds).addTo(map);
 
     const bounds = L.latLngBounds(
@@ -81,12 +84,8 @@ harbor2.addEventListener("click", function(event) {
 
 });
 
-
 // Move zoom buttons -->
 map.zoomControl.setPosition('bottomright');
-
-
-
 
 //const btnHarbor1 = document.querySelector('.vestreBaadehavn');
 //const btnHarbor2 = document.querySelector('.skudehavn');
@@ -101,22 +100,10 @@ harbors.addEventListener('click', function (event) {
     }
 });
 
-// Load berth data from the backend
-async function loadBerthData() {
-    try {
-        const response = await fetch('berths/get'); // Replace with your actual API endpoint
-        const berths = await response.json();
-        return berths;
-    } catch (error) {
-        console.error('Error fetching berth data:', error);
-        return [];
-    }
-}
+
 
 // Update GeoJSON data with berth status
-async function updateGeoJsonWithStatus() {
-    const berths = await loadBerthData();
-
+function updateGeoJsonWithStatus() {
     // Map berth data to GeoJSON features
     myGeoJson.features.forEach(feature => {
         const berthStatus = berths.find(berth => berth.berthID === Number(feature.properties.id));
@@ -153,20 +140,8 @@ async function updateGeoJsonWithStatus() {
         }
     }).addTo(map);
 }
-
 // Initial load and update
 updateGeoJsonWithStatus();
-
-const approvedMembers = await fetchApprovedMembers();
-console.log("members info:" + JSON.stringify(approvedMembers));
-
-const boats = await fetchBoats();
-console.log("boats" + boats);
-//console.log("boatID" + boats.name);
-
-const berths = await fetchBerth();
-console.log("berths" + berths);
-
 
 function onEachFeature(feature, layer) {
     //const status = feature.properties.status === 1 ? "Tilgængelig" : feature.properties.status === 0 ? "Optaget" : feature.properties.status === 2 ? "Midlertidig Utilgængelig" : "Unknown";
@@ -178,9 +153,7 @@ function onEachFeature(feature, layer) {
 
         const memberListBoat = document.getElementById("memberListBoat");
         const memberListWithoutBoat = document.getElementById("memberListWithoutBoat");
-        var berthListAvailable = document.getElementById(`berthListAv${member}`);
-        var berthListSmall = document.getElementById(`berthListSmall${member}`);
-        var berthListUav = document.getElementById(`berthListUav${member}`);
+        const allBerthTables = document.querySelectorAll(".berthList");
 
         const berthList = document.getElementById("berthList");
         const rows = berthList.querySelectorAll('tr');
@@ -190,67 +163,20 @@ function onEachFeature(feature, layer) {
             if (berthNameBtn) {
                 const berthName = berthNameBtn.textContent.trim();
                 if (berthName === feature.properties.name) {
-                    berthList.style.display = "table";
                     memberListBoat.style.display = "none";
                     memberListWithoutBoat.style.display = "none";
-                    berthListAvailable.style.display = "none";
-                    berthListSmall.style.display = "none";
-                    berthListUav.style.display = "none";
+                    // Loop gennem og skjul hver tabel
+                    allBerthTables.forEach((table) => {
+                        table.style.display = 'none';
+                    });
+                    berthList.style.display = "table";
+
                     berthNameBtn.click();
                     berthNameBtn.scrollIntoView();
                 }
             }
         });
-
-/*
-        var memberList = document.getElementById("memberListBoat");
-        const rows = memberList.querySelectorAll('tr');
-        console.log("memberList: " + memberList);
-        console.log("rows: " + rows);
-
-
-
-        rows.forEach(row => {
-            const memberCell = row.querySelector(".memberCell");
-            console.log("memberCell: " + memberCell.innerHTML);
-
-            //if (memberCell) {
-            //const memberName = memberCell.textContent.trim();
-            //console.log("memberName:" + memberName);
-            approvedMembers.forEach(approvedMember => {
-                const memberName = row.querySelector(`#memberName${approvedMember.member.memberID}`);
-                //console.log("memberCell: " + memberCell.innerHTML);
-
-                if(memberName) {
-                    const memberNameId = memberName.id;
-                    const id = memberNameId.replace("memberName", "");
-                    console.log(id);
-
-                    //if (id === approvedMember.member.memberID) {
-                    //  console.log("id match member");
-                    boats.forEach(boat => {
-                        if ((Number(id) === boat.memberID) && (boat.berthID !== 9999) && (boat.berthID === Number(feature.properties.id))) {
-                            memberCell.click();
-                            console.log("membercell clicked");
-                        }
-                    });
-                    //}
-                }
-            });
-
-            //}
-        });*/
-
-        /*
-        document.getElementById("berthId").innerHTML = feature.properties.id;
-        document.getElementById("berthName").innerHTML = feature.properties.name;
-        document.getElementById("berthStatus").innerHTML = feature.properties.status;
-         */
     });
-
-    //layer.on('unclick', function(e) {
-//
-//    });
 }
 
 let selectedLayer;
