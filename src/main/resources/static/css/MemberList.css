@@ -11,12 +11,16 @@
         padding: 0;
     }
 
+    h1.my-4 {
+        text-align: center;
+    }
+
 
 
     /* Button Styling */
     button {
         padding: 4px 8px; /* Reduce padding for smaller buttons */
-        background-color: #4CAF50;
+        background-color: #5c82b5;
         color: white;
         border: none;
         border-radius: 3px; /* Slightly smaller border radius for compact look */
@@ -25,7 +29,7 @@
     }
 
     button:hover {
-        background-color: #45a049;
+        background-color: #0056b3;
         font-size: 12px; /* Keep hover state consistent */
     }
 
@@ -72,7 +76,7 @@
         width: 140px; /* Adjust width for names */
     }
     input[name="memberAddress"] {
-        width: 110px; /* Adjust width for names */
+        width: 120px; /* Adjust width for names */
     }
 
 
@@ -80,7 +84,7 @@
         width: 220px; /* Larger width for email */
     }
     input[name="memberPhonenumber"] {
-        width: 110px; /* Adjust width for names */
+        width: 100px; /* Adjust width for names */
     }
     input[name="boatName"] {
         width: 120px; /* Adjust width for names */
@@ -151,3 +155,26 @@
         align-items: center;
         margin-top: 20px;
     }
+
+
+
+    .select-container {
+        max-width: 300px; /* Restrict overall container width */
+    }
+
+    .select-container select {
+        height: auto; /* Adjust height if needed */
+        font-size: 0.9rem; /* Adjust font size */
+    }
+
+    .select-container .btn {
+        font-size: 0.875rem; /* Reduce button text size */
+        padding: 0.5rem; /* Adjust button padding */
+    }
+
+    /* Adjust the width of the export section */
+    #listSelect {
+        width: 200px; /* Reduce the width of the dropdown */
+    }
+
+
