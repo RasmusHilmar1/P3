@@ -43,12 +43,12 @@
         "coordinates": [
           [
             [
-              9.901504383543742,
-              57.05717816682058
+              -8.088326368303889,
+              56.42107466479294
             ],
             [
-              9.90150874277895,
-              57.05721310743983
+              -8.08833823239801,
+              56.42110789959434
             ],
             [
               9.901683030552848,
@@ -59,16 +59,15 @@
               57.05717171080268
             ],
             [
-              9.901504383543742,
-              57.05717816682058
+              -8.088326368303889,
+              56.42107466479294
             ]
           ]
         ]
       },
       "properties": {
         "id": "FB01",
-        "name": "Berth FB01",
-        "status": "Available"
+        "name": "Berth FB01"
       }
     },
     {
@@ -78,12 +77,12 @@
         "coordinates": [
           [
             [
-              9.901516963901718,
-              57.05721280291614
+              -8.088330284392674,
+              56.42110877110411
             ],
             [
-              9.901521323148744,
-              57.0572477435352
+              -8.088342148510854,
+              56.42114200590378
             ],
             [
               9.90168738995585,
@@ -94,16 +93,15 @@
               57.05720665142197
             ],
             [
-              9.901516963901718,
-              57.05721280291614
+              -8.088330284392674,
+              56.42110877110411
             ]
           ]
         ]
       },
       "properties": {
         "id": "FB02",
-        "name": "Berth FB02",
-        "status": "Available"
+        "name": "Berth FB02"
       }
     },
     {
@@ -113,12 +111,12 @@
         "coordinates": [
           [
             [
-              9.901521323148744,
-              57.0572477435352
+              -8.088342148510854,
+              56.42114200590378
             ],
             [
-              9.90152557062409,
-              57.05728178824076
+              -8.088353708450214,
+              56.421174388526
             ],
             [
               9.901691637583173,
@@ -129,16 +127,15 @@
               57.057241592041066
             ],
             [
-              9.901521323148744,
-              57.0572477435352
+              -8.088342148510854,
+              56.42114200590378
             ]
           ]
         ]
       },
       "properties": {
         "id": "FB03",
-        "name": "Berth FB03",
-        "status": "Available"
+        "name": "Berth FB03"
       }
     },
     {
@@ -148,12 +145,12 @@
         "coordinates": [
           [
             [
-              9.901523926396498,
-              57.05728184914555
+              -8.088355298053834,
+              56.42117421422349
             ],
             [
-              9.901528397425903,
-              57.05731768567752
+              -8.088367466443485,
+              56.42120830119062
             ],
             [
               9.901696108774138,
@@ -164,16 +161,15 @@
               57.05727563674666
             ],
             [
-              9.901523926396498,
-              57.05728184914555
+              -8.088355298053834,
+              56.42117421422349
             ]
           ]
         ]
       },
       "properties": {
         "id": "FB04",
-        "name": "Berth FB04",
-        "status": "Available"
+        "name": "Berth FB04"
       }
     },
     {
@@ -207,8 +203,7 @@
       },
       "properties": {
         "id": "FB05",
-        "name": "Berth FB05",
-        "status": "Available"
+        "name": "Berth FB05"
       }
     },
     {
@@ -242,8 +237,7 @@
       },
       "properties": {
         "id": "FB06",
-        "name": "Berth FB06",
-        "status": "Available"
+        "name": "Berth FB06"
       }
     },
     {
@@ -277,8 +271,7 @@
       },
       "properties": {
         "id": "FB07",
-        "name": "Berth FB07",
-        "status": "Available"
+        "name": "Berth FB07"
       }
     },
     {
@@ -312,8 +305,7 @@
       },
       "properties": {
         "id": "FB08",
-        "name": "Berth FB08",
-        "status": "Available"
+        "name": "Berth FB08"
       }
     },
     {
@@ -347,8 +339,7 @@
       },
       "properties": {
         "id": "FB09",
-        "name": "Berth FB09",
-        "status": "Available"
+        "name": "Berth FB09"
       }
     },
     {
@@ -382,8 +373,7 @@
       },
       "properties": {
         "id": "FB10",
-        "name": "Berth FB10",
-        "status": "Available"
+        "name": "Berth FB10"
       }
     },
     {
@@ -417,8 +407,7 @@
       },
       "properties": {
         "id": "FB11",
-        "name": "Berth FB11",
-        "status": "Available"
+        "name": "Berth FB11"
       }
     },
     {
@@ -452,8 +441,7 @@
       },
       "properties": {
         "id": "FB12",
-        "name": "Berth FB12",
-        "status": "Available"
+        "name": "Berth FB12"
       }
     },
     {
@@ -487,8 +475,7 @@
       },
       "properties": {
         "id": "FB13",
-        "name": "Berth FB13",
-        "status": "Available"
+        "name": "Berth FB13"
       }
     },
     {
@@ -522,8 +509,7 @@
       },
       "properties": {
         "id": "FB14",
-        "name": "Berth FB14",
-        "status": "Available"
+        "name": "Berth FB14"
       }
     },
     {
@@ -557,8 +543,7 @@
       },
       "properties": {
         "id": "FB15",
-        "name": "Berth FB15",
-        "status": "Available"
+        "name": "Berth FB15"
       }
     },
     {
@@ -592,8 +577,7 @@
       },
       "properties": {
         "id": "FB16",
-        "name": "Berth FB16",
-        "status": "Available"
+        "name": "Berth FB16"
       }
     },
     {
@@ -627,8 +611,7 @@
       },
       "properties": {
         "id": "FB17",
-        "name": "Berth FB17",
-        "status": "Available"
+        "name": "Berth FB17"
       }
     },
     {
@@ -662,8 +645,7 @@
       },
       "properties": {
         "id": "FB18",
-        "name": "Berth FB18",
-        "status": "Available"
+        "name": "Berth FB18"
       }
     },
     {
@@ -697,8 +679,7 @@
       },
       "properties": {
         "id": "FB19",
-        "name": "Berth FB19",
-        "status": "Available"
+        "name": "Berth FB19"
       }
     },
     {
@@ -732,8 +713,7 @@
       },
       "properties": {
         "id": "FB20",
-        "name": "Berth FB20",
-        "status": "Available"
+        "name": "Berth FB20"
       }
     },
     {
@@ -767,8 +747,7 @@
       },
       "properties": {
         "id": "FB21",
-        "name": "Berth FB21",
-        "status": "Available"
+        "name": "Berth FB21"
       }
     },
     {
@@ -802,8 +781,7 @@
       },
       "properties": {
         "id": "FB22",
-        "name": "Berth FB22",
-        "status": "Available"
+        "name": "Berth FB22"
       }
     },
     {
@@ -837,8 +815,7 @@
       },
       "properties": {
         "id": "FB23",
-        "name": "Berth FB23",
-        "status": "Available"
+        "name": "Berth FB23"
       }
     },
     {
@@ -872,8 +849,7 @@
       },
       "properties": {
         "id": "FB24",
-        "name": "Berth FB24",
-        "status": "Available"
+        "name": "Berth FB24"
       }
     },
     {
@@ -907,8 +883,7 @@
       },
       "properties": {
         "id": "FB25",
-        "name": "Berth FB25",
-        "status": "Available"
+        "name": "Berth FB25"
       }
     },
     {
@@ -942,8 +917,7 @@
       },
       "properties": {
         "id": "FB26",
-        "name": "Berth FB26",
-        "status": "Available"
+        "name": "Berth FB26"
       }
     },
     {
@@ -977,8 +951,7 @@
       },
       "properties": {
         "id": "FB27",
-        "name": "Berth FB27",
-        "status": "Available"
+        "name": "Berth FB27"
       }
     },
     {
@@ -1012,8 +985,7 @@
       },
       "properties": {
         "id": "FB28",
-        "name": "Berth FB28",
-        "status": "Available"
+        "name": "Berth FB28"
       }
     },
     {
@@ -1047,8 +1019,7 @@
       },
       "properties": {
         "id": "FB29",
-        "name": "Berth FB29",
-        "status": "Available"
+        "name": "Berth FB29"
       }
     },
     {
@@ -1082,8 +1053,7 @@
       },
       "properties": {
         "id": "FB30",
-        "name": "Berth FB30",
-        "status": "Available"
+        "name": "Berth FB30"
       }
     },
     {
@@ -1117,8 +1087,7 @@
       },
       "properties": {
         "id": "FB31",
-        "name": "Berth FB31",
-        "status": "Available"
+        "name": "Berth FB31"
       }
     },
     {
@@ -1152,8 +1121,7 @@
       },
       "properties": {
         "id": "FB32",
-        "name": "Berth FB32",
-        "status": "Available"
+        "name": "Berth FB32"
       }
     },
     {
@@ -1187,8 +1155,7 @@
       },
       "properties": {
         "id": "FB33",
-        "name": "Berth FB33",
-        "status": "Available"
+        "name": "Berth FB33"
       }
     },
     {
@@ -1222,8 +1189,7 @@
       },
       "properties": {
         "id": "FB34",
-        "name": "Berth FB34",
-        "status": "Available"
+        "name": "Berth FB34"
       }
     },
     {
@@ -1257,8 +1223,7 @@
       },
       "properties": {
         "id": "FB35",
-        "name": "Berth FB35",
-        "status": "Available"
+        "name": "Berth FB35"
       }
     },
     {
@@ -1292,8 +1257,7 @@
       },
       "properties": {
         "id": "FB36",
-        "name": "Berth FB36",
-        "status": "Available"
+        "name": "Berth FB36"
       }
     },
     {
@@ -1362,8 +1326,7 @@
       },
       "properties": {
         "id": "NM05",
-        "name": "Berth NM05",
-        "status": "Available"
+        "name": "Berth NM05"
       }
     },
     {
@@ -1397,8 +1360,7 @@
       },
       "properties": {
         "id": "NM06",
-        "name": "Berth NM06",
-        "status": "Available"
+        "name": "Berth NM06"
       }
     },
     {
@@ -1432,8 +1394,7 @@
       },
       "properties": {
         "id": "NM07",
-        "name": "Berth NM07",
-        "status": "Available"
+        "name": "Berth NM07"
       }
     },
     {
@@ -1467,8 +1428,7 @@
       },
       "properties": {
         "id": "NM08",
-        "name": "Berth NM08",
-        "status": "Available"
+        "name": "Berth NM08"
       }
     },
     {
@@ -1502,8 +1462,7 @@
       },
       "properties": {
         "id": "NM09",
-        "name": "Berth NM09",
-        "status": "Available"
+        "name": "Berth NM09"
       }
     },
     {
@@ -1537,8 +1496,7 @@
       },
       "properties": {
         "id": "NM10",
-        "name": "Berth NM10",
-        "status": "Available"
+        "name": "Berth NM10"
       }
     },
     {
@@ -1572,8 +1530,7 @@
       },
       "properties": {
         "id": "NM11",
-        "name": "Berth NM11",
-        "status": "Available"
+        "name": "Berth NM11"
       }
     },
     {
@@ -1607,8 +1564,7 @@
       },
       "properties": {
         "id": "NM12",
-        "name": "Berth NM12",
-        "status": "Available"
+        "name": "Berth NM12"
       }
     },
     {
@@ -1642,8 +1598,7 @@
       },
       "properties": {
         "id": "NM13",
-        "name": "Berth NM13",
-        "status": "Available"
+        "name": "Berth NM13"
       }
     },
     {
@@ -1677,8 +1632,7 @@
       },
       "properties": {
         "id": "NM13",
-        "name": "Berth NM13",
-        "status": "Available"
+        "name": "Berth NM13"
       }
     },
     {
@@ -1712,8 +1666,7 @@
       },
       "properties": {
         "id": "NM14",
-        "name": "Berth NM14",
-        "status": "Available"
+        "name": "Berth NM14"
       }
     },
     {
@@ -1747,8 +1700,7 @@
       },
       "properties": {
         "id": "NM15",
-        "name": "Berth NM15",
-        "status": "Available"
+        "name": "Berth NM15"
       }
     },
     {
@@ -1782,8 +1734,7 @@
       },
       "properties": {
         "id": "NM17",
-        "name": "Berth NM17",
-        "status": "Available"
+        "name": "Berth NM17"
       }
     },
     {
@@ -1817,8 +1768,7 @@
       },
       "properties": {
         "id": "NM18",
-        "name": "Berth NM18",
-        "status": "Available"
+        "name": "Berth NM18"
       }
     },
     {
@@ -1852,8 +1802,7 @@
       },
       "properties": {
         "id": "NM19",
-        "name": "Berth NM19",
-        "status": "Available"
+        "name": "Berth NM19"
       }
     },
     {
@@ -1887,8 +1836,7 @@
       },
       "properties": {
         "id": "NM20",
-        "name": "Berth NM20",
-        "status": "Available"
+        "name": "Berth NM20"
       }
     },
     {
@@ -1922,8 +1870,7 @@
       },
       "properties": {
         "id": "NM21",
-        "name": "Berth NM21",
-        "status": "Available"
+        "name": "Berth NM21"
       }
     },
     {
@@ -1957,8 +1904,7 @@
       },
       "properties": {
         "id": "NM22",
-        "name": "Berth NM22",
-        "status": "Available"
+        "name": "Berth NM22"
       }
     },
     {
@@ -1992,8 +1938,7 @@
       },
       "properties": {
         "id": "NM23",
-        "name": "Berth NM23",
-        "status": "Available"
+        "name": "Berth NM23"
       }
     },
     {
@@ -2027,8 +1972,7 @@
       },
       "properties": {
         "id": "NM24",
-        "name": "Berth NM24",
-        "status": "Available"
+        "name": "Berth NM24"
       }
     },
     {
@@ -2062,8 +2006,7 @@
       },
       "properties": {
         "id": "NM25",
-        "name": "Berth NM25",
-        "status": "Available"
+        "name": "Berth NM25"
       }
     },
     {
@@ -2097,8 +2040,7 @@
       },
       "properties": {
         "id": "NM26",
-        "name": "Berth NM26",
-        "status": "Available"
+        "name": "Berth NM26"
       }
     },
     {
@@ -2132,8 +2074,7 @@
       },
       "properties": {
         "id": "NM27",
-        "name": "Berth NM27",
-        "status": "Available"
+        "name": "Berth NM27"
       }
     },
     {
@@ -2167,8 +2108,7 @@
       },
       "properties": {
         "id": "NM28",
-        "name": "Berth NM28",
-        "status": "Available"
+        "name": "Berth NM28"
       }
     },
     {
@@ -2202,8 +2142,7 @@
       },
       "properties": {
         "id": "NM29",
-        "name": "Berth NM29",
-        "status": "Available"
+        "name": "Berth NM29"
       }
     },
     {
@@ -2237,8 +2176,7 @@
       },
       "properties": {
         "id": "NM30",
-        "name": "Berth NM30",
-        "status": "Available"
+        "name": "Berth NM30"
       }
     },
     {
@@ -2272,8 +2210,7 @@
       },
       "properties": {
         "id": "NM31",
-        "name": "Berth NM31",
-        "status": "Available"
+        "name": "Berth NM31"
       }
     },
     {
@@ -2307,8 +2244,7 @@
       },
       "properties": {
         "id": "NM32",
-        "name": "Berth NM32",
-        "status": "Available"
+        "name": "Berth NM32"
       }
     },
     {
@@ -2342,8 +2278,7 @@
       },
       "properties": {
         "id": "NM33",
-        "name": "Berth NM33",
-        "status": "Available"
+        "name": "Berth NM33"
       }
     },
     {
@@ -2377,8 +2312,7 @@
       },
       "properties": {
         "id": "NM34",
-        "name": "Berth NM34",
-        "status": "Available"
+        "name": "Berth NM34"
       }
     },
     {
@@ -2412,8 +2346,7 @@
       },
       "properties": {
         "id": "NM35",
-        "name": "Berth NM35",
-        "status": "Available"
+        "name": "Berth NM35"
       }
     },
     {
@@ -2447,8 +2380,7 @@
       },
       "properties": {
         "id": "NM36",
-        "name": "Berth NM36",
-        "status": "Available"
+        "name": "Berth NM36"
       }
     },
     {
@@ -2517,8 +2449,7 @@
       },
       "properties": {
         "id": "FB37",
-        "name": "Berth FB37",
-        "status": "Available"
+        "name": "Berth FB37"
       }
     },
     {
@@ -2552,8 +2483,7 @@
       },
       "properties": {
         "id": "FB38",
-        "name": "Berth FB38",
-        "status": "Available"
+        "name": "Berth FB38"
       }
     },
     {
@@ -2587,8 +2517,7 @@
       },
       "properties": {
         "id": "FB39",
-        "name": "Berth FB39",
-        "status": "Available"
+        "name": "Berth FB39"
       }
     },
     {
@@ -2622,8 +2551,7 @@
       },
       "properties": {
         "id": "FB40",
-        "name": "Berth FB40",
-        "status": "Available"
+        "name": "Berth FB40"
       }
     },
     {
@@ -2657,8 +2585,7 @@
       },
       "properties": {
         "id": "FB41",
-        "name": "Berth FB41",
-        "status": "Available"
+        "name": "Berth FB41"
       }
     },
     {
@@ -2692,8 +2619,7 @@
       },
       "properties": {
         "id": "FB42",
-        "name": "Berth FB42",
-        "status": "Available"
+        "name": "Berth FB42"
       }
     },
     {
@@ -2727,8 +2653,7 @@
       },
       "properties": {
         "id": "FB43",
-        "name": "Berth FB43",
-        "status": "Available"
+        "name": "Berth FB43"
       }
     },
     {
@@ -2797,8 +2722,7 @@
       },
       "properties": {
         "id": "NB01",
-        "name": "Berth NB01",
-        "status": "Available"
+        "name": "Berth NB01"
       }
     },
     {
@@ -2832,8 +2756,7 @@
       },
       "properties": {
         "id": "NB02",
-        "name": "Berth NB02",
-        "status": "Available"
+        "name": "Berth NB02"
       }
     },
     {
@@ -2867,8 +2790,7 @@
       },
       "properties": {
         "id": "NB03",
-        "name": "Berth NB03",
-        "status": "Available"
+        "name": "Berth NB03"
       }
     },
     {
@@ -2902,8 +2824,7 @@
       },
       "properties": {
         "id": "NB04",
-        "name": "Berth NB04",
-        "status": "Available"
+        "name": "Berth NB04"
       }
     },
     {
@@ -2937,8 +2858,7 @@
       },
       "properties": {
         "id": "NB05",
-        "name": "Berth NB05",
-        "status": "Available"
+        "name": "Berth NB05"
       }
     },
     {
@@ -2972,8 +2892,7 @@
       },
       "properties": {
         "id": "NB06",
-        "name": "Berth NB06",
-        "status": "Available"
+        "name": "Berth NB06"
       }
     },
     {
@@ -3007,8 +2926,7 @@
       },
       "properties": {
         "id": "NB07",
-        "name": "Berth NB07",
-        "status": "Available"
+        "name": "Berth NB07"
       }
     },
     {
@@ -3042,8 +2960,7 @@
       },
       "properties": {
         "id": "NB08",
-        "name": "Berth NB08",
-        "status": "Available"
+        "name": "Berth NB08"
       }
     },
     {
@@ -3077,8 +2994,7 @@
       },
       "properties": {
         "id": "NB09",
-        "name": "Berth NB09",
-        "status": "Available"
+        "name": "Berth NB09"
       }
     },
     {
@@ -3112,8 +3028,7 @@
       },
       "properties": {
         "id": "NB10",
-        "name": "Berth NB10",
-        "status": "Available"
+        "name": "Berth NB10"
       }
     },
     {
@@ -3147,8 +3062,7 @@
       },
       "properties": {
         "id": "NB11",
-        "name": "Berth NB11",
-        "status": "Available"
+        "name": "Berth NB11"
       }
     },
     {
@@ -3182,8 +3096,7 @@
       },
       "properties": {
         "id": "NB12",
-        "name": "Berth NB12",
-        "status": "Available"
+        "name": "Berth NB12"
       }
     },
     {
@@ -3217,8 +3130,7 @@
       },
       "properties": {
         "id": "NB13",
-        "name": "Berth NB13",
-        "status": "Available"
+        "name": "Berth NB13"
       }
     },
     {
@@ -3252,8 +3164,7 @@
       },
       "properties": {
         "id": "NB14",
-        "name": "Berth NB14",
-        "status": "Available"
+        "name": "Berth NB14"
       }
     },
     {
@@ -3287,8 +3198,7 @@
       },
       "properties": {
         "id": "NB15",
-        "name": "Berth NB15",
-        "status": "Available"
+        "name": "Berth NB15"
       }
     },
     {
@@ -3322,8 +3232,7 @@
       },
       "properties": {
         "id": "NB16",
-        "name": "Berth NB16",
-        "status": "Available"
+        "name": "Berth NB16"
       }
     },
     {
@@ -3357,8 +3266,7 @@
       },
       "properties": {
         "id": "NB17",
-        "name": "Berth NB17",
-        "status": "Available"
+        "name": "Berth NB17"
       }
     },
     {
@@ -3392,8 +3300,7 @@
       },
       "properties": {
         "id": "NB18",
-        "name": "Berth NB18",
-        "status": "Available"
+        "name": "Berth NB18"
       }
     },
     {
@@ -3427,8 +3334,7 @@
       },
       "properties": {
         "id": "NB19",
-        "name": "Berth NB19",
-        "status": "Available"
+        "name": "Berth NB19"
       }
     },
     {
@@ -3462,8 +3368,7 @@
       },
       "properties": {
         "id": "NB20",
-        "name": "Berth NB20",
-        "status": "Available"
+        "name": "Berth NB20"
       }
     },
     {
@@ -3497,8 +3402,7 @@
       },
       "properties": {
         "id": "NB21",
-        "name": "Berth NB21",
-        "status": "Available"
+        "name": "Berth NB21"
       }
     },
     {
@@ -3532,8 +3436,7 @@
       },
       "properties": {
         "id": "NB22",
-        "name": "Berth NB22",
-        "status": "Available"
+        "name": "Berth NB22"
       }
     },
     {
@@ -3567,8 +3470,7 @@
       },
       "properties": {
         "id": "NB23",
-        "name": "Berth NB23",
-        "status": "Available"
+        "name": "Berth NB23"
       }
     },
     {
@@ -3602,8 +3504,7 @@
       },
       "properties": {
         "id": "NB24",
-        "name": "Berth NB24",
-        "status": "Available"
+        "name": "Berth NB24"
       }
     },
     {
@@ -3637,8 +3538,7 @@
       },
       "properties": {
         "id": "NB25",
-        "name": "Berth NB25",
-        "status": "Available"
+        "name": "Berth NB25"
       }
     },
     {
@@ -3672,8 +3572,7 @@
       },
       "properties": {
         "id": "NB26",
-        "name": "Berth NB26",
-        "status": "Available"
+        "name": "Berth NB26"
       }
     },
     {
@@ -3707,8 +3606,7 @@
       },
       "properties": {
         "id": "NB27",
-        "name": "Berth NB27",
-        "status": "Available"
+        "name": "Berth NB27"
       }
     },
     {
@@ -3742,8 +3640,7 @@
       },
       "properties": {
         "id": "NB28",
-        "name": "Berth NB28",
-        "status": "Available"
+        "name": "Berth NB28"
       }
     },
     {
@@ -3777,8 +3674,7 @@
       },
       "properties": {
         "id": "NB29",
-        "name": "Berth NB29",
-        "status": "Available"
+        "name": "Berth NB29"
       }
     },
     {
@@ -3812,8 +3708,7 @@
       },
       "properties": {
         "id": "NB30",
-        "name": "Berth NB30",
-        "status": "Available"
+        "name": "Berth NB30"
       }
     },
     {
@@ -3847,8 +3742,7 @@
       },
       "properties": {
         "id": "NB31",
-        "name": "Berth NB31",
-        "status": "Available"
+        "name": "Berth NB31"
       }
     },
     {
@@ -3882,8 +3776,7 @@
       },
       "properties": {
         "id": "NB32",
-        "name": "Berth NB32",
-        "status": "Available"
+        "name": "Berth NB32"
       }
     },
     {
@@ -3917,8 +3810,7 @@
       },
       "properties": {
         "id": "NB33",
-        "name": "Berth NB33",
-        "status": "Available"
+        "name": "Berth NB33"
       }
     },
     {
@@ -3952,8 +3844,7 @@
       },
       "properties": {
         "id": "NB34",
-        "name": "Berth NB34",
-        "status": "Available"
+        "name": "Berth NB34"
       }
     },
     {
@@ -3987,8 +3878,7 @@
       },
       "properties": {
         "id": "NB35",
-        "name": "Berth NB35",
-        "status": "Available"
+        "name": "Berth NB35"
       }
     },
     {
@@ -4022,8 +3912,7 @@
       },
       "properties": {
         "id": "NB36",
-        "name": "Berth NB36",
-        "status": "Available"
+        "name": "Berth NB36"
       }
     },
     {
@@ -4057,8 +3946,7 @@
       },
       "properties": {
         "id": "NB37",
-        "name": "Berth NB37",
-        "status": "Available"
+        "name": "Berth NB37"
       }
     },
     {
@@ -4092,8 +3980,7 @@
       },
       "properties": {
         "id": "NB38",
-        "name": "Berth NB38",
-        "status": "Available"
+        "name": "Berth NB38"
       }
     },
     {
@@ -4127,8 +4014,7 @@
       },
       "properties": {
         "id": "NB39",
-        "name": "Berth NB39",
-        "status": "Available"
+        "name": "Berth NB39"
       }
     },
     {
@@ -4162,8 +4048,7 @@
       },
       "properties": {
         "id": "NB40",
-        "name": "Berth NB40",
-        "status": "Available"
+        "name": "Berth NB40"
       }
     },
     {
@@ -4197,8 +4082,7 @@
       },
       "properties": {
         "id": "NB41",
-        "name": "Berth NB41",
-        "status": "Available"
+        "name": "Berth NB41"
       }
     },
     {
@@ -4232,8 +4116,7 @@
       },
       "properties": {
         "id": "NB42",
-        "name": "Berth NB42",
-        "status": "Available"
+        "name": "Berth NB42"
       }
     },
     {
@@ -4267,8 +4150,7 @@
       },
       "properties": {
         "id": "NB43",
-        "name": "Berth NB43",
-        "status": "Available"
+        "name": "Berth NB43"
       }
     },
     {
@@ -4302,8 +4184,7 @@
       },
       "properties": {
         "id": "NB44",
-        "name": "Berth NB44",
-        "status": "Available"
+        "name": "Berth NB44"
       }
     },
     {
@@ -4337,8 +4218,7 @@
       },
       "properties": {
         "id": "NB45",
-        "name": "Berth NB45",
-        "status": "Available"
+        "name": "Berth NB45"
       }
     },
     {
@@ -4372,8 +4252,7 @@
       },
       "properties": {
         "id": "NB46",
-        "name": "Berth NB46",
-        "status": "Available"
+        "name": "Berth NB46"
       }
     },
     {
@@ -4407,8 +4286,7 @@
       },
       "properties": {
         "id": "NB47",
-        "name": "Berth NB47",
-        "status": "Available"
+        "name": "Berth NB47"
       }
     },
     {
@@ -4442,8 +4320,7 @@
       },
       "properties": {
         "id": "NB48",
-        "name": "Berth NB48",
-        "status": "Available"
+        "name": "Berth NB48"
       }
     },
     {
@@ -4477,8 +4354,7 @@
       },
       "properties": {
         "id": "NB49",
-        "name": "Berth NB49",
-        "status": "Available"
+        "name": "Berth NB49"
       }
     },
     {
@@ -4512,8 +4388,7 @@
       },
       "properties": {
         "id": "NB50",
-        "name": "Berth NB50",
-        "status": "Available"
+        "name": "Berth NB50"
       }
     },
     {
@@ -4547,8 +4422,7 @@
       },
       "properties": {
         "id": "NB51",
-        "name": "Berth NB51",
-        "status": "Available"
+        "name": "Berth NB51"
       }
     },
     {
@@ -4582,8 +4456,7 @@
       },
       "properties": {
         "id": "NB52",
-        "name": "Berth NB52",
-        "status": "Available"
+        "name": "Berth NB52"
       }
     },
     {
@@ -4617,8 +4490,7 @@
       },
       "properties": {
         "id": "NB53",
-        "name": "Berth NB53",
-        "status": "Available"
+        "name": "Berth NB53"
       }
     },
     {
@@ -4652,8 +4524,7 @@
       },
       "properties": {
         "id": "NB54",
-        "name": "Berth NB54",
-        "status": "Available"
+        "name": "Berth NB54"
       }
     },
     {
@@ -4687,8 +4558,7 @@
       },
       "properties": {
         "id": "NB55",
-        "name": "Berth NB55",
-        "status": "Available"
+        "name": "Berth NB55"
       }
     },
     {
@@ -4722,8 +4592,7 @@
       },
       "properties": {
         "id": "NB56",
-        "name": "Berth NB56",
-        "status": "Available"
+        "name": "Berth NB56"
       }
     },
     {
@@ -4757,8 +4626,7 @@
       },
       "properties": {
         "id": "NB57",
-        "name": "Berth NB57",
-        "status": "Available"
+        "name": "Berth NB57"
       }
     },
     {
@@ -4792,8 +4660,7 @@
       },
       "properties": {
         "id": "NB58",
-        "name": "Berth NB58",
-        "status": "Available"
+        "name": "Berth NB58"
       }
     },
     {
@@ -4827,8 +4694,7 @@
       },
       "properties": {
         "id": "NB59",
-        "name": "Berth NB59",
-        "status": "Available"
+        "name": "Berth NB59"
       }
     },
     {
@@ -4862,8 +4728,7 @@
       },
       "properties": {
         "id": "NB60",
-        "name": "Berth NB60",
-        "status": "Available"
+        "name": "Berth NB60"
       }
     },
     {
@@ -4897,8 +4762,7 @@
       },
       "properties": {
         "id": "NB61",
-        "name": "Berth NB61",
-        "status": "Available"
+        "name": "Berth NB61"
       }
     },
     {
@@ -4932,8 +4796,7 @@
       },
       "properties": {
         "id": "NB62",
-        "name": "Berth NB62",
-        "status": "Available"
+        "name": "Berth NB62"
       }
     },
     {
@@ -4967,8 +4830,7 @@
       },
       "properties": {
         "id": "NB63",
-        "name": "Berth NB63",
-        "status": "Available"
+        "name": "Berth NB63"
       }
     },
     {
@@ -5037,8 +4899,7 @@
       },
       "properties": {
         "id": "NVB01",
-        "name": "Berth NVB01",
-        "status": "Available"
+        "name": "Berth NVB01"
       }
     },
     {
@@ -5072,8 +4933,7 @@
       },
       "properties": {
         "id": "NVB02",
-        "name": "Berth NVB02",
-        "status": "Available"
+        "name": "Berth NVB02"
       }
     },
     {
@@ -5107,8 +4967,7 @@
       },
       "properties": {
         "id": "NVB03",
-        "name": "Berth NVB03",
-        "status": "Available"
+        "name": "Berth NVB03"
       }
     },
     {
@@ -5142,8 +5001,7 @@
       },
       "properties": {
         "id": "NVB04",
-        "name": "Berth NVB04",
-        "status": "Available"
+        "name": "Berth NVB04"
       }
     },
     {
@@ -5177,8 +5035,7 @@
       },
       "properties": {
         "id": "NVB05",
-        "name": "Berth NVB05",
-        "status": "Available"
+        "name": "Berth NVB05"
       }
     },
     {
@@ -5212,8 +5069,7 @@
       },
       "properties": {
         "id": "NVB06",
-        "name": "Berth NVB06",
-        "status": "Available"
+        "name": "Berth NVB06"
       }
     },
     {
@@ -5247,8 +5103,7 @@
       },
       "properties": {
         "id": "NVB07",
-        "name": "Berth NVB07",
-        "status": "Available"
+        "name": "Berth NVB07"
       }
     },
     {
@@ -5282,8 +5137,7 @@
       },
       "properties": {
         "id": "NVB08",
-        "name": "Berth NVB08",
-        "status": "Available"
+        "name": "Berth NVB08"
       }
     },
     {
@@ -5317,8 +5171,7 @@
       },
       "properties": {
         "id": "NVB09",
-        "name": "Berth NVB09",
-        "status": "Available"
+        "name": "Berth NVB09"
       }
     },
     {
@@ -5352,8 +5205,7 @@
       },
       "properties": {
         "id": "NVB10",
-        "name": "Berth NVB10",
-        "status": "Available"
+        "name": "Berth NVB10"
       }
     },
     {
@@ -5387,8 +5239,7 @@
       },
       "properties": {
         "id": "NVB11",
-        "name": "Berth NVB11",
-        "status": "Available"
+        "name": "Berth NVB11"
       }
     },
     {
@@ -5422,8 +5273,7 @@
       },
       "properties": {
         "id": "NVB13",
-        "name": "Berth NVB13",
-        "status": "Available"
+        "name": "Berth NVB13"
       }
     },
     {
@@ -5457,8 +5307,7 @@
       },
       "properties": {
         "id": "NVB14",
-        "name": "Berth NVB14",
-        "status": "Available"
+        "name": "Berth NVB14"
       }
     },
     {
@@ -5492,8 +5341,7 @@
       },
       "properties": {
         "id": "NVB15",
-        "name": "Berth NVB15",
-        "status": "Available"
+        "name": "Berth NVB15"
       }
     },
     {
@@ -5527,8 +5375,7 @@
       },
       "properties": {
         "id": "NVB16",
-        "name": "Berth NVB16",
-        "status": "Available"
+        "name": "Berth NVB16"
       }
     },
     {
@@ -5562,8 +5409,7 @@
       },
       "properties": {
         "id": "NVB17",
-        "name": "Berth NVB17",
-        "status": "Available"
+        "name": "Berth NVB17"
       }
     },
     {
@@ -5597,8 +5443,7 @@
       },
       "properties": {
         "id": "NVB18",
-        "name": "Berth NVB18",
-        "status": "Available"
+        "name": "Berth NVB18"
       }
     },
     {
@@ -5632,8 +5477,7 @@
       },
       "properties": {
         "id": "NVB19",
-        "name": "Berth NVB19",
-        "status": "Available"
+        "name": "Berth NVB19"
       }
     },
     {
@@ -5667,8 +5511,7 @@
       },
       "properties": {
         "id": "NVB20",
-        "name": "Berth NVB20",
-        "status": "Available"
+        "name": "Berth NVB20"
       }
     },
     {
@@ -5702,8 +5545,7 @@
       },
       "properties": {
         "id": "NVB21",
-        "name": "Berth NVB21",
-        "status": "Available"
+        "name": "Berth NVB21"
       }
     },
     {
@@ -5737,8 +5579,7 @@
       },
       "properties": {
         "id": "NVB22",
-        "name": "Berth NVB22",
-        "status": "Available"
+        "name": "Berth NVB22"
       }
     },
     {
@@ -5772,8 +5613,7 @@
       },
       "properties": {
         "id": "NVB23",
-        "name": "Berth NVB23",
-        "status": "Available"
+        "name": "Berth NVB23"
       }
     },
     {
@@ -5807,8 +5647,7 @@
       },
       "properties": {
         "id": "NVB24",
-        "name": "Berth NVB24",
-        "status": "Available"
+        "name": "Berth NVB24"
       }
     },
     {
@@ -5842,8 +5681,7 @@
       },
       "properties": {
         "id": "NVB25",
-        "name": "Berth NVB25",
-        "status": "Available"
+        "name": "Berth NVB25"
       }
     },
     {
@@ -5877,8 +5715,7 @@
       },
       "properties": {
         "id": "NVB26",
-        "name": "Berth NVB26",
-        "status": "Available"
+        "name": "Berth NVB26"
       }
     },
     {
@@ -5912,8 +5749,7 @@
       },
       "properties": {
         "id": "NVB27",
-        "name": "Berth NVB27",
-        "status": "Available"
+        "name": "Berth NVB27"
       }
     },
     {
@@ -5947,8 +5783,7 @@
       },
       "properties": {
         "id": "NVB28",
-        "name": "Berth NVB28",
-        "status": "Available"
+        "name": "Berth NVB28"
       }
     },
     {
@@ -5982,8 +5817,7 @@
       },
       "properties": {
         "id": "NVB29",
-        "name": "Berth NVB29",
-        "status": "Available"
+        "name": "Berth NVB29"
       }
     },
     {
@@ -6017,8 +5851,7 @@
       },
       "properties": {
         "id": "NVB30",
-        "name": "Berth NVB30",
-        "status": "Available"
+        "name": "Berth NVB30"
       }
     },
     {
@@ -6052,8 +5885,7 @@
       },
       "properties": {
         "id": "NVB31",
-        "name": "Berth NVB31",
-        "status": "Available"
+        "name": "Berth NVB31"
       }
     },
     {
@@ -6087,8 +5919,7 @@
       },
       "properties": {
         "id": "NVB32",
-        "name": "Berth NVB32",
-        "status": "Available"
+        "name": "Berth NVB32"
       }
     },
     {
@@ -6122,8 +5953,7 @@
       },
       "properties": {
         "id": "NVB33",
-        "name": "Berth NVB33",
-        "status": "Available"
+        "name": "Berth NVB33"
       }
     },
     {
@@ -6157,8 +5987,7 @@
       },
       "properties": {
         "id": "NVB34",
-        "name": "Berth NVB34",
-        "status": "Available"
+        "name": "Berth NVB34"
       }
     },
     {
@@ -6192,8 +6021,7 @@
       },
       "properties": {
         "id": "NVB35",
-        "name": "Berth NVB35",
-        "status": "Available"
+        "name": "Berth NVB35"
       }
     },
     {
@@ -6227,8 +6055,7 @@
       },
       "properties": {
         "id": "NVB36",
-        "name": "Berth NVB36",
-        "status": "Available"
+        "name": "Berth NVB36"
       }
     },
     {
@@ -6262,8 +6089,7 @@
       },
       "properties": {
         "id": "NVB37",
-        "name": "Berth NVB37",
-        "status": "Available"
+        "name": "Berth NVB37"
       }
     },
     {
@@ -6297,8 +6123,7 @@
       },
       "properties": {
         "id": "NVB38",
-        "name": "Berth NVB38",
-        "status": "Available"
+        "name": "Berth NVB38"
       }
     },
     {
@@ -6332,8 +6157,7 @@
       },
       "properties": {
         "id": "NVB39",
-        "name": "Berth NVB39",
-        "status": "Available"
+        "name": "Berth NVB39"
       }
     },
     {
@@ -6367,8 +6191,7 @@
       },
       "properties": {
         "id": "NVB41",
-        "name": "Berth NVB41",
-        "status": "Available"
+        "name": "Berth NVB41"
       }
     }
   ]
