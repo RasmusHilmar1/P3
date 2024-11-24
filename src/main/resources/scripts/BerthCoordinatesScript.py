@@ -8,13 +8,9 @@ import mysql.connector  # For connecting to the MySQL database
 from mysql.connector import Error  # For handling MySQL errors
 from dotenv import load_dotenv  # For loading environment variables from a .env file
 
-# Get the path to the directory containing the script
+# Load environment variables from the .env file
 script_dir = os.path.dirname(os.path.abspath(__file__))
-
-# Define the path to the .env file in the src directory
 env_path = os.path.join(script_dir, '..', '..', '..', '.env')
-
-# Load the .env file
 load_dotenv(dotenv_path=env_path)
 
 # --------------------------------------------
@@ -63,11 +59,14 @@ def fetch_data(query):
         except Error as e:
             # Print any errors that occur during data fetching
             print(f"Error fetching data: {e}")
+            return []  # Return an empty list if data fetching was unsuccessful
         finally:
             # Ensure that the cursor and connection are closed properly
             cursor.close()
             connection.close()
-    return []  # Return an empty list if data fetching was unsuccessful
+    else:
+        print("No database connection available.")
+    return []  # Return an empty list if connection was unsuccessful
 
 # --------------------------------------------
 # Data Retrieval Functions
@@ -80,7 +79,7 @@ def get_berth_data():
         berths (list): A list of dictionaries containing berth data.
     """
     print("Fetching berth data from the database...")
-    query = "SELECT * FROM berth"
+    query = "SELECT berthId, name, length, width, pier_id FROM berth"
     berths = fetch_data(query)  # Fetch berth data using the generic fetch_data function
     print(f"Fetched {len(berths)} berths from the database.")
     return berths  # Return the list of berths
@@ -93,9 +92,9 @@ def get_pier_data():
         piers (list): A list of dictionaries containing pier data.
     """
     print("Fetching pier data from the database...")
-    # Exclude Pier 1 (id = 1) in the SQL query
+    # Exclude Pier 1 (id = 1) in the SQL query and fetch the 'side' attribute
     query = """
-        SELECT id, name,
+        SELECT id, name, side,
                ST_AsText(bottom_left_point) AS bottom_left,
                ST_AsText(bottom_right_point) AS bottom_right,
                ST_AsText(top_right_point) AS top_right,
@@ -112,6 +111,8 @@ def get_pier_data():
             pier['top_right'] = parse_point(pier['top_right'])
             pier['top_left'] = parse_point(pier['top_left'])
         print(f"Fetched and parsed {len(piers)} piers from the database.")
+    else:
+        print("No pier data fetched.")
     return piers  # Return the list of piers
 
 # --------------------------------------------
@@ -139,6 +140,8 @@ def parse_point(point_str):
         except ValueError as e:
             # Print an error message if conversion fails
             print(f"Error parsing point '{point_str}': {e}")
+    else:
+        print(f"Invalid point string: {point_str}")
     return None  # Return None if parsing was unsuccessful
 
 def calculate_bearing(pointA, pointB):
@@ -218,19 +221,33 @@ def create_piers_list(piers_data, berths_data):
         # Format berths data
         formatted_berths = []
         for berth in pier_berths:
+            # Ensure length and width are positive numbers
+            try:
+                length = float(berth['length'])
+                width = float(berth['width'])
+                if length <= 0 or width <= 0:
+                    print(f"Invalid dimensions for berth {berth['name']}. Skipping.")
+                    continue
+            except (ValueError, TypeError):
+                print(f"Invalid length or width for berth {berth['name']}. Skipping.")
+                continue
+
             # Create a berth dictionary with necessary details
             formatted_berths.append({
-                "nummer": berth['name'],
-                "længde": berth['length'],
-                "bredde": berth['width']
+                "number": berth['name'],
+                "length": length,
+                "width": width
             })
+
+        # Get the side from the pier data, default to 'both' if not specified
+        side = pier.get('side', 'both')
 
         # Create pier entry with all necessary details
         pier_entry = {
             "coordinates": coordinates,              # Coordinates of the pier
             "id": f"pier-{pier['id']}",              # Unique identifier for the pier
             "name": pier['name'],                    # Name of the pier
-            "side": "both",                          # Side(s) of the pier with berths
+            "side": side.lower(),                    # Side(s) of the pier with berths
             "berths": formatted_berths               # List of berths associated with the pier
         }
 
@@ -275,11 +292,9 @@ def generate_geojson(piers):
 
         # Place berths on the pier
         place_berths(
-            pier_coordinates=pier['coordinates'],
+            pier=pier,
             bearing_along_pier_left=bearing_along_pier_left,
             bearing_along_pier_right=bearing_along_pier_right,
-            berths=pier['berths'],
-            side=pier['side'],
             features=features  # Pass the features list to add berth features
         )
 
@@ -289,75 +304,133 @@ def generate_geojson(piers):
         "features": features  # List of all features (piers and berths)
     }
 
-
-
     # Define the path to the `static` folder
-    static_folder_path = os.path.join(os.path.dirname(__file__), '..', 'static')
+    static_folder_path = os.path.join(script_dir, '..', 'static')
+
+    # Ensure the `static` folder exists
+    if not os.path.exists(static_folder_path):
+        os.makedirs(static_folder_path)
 
     # Construct the full path to `berths.geojson`
     geojson_file_path = os.path.join(static_folder_path, 'berths.geojson')
-
 
     # Write the GeoJSON data to a file in the `static` folder
     with open(geojson_file_path, 'w') as geojson_file:
         json.dump(geojson, geojson_file, indent=2)  # Indent for readability
 
-    print("GeoJSON file 'berths.geojson' has been created.")
+    print(f"GeoJSON file 'berths.geojson' has been created at {geojson_file_path}.")
 
-def place_berths(pier_coordinates, bearing_along_pier_left, bearing_along_pier_right, berths, side, features):
+def place_berths(pier, bearing_along_pier_left, bearing_along_pier_right, features):
     """
     Place berths along the sides of a pier and add them to the GeoJSON features.
     Args:
-        pier_coordinates (list): The coordinates of the pier.
+        pier (dict): The pier data including coordinates and berths.
         bearing_along_pier_left (float): Bearing along the left side of the pier.
         bearing_along_pier_right (float): Bearing along the right side of the pier.
-        berths (list): List of berths to place.
-        side (str): Side(s) of the pier where berths can be placed ('left', 'right', or 'both').
         features (list): The list of GeoJSON features to which berth features will be added.
     """
+    pier_coordinates = pier['coordinates']
+    berths = pier['berths']
+    side = pier['side']
+    pier_name = pier['name']
+
     # Initialize starting positions for berth placement
     current_position_left = pier_coordinates[0]   # Start at bottom left corner
     current_position_right = pier_coordinates[1]  # Start at bottom right corner
+
     berths_on_left_side = []   # List to hold berths on the left side
     berths_on_right_side = []  # List to hold berths on the right side
 
-    # Place berths on the left side of the pier
-    if side in ["left", "both"]:
-        for berth in berths:
-            length = berth["længde"]  # Length of the berth
-            width = berth["bredde"]   # Width of the berth
+    # Determine sides to use
+    sides_to_use = []
+    if side == 'both':
+        sides_to_use = ['left', 'right']
+    else:
+        sides_to_use = [side]
 
-            # Place a single berth and update the current position
-            current_position_left = place_single_berth(
-                current_position=current_position_left,
-                length=length,
-                width=width,
-                bearing_along_pier=bearing_along_pier_left,
-                side="left",
-                berth_number=berth["nummer"],
-                berths_list=berths_on_left_side
-            )
+    total_berths = len(berths)
+    berth_index = 0
 
-    # Place berths on the right side of the pier
-    if side in ["right", "both"]:
-        for berth in berths[len(berths_on_left_side):]:  # Continue with remaining berths
-            length = berth["længde"]
-            width = berth["bredde"]
+    # Flags to indicate if sides are full
+    left_side_full = False
+    right_side_full = False
 
-            # Place a single berth and update the current position
-            current_position_right = place_single_berth(
-                current_position=current_position_right,
-                length=length,
-                width=width,
-                bearing_along_pier=bearing_along_pier_right,
-                side="right",
-                berth_number=berth["nummer"],
-                berths_list=berths_on_right_side
-            )
+    # Max distance along each side (length of the side)
+    max_distance_left = geodesic(pier_coordinates[0], pier_coordinates[3]).meters
+    max_distance_right = geodesic(pier_coordinates[1], pier_coordinates[2]).meters
+
+    # Cumulative distances along each side
+    distance_along_left = 0
+    distance_along_right = 0
+
+    while berth_index < total_berths:
+        berth = berths[berth_index]
+        length = berth["length"]
+        width = berth["width"]
+
+        berth_placed = False
+
+        # Try to place on left side if available
+        if 'left' in sides_to_use and not left_side_full:
+            # Calculate remaining distance on left side
+            remaining_distance_left = max_distance_left - distance_along_left
+
+            if width <= remaining_distance_left:
+                # Place berth on left side
+                result = place_single_berth(
+                    current_position=current_position_left,
+                    length=length,
+                    width=width,
+                    bearing_along_pier=bearing_along_pier_left,
+                    side="left",
+                    berth_number=berth["number"],
+                    berths_list=berths_on_left_side
+                )
+                current_position_left = result['next_position']
+                distance_along_left += width
+                berth_placed = True
+            else:
+                # Left side is full
+                left_side_full = True
+
+        # If not placed, try right side
+        if not berth_placed and 'right' in sides_to_use and not right_side_full:
+            remaining_distance_right = max_distance_right - distance_along_right
+
+            if width <= remaining_distance_right:
+                # Place berth on right side
+                result = place_single_berth(
+                    current_position=current_position_right,
+                    length=length,
+                    width=width,
+                    bearing_along_pier=bearing_along_pier_right,
+                    side="right",
+                    berth_number=berth["number"],
+                    berths_list=berths_on_right_side
+                )
+                current_position_right = result['next_position']
+                distance_along_right += width
+                berth_placed = True
+            else:
+                # Right side is full
+                right_side_full = True
+
+        # If berth not placed on either side, skip the berth
+        if not berth_placed:
+            print(f"Not enough space to place berth {berth['number']} on pier '{pier_name}'.")
+            berth_index += 1
+            continue
+
+        berth_index += 1  # Move to the next berth
+
+        # If both sides are full, break the loop
+        if left_side_full and right_side_full:
+            print(f"No more space on pier '{pier_name}'. Remaining berths will not be placed.")
+            break
 
     # Add berth features to the GeoJSON features list
     for berth_data in berths_on_left_side + berths_on_right_side:
-        point1, point2, point3, point4, berth_nummer = berth_data
+        point1, point2, point3, point4, berth_number = berth_data
         # Create a polygon for the berth
         polygon = Polygon([point1, point2, point3, point4, point1])  # Ensure the polygon is closed
 
@@ -371,8 +444,8 @@ def place_berths(pier_coordinates, bearing_along_pier_left, bearing_along_pier_r
                 ]]
             },
             "properties": {
-                "id": berth_nummer,
-                "name": f"Berth {berth_nummer}",
+                "id": berth_number,
+                "name": f"Berth {berth_number}",
                 "status": "Available"  # Default status for the berth
             }
         }
@@ -390,13 +463,15 @@ def place_single_berth(current_position, length, width, bearing_along_pier, side
         berth_number (str): The identifier for the berth.
         berths_list (list): The list to which the berth's coordinates will be added.
     Returns:
-        next_position (tuple): The updated current position after placing the berth.
+        dict: A dictionary containing the next_position.
     """
     # Determine the perpendicular bearing based on the side
     if side == "left":
         perpendicular_bearing = (bearing_along_pier - 90 + 360) % 360
     elif side == "right":
         perpendicular_bearing = (bearing_along_pier + 90) % 360
+    else:
+        raise ValueError(f"Invalid side: {side}")
 
     # Calculate the four corners of the berth polygon
     next_position = calculate_new_coordinate(current_position, width, bearing_along_pier)
@@ -408,7 +483,7 @@ def place_single_berth(current_position, length, width, bearing_along_pier, side
     # Add the berth's coordinates to the berths list
     berths_list.append((point1, point2, point3, point4, berth_number))
 
-    return next_position  # Return the updated current position for the next berth
+    return {'next_position': next_position}  # Return the updated current position
 
 # --------------------------------------------
 # Main Execution
@@ -429,6 +504,10 @@ def main():
 
     # Create piers list with associated berths
     piers = create_piers_list(piers_data, berths_data)
+
+    if not piers:
+        print("No valid piers to process.")
+        return
 
     # Generate GeoJSON file from the piers list
     generate_geojson(piers)
