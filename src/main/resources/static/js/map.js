@@ -1,4 +1,4 @@
-import {myGeoJson} from "./geojson.js";
+import { myGeoJson, fetchGeoJson } from "./geojson.js";
 import {fetchApprovedMembers, fetchBoats, fetchBerth} from "./memberFetch.js";
 
 // Create map for leaflet -->
@@ -122,43 +122,55 @@ async function updateGeoJsonWithStatus() {
 
     // Map berth data to GeoJSON features
     myGeoJson.features.forEach(feature => {
-        const berthStatus = berths.find(b => b.name === feature.properties.id);
+        const berthStatus = berths.find(b => b.name === feature.properties.name);
         feature.properties.status = berthStatus ? berthStatus.availability : 'Unknown';
     });
-
-    // Render updated GeoJSON with styles based on status
-    L.geoJSON(myGeoJson, {
-        onEachFeature: onEachFeature,
-        style: function (feature) {
-            const status = feature.properties.status;
-            let fillColor;
-
-            switch (status) {
-                case 1:
-                    fillColor = "#00FF00";
-                    break;
-                case 0:
-                    fillColor = "red";
-                    break;
-                case 2:
-                    fillColor = "orange";
-                    break;
-                default:
-                    fillColor = "white"; // Default color if status is unknown
-            }
-
-            return {
-                color: "black",
-                weight: 0.1,
-                fillColor: fillColor,
-                fillOpacity: 0.8
-            };
-        }
-    }).addTo(map);
 }
 
-// Initial load and update
-updateGeoJsonWithStatus();
+// Wait for GeoJSON to be fetched before using it
+async function initializeMap() {
+    await fetchGeoJson(); // Ensure that the GeoJSON is fetched
+
+    if (myGeoJson) {
+        await updateGeoJsonWithStatus(); // Update GeoJSON data with berth statuses
+
+        // Add the updated GeoJSON to the map
+        L.geoJSON(myGeoJson, {
+            onEachFeature: onEachFeature,
+            style: function (feature) {
+                const status = feature.properties.status;
+                let fillColor;
+
+                switch (status) {
+                    case 1:
+                        fillColor = "#00FF00";
+                        break;
+                    case 0:
+                        fillColor = "red";
+                        break;
+                    case 2:
+                        fillColor = "orange";
+                        break;
+                    default:
+                        fillColor = "white"; // Default color if status is unknown
+                }
+
+                return {
+                    color: "black",
+                    weight: 0.1,
+                    fillColor: fillColor,
+                    fillOpacity: 0.8
+                };
+            }
+        }).addTo(map);
+    } else {
+        console.error('GeoJSON data not available');
+    }
+}
+
+// Call initializeMap to start the process
+initializeMap();
+
 
 function onEachFeature(feature, layer) {
     const berthId = feature.properties.id;
