@@ -68,15 +68,36 @@ td {
 .editableInput {
     border: 1px solid #ccc;
     border-radius: 4px;
-    width: 50%; /* Control the input field width */
     margin: 2px auto; /* Center the input field within the cell */
     font-size: 18px;
+    max-width: 70px;
 }
 
 .editableInput:focus {
     outline: none;
     border-color: #5c5db5;
-    box-shadow: 0 0 5px 1px rgb(92, 130, 181); /* Similar glow effect as before */
+    box-shadow: 0 0 5px 1px rgb(92, 130, 181);
+}
+
+/* Styling for the uneditable cells */
+.uneditableCells {
+    max-width: 100px; /* Limit cell width to prevent overly wide cells */
+    padding: 5px; /* Add padding for a centered look */
+    text-align: left; /* Center text in cell */
+}
+.uneditableInput {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin: 2px auto; /* Center the input field within the cell */
+    font-size: 18px;
+    width: auto;
+    cursor: auto;
+}
+
+.uneditableInput:focus {
+    outline: none;
+    border: none;
+    cursor: auto;
 }
 
 /* Styles for the save button */
@@ -99,11 +120,11 @@ td {
     background-color: transparent;
 }
 
+/* Search bar styling */
 #searchBarCell {
     padding: 10px;
 }
 
-/* Search bar styling */
 #berthListSearchBar {
     border-radius: 4px;
     border: 1px solid #ccc;

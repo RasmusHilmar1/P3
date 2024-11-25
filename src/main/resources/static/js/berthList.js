@@ -43,28 +43,29 @@ function addCells(tr, data, editableIndexes = []){
         td = tr.insertCell();
         tr.className = "berthTableRow";
 
-        if (editableIndexes.includes(index)) {
-            /* td.contentEditable = "true"; // make the cell editable
-            td.className = "editableCells"; */
-            // create input fields in the cells
-            const input = document.createElement("input");
-            td.appendChild(input);
-            td.className = "editableCells";
-            input.type = "text";
-            input.value = item;
-            input.className = "editableInput"; // Custom class for styling
+        const input = document.createElement("input");
+        td.appendChild(input);
+        input.type = "text";
+        input.value = item;
 
-            if (index === 2 || index === 3) { // if the edited cells are length or width column
-                td.addEventListener('input', () => {
-                    // update the areal after length or width is edited
-                    const length = parseFloat(tr.cells[2].textContent);
-                    const width = parseFloat(tr.cells[3].textContent);
-                    const newAreal = (length * width).toFixed(2); // recalculate areal
-                    tr.cells[4].textContent = newAreal + "m"; // update cell
-                });
-            }
+        if (editableIndexes.includes(index)) {
+            input.readOnly = false;
+            td.className = "editableCells";// divided them into two classes for styling
+            input.className = "editableInput";
         } else {
-            td.textContent = item;
+            input.readOnly = true;
+            td.className = "uneditableCells";
+            input.className = "uneditableInput";
+        }
+
+        if (index === 2 || index === 3) { // if the edited cells are length or width column
+            td.addEventListener('input', () => {
+                // update the areal after length or width is edited
+                const length = parseFloat(tr.cells[2].textContent);
+                const width = parseFloat(tr.cells[3].textContent);
+                const newAreal = (length * width).toFixed(2); // recalculate areal
+                tr.cells[4].textContent = newAreal + "m"; // update cell
+            });
         }
         console.log(item);
     });
