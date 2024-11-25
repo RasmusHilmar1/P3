@@ -38,6 +38,24 @@ const bounds = L.latLngBounds(
 // Set the max bounds for navigating map as the bounds of picture -->
 map.setMaxBounds(bounds);
 
+var guestAreaBounds = [
+    [57.05742346980074, 9.90033925763862],
+    [57.05734201796358, 9.90061552466426],
+    [57.05728567822284, 9.900799976274303],
+    [57.05732832447959, 9.900841314225922],
+    [57.057682352673424, 9.90090670180615],
+    [57.05775435796488, 9.900683763958938],
+    [57.05742346980074, 9.90033925763862]
+];
+
+// Add an orange polygon for the guest area
+L.polygon(guestAreaBounds, {
+    color: "orange",
+    weight: 2,
+    fillOpacity: 0.6
+}).addTo(map);
+
+
 const harbor1 = document.getElementById("vestreBaadehavn");
 harbor1.addEventListener("click", function(event) {
     event.preventDefault();
@@ -144,14 +162,13 @@ async function updateGeoJsonWithStatus() {
                     fillColor = "orange";
                     break;
                 default:
-                    fillColor = "white"; // Default color if status is unknown
-            }
-
+                    fillColor = "#F2EFE9";
+}
             return {
                 color: "black",
                 weight: 0.1,
                 fillColor: fillColor,
-                fillOpacity: 0.8
+                fillOpacity: 1
             };
         }
     }).addTo(map);
