@@ -72,6 +72,12 @@
     input[name="memberID"] {
         width: 70px; /* Adjust width for names */
     }
+
+    input[name="memberID"]:focus {
+        outline: none;
+        box-shadow: none;
+    }
+
     input[name="memberName"] {
         width: 140px; /* Adjust width for names */
     }
@@ -102,13 +108,30 @@
     input[name="boatAreal"] {
         width: 75px; /* Keep similar width for related fields */
     }
+
+    input[name="boatAreal"]:focus {
+        outline: none;
+        box-shadow: none;
+    }
+
+
     /* Add more input-specific styling if needed */
     input[name="boatPrice"] {
         width: 80px; /* Keep similar width for related fields */
     }
 
+    input[name="boatPrice"]:focus {
+        outline: none;
+        box-shadow: none;
+    }
+
     input[name="boatName"] {
         width: 85px; /* Keep similar width for related fields */
+    }
+
+    input[name="berthName"]:focus {
+        outline: none;
+        box-shadow: none;
     }
 
 
