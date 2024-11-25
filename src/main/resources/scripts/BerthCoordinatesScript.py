@@ -131,7 +131,7 @@ def calculate_new_coordinate(starting_point: Tuple[float, float], distance: floa
 # Data Processing Functions
 # --------------------------------------------
 
-def place_single_berth(current_position: Tuple[float, float], length: float, width: float, bearing_along_pier: float, side: str, berth_number: str, berths_list: List[Tuple]):
+def place_single_berth(current_position: Tuple[float, float], length: float, width: float, bearing_along_pier: float, side: str, berth_id: int, berth_name: str, berths_list: List[Tuple]):
     """Place a single berth along a pier and add it to the berths list."""
     if side == "left":
         perpendicular_bearing = (bearing_along_pier - 90 + 360) % 360
@@ -146,7 +146,7 @@ def place_single_berth(current_position: Tuple[float, float], length: float, wid
     point3 = next_position
     point4 = current_position
 
-    berths_list.append((point1, point2, point3, point4, berth_number))
+    berths_list.append((point1, point2, point3, point4, berth_id, berth_name))
 
     return {'next_position': next_position}
 
@@ -198,7 +198,8 @@ def place_berths(pier: Dict, bearing_along_pier_left: float, bearing_along_pier_
                     width=width,
                     bearing_along_pier=bearing_along_pier_left,
                     side="left",
-                    berth_number=berth["number"],
+                    berth_id=berth["id"],
+                    berth_name=berth["number"],
                     berths_list=berths_on_left_side
                 )
                 current_position_left = result['next_position']
@@ -217,7 +218,8 @@ def place_berths(pier: Dict, bearing_along_pier_left: float, bearing_along_pier_
                     width=width,
                     bearing_along_pier=bearing_along_pier_right,
                     side="right",
-                    berth_number=berth["number"],
+                    berth_id=berth["id"],
+                    berth_name=berth["number"],
                     berths_list=berths_on_right_side
                 )
                 current_position_right = result['next_position']
@@ -238,7 +240,7 @@ def place_berths(pier: Dict, bearing_along_pier_left: float, bearing_along_pier_
             break
 
     for berth_data in berths_on_left_side + berths_on_right_side:
-        point1, point2, point3, point4, berth_number = berth_data
+        point1, point2, point3, point4, berth_id, berth_name = berth_data
         polygon = Polygon([point1, point2, point3, point4, point1])
 
         feature = {
@@ -250,8 +252,8 @@ def place_berths(pier: Dict, bearing_along_pier_left: float, bearing_along_pier_
                 ]]
             },
             "properties": {
-                "id": berth_number,
-                "name": f"Berth {berth_number}",
+                "id": berth_id,
+                "name": berth_name
             }
         }
         features.append(feature)
@@ -290,6 +292,7 @@ def create_piers_list(piers_data: List[Dict], berths_data: List[Dict]) -> List[D
                 print(f"Invalid length or width for berth {berth['name']}. Skipping.")
                 continue
             formatted_berths.append({
+                "id": berth['berthId'],
                 "number": berth['name'],
                 "length": length,
                 "width": width
@@ -298,7 +301,7 @@ def create_piers_list(piers_data: List[Dict], berths_data: List[Dict]) -> List[D
         side = pier.get('side', 'both').lower()
         pier_entry = {
             "coordinates": coordinates,
-            "id": f"pier-{pier['id']}",
+            "id": pier['id'],
             "name": pier['name'],
             "side": side,
             "berths": formatted_berths
