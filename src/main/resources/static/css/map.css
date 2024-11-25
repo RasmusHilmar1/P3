@@ -24,26 +24,74 @@
 
 .btnHarbor {
     text-decoration: none;
-    font-size: 13px;
-    display: inline;
+    font-size: 15px;
+    display: inline-block;
     transition: 0.1s;
-    width: 250px;
-    margin-top: 10px;
-    margin-left: 1px;
+    width: auto; /* Let the width adjust to content */
+    padding: 8px 16px; /* Add padding for readability */
+    margin: 5px; /* Space between buttons */
     border-radius: 10px;
     color: #5c82b5;
     background: white;
-    border-color: #5c82b5;
+    border: 2px solid #5c82b5; /* Slightly thicker border */
+    font-weight: 500; /* Increase font weight for readability */
+    text-align: center; /* Center text */
 }
 
 .btnHarbor.pressed {
-    text-decoration: none;
-    font-size: 13px;
-    width: 250px;
-    margin-top: 10px;
-    margin-left: 1px;
-    border-radius: 10px;
     color: white;
     background: #5c82b5;
     border-color: #5c82b5;
+}
+
+.map-legend {
+    position: absolute;
+    top: 190px; /* Position above zoom buttons */
+    right: 10px; /* Aligns to the right */
+    background-color: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    font-size: 18px;
+    line-height: 1.5;
+    z-index: 1000; /* Ensure it appears above map layers */
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.legend-color {
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+    margin-right: 8px;
+}
+
+.legend-color.available {
+    background-color: #00FF00; /* Green for available */
+    border: #00FF00 2px solid;
+}
+
+.legend-color.occupied {
+    background-color: red; /* Red for occupied */
+    border: red 2px solid;
+}
+
+.legend-color.unavailable {
+    background-color: orange; /* Orange for temporarily unavailable */
+    border: orange 2px solid;
+}
+
+.legend-color.chosen {
+    background-color: white;
+    border: blue 2px solid; /* Blue border for chosen */;
+}
+
+.highlight {
+    background-color: #e6f7ff; /* Light blue background */
+    font-weight: bold;
+    transition: background-color 0.3s ease;
 }

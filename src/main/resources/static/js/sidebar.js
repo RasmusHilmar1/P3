@@ -21,117 +21,6 @@ class Sidebar {
     }
 }
 
-class MemberList {
-    constructor(apiEndpoint) {
-        this.apiEndpoint = apiEndpoint;
-        this.labelMapping = {
-            phoneNumber: "Telefon Nummer",
-            boatAssigned: "Båd Navn",
-            berthAssigned: "Båd Plads",
-        };
-    }
-
-    fetchMembers() {
-        fetch(this.apiEndpoint)
-            .then(response => response.json())
-            .then(members => {
-                this.createMemberList(members);
-            })
-            .catch(error => {
-                console.error('Error fetching members:', error);
-                alert('Error fetching members. Please try again later.');
-            });
-    }
-
-    createMemberList(members) {
-        const table = document.getElementById("memberList");
-        const tbody = table.querySelector('tbody');
-        tbody.innerHTML = ''; // Clear existing rows
-
-        members.forEach(item => {
-            const memberRow = tbody.insertRow();
-            const memberCell = memberRow.insertCell();
-            memberCell.className = "memberCell";
-
-            // Button for the member's name
-            const memberName = document.createElement("button");
-            memberName.textContent = item.name || 'N/A';
-            memberName.className = "nameBtn";
-            memberCell.appendChild(memberName);
-
-            // Collapsible info container
-            const infoContainer = document.createElement("div");
-            memberCell.appendChild(infoContainer);
-
-            // Displaying the phone number
-            const phoneCell = document.createElement("div");
-            phoneCell.textContent = `${this.labelMapping.phoneNumber}: ${item.phoneNumber || 'N/A'}`;
-            phoneCell.className = "infoCell";
-            infoContainer.appendChild(phoneCell);
-
-            // Fetch boats and berths if they haven't been loaded
-            if (!infoContainer.querySelector(".boatCell")) {
-                this.fetchBoatsByMemberId(item.memberID, infoContainer);
-            }
-
-            // Add event listener for collapsing/expanding
-            memberName.addEventListener("click", function () {
-                memberName.classList.toggle('selectedNameBtn');
-                const infoCells = infoContainer.querySelectorAll(".infoCell");
-                infoCells.forEach(cell => {
-                    cell.style.maxHeight = cell.style.maxHeight ? null : cell.scrollHeight + "px";
-                });
-            });
-        });
-    }
-
-    fetchBoatsByMemberId(memberId, infoContainer) {
-        fetch(`/boats/public/${memberId}`)
-            .then(response => response.json())
-            .then(boats => {
-                if (boats.length > 0) {
-                    boats.forEach(boat => {
-                        const boatCell = document.createElement("div");
-                        boatCell.textContent = `${this.labelMapping.boatAssigned}: ${boat.name || 'N/A'}`;
-                        boatCell.className = "infoCell boatCell";
-                        infoContainer.appendChild(boatCell);
-                        if (!infoContainer.querySelector(".berthCell")) {
-                            this.fetchBerthByMemberId(boat.berth, infoContainer);
-                        }
-                    });
-
-                } else {
-                    const noBoatCell = document.createElement("div");
-                    noBoatCell.textContent = `${this.labelMapping.boatAssigned}: N/A`;
-                    noBoatCell.className = "infoCell boatCell";
-                    infoContainer.appendChild(noBoatCell);
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching boats:', error);
-                alert('Error fetching boat information. Please try again later.');
-            });
-    }
-
-    fetchBerthByMemberId(BerthID, infoContainer) {
-        fetch(`/berths/getBerth/${BerthID}`)
-            .then(response => response.json())
-            .then(berth => {
-                const berthCell = document.createElement("div");
-                berthCell.textContent = `${this.labelMapping.berthAssigned}: ${berth && berth.name ? berth.name : 'N/A'}`;
-                berthCell.className = "infoCell berthCell";
-                infoContainer.appendChild(berthCell);
-            })
-            .catch(error => {
-                console.error('Error fetching berth information:', error);
-                const berthCell = document.createElement("div");
-                berthCell.textContent = `${this.labelMapping.berthAssigned}: N/A`;
-                berthCell.className = "infoCell berthCell";
-                infoContainer.appendChild(berthCell);
-            });
-    }
-}
-
 class BerthList {
     constructor(apiEndpoint) {
         this.apiEndpoint = apiEndpoint;
@@ -142,9 +31,12 @@ class BerthList {
         const tbody = table.createTBody();
         tbody.innerHTML = ''; // Clear existing rows
 
+        let currentSelectedButton = null; // Variable to keep track of the currently selected button
+        let currenInfoCell = null; // Variable to keep track of the currently selected info cell
+
         data.forEach(item => {
             // Exclude berths with berthId 9999
-            if (item.berthID=== 9999) {
+            if (item.berthID === 9999) {
                 return;
             }
 
@@ -174,8 +66,27 @@ class BerthList {
 
             // Add event listener for expanding/collapsing the info container
             berthNameBtn.addEventListener("click", function () {
-                berthNameBtn.classList.toggle('selectedNameBtn');
                 const infoCells = infoContainer.querySelectorAll(".infoCell");
+                console.log(infoCells);
+                // Remove the 'selectedNameBtn' class from the previously selected button, if any
+                if (currentSelectedButton && currentSelectedButton !== berthNameBtn) {
+                    currentSelectedButton.classList.remove('selectedNameBtn');
+                }
+
+                if(currenInfoCell && currenInfoCell !== infoCells) {
+                    currenInfoCell.forEach(cell => cell.style.maxHeight = null);
+                }
+
+                currenInfoCell = infoCells; // Update the current info cell
+
+                // Toggle the 'selectedNameBtn' class on the newly clicked button
+                berthNameBtn.classList.toggle('selectedNameBtn');
+
+                // Set the current button as the selected button
+                currentSelectedButton = berthNameBtn;
+
+                // Toggle the visibility of the info container
+
                 infoCells.forEach(cell => {
                     cell.style.maxHeight = cell.style.maxHeight ? null : cell.scrollHeight + "px";
                 });
@@ -185,6 +96,7 @@ class BerthList {
             row.appendChild(berthCell);
             tbody.appendChild(row);
         });
+
     }
 
     getAvailabilityText(availability) {
@@ -261,39 +173,27 @@ class BerthList {
 
 
 class HeaderSwitch {
-    constructor(memberList, berthList) {
-        this.memberList = memberList;
+    constructor(berthList) {
         this.berthList = berthList;
     }
 
     switchView() {
-        const memberTable = document.getElementById("memberList");
         const berthTable = document.getElementById("berthList");
-        const memberBtn = document.getElementById("memberBtn");
-        const berthBtn = document.getElementById("berthBtn");
+        berthTable.style.display = 'table';
 
-        memberBtn.addEventListener('click', () => {
-            memberTable.style.display = 'table';
-            berthTable.style.display = 'none';
-        });
-
-        berthBtn.addEventListener('click', () => {
-            berthTable.style.display = 'table';
-            memberTable.style.display = 'none';
-        });
     }
 }
 
 // Instantiate and initialize objects
 const sidebar = new Sidebar();
-const memberList = new MemberList('/api/sidebar/approved-members');
 const berthList = new BerthList('/berths/get');
-const headerSwitch = new HeaderSwitch(memberList, berthList);
+const headerSwitch = new HeaderSwitch(berthList);
 
 // Fetch and display data
-memberList.fetchMembers();
 berthList.fetchBerths();
 headerSwitch.switchView();
 
 // Add sidebar toggle functionality
 document.getElementById("sidebarBtn").addEventListener('click', () => sidebar.toggle());
+
+

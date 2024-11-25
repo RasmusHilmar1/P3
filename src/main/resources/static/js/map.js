@@ -8,7 +8,7 @@ var map = L.map('map', {
 });
 
 // Set the center for when you open the application-->
-map.setView([57.05778747921157, 9.902244340136367], 18);
+map.setView([57.057740645009346, 9.901853509671989], 18.5);
 
 // Use map from OSM -->
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -31,8 +31,8 @@ var imageBounds = [
 
 //Initialize bounds for map as the bounds of picture in coordinates -->
 const bounds = L.latLngBounds(
-    [57.05861, 9.89969],
-    [57.05692, 9.90523]
+    [57.05861, 9.70969],
+    [57.05692, 9.99093]
 );
 
 // Set the max bounds for navigating map as the bounds of picture -->
@@ -76,11 +76,13 @@ harbor2.addEventListener("click", function(event) {
     //var imageOverlay2 = L.imageOverlay(imageUrl2, imageBounds2).addTo(map);
 
     const bounds2 = L.latLngBounds(
-        [57.060017, 9.893899], // Top-left
-        [57.057100, 9.898600]
+        [57.06018973534202, 9.894721266122263], // Top-left
+        [57.057196830597924, 9.897628780728576]
     );
 
     map.setMaxBounds(bounds2);
+
+    map.setView([57.05895016317979, 9.895671278476893], 18.2);
 
 });
 
@@ -151,7 +153,7 @@ async function updateGeoJsonWithStatus() {
                 color: "black",
                 weight: 0.1,
                 fillColor: fillColor,
-                fillOpacity: 0.8
+                fillOpacity: 1
             };
         }
     }).addTo(map);
@@ -169,29 +171,43 @@ function onEachFeature(feature, layer) {
 
     // Bind popup with updated status
     const status = feature.properties.status === 1 ? "Tilgængelig" : feature.properties.status === 0 ? "Optaget" : feature.properties.status === 2 ? "Midlertidig Utilgængelig" : "Unknown";
+    /*
+    const popupContent = `
+           <div>
+                <b>Address:</b> ${berthId || 'N/A'}<br>
+                <b>Name:</b> ${feature.properties.name || 'N/A'}<br>
+                <b>Status:</b> ${status}
+            </div>
+        `;
+        layer.bindPopup(popupContent);
+    }
 
-const popupContent = `
-        <div>
-            <b>Address:</b> ${berthId || 'N/A'}<br>
-            <b>Name:</b> ${feature.properties.name || 'N/A'}<br>
-            <b>Status:</b> ${status}
-        </div>
-    `;
-    layer.bindPopup(popupContent);
-}
+
+
+     */
+// Define scroll options
+    const scrolledIntoViewOptions = {
+        behavior: 'smooth', // Enables smooth scrolling
+        block: 'center', // Scroll the element to the center of the viewport
+        inline: 'center' // Align the element horizontally to the center
+    };
 
 // Function to update the sidebar with the clicked berth details
-function updateSidebarWithBerth(berth) {
-    const berthList = document.getElementById("berthList");
-    const rows = berthList.querySelectorAll('tr');
+    function updateSidebarWithBerth(berth) {
+        const berthList = document.getElementById("berthList");
+        const rows = berthList.querySelectorAll('tr');
 
-    rows.forEach(row => {
-        const berthNameBtn = row.querySelector(".berthBtn");
-        if (berthNameBtn) {
-            const berthName = berthNameBtn.textContent.trim();
-            if (berthName === berth.id) {
-                berthNameBtn.click();
+        rows.forEach(row => {
+            const berthNameBtn = row.querySelector(".berthBtn");
+            if (berthNameBtn) {
+                const berthName = berthNameBtn.textContent.trim();
+
+                // Compare berth.id with berthName (ensure matching data format)
+                if (berthName === berth.id) {
+                    berthNameBtn.click(); // Simulate a click on the berth button
+                    berthNameBtn.scrollIntoView(scrolledIntoViewOptions); // Scroll into view with smooth scroll
+                }
             }
-        }
-    });
+        });
+    }
 }
