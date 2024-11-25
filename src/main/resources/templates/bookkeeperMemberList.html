@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Member List</title>
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0-alpha1/css/bootstrap.min.css">
 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0-alpha1/css/bootstrap.min.css">
   <link rel="stylesheet" href="/css/navigationBar.css" />
   <link rel="stylesheet" href="/css/MemberList.css" />
 </head>
@@ -22,24 +22,28 @@
     </form>
   </nav>
 </header>
+<!-- container til alt andet end navigationsbar -->
 <div class="container">
   <h1 class="my-4">Medlemsliste</h1>
-
+<!-- div hvor en drop down menu og knappen med eksport er -->
   <div class="mb-3">
     <label for="listSelect" class="form-label">Vælg hvilken liste du vil eksportere: </label>
     <select id="listSelect" class="form-select">
       <option value="memberList">Medlemsliste</option>
       <option value="emailList">E-mailliste</option>
     </select>
+    <!-- når knappen trykkes sendes værdien af menuen til memberlist.js-->
     <button class="btn btn-primary mt-2" onclick="exportSelectedList()">Eksporter til Excel</button>
   </div>
 
+  <!-- div hvor søgefuntionaliteten er -->
   <div class="mb-3">
     <input type="text" id="searchInput" class="form-control" placeholder="Søg efter medlemsnr. eller navn!">
+    <!-- Når du trykker på søg knappen køres søgescriptet fra memberlist.js-->
     <button class="btn btn-primary mt-2" onclick="searchMembers()">Search</button>
   </div>
 
-  <!-- Display members in a table -->
+  <!-- tabellen til medlemslisten -->
     <table class="table table-striped">
       <thead>
       <tr>
@@ -58,9 +62,10 @@
       </tr>
       </thead>
       <tbody>
-      <!-- Iterate over the member list and display each member's details in input fields -->
+      <!-- iterer gennem de forskellige member objekter lavet i memberlisten (DTO'en), hvert objekt hænger sammen med
+      "iterstat" som basically er rækken i tabellen som bliver lavet. Laver en række for hver objekt -->
       <tr th:each="member, iterStat : ${memberlist}">
-        <td>
+        <td> <!-- for hver kolonne lavet et input fældt med værdien af noget fra member objektet, hænger også sammen med rækken gennem iterstat-->
           <input type="text" name="memberID" th:value="${member.memberID}" class="form-control" th:data-row="${iterStat.index}" readonly>
         </td>
         <td>
@@ -75,6 +80,7 @@
         <td>
           <input type="text" name="memberPhonenumber" th:value="${member.memberPhonenumber}" class="form-control" th:data-row="${iterStat.index}">
         </td>
+        <!-- denne værdi/kolonne er gemt på medlemsliste siden, fordi værdien ikke skal ses, men skal sendes med når objektet opdateres -->
         <td hidden>
           <input type="number" name="boatID" th:value="${member.boatID}" class="form-control" th:data-row="${iterStat.index}" readonly>
         </td>
@@ -100,6 +106,8 @@
           <input type="text" name="berthName" th:value="${member.berthName}" class="form-control" th:data-row="${iterStat.index}" readonly>
         </td>
         <td>
+          <!-- når knappen trykkes køres funktionen på den række som den hænger sammen med -
+          update funktionen ved derfor hvilke værdier objektet skal opdateres med, samt hvilket objekt -->
           <button th:onclick="'updateMemberInformation(' + ${iterStat.index} + ')'" th:data-row="${iterStat.index}">Gem Ændringer</button>
         </td>
       </tr>

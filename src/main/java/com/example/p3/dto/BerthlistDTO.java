@@ -1,5 +1,7 @@
 package com.example.p3.dto;
 
+
+// DTO som får de nødvendige værdier fra Member, Boat og Berth klasserne
 public class BerthlistDTO {
     private int berthID;
     private String berthName;
