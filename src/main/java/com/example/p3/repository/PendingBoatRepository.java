@@ -10,5 +10,9 @@ import java.util.List;
 @Repository
 public interface PendingBoatRepository extends JpaRepository<PendingBoat, Long>  {
     List<PendingBoat> findAll();
+
+
+    // Created to find pending boat by temporary ID
+    PendingBoat findById(int pendingBoatId);
 }
 

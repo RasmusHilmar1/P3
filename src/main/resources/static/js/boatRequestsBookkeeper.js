@@ -16,9 +16,6 @@ class BoatRequestTableBook extends BoatRequestTable {
     addDataRows(firstArray, tableBody) {
         super.addDataRows(firstArray, tableBody);
     }
-    findCorrespondingMember(memberID){
-        super.findCorrespondingMember(memberID);
-    }
     addCells(row, data) {
         super.addCells(row, data);
     }
@@ -57,6 +54,9 @@ class FeeEvent extends EventManager {
             feePaidBtnId = "feePaidBtn" + boat.boat.boatID;
             feePaidBtn = document.getElementById(feePaidBtnId);
             console.log(feePaidBtn);
+            console.log(boat.id);
+            approveBoat(boat.id);
+
 
             if (feeSentBtn) {
                 // Make sure the buttons have the correct styling corresponding to data
@@ -81,18 +81,41 @@ class FeeEvent extends EventManager {
                 // event listener for updating data and changing style of buttons
                 feePaidBtn.addEventListener("click", () => {
                     if (boat.boat.feePaid === 0){
-                        boat.boat.feePaid = 1;
-                        feePaidBtn.classList.add('buttonAssigned');
-                        console.log("Fee paid for boat ID:", boat.boat.boatID);
+                        if (confirm("Er du sikker på at medlemmet har betalt for bådpladsen?")){
+                            boat.boat.feePaid = 1;
+                            feePaidBtn.classList.add('buttonAssigned');
+                            console.log("Fee paid for boat ID:", boat.boat.boatID);
+                        }
                     } else if (boat.boat.feePaid === 1){
                         boat.boat.feePaid = 0;
                         feePaidBtn.classList.remove("buttonAssigned");
                         console.log("Corrected to fee not paid for boat ID:", boat.boat.boatID);
                     }
                     updateBoatFeeStatus(boat.boat.boatID, "feePaid", boat.boat.feePaid);
+                    approveBoat(boat.id);
                 });
             }
         });
+    }
+}
+
+// Move the pending boat to approved
+async function approveBoat(boatId){
+    try {
+        let url = `/boats/update/approve/boat/${boatId}`;
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        if (!response.ok) {
+            console.error("Failed to approve boat.");
+        } else {
+            console.log(`Boat with ID ${boatId} approved successfully.`)
+        }
+    } catch (error) {
+        console.error("Error:", error);
     }
 }
 
@@ -104,7 +127,7 @@ async function updateBoatFeeStatus(boatID, feeType, status) {
         if(feeType === "feeSent") {
             url = `/boats/update/feeSent/${boatID}`;
         } else if (feeType === "feePaid") {
-            url = `/boats/update/feeSent`
+            url = `/boats/update/feePaid/${boatID}`;
         } else {
             console.error("Invalid fee type specified.");
             return 0;
@@ -142,5 +165,6 @@ window.onload = async () => {
         approvedMembers,
         7 );
     let feeEvent = new FeeEvent(pendingBoats, approvedMembers);
+    console.log(approvedMembers);
     feeEvent.createEvent();
 };

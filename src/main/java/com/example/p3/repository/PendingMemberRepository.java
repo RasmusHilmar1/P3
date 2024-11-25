@@ -9,5 +9,8 @@ import java.util.List;
 @Repository
 public interface PendingMemberRepository extends JpaRepository<PendingMember, Long>  {
     List<PendingMember> findAll();
+
+    // created to find pending member by temporary ID
+    PendingMember findById(int pendingMemberId);
 }
 

@@ -88,6 +88,12 @@ public class BoatController {
         return boatService.updateBoatFeePaid(id, newFeeStatus);
     }
 
+    // Endpoint for approving boats and moving them from pending to approved
+    @PostMapping("/update/approve/boat/{id}")
+    public Boat approveBoat(@PathVariable int id) {
+        return boatService.approveBoat(id);
+    }
+
     @GetMapping("/public/{memberId}")
     public List<BoatDTO> getBoatsByMemberId(@PathVariable int memberId) {
         return boatService.getBoatsByMemberId(memberId);

@@ -115,10 +115,6 @@ class Table {
 
         this.element.appendChild(table);
     }
-    findCorrespondingMember(memberID){ // could maybe be edited into a more general "findCorrespondingObject" or something
-        const member = this.secondArray.find(member => member.memberID === memberID);
-        return member? member.name : "Unknown Member";
-    }
     addDataRows(array, tableBody) {
         array.forEach(item => {
             let row = tableBody.insertRow();

@@ -16,9 +16,6 @@ class BoatRequestTableVessel extends BoatRequestTable {
     addDataRows(firstArray, tableBody) {
         super.addDataRows(firstArray, tableBody);
     }
-    findCorrespondingMember(memberID){
-        super.findCorrespondingMember(memberID);
-    }
     addCells(row, data) {
         super.addCells(row, data);
     }

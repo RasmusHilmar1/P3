@@ -43,19 +43,18 @@ function addCells(tr, data, editableIndexes = []){
         td = tr.insertCell();
         tr.className = "berthTableRow";
 
-        const input = document.createElement("input");
-        td.appendChild(input);
-        input.type = "text";
-        input.value = item;
+
 
         if (editableIndexes.includes(index)) {
-            input.readOnly = false;
+            const input = document.createElement("input");
+            td.appendChild(input);
+            input.type = "text";
+            input.value = item;
             td.className = "editableCells";// divided them into two classes for styling
             input.className = "editableInput";
         } else {
-            input.readOnly = true;
+            td.innerHTML = item;
             td.className = "uneditableCells";
-            input.className = "uneditableInput";
         }
 
         if (index === 2 || index === 3) { // if the edited cells are length or width column

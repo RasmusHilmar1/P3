@@ -1,4 +1,3 @@
-
 //import fetch function and objects
 import {fetchApprovedMembers, fetchBoats, fetchBerth, fetchPendingMembers, fetchPendingBoats, parseData} from "./fetchMethods.js";
 import {Berth, Boat, PendingBoat, Member, Table} from "./objects.js";
@@ -16,10 +15,15 @@ class BoatRequestTable extends Table {
         super.createTable();
     }
     addDataRows(firstArray, tableBody) {
+        console.log(firstArray);
         // filter the pending boats
-        const filteredBoats = firstArray.filter(boat => {
-            const correspondingMember = this.findCorrespondingMember(boat.boat.memberID);
-            return correspondingMember !== "Unknown Member"; // only include pending boats with approved members
+        let filteredBoats = firstArray.filter(boat => {
+            console.log("searching for member with memberID:", boat.boat.memberID);
+            console.log("in array:", this.secondArray);
+            const correspondingMember = this.secondArray.find(member => member.id === boat.boat.memberID);
+            console.log("found member:", correspondingMember);
+            console.log(correspondingMember);
+            return correspondingMember !== undefined; // Only include pending boats with approved members
         });
         console.log(filteredBoats);
 
@@ -31,13 +35,6 @@ class BoatRequestTable extends Table {
             this.addSpecificCells(row, item);
             console.log(item);
         });
-    }
-    findCorrespondingMember(memberID){
-        console.log("searching for member with memberID:", memberID);
-        console.log("in array:", this.secondArray);
-        const member = this.secondArray.find(member => member.member.memberID === memberID);
-        console.log("found member:", member);
-        return member;
     }
     addCells(row, data) {
         console.log("addCells called with data:", data);
@@ -67,9 +64,9 @@ class BoatRequestTable extends Table {
 }
 
 class BtnCreator {
-    constructor(row, boat, btnText) {
+    constructor(row, data, btnText) {
         this.row = row;
-        this.boat = boat;
+        this.data = data;
         this.btnText = btnText;
     }
 
@@ -84,14 +81,18 @@ class BtnCreator {
         buttonElement.textContent = this.btnText;
 
         if (this.btnText === "Tildelt") {
-            buttonElement.id = "addBtn" + this.boat.boat.boatID;
+            buttonElement.id = "addBtn" + this.data.boat.boatID;
             console.log(buttonElement.id);
         } else if (this.btnText === "Sendt") {
-            buttonElement.id = "feeSentBtn" + this.boat.boat.boatID;
+            buttonElement.id = "feeSentBtn" + this.data.boat.boatID;
             console.log(buttonElement.id);
         } else if (this.btnText === "Betalt") {
-            buttonElement.id = "feePaidBtn" + this.boat.boat.boatID;
+            buttonElement.id = "feePaidBtn" + this.data.boat.boatID;
             console.log(buttonElement.id);
+        } else if (this.btnText === "Accepter") {
+            buttonElement.id = "acceptBtn" + this.data.member.memberID;
+        } else if (this.btnText === "Afvis") {
+            buttonElement.id = "denyBtn" + this.data.member.memberID;
         }
 
 
