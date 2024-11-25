@@ -50,7 +50,7 @@ var guestAreaBounds = [
 
 // Add an orange polygon for the guest area
 L.polygon(guestAreaBounds, {
-    color: "orange",
+    color: "purple",
     weight: 2,
     fillOpacity: 0.6
 }).addTo(map);
