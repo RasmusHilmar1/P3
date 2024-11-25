@@ -15,8 +15,6 @@
         text-align: center;
     }
 
-
-
     /* Button Styling */
     button {
         padding: 4px 8px; /* Reduce padding for smaller buttons */
@@ -139,7 +137,6 @@
     #searchInput {
         border-radius: 4px;
         border: 1px solid #ccc;
-        padding: 10px;
         font-size: 16px;
         width: 30%; /* Adjust width as per requirement */
         margin-right: 10px;
@@ -161,6 +158,7 @@
         border-radius: 4px;
         cursor: pointer;
         transition: background-color 0.3s ease;
+        margin-bottom: 7px;
     }
 
     button.btn.btn-primary.mt-2:hover {
@@ -181,6 +179,8 @@
 
 
 
+
+
     .select-container {
         max-width: 300px; /* Restrict overall container width */
     }
@@ -198,6 +198,11 @@
     /* Adjust the width of the export section */
     #listSelect {
         width: 200px; /* Reduce the width of the dropdown */
+        margin-right: 10px;
+    }
+
+    #labelForTextExport {
+        margin-right: 10px;
     }
 
 
