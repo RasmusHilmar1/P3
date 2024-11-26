@@ -317,6 +317,7 @@ class SearchHandler {
         this.searchBar.addEventListener("input", () => this.performSearch());
     }
 
+    // Metode til at udføre selve søgningen
     performSearch() {
         const searchQuery = this.searchBar.value.toLowerCase();
 
@@ -325,23 +326,33 @@ class SearchHandler {
     }
 
     filterRows(rows, searchQuery, tableType) {
+        console.log("Rækker modtaget i filterRows:", rows);
         rows.forEach(row => {
+            // Typecaster til et array for at kunne bruge forEach method.
             const cells = Array.from(row.querySelectorAll("td"));
-            const match = cells.some(cell => cell.textContent.toLowerCase().includes(searchQuery));
 
+            // cells.some tjekker om mindst en af td - table data - felterne indeholder hvad end der er skrevet i searchQuery.
+            const match = cells.some(cell => cell.textContent.toLowerCase().includes(searchQuery));
             row.style.display = match ? "" : "none";
         });
+
+        // Hjælper med at opdateret/søge memberListRows eller berthRows afhænigt af hvilken tabel der er valgt.
+        if (tableType === "member") {
+            this.memberListRows = this.memberList.querySelectorAll("tbody tr");
+        } else if (tableType === "berth") {
+            this.berthRows = this.berthList.querySelectorAll("tbody tr");
+        }
     }
 
-    /* Hjælper funktion som er tilføjet for at være 100% sikker på at der er data i de dynamisk oprettede
-     * tabeller, da de når DOM loades ikke indeholder data, men blot er oprettet.
-     * Derfor kaldes denne method længere oppe i koden omkring linje 85 og 185 */
+    // endnu en hjælperfunktion som hjælper med at sørge for at de tomme felter, som der er fra start
+    // får data i sig efter de er blevet oprettet. De kaldes på linje 85 og 185
     updateRows() {
         this.memberListRows = this.memberList.querySelectorAll("tbody tr");
         this.berthRows = this.berthList.querySelectorAll("tbody tr");
     }
 }
 
+// Opret en instans og giv den de id'er som den skal bruge.
 const searchHandler = new SearchHandler(
     "searchBar",
     "memberList",
