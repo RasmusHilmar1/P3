@@ -14,34 +14,56 @@ class MemberRequestTable extends Table {
             let row = tableBody.insertRow();
             row.className = "shownRows";
             console.log(item);
+
+            // Create collapsible row and capture reference to it
             let divElement = new createCollapsibleDiv(item, tableBody);
-            divElement.id = item.member.memberID + "_infoDiv";
-            divElement.createContainer();
-            console.log(divElement);
-            console.log(divElement.id);
-            this.addCells(row, item, tableBody);
+            const infoRow = divElement.createContainer(); // Capture the row itself
+
+            // Pass infoRow directly to addCells
+            this.addCells(row, item, infoRow, tableBody);
             this.addSpecificCells(row, item);
         });
     }
-    addCells(row, data, tableBody) {
-        // create cells for respectively the member's name and their ID
-        let idCell = row.insertCell();
-        let nameCell = row.insertCell();
+    addCells(row, data, infoRow, tableBody) {
+        let memberCell = row.insertCell();
+        let memberBtn = document.createElement("button");
+        memberBtn.textContent = data.member.name;
+        memberBtn.id = "memberBtn_member" + data.member.memberID;
+        memberBtn.className = "memberInfoBtn";
+        memberCell.appendChild(memberBtn);
 
-        // create buttons for both member ID and memberName
+        /* // Create buttons for both member ID and member name
         let idBtn = document.createElement("button");
         idBtn.textContent = data.member.memberID;
         idBtn.id = "idBtn_member" + data.member.memberID;
+        idBtn.className = "memberInfoBtn";
         idCell.appendChild(idBtn);
-        /* let collapsibleEventId = new CollapsibleEvent(data, idBtn, tableBody);
-        collapsibleEventId.createCollapsibleEvent(); */
 
         let nameBtn = document.createElement("button");
         nameBtn.textContent = data.member.name;
         nameBtn.id = "nameBtn_member" + data.member.memberID;
-        nameCell.appendChild(nameBtn);
-        /* let collapsibleEventName = new CollapsibleEvent(data, nameBtn, tableBody);
-        collapsibleEventName.createCollapsibleEvent(); */
+        nameBtn.className = "memberInfoBtn";
+        nameCell.appendChild(nameBtn); */
+
+        // Toggle visibility on name button click
+        memberBtn.addEventListener("click", () => {
+            infoRow.classList.toggle("visible"); // Toggle the visibility of the row
+
+            // Position the collapsible content directly under the clicked button
+            const rowRect = row.getBoundingClientRect();
+            const memberCellRect = memberCell.getBoundingClientRect();
+
+            // Set the position of the collapsible row dynamically
+            infoRow.style.top = `${rowRect.bottom}px`;
+            infoRow.style.width = `${memberCellRect.width}px`;
+
+            // Optional: Change button appearance when the div is visible
+            if (infoRow.classList.contains("visible")) {
+                memberBtn.classList.add("selectedMemberBtn");
+            } else {
+                memberBtn.classList.remove("selectedMemberBtn");
+            }
+        });
     }
     addSpecificCells(row, data) {
         let acceptBtn = new BtnCreator(row, data, "Accepter");
@@ -60,7 +82,7 @@ class createCollapsibleDiv {
     createInfoText(infoContainer) {
         for (const key in this.data){
             for (const nestedKey in this.data[key]){
-                if (nestedKey === "address" || nestedKey === "email" || nestedKey === "dateofbirth" || nestedKey === "phonenumber"){
+                if (nestedKey === "memberID" || nestedKey === "address" || nestedKey === "email" || nestedKey === "dateofbirth" || nestedKey === "phonenumber"){
                     let infoCellText = document.createElement("a");
                     infoCellText.innerHTML = nestedKey + " : " + this.data[key][nestedKey] + "<br/>";
                     infoContainer.appendChild(infoCellText);
@@ -71,47 +93,23 @@ class createCollapsibleDiv {
         }
     }
     createContainer() {
-            // create row and cell for div element
-            let infoRow = this.tableBody.insertRow();
-            infoRow.className = "infoRowMemberReq";
+        // Create row and cell for div element
+        let infoRow = this.tableBody.insertRow();
+        infoRow.className = "infoRowMemberReq";
 
-            //IMPORTANT; Find ud af hvordan man ændrer størrelsen her på denne row
-            infoRow.colSpan = 4;
+        let infoCell = infoRow.insertCell();
+        infoCell.className = "infoCellMemberReq";
 
-            let infoContainer = document.createElement("div");
-            infoRow.appendChild(infoContainer);
-            console.log(infoContainer);
+        let infoContainer = document.createElement("div");
+        infoContainer.id = this.data.member.memberID + "_infoDiv";  // Set the ID directly on the div
+        infoContainer.className = "collapsibleContent"; // CSS class to control visibility
 
-            this.createInfoText(infoContainer);
+        this.createInfoText(infoContainer);
+        infoCell.appendChild(infoContainer);
+
+        return infoRow; // Return the row itself so we can toggle it directly
     }
 }
-
-/* class CollapsibleEvent {
-    constructor(data, btn, table) {
-        this.data = data;
-        this.btn = btn;
-        this.table = table;
-    }
-    createCollapsibleEvent(){
-        this.btn.addEventListener("click", () => {
-            let infoCells = Array.from(this.table.querySelectorAll(".infoRowMemberReq"));
-            console.log(infoCells);
-            infoCells.forEach(cell => {
-                if (cell.style.display === "block") {
-                    this.btn.classList.remove('selectedMemberBtn');
-                    cell.style.display = "none";
-                } else if (cell.style.display === "none") {
-                    this.btn.classList.add('selectedMemberBtn');
-                    cell.style.display = "block";
-                }
-            });
-        });
-    }
-} */
-
-
-
-
 
 class MemberEvent {
     constructor (members){
@@ -213,10 +211,10 @@ window.onload = async () => {
         MemberRequestTable,
         "memberRequestsContainer",
         "Medlemsskabsanmodninger",
-        ["Medlems nr.", "Navn", "Accepter Medlem", "Afvis Medlem"],
+        ["Navn", "Accepter Medlem", "Afvis Medlem"],
         pendingMembers,
         boats,
-        4);
+        3);
     let memberEvent = new MemberEvent(pendingMembers);
     memberEvent.createEvent();
 }
