@@ -1,4 +1,12 @@
-import {fetchApprovedMembers} from "./fetchMethods.js";
+import {fetchApprovedMembers, parseData, fetchBoats, fetchBerth} from "./fetchMethods.js";
+import {boats, berths} from "./boatRequests.js";
+import {Boat, Berth} from "./objects.js";
+
+//parse boat data to array
+let boatsArray = await parseData(fetchBoats(), Boat, boats);
+console.log(boatsArray);
+
+let berthArray = await parseData(fetchBerth(), Berth, berths);
 
 // Add sidebar -->
 var sidebar = document.getElementById("sidebar");
@@ -50,13 +58,36 @@ function createMemberList(approvedMembers) {
         memberCell.appendChild(infoContainer);
 
         for (const key in member) {
-            if (key !== 'name') {
+            if ((key !== 'name') && (key !== 'boatownership')) {
                 var infoCell = document.createElement("div");
                 infoCell.textContent = key + " : " + member[key];
                 infoCell.className = "infoCell";
                 infoContainer.appendChild(infoCell);
             }
+
+            if ((key === 'boatownership') && (approvedMember.member.boatownership === true)) {
+                boatsArray.forEach(boat => {
+                   if (boat.memberID === approvedMember.member.memberID) {
+                       var infoCell = document.createElement("div");
+                       infoCell.textContent = "bådnavn: " + boat.name;
+                       infoCell.className = "infoCell";
+                       infoContainer.appendChild(infoCell);
+
+                       berthArray.forEach(berth => {
+                          if ((berth.berthID === boat.berthID) && (boat.berthID !== 9999)) {
+                              var infoCell = document.createElement("div");
+                              infoCell.textContent = "berth: " + berth.name;
+                              infoCell.className = "infoCell";
+                              infoContainer.appendChild(infoCell);
+                          }
+                       });
+
+                   }
+                });
+            }
         }
+
+
 
         // event listener for the collapsable list
         memberName.addEventListener("click", function () {

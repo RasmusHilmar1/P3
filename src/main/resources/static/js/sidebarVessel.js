@@ -1,5 +1,6 @@
 import {fetchApprovedMembers, fetchBoats, fetchBerth} from "./fetchMethods.js";
 import {updateAvailability, updateBoatBerthId} from "./updateMethods.js";
+export {switchHeader};
 
 // Add sidebar -->
 var sidebar = document.getElementById("sidebar");
@@ -37,11 +38,6 @@ sidebar.addEventListener('click', function (event) {
     }
 });
 
-let berthData =[
-    {id: 101, name: "FB13"},
-    {id: 102, name: "FB14"},
-    {id: 103, name: "FB15"},
-];
 
 const approvedMembers = await fetchApprovedMembers();
 console.log("members info:" + JSON.stringify(approvedMembers));
@@ -66,6 +62,11 @@ function updateWhenRemoving(boat) {
 
     })
 }
+
+
+let currentSelectedButton = null;
+let currentInfoCell = null;
+
 
 function createMemberListBoats(approvedMembers, boats, berths) {
     var table = document.getElementById("memberListBoat");
@@ -221,6 +222,7 @@ function createBerthList(berths){
     var tableHeader = table.createTHead();
     tableHeader.textContent = "Bådpladser";
 
+
     berths.forEach(berth => {
         // Creating a row for each berth
         var berthRow = table.insertRow();
@@ -310,6 +312,7 @@ function switchHeader(){
         // Skjul medlemslisterne
         memberTableNoBoat.style.display = 'none';
         memberTableBoat.style.display = 'none';
+        currentSelectedButton = null;
     };
 }
 switchHeader();
@@ -575,20 +578,45 @@ function createBerthListUnavailable(member) {
     });
 }
 
-function collapsableListEventListener(berthName, infoContainer) {
-    berthName.addEventListener("click", function () {
+function collapsableListEventListener(nameList, infoContainer) {
+    // event listener for the collapsable list
+    nameList.addEventListener("click", function () {
+        const infoCells = infoContainer.querySelectorAll(".infoCell");
+        nameList.classList.toggle('selectedNameBtn');
+
+        if(currentSelectedButton && currentSelectedButton!== nameList) {
+            currentSelectedButton.classList.remove("selectedNameBtn");
+        }
+        if(currentInfoCell && currentInfoCell !== infoCells) {
+            currentInfoCell.forEach(cell => cell.style.maxHeight = null);
+        }
+
+        currentInfoCell = infoCells;
+        nameList.classList.toggle("selectedNameBtn");
+        currentSelectedButton = nameList;
+
+        infoCells.forEach(cell => {
+            cell.style.maxHeight = cell.style.maxHeight ? null : cell.scrollHeight + "px";
+        });
+    });
+}
+
+/*
+function collapsableListEventListener(nameList, infoContainer) {
+    nameList.addEventListener("click", function () {
         const infoCells = infoContainer.querySelectorAll(".infoCell");
         infoCells.forEach(cell => {
             if (cell.style.maxHeight) {
-                berthName.classList.remove('selectedNameBtn');
+                nameList.classList.remove('selectedNameBtn');
                 cell.style.maxHeight = null;
             } else {
-                berthName.classList.add('selectedNameBtn');
+                nameList.classList.add('selectedNameBtn');
                 cell.style.maxHeight = cell.scrollHeight + "px";
             }
         });
     });
 }
+ */
 
 function createTable(member, sidebar, berthList, ListTitel){
     var table = document.createElement("table");

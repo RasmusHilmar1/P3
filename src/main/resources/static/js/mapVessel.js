@@ -1,5 +1,6 @@
 import {myGeoJson} from "./geojson.js";
 import {fetchApprovedMembers, fetchBerth, fetchBoats} from "./fetchMethods.js";
+import {switchHeader} from "./sidebarVessel.js";
 
 const approvedMembers = await fetchApprovedMembers();
 const boats = await fetchBoats();
@@ -148,8 +149,10 @@ updateGeoJsonWithStatus();
 function onEachFeature(feature, layer) {
 
     layer.on('click', function(e) {
+        switchHeader();
         highlightBerth(e);
-        berthToSideBar(feature);
+        berthToSideBarBerthList(feature);
+        //berthToThreeLists(feature);
     });
 
     layer.featureId = feature.properties.id;
@@ -179,7 +182,7 @@ function removeHighlight(layer) {
 }
 
 
-function berthToSideBar(feature) {
+function berthToSideBarBerthList(feature) {
     const memberListBoat = document.getElementById("memberListBoat");
     const memberListWithoutBoat = document.getElementById("memberListWithoutBoat");
     const allBerthTables = document.querySelectorAll(".berthList");
@@ -197,6 +200,7 @@ function berthToSideBar(feature) {
             if (berthName === feature.properties.name) {
                 memberListBoat.style.display = "none";
                 memberListWithoutBoat.style.display = "none";
+
                 // Loop gennem og skjul hver tabel
                 allBerthTables.forEach((table) => {
                     table.style.display = 'none';
@@ -210,15 +214,55 @@ function berthToSideBar(feature) {
     });
 }
 
+function berthToThreeLists(feature){
+    const memberListBoat = document.getElementById("memberListBoat");
+    const memberListWithoutBoat = document.getElementById("memberListWithoutBoat");
+    const allBerthTables = document.querySelectorAll(".berthList");
+
+
+   /* approvedMembers.forEach(approvedMember => {
+        if()
+    })*/
+    const berthList = document.getElementById("berthList");
+    const rows = allBerthTables.querySelectorAll('tr');
+
+    rows.forEach(row => {
+        const berthNameBtn = row.querySelector(".berthBtn");
+        console.log("berthNameBtn: " + berthNameBtn);
+        if (berthNameBtn) {
+            const berthName = berthNameBtn.textContent.trim();
+            console.log("berthName: " + berthName);
+
+            if (berthName === feature.properties.name) {
+                memberListBoat.style.display = "none";
+                memberListWithoutBoat.style.display = "none";
+                // Loop gennem og skjul hver tabel
+                allBerthTables.forEach((table) => {
+                    table.style.display = 'table';
+                });
+                berthList.style.display = "none";
+
+                berthNameBtn.click();
+                berthNameBtn.scrollIntoView();
+            }
+        }
+    });
+}
+
 function memberToMap(geoJsonLayer){
     const memberList = document.getElementById("memberListBoat");
     memberList.addEventListener("click", (event) => {
+        geoJsonLayer.eachLayer(layer => {
+            layer.setStyle({
+                color: "black",
+                weight: 0.1
+            })
+        });
+
         const button = event.target.closest(".nameBtn");
 
         if(button) {
             const memberId = button.id.replace("memberName", "");
-            //console.log("button:", button);
-            //console.log("memberId:", memberId);
 
             boats.forEach(boat => {
                 if ((Number(memberId) === boat.memberID) && (boat.berthID !== 9999)) {
@@ -229,11 +273,11 @@ function memberToMap(geoJsonLayer){
                                 weight: 2
                             })
                             //console.log("fundet");
-                        } else {
+                        /*} else {
                             layer.setStyle({
                                 color: "black",
                                 weight: 0.1
-                            })
+                            })*/
                         }
                     })
                 }
@@ -242,6 +286,17 @@ function memberToMap(geoJsonLayer){
     })
 
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 /*
