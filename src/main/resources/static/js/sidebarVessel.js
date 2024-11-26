@@ -606,6 +606,7 @@ function createTable(member, sidebar, berthList, ListTitel){
     table.appendChild(tbody);
 }
 
+/*
 function searchBarSidebar() {
     console.log("Search function triggered"); //console logging to make sure that the function runs
 
@@ -657,4 +658,58 @@ function searchBarEvent(){
     berthSearchBar.addEventListener("keyup", searchBarSidebar);
 }
 
-searchBarEvent(berths);
+searchBarEvent();
+*/
+
+class SearchHandler {
+    constructor(searchBarId, memberTableNoBoatId, memberTableBoatId, berthTableId) {
+        // Hent elementerne fra DOM'en
+        this.searchBar = document.getElementById(searchBarId);
+        this.memberTableNoBoat = document.getElementById(memberTableNoBoatId);
+        this.memberTableBoat = document.getElementById(memberTableBoatId);
+        this.berthTable = document.getElementById(berthTableId);
+
+        // Hent alle rækker i tabellerne via tbody og tr
+        this.memberRowsNoBoat = this.memberTableNoBoat.querySelectorAll("tbody tr");
+        this.memberRowsBoat = this.memberTableBoat.querySelectorAll("tbody tr");
+        this.berthRows = this.berthTable.querySelectorAll("tbody tr");
+
+        // Tilføj event listener for 'keydown' på søgefeltet
+        this.searchBar.addEventListener("keydown", (event) => {
+            if (event.key === "Enter") {
+                this.performSearch(); // Kald performSearch, når "Enter" trykkes
+            }
+        });
+    }
+
+    // Metode til at udføre selve søgningen
+    performSearch() {
+        const searchQuery = this.searchBar.value.toLowerCase();
+
+        // Filtrer rækker i tabellerne
+        this.filterRows(this.memberRowsNoBoat, searchQuery);
+        this.filterRows(this.memberRowsBoat, searchQuery);
+        this.filterRows(this.berthRows, searchQuery);
+    }
+
+    // Metode til at filtrere rækkerne
+    filterRows(rows, searchQuery) {
+        rows.forEach(row => {
+
+            // Typecaster til et array for at kunne bruge forEach method.
+            const cells = Array.from(row.querySelectorAll("td"));
+
+            // cells.some tjekker om mindst en af td - table data - felterne indeholder hvad end der er skrevet i searchQuery.
+            const match = cells.some(cell => cell.textContent.toLowerCase().includes(searchQuery));
+            row.style.display = match ? "" : "none";
+        });
+    }
+}
+
+// Opret en instans og giv den de id'er som den skal bruge.
+const searchHandler = new SearchHandler(
+    "searchBarSidebar",
+    "memberListWithoutBoat",
+    "memberListBoat",
+    "berthList"
+);
