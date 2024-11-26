@@ -26,6 +26,8 @@ class MemberRequestTable extends Table {
     }
     addCells(row, data, infoRow, tableBody) {
         let memberCell = row.insertCell();
+        memberCell.className = "memberCells";
+        memberCell.colSpan = 5;
         let memberBtn = document.createElement("button");
         memberBtn.textContent = data.member.name;
         memberBtn.id = "memberBtn_member" + data.member.memberID;
@@ -66,9 +68,9 @@ class MemberRequestTable extends Table {
         });
     }
     addSpecificCells(row, data) {
-        let acceptBtn = new BtnCreator(row, data, "Accepter");
+        let acceptBtn = new BtnCreator(row, data, "<img src=http://localhost:8080/Images/Icons/AcceptBtnIcon.png alt='acceptIcon'>");
         acceptBtn.createBtn();
-        let denyBtn = new BtnCreator(row, data, "Afvis");
+        let denyBtn = new BtnCreator(row, data, "<img src=http://localhost:8080/Images/Icons/DenyBtnIcon.png alt='denyIcon'>");
         denyBtn.createBtn();
     }
 }
@@ -117,12 +119,13 @@ class MemberEvent {
     }
     createEvent(){
         let acceptBtn, denyBtn, acceptBtnId, denyBtnId;
+        // IMPORTANT ---> Lige nu har alle 3 acceptBtns samme id. dette skal rettes. 
         this.members.forEach(member => {
             console.log(member.member.memberID);
-            acceptBtnId = "acceptBtn" + member.member.memberID;
+            acceptBtnId = "<img src=http://localhost:8080/Images/Icons/AcceptBtnIcon.png alt='acceptIcon'>"
             acceptBtn = document.getElementById(acceptBtnId);
             console.log(acceptBtn);
-            denyBtnId = "denyBtn" + member.member.memberID;
+            denyBtnId = "<img src=http://localhost:8080/Images/Icons/DenyBtnIcon.png alt='denyIcon'>";
             denyBtn = document.getElementById(denyBtnId);
             console.log(denyBtn);
 
@@ -211,10 +214,10 @@ window.onload = async () => {
         MemberRequestTable,
         "memberRequestsContainer",
         "Medlemsskabsanmodninger",
-        ["Navn", "Accepter Medlem", "Afvis Medlem"],
+        [],
         pendingMembers,
         boats,
-        3);
+        7);
     let memberEvent = new MemberEvent(pendingMembers);
     memberEvent.createEvent();
 }

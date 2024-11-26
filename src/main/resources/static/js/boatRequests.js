@@ -78,7 +78,7 @@ class BtnCreator {
 
         // give the buttons a class name
         buttonElement.classList.add("addBtn");
-        buttonElement.textContent = this.btnText;
+        buttonElement.innerHTML = this.btnText;
 
         if (this.btnText === "Tildelt") {
             buttonElement.id = "addBtn" + this.data.boat.boatID;
@@ -93,6 +93,8 @@ class BtnCreator {
             buttonElement.id = "acceptBtn" + this.data.member.memberID;
         } else if (this.btnText === "Afvis") {
             buttonElement.id = "denyBtn" + this.data.member.memberID;
+        } else {
+            buttonElement.id = this.btnText;
         }
 
 
