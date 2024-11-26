@@ -10,14 +10,38 @@ class MemberRequestTable extends Table {
         super.createTable();
     }
     addDataRows(array, tableBody) {
-        super.addDataRows(array, tableBody);
+        array.forEach(item => {
+            let row = tableBody.insertRow();
+            row.className = "shownRows";
+            console.log(item);
+            let divElement = new createCollapsibleDiv(item, tableBody);
+            divElement.id = item.member.memberID + "_infoDiv";
+            divElement.createContainer();
+            console.log(divElement);
+            console.log(divElement.id);
+            this.addCells(row, item, tableBody);
+            this.addSpecificCells(row, item);
+        });
     }
-    addCells(row, data) {
+    addCells(row, data, tableBody) {
+        // create cells for respectively the member's name and their ID
         let idCell = row.insertCell();
-        idCell.innerHTML = data.member.memberID; // access ID property
         let nameCell = row.insertCell();
-        nameCell.innerHTML = data.member.name; // access name property
-        console.log(data);
+
+        // create buttons for both member ID and memberName
+        let idBtn = document.createElement("button");
+        idBtn.textContent = data.member.memberID;
+        idBtn.id = "idBtn_member" + data.member.memberID;
+        idCell.appendChild(idBtn);
+        /* let collapsibleEventId = new CollapsibleEvent(data, idBtn, tableBody);
+        collapsibleEventId.createCollapsibleEvent(); */
+
+        let nameBtn = document.createElement("button");
+        nameBtn.textContent = data.member.name;
+        nameBtn.id = "nameBtn_member" + data.member.memberID;
+        nameCell.appendChild(nameBtn);
+        /* let collapsibleEventName = new CollapsibleEvent(data, nameBtn, tableBody);
+        collapsibleEventName.createCollapsibleEvent(); */
     }
     addSpecificCells(row, data) {
         let acceptBtn = new BtnCreator(row, data, "Accepter");
@@ -26,6 +50,68 @@ class MemberRequestTable extends Table {
         denyBtn.createBtn();
     }
 }
+
+
+class createCollapsibleDiv {
+    constructor (data, tableBody) {
+        this.data = data;
+        this.tableBody = tableBody;
+    }
+    createInfoText(infoContainer) {
+        for (const key in this.data){
+            for (const nestedKey in this.data[key]){
+                if (nestedKey === "address" || nestedKey === "email" || nestedKey === "dateofbirth" || nestedKey === "phonenumber"){
+                    let infoCellText = document.createElement("a");
+                    infoCellText.innerHTML = nestedKey + " : " + this.data[key][nestedKey] + "<br/>";
+                    infoContainer.appendChild(infoCellText);
+                } else {
+                    console.log("Not included key: " + nestedKey);
+                }
+            }
+        }
+    }
+    createContainer() {
+            // create row and cell for div element
+            let infoRow = this.tableBody.insertRow();
+            infoRow.className = "infoRowMemberReq";
+
+            //IMPORTANT; Find ud af hvordan man ændrer størrelsen her på denne row
+            infoRow.colSpan = 4;
+
+            let infoContainer = document.createElement("div");
+            infoRow.appendChild(infoContainer);
+            console.log(infoContainer);
+
+            this.createInfoText(infoContainer);
+    }
+}
+
+/* class CollapsibleEvent {
+    constructor(data, btn, table) {
+        this.data = data;
+        this.btn = btn;
+        this.table = table;
+    }
+    createCollapsibleEvent(){
+        this.btn.addEventListener("click", () => {
+            let infoCells = Array.from(this.table.querySelectorAll(".infoRowMemberReq"));
+            console.log(infoCells);
+            infoCells.forEach(cell => {
+                if (cell.style.display === "block") {
+                    this.btn.classList.remove('selectedMemberBtn');
+                    cell.style.display = "none";
+                } else if (cell.style.display === "none") {
+                    this.btn.classList.add('selectedMemberBtn');
+                    cell.style.display = "block";
+                }
+            });
+        });
+    }
+} */
+
+
+
+
 
 class MemberEvent {
     constructor (members){
