@@ -634,55 +634,94 @@ function createTable(member, sidebar, berthList, ListTitel){
     table.appendChild(tbody);
 }
 
-function searchBarSidebar() {
-    console.log("Search function triggered"); //console logging to make sure that the function runs
 
-    let input, filter, table, tableRows;
-    input = document.getElementById("searchBarSidebar"); // input field
+class SearchHandler {
+    constructor(searchBarId, memberTableNoBoatId, memberTableBoatId, berthTableId) {
+        // Hent elementerne fra DOM'en
+        this.searchBar = document.getElementById(searchBarId);
+        this.memberTableNoBoat = document.getElementById(memberTableNoBoatId);
+        this.memberTableBoat = document.getElementById(memberTableBoatId);
+        this.berthTable = document.getElementById(berthTableId);
 
-    filter = input.value.toLowerCase(); // input entered by user converted to lowercase
+        // Hent alle rækker i tabellerne via tbody og tr
+        this.memberRowsNoBoat = this.memberTableNoBoat.querySelectorAll("tbody tr");
+        this.memberRowsBoat = this.memberTableBoat.querySelectorAll("tbody tr");
+        this.berthRows = this.berthTable.querySelectorAll("tbody tr");
 
-    table = document.getElementById("berthListSidebarBody"); // get the dynamic created table
+        // Tilføj event listener for 'input' på søgefeltet
+        this.searchBar.addEventListener("input", () => this.performSearch());
+    }
 
-    tableRows = table.getElementsByClassName("rowsBerthList");
+    // Metode til at udføre selve søgningen
+    performSearch() {
+        const searchQuery = this.searchBar.value.toLowerCase();
 
-    for (let i = 0; i < tableRows.length; i++) {
-        let row = tableRows[i], berthName, infoContainer, rowBtn, infoCells;
+        // Filtrer rækker i tabellerne
+        this.filterRows(this.memberRowsNoBoat, searchQuery);
+        this.filterRows(this.memberRowsBoat, searchQuery);
+        this.filterRows(this.berthRows, searchQuery);
+    }
 
-        berthName = row.querySelector(".berthBtn").textContent.toLowerCase(); // Get text content of button
+    // Metode til at filtrere rækkerne
+    filterRows(rows, searchQuery) {
+        rows.forEach(row => {
 
-        infoContainer = row.querySelector(".infoContainerBerthList");
+            // Typecaster til et array for at kunne bruge forEach method.
+            const cells = Array.from(row.querySelectorAll("td"));
 
-        rowBtn = row.querySelector(".berthBtn");
-
-        infoCells = infoContainer.querySelectorAll(".infoCell");
-
-        //collapse all  cells from start of search
-        infoCells.forEach(cell => {
-            cell.style.maxHeight = null;
-        })
-
-        //make sure all buttons are deselected
-        rowBtn.classList.remove('selectedNameBtn');
-
-        if (berthName.includes(filter)) {
-            row.style.display = "table-row"; // show the rows that match the input
-            if (berthName === filter){ // if the full berth name is written, expand the info cell
-                rowBtn.classList.add('selectedNameBtn');
-                infoCells.forEach(cell => {
-                    cell.style.maxHeight = cell.scrollHeight + "px";
-                });
-            }
-        } else {
-            row.style.display = "none"; // hide the rows that doesn't match the input
-        }
+            // cells.some tjekker om mindst en af td - table data - felterne indeholder hvad end der er skrevet i searchQuery.
+            const match = cells.some(cell => cell.textContent.toLowerCase().includes(searchQuery));
+            row.style.display = match ? "" : "none";
+        });
     }
 }
 
-//event handler for the search function
-function searchBarEvent(){
-    const berthSearchBar = document.getElementById("searchBarSidebar");
-    berthSearchBar.addEventListener("keyup", searchBarSidebar);
+// Opret en instans og giv den de id'er som den skal bruge.
+const searchHandler = new SearchHandler(
+    "searchBarSidebar",
+    "memberListWithoutBoat",
+    "memberListBoat",
+    "berthList"
+);
+
+
+
+class SearchHandlerAfterTildel {
+    constructor(searchBarId, addButtonId) {
+        // Hent søgefeltet og knappen fra DOM'en
+        this.searchBar = document.getElementById(searchBarId);
+        this.addButton = document.getElementById(addButtonId);
+
+        // Tilføj event listener for 'input' på søgefeltet
+        this.searchBar.addEventListener("input", () => this.performSearch());
+    }
+
+    // Metode til at udføre selve søgningen
+    performSearch() {
+        const searchQuery = this.searchBar.value.toLowerCase();
+
+        // Find alle tabeller hvis ID starter med berthList - ^= er begin with matching
+        const tables = document.querySelectorAll("[id^='berthList']");
+
+        tables.forEach(table => {
+            const rows = table.querySelectorAll("tbody tr");
+            this.filterRows(rows, searchQuery);
+        });
+    }
+
+    // Metode til at filtrere rækkerne
+    filterRows(rows, searchQuery) {
+        rows.forEach(row => {
+            // Typecaster til et array for at kunne bruge forEach-metoden.
+            const cells = Array.from(row.querySelectorAll("td"));
+
+            // cells.some tjekker, om mindst én af td-cellerne matcher søgeforespørgslen.
+            const match = cells.some(cell => cell.textContent.toLowerCase().includes(searchQuery));
+            row.style.display = match ? "" : "none"; // Skjuler rækker, der ikke matcher
+        });
+    }
 }
 
-searchBarEvent(berths);
+const searchHandlerAfterTildel = new SearchHandlerAfterTildel(
+    "searchBarSidebar",
+    "addBtn");

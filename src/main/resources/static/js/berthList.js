@@ -17,7 +17,7 @@ function calculateAreal(){
     boats.forEach(boat => {
         boat.areal = (boat.length * boat.width).toFixed(2);
         console.log("boats berth ID:" + boat.berthID + "boat areal:" + boat.areal); // console logging each boat and corresponding areal
-    })
+    });
 }
 
 calculateAreal();
@@ -42,8 +42,6 @@ function addCells(tr, data, editableIndexes = []){
     data.forEach((item, index) => {
         td = tr.insertCell();
         tr.className = "berthTableRow";
-
-
 
         if (editableIndexes.includes(index)) {
             const input = document.createElement("input");
@@ -136,6 +134,7 @@ function getBerthList() {
         }
     });
 }
+
 getBerthList();
 
 // function for saving the changes
@@ -203,8 +202,6 @@ async function saveBerthChanges(row, berth) {
         alert("Ændringer kunne ikke gemmes!");
     }
 }
-
-
 
 // IMPLEMENT THIS SEARCH FUNCTION IN SIDEBAR:
 // IMPORTANT: Maybe add such that users can only search for names and IDs, not areal, length and width
