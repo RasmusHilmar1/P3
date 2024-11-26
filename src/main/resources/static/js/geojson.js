@@ -511,8 +511,8 @@ var myGeoJson =
                     ]
                 },
                 "properties": {
-                    "id": "FB14",
-                    "name": "Berth FB14"
+                    "id": "14",
+                    "name": "FB14"
                 }
             },
             {

@@ -180,102 +180,78 @@ function removeHighlight(layer) {
 
 
 function berthToSideBar(feature) {
-    const memberListBoat = document.getElementById("memberListBoat");
-    const memberListWithoutBoat = document.getElementById("memberListWithoutBoat");
-    const allBerthTables = document.querySelectorAll(".berthList");
-
-    const berthList = document.getElementById("berthList");
-    const rows = berthList.querySelectorAll('tr');
+    const memberList = document.getElementById("memberList");
+    const rows = memberList.querySelectorAll('tr');
 
     rows.forEach(row => {
-        const berthNameBtn = row.querySelector(".berthBtn");
-        console.log("berthNameBtn: " + berthNameBtn);
-        if (berthNameBtn) {
-            const berthName = berthNameBtn.textContent.trim();
-            console.log("berthName: " + berthName);
+        const memberNameBtn = row.querySelector(".memberBtn");
 
-            if (berthName === feature.properties.name) {
-                memberListBoat.style.display = "none";
-                memberListWithoutBoat.style.display = "none";
-                // Loop gennem og skjul hver tabel
-                allBerthTables.forEach((table) => {
-                    table.style.display = 'none';
-                });
-                berthList.style.display = "table";
+        if (memberNameBtn) {
+            const memberName = memberNameBtn.textContent.trim();
 
-                berthNameBtn.click();
-                berthNameBtn.scrollIntoView();
-            }
+            approvedMembers.forEach(approvedMember => {
+                if ((approvedMember.member.name === memberName) && (approvedMember.member.boatownership === true)) {
+
+                    boats.forEach(boat => {
+                        if ((approvedMember.member.memberID === boat.memberID) && (boat.berthID === Number(feature.properties.id))) {
+                            memberNameBtn.click();
+                            memberNameBtn.scrollIntoView();
+                        }
+                    })
+                }
+            })
         }
     });
 }
 
 function memberToMap(geoJsonLayer){
-    const memberList = document.getElementById("memberListBoat");
+    const memberList = document.getElementById("memberList");
     memberList.addEventListener("click", (event) => {
-        const button = event.target.closest(".nameBtn");
+        geoJsonLayer.eachLayer(layer => {
+            layer.setStyle({
+                color: "black",
+                weight: 0.1
+            })
+        })
+        const button = event.target.closest(".memberBtn");
 
         if(button) {
-            const memberId = button.id.replace("memberName", "");
-            //console.log("button:", button);
-            //console.log("memberId:", memberId);
+            const memberName = button.textContent.trim();
+            console.log("button:", button);
+            console.log("memberName:", memberName);
 
-            boats.forEach(boat => {
-                if ((Number(memberId) === boat.memberID) && (boat.berthID !== 9999)) {
-                    geoJsonLayer.eachLayer(layer => {
-                        if(Number(layer.featureId) === boat.berthID) {
-                            layer.setStyle({
-                                color: "blue",
-                                weight: 2
-                            })
-                            //console.log("fundet");
-                        } else {
-                            layer.setStyle({
-                                color: "black",
-                                weight: 0.1
+            approvedMembers.forEach(approvedMember => {
+                if ((approvedMember.member.name === memberName) && (approvedMember.member.boatownership === true)) {
+
+                    boats.forEach(boat => {
+                        if ((approvedMember.member.memberID === boat.memberID) && (boat.berthID !== 9999)) {
+                            geoJsonLayer.eachLayer(layer => {
+
+                                if (Number(layer.featureId) === boat.berthID) {
+                                    /*if((layer.options.color === "blue") && (layer.options.weight === 2)) {
+                                        layer.setStyle({
+                                            color: "black",
+                                            weight: 0.1
+                                        })
+                                    } else {*/
+
+                                        layer.setStyle({
+                                            color: "blue",
+                                            weight: 2
+                                        })
+                                    //}
+                                }/* else {
+                                    layer.setStyle({
+                                        color: "black",
+                                        weight: 0.1
+                                    })
+                                }*/
                             })
                         }
-                    })
+                    });
                 }
-            });
+            })
         }
     })
 
 }
-
-
-/*
-var memberList = document.getElementById("memberListBoat");
-const rows = memberList.querySelectorAll('tr');
-console.log("memberList: " + memberList);
-console.log("rows: " + rows);
-
-
-rows.forEach(row => {
-
-    row.addEventListener("click", function() {
-        //const memberCell = row.querySelector(".memberCell");
-
-        const markerId = row.getAttribute("")
-
-
-
-        approvedMembers.forEach(approvedMember => {
-            const memberName = row.querySelector(`#memberName${approvedMember.member.memberID}`);
-            //console.log("memberCell: " + memberCell.innerHTML);
-
-            if(memberName) {
-                const memberNameId = memberName.id;
-                const id = memberNameId.replace("memberName", "");
-                //console.log(id);
-
-                boats.forEach(boat => {
-                    if ((Number(id) === boat.memberID) && (boat.berthID !== 9999) && (boat.berthID === Number(feature.properties.id))) {
-                        highlightBerth(e);
-                    }
-                });
-            }
-        });
-    });
-});
-*/

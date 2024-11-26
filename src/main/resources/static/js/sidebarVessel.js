@@ -6,6 +6,7 @@ var sidebar = document.getElementById("sidebar");
 
 // Open or close sidebar -->
 var menuState = 0;
+
 function openClose(){
     const sidebarBtnIcon = document.getElementById("sidebarBtn");
     if(menuState === 0){
@@ -20,13 +21,12 @@ function openClose(){
         sidebarBtnIcon.src = "Images/Icons/closeIcon.svg";
     }
 }
+//openClose();
 
 // Floating button for opening sidebar -->
-var button = document.createElement("Button");
+let button = document.createElement("Button");
 button.innerHTML = "Title";
 document.body.appendChild(button);
-
-
 
 sidebar.addEventListener('click', function (event) {
     if(event.target.classList.contains('btnSidebar')) {

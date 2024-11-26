@@ -35,9 +35,17 @@
 </div>
 <div id="sidebar" class="sidebar">
     <input type="text" id="searchBar" class="searchBar" placeholder="Søg...">
-    <button href="#" class="btnSidebar">Medlemmer</button>
-    <button href="#" class="btnSidebar">Bådpladser</button>
+
+    <table id="memberList" class="memberList">
+        <thead id="memberTableHeader" class="tableHeader">
+        <!-- Dynamic header is added here -->
+        </thead>
+        <tbody>
+        <!-- Dynamic table is added here -->
+        </tbody>
+    </table>
 </div>
+
 
 <div id="harbor" class="harbor">
     <button id="vestreBaadehavn" class="btnHarbor pressed">Vestre Bådehavn</button>
@@ -46,7 +54,7 @@
 
 <!-- kortet -->
 <div id="map" class="map"></div>
-<script type="module" src="/js/map.js" defer></script>
+<script type="module" src="/js/mapBookkeeper.js" defer></script>
 <script type="module" src="/js/sidebarBook.js" defer></script>
 <script type="module" src="/js/fetchMethods.js"></script>
 </body>
