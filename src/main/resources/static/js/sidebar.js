@@ -83,6 +83,7 @@ class MemberList {
                 });
             });
         });
+        searchHandler.updateRows(); // Sørger for at mine dynamisk oprettet tabeller indeholder data.
     }
 
     fetchBoatsByMemberId(memberId, infoContainer) {
@@ -180,6 +181,8 @@ class BerthList {
                     cell.style.maxHeight = cell.style.maxHeight ? null : cell.scrollHeight + "px";
                 });
             });
+
+            searchHandler.updateRows(); // Sørger for at mine dynamisk oprettet tabeller indeholder data.
 
             // Append berth row to the table body
             row.appendChild(berthCell);
@@ -297,3 +300,51 @@ headerSwitch.switchView();
 
 // Add sidebar toggle functionality
 document.getElementById("sidebarBtn").addEventListener('click', () => sidebar.toggle());
+
+
+class SearchHandler {
+    constructor(searchBarId, memberList, berthTableId) {
+        // Hent elementerne fra DOM'en
+        this.searchBar = document.getElementById(searchBarId);
+        this.memberList = document.getElementById(memberList);
+        this.berthList = document.getElementById(berthTableId);
+
+        // Hent alle rækker i tabellerne via tbody og tr
+        this.memberListRows = this.memberList.querySelectorAll("tbody tr");
+        this.berthRows = this.berthList.querySelectorAll("tbody tr");
+
+        // Tilføj event listener for 'input' på søgefeltet
+        this.searchBar.addEventListener("input", () => this.performSearch());
+    }
+
+    performSearch() {
+        const searchQuery = this.searchBar.value.toLowerCase();
+
+        this.filterRows(this.memberListRows, searchQuery, "member");
+        this.filterRows(this.berthRows, searchQuery, "berth");
+    }
+
+    filterRows(rows, searchQuery, tableType) {
+        rows.forEach(row => {
+            const cells = Array.from(row.querySelectorAll("td"));
+            const match = cells.some(cell => cell.textContent.toLowerCase().includes(searchQuery));
+
+            row.style.display = match ? "" : "none";
+        });
+    }
+
+    /* Hjælper funktion som er tilføjet for at være 100% sikker på at der er data i de dynamisk oprettede
+     * tabeller, da de når DOM loades ikke indeholder data, men blot er oprettet.
+     * Derfor kaldes denne method længere oppe i koden omkring linje 85 og 185 */
+    updateRows() {
+        this.memberListRows = this.memberList.querySelectorAll("tbody tr");
+        this.berthRows = this.berthList.querySelectorAll("tbody tr");
+    }
+}
+
+const searchHandler = new SearchHandler(
+    "searchBar",
+    "memberList",
+    "berthList"
+);
+
