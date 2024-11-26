@@ -43,8 +43,6 @@ function addCells(tr, data, editableIndexes = []){
         td = tr.insertCell();
         tr.className = "berthTableRow";
 
-
-
         if (editableIndexes.includes(index)) {
             const input = document.createElement("input");
             td.appendChild(input);
