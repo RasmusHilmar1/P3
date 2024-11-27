@@ -1,6 +1,7 @@
 package com.example.p3.controller;
 
 import com.example.p3.model.Berth;
+import com.example.p3.model.BerthWithCompatibility;
 import com.example.p3.model.Boat;
 import com.example.p3.service.BerthService;
 import com.example.p3.service.BerthCompatibilityService;
@@ -48,7 +49,7 @@ public class BerthController {
 
     // Endpoint to find compatible berths using GET
     @GetMapping("/find")
-    public List<BerthCompatibilityService.BerthWithCompatibility> findCompatibleBerths(
+    public List<BerthWithCompatibility> findCompatibleBerths(
             @RequestParam double length,
             @RequestParam double width) {
 

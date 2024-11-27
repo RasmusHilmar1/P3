@@ -1,5 +1,6 @@
 import {fetchApprovedMembers, fetchBoats, fetchBerth} from "./fetchMethods.js";
 import {updateAvailability, updateBoatBerthId} from "./updateMethods.js";
+import {colorButtons} from "./mapVessel.js";
 
 // Add sidebar -->
 var sidebar = document.getElementById("sidebar");
@@ -36,12 +37,6 @@ sidebar.addEventListener('click', function (event) {
         event.target.classList.add('pressed');
     }
 });
-
-let berthData =[
-    {id: 101, name: "FB13"},
-    {id: 102, name: "FB14"},
-    {id: 103, name: "FB15"},
-];
 
 const approvedMembers = await fetchApprovedMembers();
 console.log("members info:" + JSON.stringify(approvedMembers));
@@ -204,7 +199,12 @@ function createMemberListWithoutBoats(approvedMembers, boats, berths) {
                         addBtn.classList = "addBtn";
                         infoCell.appendChild(addBtn);
 
+                        addBtn.addEventListener("click", function () {
+                            colorButtons(member, boat, berths);
+                        });
+
                     }
+
                 }
                 collapsableListEventListener(memberName, infoContainer);
             }
@@ -375,77 +375,116 @@ function updateWhenAssigning(berth, boat) {
     updateAvailability(berth, 0);
     updateBoatBerthId(boat, berth);
 }
+function getCompatibilityScore(boat, berth) {
+    return fetch(`/berths/find?length=${boat.length}&width=${boat.width}`)
+        .then(response => response.json())
+        .then(data => {
+            // Find and return the compatibility score for the specific berth
+            const compatibility = data.find(item => item.berth.name === berth.name);
+            return compatibility ? compatibility.compatibilityScore : 0; // Return 0 if no match
+        })
+        .catch(error => {
+            console.error("Error fetching compatibility score:", error);
+            return 0; // Return 0 in case of error
+        });
+}
 
-
-function createBerthListAvailable (member) {
+export async function createBerthListAvailable(member) {
     var sidebar = document.getElementById("sidebar");
 
     createTable(member, sidebar, "berthListAv", "Tilgængelige");
 
     var table = document.getElementById(`berthListAv${member}`);
+    var lengthOffset = 1.0;  // 1 meter ekstra i længde
+    var widthOffset = 0.3;    // 0.3 meter (30 cm) ekstra i bredde
 
-    boats.forEach(boat => {
+   let compatibleBerths = [];
+
+    // First, find compatible berths and fetch compatibility scores
+    for (const boat of boats) {
         if ((member === boat.memberID) && (boat.berthID === 9999)) {
-            berths.forEach(berth => {
-                if ((berth.availability === 1) && (berth.length >= boat.length) && (berth.width >= boat.width)) {
-                    // Creating a row for each berth
-                    var berthRow = table.insertRow();
-                    var berthCell = berthRow.insertCell();
-                    berthCell.className = "berthCell";
+            for (const berth of berths) {
+                if ((berth.availability === 1) && (berth.length >= boat.length + lengthOffset) && (berth.width >= boat.width + widthOffset)) {
 
-                    // Creating a button for berths' names
-                    var berthName = document.createElement("button");
-                    berthName.textContent = berth.name;
-                    berthName.className = "berthBtn";
-                    berthCell.appendChild(berthName);
+                    // Get compatibility score for each berth
+                    const compatibilityScore = await getCompatibilityScore(boat, berth);
 
-                    // Creating a div element under each button
-                    var infoContainer = document.createElement("div");
-                    berthCell.appendChild(infoContainer);
-
-                    var size = document.createElement("div");
-                    size.textContent = "størrelse";
-                    size.className = "infoCell";
-
-                    for (const key in berth) {
-                        if (key === 'availability') {
-                            var infoCell = document.createElement("div");
-                            infoCell.textContent = "status: tilgængelig";
-                            infoCell.className = "infoCell";
-                            infoCell.id = berth.name;
-                            infoContainer.appendChild(infoCell);
-                        }
-                        if ((key === 'length') || (key === 'width') || (key === 'depth')) {
-                            var infoSize = document.createElement("div");
-                            infoSize.textContent = " - " + key + ": " + berth[key] + " m";
-                            size.appendChild(infoSize);
-                            infoContainer.appendChild(size);
-                        }
+                    if (compatibilityScore !== null) {
+                        compatibleBerths.push({member, berth, boat, compatibilityScore});
                     }
-
-                    var formForRedirect = document.createElement("form");
-                    formForRedirect.action = "/default";
-                    formForRedirect.method = "post";
-                    formForRedirect.classList = "infoCell";
-
-                    var assignBtn = document.createElement("button");
-                    assignBtn.textContent = "tildel";
-                    assignBtn.classList = "assignBtn";
-                    assignBtn.id = `assignBtn${member}`;
-                    assignBtn.onclick = function () {
-                        updateWhenAssigning(berth.berthID, boat.boatID);
-                    };
-
-                    formForRedirect.appendChild(assignBtn);
-                    infoContainer.appendChild(formForRedirect);
-
-                    // event listener for the collapsable list
-                    collapsableListEventListener(berthName, infoContainer);
                 }
-            });
+            }
         }
+    }
+
+    // Sort berths by compatibility score in descending order after all data is fetched
+    compatibleBerths.sort((a, b) => b.compatibilityScore - a.compatibilityScore);
+
+    // Now, create rows for each sorted berth
+    compatibleBerths.forEach(({ member, berth, boat, compatibilityScore}) => {
+        var berthRow = table.insertRow();
+        var berthCell = berthRow.insertCell();
+        berthCell.className = "berthCell";
+
+        // Creating a button for berths' names
+        var berthName = document.createElement("button");
+        berthName.textContent = berth.name;
+        berthName.className = "berthBtn";
+        berthCell.appendChild(berthName);
+
+        // Creating a div element under each button
+        var infoContainer = document.createElement("div");
+        berthCell.appendChild(infoContainer);
+
+        var size = document.createElement("div");
+        size.textContent = "størrelse";
+        size.className = "infoCell";
+
+        for (const key in berth) {
+            if (key === 'availability') {
+                var infoCell = document.createElement("div");
+                infoCell.textContent = "status: tilgængelig";
+                infoCell.className = "infoCell";
+                infoCell.id = berth.name;
+                infoContainer.appendChild(infoCell);
+            }
+            if ((key === 'length') || (key === 'width') || (key === 'depth')) {
+                var infoSize = document.createElement("div");
+                infoSize.textContent = " - " + key + ": " + berth[key] + " m";
+                size.appendChild(infoSize);
+                infoContainer.appendChild(size);
+            }
+        }
+
+        // Display compatibility score
+        var compatibilityDiv = document.createElement("div");
+        compatibilityDiv.textContent = "Kompatibilitet: " + compatibilityScore.toFixed(0) + " %";
+        compatibilityDiv.className = "infoCell";
+        infoContainer.appendChild(compatibilityDiv);
+
+        var formForRedirect = document.createElement("form");
+        formForRedirect.action = "/default";
+        formForRedirect.method = "post";
+        formForRedirect.classList = "infoCell";
+
+        var assignBtn = document.createElement("button");
+        assignBtn.textContent = "tildel";
+        assignBtn.classList = "assignBtn";
+        assignBtn.id = `assignBtn${member}`;
+        assignBtn.onclick = function () {
+            updateWhenAssigning(berth.berthID, boat.boatID);
+        };
+
+        formForRedirect.appendChild(assignBtn);
+        infoContainer.appendChild(formForRedirect);
+
+        // Event listener for the collapsible list
+        collapsableListEventListener(berthName, infoContainer);
+
+        return compatibleBerths;
     });
 }
+
 
 function createBerthListSmall (member) {
     var sidebar = document.getElementById("sidebar");
@@ -658,3 +697,4 @@ function searchBarEvent(){
 }
 
 searchBarEvent(berths);
+

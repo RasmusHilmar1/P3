@@ -4526,7 +4526,7 @@ var myGeoJson =
                     ]
                 },
                 "properties": {
-                    "id": "NB61",
+                    "id": "106",
                     "name": "Berth NB61"
                 }
             },
@@ -4560,7 +4560,7 @@ var myGeoJson =
                     ]
                 },
                 "properties": {
-                    "id": "NB62",
+                    "id": "107",
                     "name": "Berth NB62"
                 }
             },
@@ -4594,7 +4594,7 @@ var myGeoJson =
                     ]
                 },
                 "properties": {
-                    "id": "NB63",
+                    "id": "108",
                     "name": "Berth NB63"
                 }
             },
