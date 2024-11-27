@@ -122,3 +122,40 @@ function createMemberList(approvedMembers) {
 }
 
 createMemberList(approvedMembers);
+
+class SearchHandler {
+    constructor(searchBarId, memberListId) {
+        // Hent elementerne fra DOM'en
+        this.searchBar = document.getElementById(searchBarId);
+        this.memberList = document.getElementById(memberListId);
+
+        // Hent alle rækker i tabellerne via tbody og tr
+        this.memberRows = this.memberList.querySelectorAll("tbody tr");
+
+        // Tilføj event listener for 'input' på søgefeltet
+        this.searchBar.addEventListener("input", () => this.performSearch());
+    }
+
+    // Metode til at udføre selve søgningen
+    performSearch() {
+        const searchQuery = this.searchBar.value.toLowerCase();
+        this.filterRows(this.memberRows, searchQuery);
+    }
+
+    filterRows(rows, searchQuery) {
+        rows.forEach(row => {
+            // Typecaster til et array for at kunne bruge forEach method.
+            const cells = Array.from(row.querySelectorAll("td"));
+
+            // cells.some tjekker om mindst en af td - table data - felterne indeholder hvad end der er skrevet i searchQuery.
+            const match = cells.some(cell => cell.textContent.toLowerCase().includes(searchQuery));
+            row.style.display = match ? "" : "none";
+        });
+    }
+}
+
+// Opret en instans og giv den de id'er som den skal bruge.
+const searchHandler = new SearchHandler(
+    "searchBar",
+    "memberList"
+);
