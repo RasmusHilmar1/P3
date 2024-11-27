@@ -164,12 +164,10 @@ class BtnCreator {
         } else if (this.btnText === "Betalt") {
             buttonElement.id = "feePaidBtn" + this.data.boat.boatID;
             console.log(buttonElement.id);
-        } else if (this.btnText === "Accepter") {
+        } else if (this.btnText.includes("AcceptBtnIcon")){
             buttonElement.id = "acceptBtn" + this.data.member.memberID;
-        } else if (this.btnText === "Afvis") {
+        } else if (this.btnText.includes("DenyBtnIcon")){
             buttonElement.id = "denyBtn" + this.data.member.memberID;
-        } else {
-            buttonElement.id = this.btnText;
         }
 
 

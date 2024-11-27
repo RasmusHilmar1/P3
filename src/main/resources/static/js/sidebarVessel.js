@@ -40,14 +40,14 @@ sidebar.addEventListener('click', function (event) {
 
 
 const approvedMembers = await fetchApprovedMembers();
-console.log("members info:" + JSON.stringify(approvedMembers));
+//console.log("members info:" + JSON.stringify(approvedMembers));
 
 const boats = await fetchBoats();
-console.log("boats" + boats);
+//console.log("boats" + boats);
 //console.log("boatID" + boats.name);
 
 const berths = await fetchBerth();
-console.log("berths" + berths);
+//console.log("berths" + berths);
 
 function updateWhenRemoving(boat) {
     berths.forEach(berth => {
@@ -239,7 +239,7 @@ function createBerthList(berths){
         var berthCell = berthRow.insertCell();
         berthCell.className = "berthCell";
         berthCell.id = "berthCellBerth" + berth.berthID;
-        console.log(berthCell.id);
+        //console.log(berthCell.id);
 
         // Creating a button for berths' names
         var berthName = document.createElement("button");
@@ -253,7 +253,7 @@ function createBerthList(berths){
         berthCell.appendChild(infoContainer);
 
         var size = document.createElement("div");
-        size.textContent = "størrelse";
+        size.textContent = "størrelse:";
         size.className = "infoCell";
 
         // Creating information cells dynamically within the div container
@@ -273,7 +273,7 @@ function createBerthList(berths){
                 infoCell.className = "infoCell";
                 infoContainer.appendChild(infoCell);
             }
-            if ((key === 'length') || (key === 'width') || (key === 'depth')) {
+            if ((key === 'length') || (key === 'width')) {
                 var infoSize = document.createElement("div");
                 infoSize.textContent = " - " + key + ": " + berth[key] + " m";
                 //infoSize.className = "infoCell";
@@ -284,6 +284,33 @@ function createBerthList(berths){
                 infoContainer.appendChild(size);
             }
         }
+
+        //indsæt båd hvis den eksisterer
+        boats.forEach(boat => {
+            if (boat.berthID === berth.berthID) {
+                let infoCell = document.createElement("div");
+                infoCell.textContent = "båd: " + boat.name;
+                infoCell.className = "infoCell";
+
+                var removeBtn = document.createElement("button");
+                removeBtn.textContent = "fjern";
+                removeBtn.id = "removeBtn";
+                removeBtn.onclick = function() {
+                    updateWhenRemoving(boat);
+                }
+                infoCell.appendChild(removeBtn);
+                infoContainer.appendChild(infoCell);
+
+                approvedMembers.forEach(approvedMember => {
+                    if (approvedMember.member.memberID === boat.memberID) {
+                        let infoCell = document.createElement("div");
+                        infoCell.textContent = "medlem: " + approvedMember.member.name;
+                        infoCell.className = "infoCell";
+                        infoContainer.appendChild(infoCell);
+                    }
+                })
+            }
+        });
 
         // event listener for the collapsable list
         collapsableListEventListener(berthName, infoContainer);
@@ -427,7 +454,7 @@ function createBerthListAvailable (member) {
                             infoCell.id = berth.name;
                             infoContainer.appendChild(infoCell);
                         }
-                        if ((key === 'length') || (key === 'width') || (key === 'depth')) {
+                        if ((key === 'length') || (key === 'width')) {
                             var infoSize = document.createElement("div");
                             infoSize.textContent = " - " + key + ": " + berth[key] + " m";
                             size.appendChild(infoSize);
@@ -500,7 +527,7 @@ function createBerthListSmall (member) {
                             infoCell.id = berth.name;
                             infoContainer.appendChild(infoCell);
                         }
-                        if ((key === 'length') || (key === 'width') || (key === 'depth')) {
+                        if ((key === 'length') || (key === 'width')) {
                             var infoSize = document.createElement("div");
                             infoSize.textContent = " - " + key + ": " + berth[key] + " m";
                             size.appendChild(infoSize);
@@ -570,7 +597,7 @@ function createBerthListUnavailable(member) {
                             infoCell.id = berth.name;
                             infoContainer.appendChild(infoCell);
                         }
-                        if ((key === 'length') || (key === 'width') || (key === 'depth')) {
+                        if ((key === 'length') || (key === 'width')) {
                             var infoSize = document.createElement("div");
                             infoSize.textContent = " - " + key + ": " + berth[key] + " m";
                             //infoSize.className = "infoCell";

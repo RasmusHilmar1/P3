@@ -132,7 +132,7 @@ public class MemberService {
         System.out.println(pendingMember);
         if (pendingMember != null) {
             Member member = pendingMember.getMember(); // get the member object nested in the pending member
-            int memberId = member.getMemberID();
+            int memberId = pendingMember.getId();
             ApprovedMember approvedMember = new ApprovedMember(); // create new approved member
 
             approvedMember.setMember(member); // move the member object to the new approved member

@@ -8,7 +8,7 @@ console.log(boats);
 const berths = await fetchBerth();
 console.log(berths);
 
-// calculate areal for berth and boats for the dynamic table and calculating the utilization percentage
+// calculate areal for berth and boats for the dynamic table and calculating the utilization percentage. This should be connected to back-end.
 function calculateAreal(){
     berths.forEach(berth => {
         berth.areal = (berth.length * berth.width).toFixed(2);
@@ -23,7 +23,6 @@ function calculateAreal(){
 calculateAreal();
 
 // calculating the utilization of occupied berth in percentage - should be connected to back-end
-//IMPORTANT: cannot find function in back-end that calculates utilization in percentage
 function calculateUtilization(){
     calculateAreal();
     berths.forEach(berth => {
@@ -68,11 +67,11 @@ function addCells(tr, data, editableIndexes = []){
     });
 }
 
-function getBerthList() {
+function getBerthList(data) {
     const table = document.getElementById("berthListBody"); // get the HTML element for the dynamic table
 
     // For each berth, find corresponding boat and member
-    berths.forEach(berth => {
+    data.forEach(berth => {
         berth.correspondingBoat = boats.find(boat => boat.berthID === berth.berthID);
         console.log(berth.correspondingBoat);
 
@@ -87,7 +86,7 @@ function getBerthList() {
     });
 
     //For each berth, create a row and add cells with the data
-    berths.forEach(berth => {
+    data.forEach(berth => {
         // do not include the default berth
         if (berth.berthID !== 9999) {
             var row = table.insertRow();
@@ -133,9 +132,34 @@ function getBerthList() {
             saveButton.addEventListener("click", () => saveBerthChanges(row, berth));
         }
     });
+    return table;
 }
 
-getBerthList();
+getBerthList(berths);
+
+function sortBerthListMember(data){
+    console.log("Sorting function called!")
+
+    let filteredRows, sorted;
+
+    filteredRows = data.filter(row => row.correspondingMember); // filter data to include only the rows with a corresponding member and boat
+    console.log(filteredRows);
+
+    sorted = filteredRows.sort((a,b) => a.correspondingBoat.memberID - b.correspondingBoat.memberID); // sort the filtered rows
+    console.log(sorted);
+
+    const table = document.getElementById("berthListBody");
+    table.innerHTML = ""; //clear out the table
+
+    getBerthList(sorted); //create the new table with the sorted rows
+}
+
+sortBerthListMember(berths);
+
+function sortBerthListBerth(data){
+    const sorted = data.sort((a,b) => a.berthName.localeCompare(b.berthName));
+    getBerthList(sorted);
+}
 
 // function for saving the changes
 async function saveBerthChanges(row, berth) {
@@ -203,7 +227,6 @@ async function saveBerthChanges(row, berth) {
     }
 }
 
-// IMPLEMENT THIS SEARCH FUNCTION IN SIDEBAR:
 // IMPORTANT: Maybe add such that users can only search for names and IDs, not areal, length and width
 function searchBarBerthList() {
     console.log("Search function triggered"); //console logging to make sure that the function runs

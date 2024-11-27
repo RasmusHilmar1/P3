@@ -3,7 +3,7 @@ import {fetchApprovedMembers, fetchBoats, fetchBerth, fetchPendingMembers, fetch
 import {Berth, Boat, PendingBoat, Member, Table} from "./objects.js";
 
 export {boats, pendingBoats, approvedMembers, pendingMembers, berths};
-export {BoatRequestTable, EventManager};
+export {BoatRequestTable, EventManagerBoatRequests};
 export {createTable};
 
 // new class for specific boat request table
@@ -63,7 +63,7 @@ class BoatRequestTable extends Table {
     }
 }
 
-class EventManager {
+class EventManagerBoatRequests {
     constructor(boats, members) {
         this.boats = boats;
         this.members = members;

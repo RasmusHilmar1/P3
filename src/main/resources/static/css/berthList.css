@@ -1,13 +1,40 @@
-/* General body styling */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-}
-
 /* Style for the table container */
 #berthListContainer {
     padding-top: 150px;
     background-color: #f4f4f4;
+}
+
+/* Styling for the sorting buttons */
+#sortingBtnRow {
+    text-align: center;
+    vertical-align: middle;
+    border: none;
+}
+
+#sortingBtnCell {
+    text-align: center;
+    vertical-align: middle;
+    border: none;
+}
+
+#sortingBtnsContainer {
+    text-align: center;
+    vertical-align: middle;
+    display: inline;
+    border: none;
+}
+
+.sortingBtn {
+    display: inline;
+    border-color: #5c82b5;
+    border-radius: 10px;
+    color: #5c82b5;
+}
+
+/* styling for sorting buttons when selected */
+.sortingBtn.selected {
+    background-color: #5c82b5;
+    color: white;
 }
 
 /* Style for the dynamic table */
