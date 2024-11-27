@@ -1,6 +1,5 @@
 import {fetchBoats, fetchPendingMembers, parseData} from "./fetchMethods.js";
-import {Member, Boat, Table} from "./objects.js";
-import {BtnCreator} from "./boatRequests.js";
+import {Member, Boat, Table, BtnCreator} from "./objects.js";
 
 class MemberRequestTable extends Table {
     constructor(elementId, title, headers, firstArray, secondArray, colspan) {
@@ -10,54 +9,44 @@ class MemberRequestTable extends Table {
         super.createTable();
     }
     addDataRows(array, tableBody) {
+        // function is overridden because of the divs
         array.forEach(item => {
             let row = tableBody.insertRow();
             row.className = "shownRows";
             console.log(item);
 
-            // Create collapsible row and capture reference to it
+            // create collapsible row and capture reference to it
             let divElement = new createCollapsibleDiv(item, tableBody);
-            const infoRow = divElement.createContainer(); // Capture the row itself
+            const infoRow = divElement.createContainer(); // capture the row itself
 
-            // Pass infoRow directly to addCells
+            // pass infoRow directly to addCells
             this.addCells(row, item, infoRow, tableBody);
             this.addSpecificCells(row, item);
         });
     }
     addCells(row, data, infoRow, tableBody) {
         let memberCell = row.insertCell();
+        memberCell.className = "memberCells";
+        memberCell.colSpan = 5;
         let memberBtn = document.createElement("button");
         memberBtn.textContent = data.member.name;
         memberBtn.id = "memberBtn_member" + data.member.memberID;
         memberBtn.className = "memberInfoBtn";
         memberCell.appendChild(memberBtn);
 
-        /* // Create buttons for both member ID and member name
-        let idBtn = document.createElement("button");
-        idBtn.textContent = data.member.memberID;
-        idBtn.id = "idBtn_member" + data.member.memberID;
-        idBtn.className = "memberInfoBtn";
-        idCell.appendChild(idBtn);
-
-        let nameBtn = document.createElement("button");
-        nameBtn.textContent = data.member.name;
-        nameBtn.id = "nameBtn_member" + data.member.memberID;
-        nameBtn.className = "memberInfoBtn";
-        nameCell.appendChild(nameBtn); */
-
-        // Toggle visibility on name button click
+        // toggle visibility on name button click
         memberBtn.addEventListener("click", () => {
-            infoRow.classList.toggle("visible"); // Toggle the visibility of the row
+            infoRow.classList.toggle("visible"); // toggle the visibility of the row
 
-            // Position the collapsible content directly under the clicked button
+            // position the collapsible content directly under the clicked button
             const rowRect = row.getBoundingClientRect();
             const memberCellRect = memberCell.getBoundingClientRect();
 
-            // Set the position of the collapsible row dynamically
+            // set the position of the collapsible row dynamically
             infoRow.style.top = `${rowRect.bottom}px`;
             infoRow.style.width = `${memberCellRect.width}px`;
 
-            // Optional: Change button appearance when the div is visible
+            // toggle styling of button when selected
             if (infoRow.classList.contains("visible")) {
                 memberBtn.classList.add("selectedMemberBtn");
             } else {
@@ -65,10 +54,11 @@ class MemberRequestTable extends Table {
             }
         });
     }
+    // adding specific cells with buttons for accepting or denying requests
     addSpecificCells(row, data) {
-        let acceptBtn = new BtnCreator(row, data, "Accepter");
+        let acceptBtn = new BtnCreator(row, data, "<img src=http://localhost:8080/Images/Icons/AcceptBtnIcon.png alt='acceptIcon'>");
         acceptBtn.createBtn();
-        let denyBtn = new BtnCreator(row, data, "Afvis");
+        let denyBtn = new BtnCreator(row, data, "<img src=http://localhost:8080/Images/Icons/DenyBtnIcon.png alt='denyIcon'>");
         denyBtn.createBtn();
     }
 }
@@ -117,12 +107,13 @@ class MemberEvent {
     }
     createEvent(){
         let acceptBtn, denyBtn, acceptBtnId, denyBtnId;
+        // IMPORTANT ---> Lige nu har alle 3 acceptBtns samme id. dette skal rettes. 
         this.members.forEach(member => {
             console.log(member.member.memberID);
-            acceptBtnId = "acceptBtn" + member.member.memberID;
+            acceptBtnId = "<img src=http://localhost:8080/Images/Icons/AcceptBtnIcon.png alt='acceptIcon'>"
             acceptBtn = document.getElementById(acceptBtnId);
             console.log(acceptBtn);
-            denyBtnId = "denyBtn" + member.member.memberID;
+            denyBtnId = "<img src=http://localhost:8080/Images/Icons/DenyBtnIcon.png alt='denyIcon'>";
             denyBtn = document.getElementById(denyBtnId);
             console.log(denyBtn);
 
@@ -211,10 +202,10 @@ window.onload = async () => {
         MemberRequestTable,
         "memberRequestsContainer",
         "Medlemsskabsanmodninger",
-        ["Navn", "Accepter Medlem", "Afvis Medlem"],
+        [],
         pendingMembers,
         boats,
-        3);
+        7);
     let memberEvent = new MemberEvent(pendingMembers);
     memberEvent.createEvent();
 }

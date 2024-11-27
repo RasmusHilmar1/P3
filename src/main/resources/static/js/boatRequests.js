@@ -3,7 +3,7 @@ import {fetchApprovedMembers, fetchBoats, fetchBerth, fetchPendingMembers, fetch
 import {Berth, Boat, PendingBoat, Member, Table} from "./objects.js";
 
 export {boats, pendingBoats, approvedMembers, pendingMembers, berths};
-export {BoatRequestTable, BtnCreator, IconCreator, EventManager};
+export {BoatRequestTable, EventManager};
 export {createTable};
 
 // new class for specific boat request table
@@ -60,90 +60,6 @@ class BoatRequestTable extends Table {
     }
     addSpecificCells(row, data){
         super.addSpecificCells(row, data);
-    }
-}
-
-class BtnCreator {
-    constructor(row, data, btnText) {
-        this.row = row;
-        this.data = data;
-        this.btnText = btnText;
-    }
-
-    createBtn() {
-        let buttonCell = this.row.insertCell();
-        buttonCell.className = "btnCells";
-        let buttonContainer = document.createElement("a");
-        let buttonElement = document.createElement("button");
-
-        // give the buttons a class name
-        buttonElement.classList.add("addBtn");
-        buttonElement.textContent = this.btnText;
-
-        if (this.btnText === "Tildelt") {
-            buttonElement.id = "addBtn" + this.data.boat.boatID;
-            console.log(buttonElement.id);
-        } else if (this.btnText === "Sendt") {
-            buttonElement.id = "feeSentBtn" + this.data.boat.boatID;
-            console.log(buttonElement.id);
-        } else if (this.btnText === "Betalt") {
-            buttonElement.id = "feePaidBtn" + this.data.boat.boatID;
-            console.log(buttonElement.id);
-        } else if (this.btnText === "Accepter") {
-            buttonElement.id = "acceptBtn" + this.data.member.memberID;
-        } else if (this.btnText === "Afvis") {
-            buttonElement.id = "denyBtn" + this.data.member.memberID;
-        }
-
-
-        buttonContainer.appendChild(buttonElement);
-        buttonCell.appendChild(buttonContainer);
-
-        console.log(buttonElement.id);
-    }
-}
-
-// function for creating icons
-class IconCreator {
-    constructor(row, boat) {
-        this.row = row;
-        this.boat = boat;
-    }
-
-    createCell() {
-        this.iconCell = this.row.insertCell();
-        this.iconCell.className = "iconCells";
-    }
-
-    createIcons(data) {
-        const checkmark = document.createElement("img");
-        checkmark.src = "http://localhost:8080/Images/Icons/AcceptBtnIcon.png";
-        const cross = document.createElement("img");
-        cross.src = "http://localhost:8080/Images/Icons/DenyBtnIcon.png";
-        // vessel inspector corresponding cell to "Sendt"
-        if (data === this.boat.boat.feeSent) {
-            if (data === 1) {
-                this.iconCell.appendChild(checkmark);
-            } else if (data === 0) {
-                this.iconCell.appendChild(cross);
-            }
-        }
-        // vessel inspector corresponding cell to "Betalt"
-        else if (data === this.boat.boat.feePaid) {
-            if (data === 1) {
-                this.iconCell.appendChild(checkmark);
-            } else if (data === 0) {
-                this.iconCell.appendChild(cross);
-            }
-        }
-        // bookkeeper corresponding cell to "Tildelt"
-        else if (data === this.boat.boat.berthID) {
-            if (data !== 9999) {
-                this.iconCell.appendChild(checkmark);
-            } else {
-                this.iconCell.appendChild(cross);
-            }
-        }
     }
 }
 
