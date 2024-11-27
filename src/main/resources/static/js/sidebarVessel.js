@@ -112,10 +112,19 @@ function createMemberListBoats(approvedMembers, boats, berths) {
                         }
 
                         if (key === 'berthID') {
+                            // Find berth med det matchende ID
+                            // find() kan bruges da berths er et array af objects, hvor hvert object har en berthID key.
+                            const berth = berths.find(b => b.berthID === boat[key]);
+
                             var infoCell = document.createElement("div");
-                            //console.log("key : " + boat[key]);
-                            infoCell.textContent = key + " : " + boat[key];
                             infoCell.className = "infoCell";
+
+                            // Hvis der findes en matchende berth, brug dens navn
+                            if (berth) {
+                                infoCell.textContent = `Plads: : ${berth.name} `;
+                            } else {
+                                infoCell.textContent = `berthnavn : Ukendt`;
+                            }
                             infoContainer.appendChild(infoCell);
 
                             var formForRedirect = document.createElement("form");
