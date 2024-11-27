@@ -92,6 +92,8 @@ class BerthList {
                 });
             });
 
+            searchHandler.updateRows();
+
             // Append berth row to the table body
             row.appendChild(berthCell);
             tbody.appendChild(row);
@@ -195,5 +197,54 @@ headerSwitch.switchView();
 
 // Add sidebar toggle functionality
 document.getElementById("sidebarBtn").addEventListener('click', () => sidebar.toggle());
+
+class SearchHandler {
+    constructor(searchBarId, berthTableId) {
+        // Hent elementerne fra DOM'en
+        this.searchBar = document.getElementById(searchBarId);
+        this.berthList = document.getElementById(berthTableId);
+
+        // Hent alle rækker i tabellerne via tbody og tr
+        this.berthRows = this.berthList.querySelectorAll("tbody tr");
+
+        // Tilføj event listener for 'input' på søgefeltet
+        this.searchBar.addEventListener("input", () => this.performSearch());
+    }
+
+    // Metode til at udføre selve søgningen
+    performSearch() {
+        const searchQuery = this.searchBar.value.toLowerCase();
+
+        this.filterRows(this.berthRows, searchQuery, "berth");
+    }
+
+    filterRows(rows, searchQuery, tableType) {
+        rows.forEach(row => {
+            // Typecaster til et array for at kunne bruge forEach method.
+            const cells = Array.from(row.querySelectorAll("td"));
+
+            // cells.some tjekker om mindst en af td - table data - felterne indeholder hvad end der er skrevet i searchQuery.
+            const match = cells.some(cell => cell.textContent.toLowerCase().includes(searchQuery));
+            row.style.display = match ? "" : "none";
+        });
+
+        // Hjælper med at opdateret/søge memberListRows eller berthRows afhænigt af hvilken tabel der er valgt.
+        if (tableType === "berth") {
+            this.berthRows = this.berthList.querySelectorAll("tbody tr");
+        }
+    }
+
+    // endnu en hjælperfunktion som hjælper med at sørge for at de tomme felter, som der er fra start
+    // får data i sig efter de er blevet oprettet. De kaldes på linje 85 og 185
+    updateRows() {
+        this.berthRows = this.berthList.querySelectorAll("tbody tr");
+    }
+}
+
+// Opret en instans og giv den de id'er som den skal bruge.
+const searchHandler = new SearchHandler(
+    "searchBar",
+    "berthList"
+);
 
 
