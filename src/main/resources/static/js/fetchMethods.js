@@ -14,20 +14,9 @@ async function fetchApprovedMembers() {
         }
 
         const approvedMembers = await response.json();
-        console.log("Fetched approved members:", approvedMembers); // Debug output
+        //console.log("Fetched approved members:", approvedMembers); // Debug output
 
         return approvedMembers;
-
-        /*
-        const resultDiv = document.getElementById('result');
-        resultDiv.innerHTML = ''; // Clear previous results
-        approvedMembers.forEach(approvedMember => {
-            const member = approvedMember.member;
-            //const memberInfo = document.createElement('div');
-            //memberInfo.textContent = `ID: ${member.memberID}, Name: ${member.name}, Address: ${member.address}, Email: ${member.email}`;
-            //resultDiv.appendChild(memberInfo);
-        });
-        */
 
     } catch (error) {
         console.error('Error fetching approved members:', error);
@@ -42,7 +31,7 @@ async function fetchBoats() {
         }
 
         const boats = await response.json();
-        console.log("Fetched boats:", boats); // Debug output
+        //console.log("Fetched boats:", boats); // Debug output
 
         return boats;
 
@@ -60,7 +49,7 @@ async function fetchBerth() {
         }
 
         const berths = await response.json();
-        console.log("Fetched berths:", berths); // Debug output
+        //console.log("Fetched berths:", berths); // Debug output
 
         return berths;
 
@@ -77,7 +66,7 @@ async function fetchPendingMembers(){
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const members = await response.json();
-        console.log("Fetched pending members:", members);
+        //console.log("Fetched pending members:", members);
 
         return members;
 

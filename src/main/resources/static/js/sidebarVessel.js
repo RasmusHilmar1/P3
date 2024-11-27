@@ -40,14 +40,14 @@ sidebar.addEventListener('click', function (event) {
 
 
 const approvedMembers = await fetchApprovedMembers();
-console.log("members info:" + JSON.stringify(approvedMembers));
+//console.log("members info:" + JSON.stringify(approvedMembers));
 
 const boats = await fetchBoats();
-console.log("boats" + boats);
+//console.log("boats" + boats);
 //console.log("boatID" + boats.name);
 
 const berths = await fetchBerth();
-console.log("berths" + berths);
+//console.log("berths" + berths);
 
 function updateWhenRemoving(boat) {
     berths.forEach(berth => {
