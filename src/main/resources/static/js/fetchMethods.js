@@ -14,7 +14,7 @@ async function fetchApprovedMembers() {
         }
 
         const approvedMembers = await response.json();
-        console.log("Fetched approved members:", approvedMembers); // Debug output
+        //console.log("Fetched approved members:", approvedMembers); // Debug output
 
         return approvedMembers;
 
@@ -42,7 +42,7 @@ async function fetchBoats() {
         }
 
         const boats = await response.json();
-        console.log("Fetched boats:", boats); // Debug output
+        //console.log("Fetched boats:", boats); // Debug output
 
         return boats;
 
@@ -60,7 +60,7 @@ async function fetchBerth() {
         }
 
         const berths = await response.json();
-        console.log("Fetched berths:", berths); // Debug output
+        //console.log("Fetched berths:", berths); // Debug output
 
         return berths;
 
@@ -77,7 +77,7 @@ async function fetchPendingMembers(){
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const members = await response.json();
-        console.log("Fetched pending members:", members);
+        //console.log("Fetched pending members:", members);
 
         return members;
 

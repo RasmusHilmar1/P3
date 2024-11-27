@@ -142,6 +142,7 @@ function updateGeoJsonWithStatus() {
     }).addTo(map);
 
     memberToMap(geoJsonLayer);
+    berthListsToMap(geoJsonLayer)
 }
 // Initial load and update
 updateGeoJsonWithStatus();
@@ -149,10 +150,10 @@ updateGeoJsonWithStatus();
 function onEachFeature(feature, layer) {
 
     layer.on('click', function(e) {
-        switchHeader();
         highlightBerth(e);
-        berthToSideBarBerthList(feature);
-        //berthToThreeLists(feature);
+        //berthToSideBarBerthList(feature);
+        berthToThreeLists(feature);
+        berthToMemberList(feature);
     });
 
     layer.featureId = feature.properties.id;
@@ -180,32 +181,75 @@ function removeHighlight(layer) {
         });
     }
 }
+function berthToMemberList(feature) {
+    const tables = document.querySelectorAll(".memberList");
 
+    tables.forEach(table => {
+        const rows = table.querySelectorAll("tr");
 
+        rows.forEach(row => {
+            const nameBtn = row.querySelector(".nameBtn");
+            console.log("nameBtn: " + nameBtn.outerHTML);
+
+            if (nameBtn) {
+                const berthName = nameBtn.textContent.trim();
+                console.log("berthName: " + name);
+
+                if ((berthName === feature.properties.name) && (table.style.display === "table")) {
+                    berthNameBtn.scrollIntoView();
+                    berthNameBtn.click();
+                }
+            }
+        });
+    });
+
+}
+
+function berthToThreeLists(feature){
+    const tables = document.querySelectorAll("[id^='berthList']");
+
+    tables.forEach(table => {
+        const rows = table.querySelectorAll("tr");
+
+        rows.forEach(row => {
+            const berthNameBtn = row.querySelector(".berthBtn");
+            //console.log("berthNameBtn: " + berthNameBtn);
+            if (berthNameBtn) {
+                const berthName = berthNameBtn.textContent.trim();
+                //console.log("berthName: " + berthName);
+
+                if ((berthName === feature.properties.name) && (table.style.display === "table")) {
+                    berthNameBtn.scrollIntoView();
+                    berthNameBtn.click();
+                }
+            }
+        });
+    });
+
+}
+
+/*
 function berthToSideBarBerthList(feature) {
-    const memberListBoat = document.getElementById("memberListBoat");
-    const memberListWithoutBoat = document.getElementById("memberListWithoutBoat");
-    const allBerthTables = document.querySelectorAll(".berthList");
-
     const berthList = document.getElementById("berthList");
     const rows = berthList.querySelectorAll('tr');
 
     rows.forEach(row => {
         const berthNameBtn = row.querySelector(".berthBtn");
-        console.log("berthNameBtn: " + berthNameBtn);
+        //console.log("berthNameBtn: " + berthNameBtn);
         if (berthNameBtn) {
             const berthName = berthNameBtn.textContent.trim();
-            console.log("berthName: " + berthName);
+            //console.log("berthName: " + berthName);
 
-            if (berthName === feature.properties.name) {
-                memberListBoat.style.display = "none";
-                memberListWithoutBoat.style.display = "none";
+            if ((berthName === feature.properties.name) && (berthList.style.display === "table")) {
+                //memberListBoat.style.display = "none";
+                //console.log("display", memberListBoat.style.display = "none");
+                //memberListWithoutBoat.style.display = "none";
 
                 // Loop gennem og skjul hver tabel
-                allBerthTables.forEach((table) => {
-                    table.style.display = 'none';
-                });
-                berthList.style.display = "table";
+                //allBerthTables.forEach((table) => {
+                //    table.style.display = 'none';
+                //});
+                //berthList.style.display = "table";
 
                 berthNameBtn.click();
                 berthNameBtn.scrollIntoView();
@@ -213,42 +257,7 @@ function berthToSideBarBerthList(feature) {
         }
     });
 }
-
-function berthToThreeLists(feature){
-    const memberListBoat = document.getElementById("memberListBoat");
-    const memberListWithoutBoat = document.getElementById("memberListWithoutBoat");
-    const allBerthTables = document.querySelectorAll(".berthList");
-
-
-   /* approvedMembers.forEach(approvedMember => {
-        if()
-    })*/
-    const berthList = document.getElementById("berthList");
-    const rows = allBerthTables.querySelectorAll('tr');
-
-    rows.forEach(row => {
-        const berthNameBtn = row.querySelector(".berthBtn");
-        console.log("berthNameBtn: " + berthNameBtn);
-        if (berthNameBtn) {
-            const berthName = berthNameBtn.textContent.trim();
-            console.log("berthName: " + berthName);
-
-            if (berthName === feature.properties.name) {
-                memberListBoat.style.display = "none";
-                memberListWithoutBoat.style.display = "none";
-                // Loop gennem og skjul hver tabel
-                allBerthTables.forEach((table) => {
-                    table.style.display = 'table';
-                });
-                berthList.style.display = "none";
-
-                berthNameBtn.click();
-                berthNameBtn.scrollIntoView();
-            }
-        }
-    });
-}
-
+*/
 function memberToMap(geoJsonLayer){
     const memberList = document.getElementById("memberListBoat");
     memberList.addEventListener("click", (event) => {
@@ -260,6 +269,7 @@ function memberToMap(geoJsonLayer){
         });
 
         const button = event.target.closest(".nameBtn");
+        console.log("button member: " + button.outerHTML);
 
         if(button) {
             const memberId = button.id.replace("memberName", "");
@@ -283,8 +293,42 @@ function memberToMap(geoJsonLayer){
                 }
             });
         }
-    })
+    });
 
+}
+
+function berthListsToMap(geoJsonLayer){
+    const berthList = document.getElementsByClassName("berthList");
+    for(let i = 0; i < berthList.length; i++) {
+        berthList[i].addEventListener("click", (event) => {
+            geoJsonLayer.eachLayer(layer => {
+                layer.setStyle({
+                    color: "black",
+                    weight: 0.1
+                })
+            });
+
+            const berthBtn = event.target.closest(".berthBtn");
+            console.log("button: " + berthBtn.outerHTML);
+
+            if (berthBtn) {
+                const berthName = berthBtn.textContent.trim();
+
+                berths.forEach(berth => {
+                    if (berthName === berth.name) {
+                        geoJsonLayer.eachLayer(layer => {
+                            if (Number(layer.featureId) === berth.berthID) {
+                                layer.setStyle({
+                                    color: "blue",
+                                    weight: 2
+                                })
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }
 }
 
 
@@ -296,10 +340,45 @@ function memberToMap(geoJsonLayer){
 
 
 
-
-
-
 /*
+function berthListToMap(geoJsonLayer){
+    const berthList = document.getElementById("berthList");
+    berthList.addEventListener("click", (event) => {
+        geoJsonLayer.eachLayer(layer => {
+            layer.setStyle({
+                color: "black",
+                weight: 0.1
+            })
+        });
+
+        const berthBtn = event.target.closest(".berthBtn");
+        console.log("button: " + berthBtn.outerHTML);
+
+        if(berthBtn) {
+
+            const berthName = berthBtn.textContent.trim();
+
+            berths.forEach(berth => {
+                if (berthName === berth.name) {
+                    geoJsonLayer.eachLayer(layer => {
+                       if (Number(layer.featureId) === berth.berthID) {
+                           layer.setStyle({
+                               color: "blue",
+                               weight: 2
+                           })
+                       }
+                    });
+                }
+            });
+        }
+    });
+
+}
+
+
+
+
+
 var memberList = document.getElementById("memberListBoat");
 const rows = memberList.querySelectorAll('tr');
 console.log("memberList: " + memberList);
