@@ -301,7 +301,8 @@ headerSwitch.switchView();
 // Add sidebar toggle functionality
 document.getElementById("sidebarBtn").addEventListener('click', () => sidebar.toggle());
 
-
+// DENNE FUNKTION SKAL NOK SLETTES. DEN ER LAVET PÅ EN ANDEN BRANCH
+// KUN FOR BÅDPLADSER
 class SearchHandler {
     constructor(searchBarId, memberList, berthTableId) {
         // Hent elementerne fra DOM'en
