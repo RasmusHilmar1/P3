@@ -2,10 +2,23 @@ package com.example.p3.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.Objects;
+
+// Bruges til test
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+
 
 @Entity
 public class Member {

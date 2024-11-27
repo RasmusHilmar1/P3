@@ -1,0 +1,13 @@
+Compatibility Report for Boat: Boat A
+Berth: Berth 3 - Compatibility: 100,00% 🟩
+Berth: Berth 6 - Compatibility: 96,23% 🟩
+Berth: Berth 9 - Compatibility: 95,45% 🟩
+Berth: Berth 10 - Compatibility: 93,75% 🟩
+Berth: Berth 1 - Compatibility: 85,42% 🟨
+Berth: Berth 4 - Compatibility: 72,22% 🟨
+Berth: Berth 7 - Compatibility: 70,71% 🟨
+Berth: Berth 2 - Compatibility: 60,42% 🟧
+Berth: Berth 5 - Compatibility: 0,00% 🟪
+Berth: Berth 8 - Compatibility: 0,00% 🟪
+
+Number of great great utilization (90%+) : 4/10
