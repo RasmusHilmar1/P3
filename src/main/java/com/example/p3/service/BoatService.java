@@ -148,6 +148,23 @@ public class BoatService {
         return null; // return null if boat is not found
     }
 
+    public Boat denyBoat(int pendingBoatId) {
+        PendingBoat pendingBoat = pendingBoatRepository.findById(pendingBoatId); // get the pending boat
+
+
+        if (pendingBoat == null) {
+            System.out.println("Pending boat not found."); // check whether pending member is found
+            return null; // return null if boat is not found
+        }
+
+        Boat boat = pendingBoat.getBoat(); // get the corresponding boat object
+
+        pendingBoatRepository.delete(pendingBoat); // delete from both repositories
+        boatRepository.delete(boat);
+
+        return boat;
+    }
+
     public List<Boat> getAllBoats() {
         // Method to fetch all boats
             return boatRepository.findAll(); // Assuming you have a BoatRepository extending JpaRepository

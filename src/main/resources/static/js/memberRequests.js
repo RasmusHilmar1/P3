@@ -1,5 +1,9 @@
-import {fetchBoats, fetchPendingMembers, parseData} from "./fetchMethods.js";
-import {Member, Boat, Table, BtnCreator} from "./objects.js";
+// fetch methods
+import {fetchPendingBoats, fetchPendingMembers, parseData} from "./fetchMethods.js";
+// arrays
+import {pendingBoats, pendingMembers} from "./fetchMethods.js";
+// classes
+import {Member, PendingBoat, Table, BtnCreator} from "./objects.js";
 
 class MemberRequestTable extends Table {
     constructor(elementId, title, headers, firstArray, secondArray, colspan) {
@@ -126,17 +130,20 @@ class createCollapsibleDiv {
 }
 
 class MemberEvent {
-    constructor (members){
+    constructor (members, boats){
         this.members = members;
+        this.boats = boats;
     }
     createEvent(){
         let acceptBtn, denyBtn, acceptBtnId, denyBtnId;
-        // find corresponding accept- and deny button for each pending member
+        // find the accept and deny buttons for each pending member
         this.members.forEach(member => {
             console.log(member.member.memberID);
+
             acceptBtnId = "acceptBtn" + member.member.memberID;
             acceptBtn = document.getElementById(acceptBtnId);
             console.log(acceptBtn);
+
             denyBtnId = "denyBtn" + member.member.memberID;
             denyBtn = document.getElementById(denyBtnId);
             console.log(denyBtn);
@@ -151,11 +158,27 @@ class MemberEvent {
             }
             if (denyBtn){
                 denyBtn.addEventListener("click", () => {
-                    if (confirm("Er du sikker på at du vil afvise medlemmet?")){
-                        denyMember(member.id);
-                        console.log("Member denied with member ID:", member.member.memberID, "and deleted successfully");
+                    const correspondingBoat = this.boats.find(boat => boat.boat.memberID === member.member.memberID); //find corresponding boat
+                    if(correspondingBoat){
+                        console.log(correspondingBoat);
+                        console.log(correspondingBoat.id);
                     }
-                })
+                    if (confirm("Er du sikker på at du vil afvise medlemmet?")){
+                        if (correspondingBoat){
+                            console.log("memberID: ", member.member.memberID, "pending boat ID: ", correspondingBoat.id);
+                            denyMember(member.id, correspondingBoat.id);
+                            console.log("Member denied with member ID:", member.member.memberID, "and deleted successfully");
+                            console.log("Corresponding boat with boatID: ", correspondingBoat.boat.boatID, "deleted successfully");
+                        } else if (!correspondingBoat){
+                            console.log("boat not found properly.");
+                            denyMember(member.id, "");
+                            console.log("Member denied with member ID:", member.member.memberID, "and deleted successfully");
+                        } else {
+                            console.log("something went wrong.")
+                        }
+
+                    }
+                });
             }
         });
     }
@@ -169,23 +192,42 @@ async function approveMember(memberId){
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-            }
+            },
+            body: JSON.stringify(memberId),
         });
         if (!response.ok) {
-            console.error("Failed to approve member.");
+            console.error("Failed to approve member with ID: ", memberId);
         } else {
             console.log("Member approved successfully.");
-            window.location.reload();
+            /*window.location.reload();*/
         }
     } catch (error) {
         console.error("Error:", error);
     }
 }
 
-async function denyMember(memberId){
+// delete the member and corresponding boat if existing
+async function denyMember(memberId, boatId){
     try {
-        let url = `/members/update/deny/member/${memberId}`;
-        const response = await fetch(url, {
+        // if there is a corresponding boat delete that first since you cannot delete parent row
+        if (boatId !== ""){
+            let urlBoat = `/boats/update/deny/boat/${boatId}`
+            const response = await fetch(urlBoat, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            if (!response.ok) {
+                console.error("Failed to deny member's boat and delete them.");
+            } else {
+                console.log("Member's boat denied and deleted successfully.");
+                /*window.location.reload();*/
+            }
+        }
+        // afterwards delete member from both repositories
+        let urlMember = `/members/update/deny/member/${memberId}`;
+        const response = await fetch(urlMember, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -195,19 +237,17 @@ async function denyMember(memberId){
             console.error("Failed to deny member and delete them.");
         } else {
             console.log("Member denied successfully.");
-            window.location.reload();
+            /*window.location.reload();*/
         }
     } catch (error) {
         console.error("Error:", error);
     }
 }
 
-let pendingMembers = [], boats = [];
-
 async function createTable (pendingMembersArray, boatsArray, Table, elementId, title, headers,  firstArray, secondArray, colspan){
         try {
             pendingMembersArray = await parseData(fetchPendingMembers(), Member, pendingMembersArray);
-            boatsArray = await parseData(fetchBoats(), Boat, boatsArray);
+            boatsArray = await parseData(fetchPendingBoats(), PendingBoat, boatsArray);
             console.log(pendingMembersArray);
             console.log(boatsArray);
 
@@ -222,14 +262,14 @@ async function createTable (pendingMembersArray, boatsArray, Table, elementId, t
 window.onload = async () => {
     await createTable(
         pendingMembers,
-        boats,
+        pendingBoats,
         MemberRequestTable,
         "memberRequestsContainer",
         "Medlemsskabsanmodninger",
         [],
         pendingMembers,
-        boats,
+        pendingBoats,
         7);
-    let memberEvent = new MemberEvent(pendingMembers);
+    let memberEvent = new MemberEvent(pendingMembers, pendingBoats);
     memberEvent.createEvent();
 }

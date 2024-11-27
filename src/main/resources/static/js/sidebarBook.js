@@ -1,5 +1,5 @@
 import {fetchApprovedMembers, parseData, fetchBoats, fetchBerth} from "./fetchMethods.js";
-import {boats, berths} from "./boatRequests.js";
+import {boats, berths} from "./fetchMethods.js";
 import {Boat, Berth} from "./objects.js";
 
 //parse boat data to array

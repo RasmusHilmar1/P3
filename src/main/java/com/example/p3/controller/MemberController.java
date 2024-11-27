@@ -110,7 +110,7 @@ public class MemberController {
 
     // Endpoint for deleting pending members when denying
     @PostMapping("/update/deny/member/{id}")
-    public Member updateMemberDeny(@PathVariable int id) {
+    public Member denyMember(@PathVariable int id) {
         return memberService.denyMember(id);
     }
 

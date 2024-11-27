@@ -7,6 +7,7 @@ import com.example.p3.model.PendingMember;
 import com.example.p3.repository.ApprovedMemberRepository;
 import com.example.p3.repository.MemberRepository;
 import com.example.p3.repository.PendingMemberRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -151,13 +152,21 @@ public class MemberService {
     // Function for denying and deleting pending member
     @Transactional
     public Member denyMember(int pendingMemberId) {
+        // get both pending member from database
         PendingMember pendingMember = pendingMemberRepository.findById(pendingMemberId);
 
-        if (pendingMember != null) {
-            pendingMemberRepository.delete(pendingMember); // delete the member if it is denied
+        if (pendingMember == null) {
+            System.out.println("Pending member not found."); // check whether pending member is found
+            return null; // return null if member is not found
         }
 
-        return null; // return null if member is not found
+        // get corresponding member object
+        Member member = pendingMember.getMember();
+
+        pendingMemberRepository.delete(pendingMember);// delete the member from both repositories if it is denied
+        memberRepository.delete(member);
+
+        return member;
     }
 
     // Function for updating berth information

@@ -2,7 +2,6 @@
 import {fetchApprovedMembers, fetchBoats, fetchBerth, fetchPendingMembers, fetchPendingBoats, parseData} from "./fetchMethods.js";
 import {Berth, Boat, PendingBoat, Member, Table} from "./objects.js";
 
-export {boats, pendingBoats, approvedMembers, pendingMembers, berths};
 export {BoatRequestTable, EventManagerBoatRequests};
 export {createTable};
 
@@ -20,7 +19,7 @@ class BoatRequestTable extends Table {
         let filteredBoats = firstArray.filter(boat => {
             console.log("searching for member with memberID:", boat.boat.memberID);
             console.log("in array:", this.secondArray);
-            const correspondingMember = this.secondArray.find(member => member.id === boat.boat.memberID);
+            const correspondingMember = this.secondArray.find(member => member.member.memberID === boat.boat.memberID);
             console.log("found member:", correspondingMember);
             console.log(correspondingMember);
             return correspondingMember !== undefined; // Only include pending boats with approved members
@@ -83,9 +82,6 @@ class EventManagerBoatRequests {
         }
     }
 }
-
-// initialize the empty arrays for the data
-let boats = [], pendingBoats=[], approvedMembers = [], pendingMembers = [], berths = [];
 
 // function to call with window.onload
 async function createTable(boatsArray, approvedMembersArray, pendingMembersArray, pendingBoatsArray, berthsArray, Table, elementId, title, headers, firstArray, secondArray, colspan){

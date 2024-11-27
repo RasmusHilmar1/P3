@@ -1,5 +1,5 @@
 // arrays
-import {boats, pendingBoats, approvedMembers, pendingMembers, berths} from "./boatRequests.js";
+import {boats, pendingBoats, approvedMembers, pendingMembers, berths} from "./fetchMethods.js";
 // classes
 import {BoatRequestTable, EventManagerBoatRequests} from "./boatRequests.js";
 import {BtnCreator, IconCreator} from "./objects.js";

@@ -94,6 +94,12 @@ public class BoatController {
         return boatService.approveBoat(id);
     }
 
+    // Endpoint for denying and deleting boats
+    @PostMapping("/update/deny/boat/{id}")
+    public Boat denyBoat(@PathVariable int id) {
+        return boatService.denyBoat(id);
+    }
+
     @GetMapping("/public/{memberId}")
     public List<BoatDTO> getBoatsByMemberId(@PathVariable int memberId) {
         return boatService.getBoatsByMemberId(memberId);

@@ -1,5 +1,6 @@
 
 export {fetchApprovedMembers, fetchBoats, fetchBerth, fetchPendingMembers, fetchPendingBoats, parseData};
+export {boats, pendingBoats, approvedMembers, pendingMembers, berths};
 import {Boat, PendingBoat, Berth, Member} from "./objects.js";
 
 //var memberBtn = document.getElementById("memberBtn");
@@ -106,6 +107,9 @@ async function fetchPendingBoats(){
         console.error("Error fetching pending boats:", error);
     }
 }
+
+// initialize empty arrays for the data
+let boats = [], pendingBoats=[], approvedMembers = [], pendingMembers = [], berths = [];
 
 // parsing the data from fetch
 async function parseData(method, object, array){
