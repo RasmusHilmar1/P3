@@ -1,7 +1,8 @@
 // arrays
 import {boats, pendingBoats, approvedMembers, pendingMembers, berths} from "./boatRequests.js";
 // classes
-import {BoatRequestTable, BtnCreator, IconCreator, EventManager} from "./boatRequests.js";
+import {BoatRequestTable, EventManager} from "./boatRequests.js";
+import {BtnCreator, IconCreator} from "./objects.js";
 // function
 import {createTable} from "./boatRequests.js"
 

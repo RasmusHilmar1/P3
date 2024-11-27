@@ -97,6 +97,7 @@ button {
 .selectedMemberBtn {
     background-color: #5c82b5;
     color: white;
+    border: none;
 }
 
 .selectedMemberBtn:after {
@@ -131,6 +132,7 @@ button {
     background-color: #5c82b5;
     color: white;
     border-radius: 10px;
+    border: none;
 }
 
 .infoCellMemberReq.visible {
