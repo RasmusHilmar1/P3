@@ -152,8 +152,8 @@ function onEachFeature(feature, layer) {
     layer.on('click', function(e) {
         highlightBerth(e);
         //berthToSideBarBerthList(feature);
-        berthToThreeLists(feature);
-        berthToMemberList(feature);
+        mapToThreeLists(feature);
+        mapToMemberList(feature);
     });
 
     layer.featureId = feature.properties.id;
@@ -182,7 +182,7 @@ function removeHighlight(layer) {
     }
 }
 
-function berthToMemberList(feature) {
+function mapToMemberList(feature) {
     const tables = document.querySelectorAll(".memberList");
 
     tables.forEach(table => {
@@ -197,7 +197,7 @@ function berthToMemberList(feature) {
 
                 boats.forEach(boat => {
                     if ((Number(memberId) === boat.memberID) && (boat.berthID !== 9999) &&
-                        (boat.berthID === feature.properties.id) && (table.style.display === "table")) {
+                        (boat.berthID === Number(feature.properties.id)) && (table.style.display === "table")) {
                             nameBtn.scrollIntoView();
                             nameBtn.click();
                     }
@@ -214,7 +214,7 @@ function berthToMemberList(feature) {
 
 }
 
-function berthToThreeLists(feature){
+function mapToThreeLists(feature){
     const tables = document.querySelectorAll("[id^='berthList']");
 
     tables.forEach(table => {
