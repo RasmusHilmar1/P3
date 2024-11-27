@@ -9,7 +9,7 @@ class MemberRequestTable extends Table {
         super.createTable();
     }
     addDataRows(array, tableBody) {
-        // function is overridden because of the divs
+        // function is overridden because of the collapsible divs
         array.forEach(item => {
             let row = tableBody.insertRow();
             row.className = "shownRows";
@@ -72,17 +72,41 @@ class createCollapsibleDiv {
     createInfoText(infoContainer) {
         for (const key in this.data){
             for (const nestedKey in this.data[key]){
-                if (nestedKey === "memberID" || nestedKey === "address" || nestedKey === "email" || nestedKey === "dateofbirth" || nestedKey === "phonenumber"){
-                    let infoCellText = document.createElement("a");
-                    infoCellText.innerHTML = nestedKey + " : " + this.data[key][nestedKey] + "<br/>";
-                    infoContainer.appendChild(infoCellText);
-                } else {
-                    console.log("Not included key: " + nestedKey);
+                let infoCellText = document.createElement("a");
+                switch (nestedKey){
+                    case 'address':
+                        infoCellText.innerHTML = "Addresse: " + this.data[key][nestedKey] + "<br/>";
+                        infoContainer.appendChild(infoCellText);
+                        console.log(infoCellText);
+                        break;
+                    case 'email':
+                        infoCellText.innerHTML = "Email: " + this.data[key][nestedKey] + "<br/>";
+                        infoContainer.appendChild(infoCellText);
+                        console.log(infoCellText);
+                        break;
+                    case 'dateofbirth':
+                        // take the date from database in the form yyyy-mm-dd
+                        const dateFromDatabase = this.data[key][nestedKey];
+                        if (dateFromDatabase){
+                            const [year, month, date] = dateFromDatabase.split('-'); // split the date
+                            const newDate = `${date}/${month}/${year}`; //reformat the date
+                            infoCellText.innerHTML = "Fødselsdato: " + newDate + "<br/>";
+                            infoContainer.appendChild(infoCellText);
+                            console.log(infoCellText);
+                        }
+                        break;
+                    case 'phonenumber':
+                        infoCellText.innerHTML = "Telefonnummer: " + this.data[key][nestedKey] + "<br/>";
+                        infoContainer.appendChild(infoCellText);
+                        console.log(infoCellText);
+                        break;
+                    default:
+                        console.log("Not included key: " + nestedKey);
                 }
             }
         }
     }
-    createContainer() {
+    createContainer(){
         // Create row and cell for div element
         let infoRow = this.tableBody.insertRow();
         infoRow.className = "infoRowMemberReq";
@@ -107,13 +131,13 @@ class MemberEvent {
     }
     createEvent(){
         let acceptBtn, denyBtn, acceptBtnId, denyBtnId;
-        // IMPORTANT ---> Lige nu har alle 3 acceptBtns samme id. dette skal rettes. 
+        // find corresponding accept- and deny button for each pending member
         this.members.forEach(member => {
             console.log(member.member.memberID);
-            acceptBtnId = "<img src=http://localhost:8080/Images/Icons/AcceptBtnIcon.png alt='acceptIcon'>"
+            acceptBtnId = "acceptBtn" + member.member.memberID;
             acceptBtn = document.getElementById(acceptBtnId);
             console.log(acceptBtn);
-            denyBtnId = "<img src=http://localhost:8080/Images/Icons/DenyBtnIcon.png alt='denyIcon'>";
+            denyBtnId = "denyBtn" + member.member.memberID;
             denyBtn = document.getElementById(denyBtnId);
             console.log(denyBtn);
 
@@ -137,7 +161,7 @@ class MemberEvent {
     }
 }
 
-// Move the pending boat to approved
+// move the pending member to approved
 async function approveMember(memberId){
     try {
         let url = `/members/update/approve/member/${memberId}`;
