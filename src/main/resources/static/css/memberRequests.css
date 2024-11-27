@@ -7,6 +7,7 @@
     max-width: 800px; /* Limit the width for better readability */
     margin: 0 auto; /* Center the container */
     border-radius: 10px;
+    height: 100%
 }
 
 /* Table styling */
@@ -18,15 +19,6 @@ table {
     font-size: 1em;
     font-family: sans-serif;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-/* Header styling */
-tr th {
-    background-color: #5c82b5;
-    color: white;
-    text-align: left;
-    padding: 12px;
-    font-weight: bold;
 }
 
 .tableTitle {
@@ -52,12 +44,20 @@ tr th {
     border-width: 2px;
 }
 
-button {
+.btnCells:hover {
+    background-color: #f4f4f4;
+}
+
+.addBtn {
     border: none;
     background-color: transparent;
     height: 100%;
     width: 100%;
     cursor: pointer;
+}
+
+.addBtn:hover {
+    background-color: #f4f4f4;
 }
 
 /* Button styling for the member info */
@@ -108,9 +108,10 @@ button {
 .infoRowMemberReq {
     display: none;  /* Hide by default*/
     position: absolute;  /* Position it absolutely within the table cell*/
-    background-color: #5c82b5;;
+    background-color: white;
     border-radius: 10px;
-    border: none;
+    border-color: #5c82b5;
+    border-width: 2px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     z-index: 100;  /* Ensure it’s on top*/
     transition: height 0.3s ease;  /* Smooth transition for expanding */
@@ -129,8 +130,8 @@ button {
     width: 100%;  /* Ensure it’s as wide as the parent cell */
     overflow: hidden;
     transition: max-height 0.3s ease, padding 0.3s ease;
-    background-color: #5c82b5;
-    color: white;
+    background-color: white;
+    color: #5c82b5;
     border-radius: 10px;
     border: none;
 }
@@ -143,8 +144,8 @@ button {
 /* Collapsible content style */
 .collapsibleContent {
     padding: 10px;
-    background-color: #5c82b5;
-    color: white;
+    background-color: white;
+    color: #5c82b5;
     width: 100%;  /* Ensure it’s as wide as the parent cell */
     overflow: hidden;
     transition: max-height 0.3s ease, padding 0.3s ease;

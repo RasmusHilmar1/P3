@@ -1,7 +1,7 @@
 // arrays
 import {boats, pendingBoats, approvedMembers, pendingMembers, berths} from "./boatRequests.js";
 // classes
-import {BoatRequestTable, EventManager} from "./boatRequests.js";
+import {BoatRequestTable, EventManagerBoatRequests} from "./boatRequests.js";
 import {BtnCreator, IconCreator} from "./objects.js";
 // function
 import {createTable} from "./boatRequests.js"
@@ -34,7 +34,7 @@ class BoatRequestTableBook extends BoatRequestTable {
     }
 }
 
-class FeeEvent extends EventManager {
+class FeeEvent extends EventManagerBoatRequests {
     constructor(boats, members) {
         super(boats, members);
     }
