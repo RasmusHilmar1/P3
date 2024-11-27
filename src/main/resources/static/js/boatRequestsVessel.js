@@ -14,24 +14,34 @@ class BoatRequestTableVessel extends BoatRequestTable {
     createTable() {
         super.createTable();
     }
-    addDataRows(firstArray, tableBody) {
-        super.addDataRows(firstArray, tableBody);
+    addDataRows(tableBody) {
+        super.addDataRows(tableBody);
     }
     addCells(row, data) {
         super.addCells(row, data);
     }
+    extractData(data) {
+        return super.extractData(data);
+    }
     addSpecificCells(row, data) {
         // add button for "tildelt"
-        let assignBtn = new BtnCreator(row, data, "Tildelt");
-        assignBtn.createBtn();
+        let assignBtn = new BtnCreator(row);
+        assignBtn.createBtn("Tildelt", data, "Tildelt");
 
-        // add icon rows for bookkeeper's respective "sendt" and "betalt"
-        let iconFeeSent = new IconCreator(row, data);
-        iconFeeSent.createCell();
-        iconFeeSent.createIcons(data.boat.feeSent);
-        let iconFeePaid = new IconCreator(row, data);
-        iconFeePaid.createCell();
-        iconFeePaid.createIcons(data.boat.feePaid);
+        // Initialize the icons' paths
+        const iconCreator = new IconCreator({
+            checkmark: "http://localhost:8080/Images/Icons/AcceptBtnIcon.png",
+            cross: "http://localhost:8080/Images/Icons/DenyBtnIcon.png"
+        });
+
+        // create icons for the bookkeeeper's "Sendt" and "Betalt"
+        const iconCellFeeSent = row.insertCell();
+        iconCellFeeSent.className = "iconCells";
+        const iconCellFeePaid = row.insertCell();
+        iconCellFeePaid.className = "iconCells";
+
+        iconCreator.appendIconToCell(iconCellFeeSent, data.boat.feeSent === 1, 'checkmark', 'cross')
+        iconCreator.appendIconToCell(iconCellFeePaid, data.boat.feePaid === 1, 'checkmark', 'cross');
     }
 }
 
@@ -46,24 +56,27 @@ class BoatAssignedEvent extends EventManagerBoatRequests {
         this.filterBoats();
 
         this.filteredBoats.forEach(boat => {
-            let addBtn = document.querySelector('.addBtn');
-            console.log(addBtn);
-            console.log(addBtn.id);
-            let addBtnId = "addBtn" + boat.boat.boatID;
-            console.log(addBtnId);
-            console.log(addBtn.id === addBtnId);
-            if (addBtn) {
-                boat.assigned = boat.boat.berthID !== 9999;
-                console.log(boat.assigned);
+            // deconstruct boat object
+            let { boatID, berthID } = boat.boat;
 
-                if (boat.assigned) {
-                    addBtn.classList.add('buttonAssigned');
-                    addBtn.disabled = true;
-                } else {
-                    addBtn.classList.remove('buttonAssigned');
-                    addBtn.disabled = false;
+            // query all buttons with class 'addBtn'
+            let addBtns = document.querySelectorAll(".addBtn");
+
+            addBtns.forEach(addBtn => {
+                let addBtnId = "addBtn" + boatID;
+                console.log(addBtn.id === addBtnId);
+
+                if (addBtn.id === addBtnId) {
+                    boat.assigned = berthID !== 9999;
+                    if (boat.assigned) {
+                        addBtn.classList.add('buttonAssigned');
+                        addBtn.disabled = true;
+                    } else {
+                        addBtn.classList.remove('buttonAssigned');
+                        addBtn.disabled = false;
+                    }
                 }
-            }
+            });
         });
     }
 }
@@ -83,6 +96,7 @@ window.onload = async () => {
         pendingBoats,
         approvedMembers,
         7 );
+
     // call event class
     let boatAssignedEvent = new BoatAssignedEvent(pendingBoats, approvedMembers);
     boatAssignedEvent.createEvent();

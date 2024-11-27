@@ -14,23 +14,32 @@ class BoatRequestTableBook extends BoatRequestTable {
     createTable() {
         super.createTable();
     }
-    addDataRows(firstArray, tableBody) {
-        super.addDataRows(firstArray, tableBody);
+    addDataRows(tableBody) {
+        super.addDataRows(tableBody);
     }
     addCells(row, data) {
         super.addCells(row, data);
     }
+    extractData(data) {
+        return super.extractData(data);
+    }
     addSpecificCells(row, data) {
         // add icon cell for vessel inspector's "tildelt"
-        let icon = new IconCreator(row, data);
-        icon.createCell();
-        icon.createIcons(data.boat.berthID);
+        const iconCreator = new IconCreator({
+            checkmark: "http://localhost:8080/Images/Icons/AcceptBtnIcon.png",
+            cross: "http://localhost:8080/Images/Icons/DenyBtnIcon.png"
+        });
+
+        const iconCell = row.insertCell();
+        iconCell.className = "iconCells";
+
+        iconCreator.appendIconToCell(iconCell, data.boat.berthID !== 9999, 'checkmark', 'cross');
 
         // add buttons for "sendt" and "betalt"
-        let sendBtn = new BtnCreator(row, data, "Sendt");
-        sendBtn.createBtn();
-        let paidBtn = new BtnCreator(row, data, "Betalt");
-        paidBtn.createBtn();
+        let sendBtn = new BtnCreator(row);
+        sendBtn.createBtn("Sendt", data, "Sendt");
+        let paidBtn = new BtnCreator(row);
+        paidBtn.createBtn("Betalt", data, "Betalt");
     }
 }
 
@@ -42,63 +51,60 @@ class FeeEvent extends EventManagerBoatRequests {
         return super.filterBoats();
     }
     createEvent() {
-        let feeSentBtnId, feeSentBtn, feePaidBtnId, feePaidBtn;
+        let feeSentBtnId, feePaidBtnId;
 
         this.filterBoats();
 
         this.filteredBoats.forEach(boat => {
-            console.log(boat.boat.feeSent);
-            console.log(boat.boat.feePaid);
-            feeSentBtnId = "feeSentBtn" + boat.boat.boatID;
-            feeSentBtn = document.getElementById(feeSentBtnId);
-            console.log(feeSentBtn);
-            feePaidBtnId = "feePaidBtn" + boat.boat.boatID;
-            feePaidBtn = document.getElementById(feePaidBtnId);
-            console.log(feePaidBtn);
-            console.log(boat.id);
-            approveBoat(boat.id);
+            let {feeSentBtn, feePaidBtn, feeSent, feePaid, boatID} = boat.boat;
 
+            feeSentBtnId = "feeSentBtn" + boatID;
+            boat.feeSentBtn = document.getElementById(feeSentBtnId);
+            feeSentBtn = boat.feeSentBtn;
 
-            if (feeSentBtn) {
-                // Make sure the buttons have the correct styling corresponding to data
-                boat.boat.feeSent === 0 ? feeSentBtn.classList.remove("buttonAssigned") : feeSentBtn.classList.add("buttonAssigned");
-                feeSentBtn.addEventListener("click", () => {
-                    if (boat.boat.feeSent === 0){
-                        boat.boat.feeSent = 1;
-                        feeSentBtn.classList.add('buttonAssigned');
-                        console.log("Fee sent for boat ID:", boat.boat.boatID);
-                    } else if (boat.boat.feeSent === 1){
-                        boat.boat.feeSent = 0;
-                        feeSentBtn.classList.remove("buttonAssigned");
-                        console.log("Corrected to fee not sent for boat ID:", boat.boat.boatID);
+            feePaidBtnId = "feePaidBtn" + boatID;
+            boat.feePaidBtn = document.getElementById(feePaidBtnId);
+            feePaidBtn = boat.feePaidBtn;
+
+            // make sure the btn is pressed if fee has been sent
+            feeSent === 0 ? feeSentBtn.classList.remove("buttonAssigned") : feeSentBtn.classList.add("buttonAssigned");
+
+            feeSentBtn.addEventListener("click", () => {
+                if (feeSent === 0){
+                    feeSent = 1;
+                    feeSentBtn.classList.add("buttonAssigned");
+                    console.log("Fee sent for boat ID:", boatID);
+                } else if (feeSent === 1){
+                    feeSent = 0;
+                    feeSentBtn.classList.remove("buttonAssigned");
+                    console.log("Corrected to fee not sent for boat ID:", boatID);
+                }
+                updateBoatFeeStatus(boatID, "feeSent", feeSent);
+            });
+
+            // Make sure the buttons have the correct styling corresponding to data
+            feePaid === 0 ? feePaidBtn.classList.remove("buttonAssigned") : feePaidBtn.classList.add("buttonAssigned");
+
+            // event listener for updating data and changing style of buttons
+            feePaidBtn.addEventListener("click", () => {
+                if (feePaid === 0){
+                    if (confirm("Er du sikker på at medlemmet har betalt for bådpladsen?")){
+                        feePaid = 1;
+                        feePaidBtn.classList.add('buttonAssigned');
+                        console.log("Fee paid for boat ID:", boatID);
                     }
-                    updateBoatFeeStatus(boat.boat.boatID, "feeSent", boat.boat.feeSent);
-                });
-            }
-            if (feePaidBtn) {
-                // Make sure the buttons have the correct styling corresponding to data
-                boat.boat.feePaid === 0 ? feePaidBtn.classList.remove("buttonAssigned") : feePaidBtn.classList.add("buttonAssigned");
-
-                // event listener for updating data and changing style of buttons
-                feePaidBtn.addEventListener("click", () => {
-                    if (boat.boat.feePaid === 0){
-                        if (confirm("Er du sikker på at medlemmet har betalt for bådpladsen?")){
-                            boat.boat.feePaid = 1;
-                            feePaidBtn.classList.add('buttonAssigned');
-                            console.log("Fee paid for boat ID:", boat.boat.boatID);
-                        }
-                    } else if (boat.boat.feePaid === 1){
-                        boat.boat.feePaid = 0;
-                        feePaidBtn.classList.remove("buttonAssigned");
-                        console.log("Corrected to fee not paid for boat ID:", boat.boat.boatID);
-                    }
-                    updateBoatFeeStatus(boat.boat.boatID, "feePaid", boat.boat.feePaid);
-                    approveBoat(boat.id);
-                });
-            }
+                } else if (feePaid === 1){
+                    feePaid = 0;
+                    feePaidBtn.classList.remove("buttonAssigned");
+                    console.log("Corrected to fee not paid for boat ID:", boatID);
+                }
+                updateBoatFeeStatus(boatID, "feePaid", feePaid);
+                approveBoat(boat.id);
+            });
         });
     }
 }
+
 
 // Move the pending boat to approved
 async function approveBoat(boatId){
@@ -121,7 +127,6 @@ async function approveBoat(boatId){
 }
 
 // function for updating feePaid and feeSent
-// IMPORTANT: add such that if a pending boat has both checked, it's moved to approved boats
 async function updateBoatFeeStatus(boatID, feeType, status) {
     try {
         let url;
@@ -166,6 +171,5 @@ window.onload = async () => {
         approvedMembers,
         7 );
     let feeEvent = new FeeEvent(pendingBoats, approvedMembers);
-    console.log(approvedMembers);
     feeEvent.createEvent();
 };

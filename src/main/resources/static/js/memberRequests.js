@@ -12,9 +12,9 @@ class MemberRequestTable extends Table {
     createTable() {
         super.createTable();
     }
-    addDataRows(array, tableBody) {
+    addDataRows(tableBody) {
         // function is overridden because of the collapsible divs
-        array.forEach(item => {
+        this.firstArray.forEach(item => {
             let row = tableBody.insertRow();
             row.className = "shownRows";
             console.log(item);
@@ -60,10 +60,15 @@ class MemberRequestTable extends Table {
     }
     // adding specific cells with buttons for accepting or denying requests
     addSpecificCells(row, data) {
-        let acceptBtn = new BtnCreator(row, data, "<img src=http://localhost:8080/Images/Icons/AcceptBtnIcon.png alt='acceptIcon'>");
-        acceptBtn.createBtn();
-        let denyBtn = new BtnCreator(row, data, "<img src=http://localhost:8080/Images/Icons/DenyBtnIcon.png alt='denyIcon'>");
-        denyBtn.createBtn();
+        let acceptBtn = new BtnCreator(row);
+        acceptBtn.createBtn("<img src=http://localhost:8080/Images/Icons/AcceptBtnIcon.png alt='Accepter Knap'>",
+            data,
+            "Accepter");
+        let denyBtn = new BtnCreator(row);
+        denyBtn.createBtn(
+            "<img src=http://localhost:8080/Images/Icons/DenyBtnIcon.png alt='Afvis Knap'>",
+            data,
+            "Afvis");
     }
 }
 
@@ -141,10 +146,12 @@ class MemberEvent {
             console.log(member.member.memberID);
 
             acceptBtnId = "acceptBtn" + member.member.memberID;
+            console.log(acceptBtnId);
             acceptBtn = document.getElementById(acceptBtnId);
             console.log(acceptBtn);
 
             denyBtnId = "denyBtn" + member.member.memberID;
+            console.log(denyBtnId);
             denyBtn = document.getElementById(denyBtnId);
             console.log(denyBtn);
 
