@@ -181,6 +181,7 @@ function removeHighlight(layer) {
         });
     }
 }
+
 function berthToMemberList(feature) {
     const tables = document.querySelectorAll(".memberList");
 
@@ -192,13 +193,21 @@ function berthToMemberList(feature) {
             console.log("nameBtn: " + nameBtn.outerHTML);
 
             if (nameBtn) {
-                const berthName = nameBtn.textContent.trim();
-                console.log("berthName: " + name);
+                const memberId = nameBtn.id.replace("memberName", "");
 
+                boats.forEach(boat => {
+                    if ((Number(memberId) === boat.memberID) && (boat.berthID !== 9999) &&
+                        (boat.berthID === feature.properties.id) && (table.style.display === "table")) {
+                            nameBtn.scrollIntoView();
+                            nameBtn.click();
+                    }
+                })
+
+/*
                 if ((berthName === feature.properties.name) && (table.style.display === "table")) {
                     berthNameBtn.scrollIntoView();
                     berthNameBtn.click();
-                }
+                }*/
             }
         });
     });
