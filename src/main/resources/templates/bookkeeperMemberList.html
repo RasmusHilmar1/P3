@@ -35,8 +35,8 @@
   </div>
 
   <div class="mb-3">
-    <input type="text" id="searchInput" class="form-control" placeholder="Søg efter medlemsnr. eller navn!">
-    <button class="btn btn-primary mt-2" onclick="searchMembers()">Search</button>
+    <input type="text" id="searchInput" class="form-control" oninput="searchMembers()" placeholder="Søg efter medlemsnr. eller navn!">
+    <button class="btn btn-primary mt-2" onclick="searchMembers()">Søg</button>
   </div>
 
   <!-- Display members in a table -->
