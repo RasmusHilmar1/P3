@@ -81,8 +81,8 @@
 }
 
 .legend-color.unavailable {
-    background-color: orange; /* Orange for temporarily unavailable */
-    border: orange 2px solid;
+    background-color: purple; /* Orange for temporarily unavailable */
+    border: purple 2px solid;
 }
 
 .legend-color.chosen {

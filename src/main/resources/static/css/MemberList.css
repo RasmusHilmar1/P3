@@ -1,215 +1,213 @@
-    /* General body and container styling */
-    body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f4f4f4;
-    }
+/* General body and container styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
 
-    /* Remove default margin and padding */
-    html, body {
-        margin: 0;
-        padding: 0;
-    }
+/* Remove default margin and padding */
+html, body {
+    margin: 0;
+    padding: 0;
+}
 
-    body {
-        overflow-x: hidden;
-    }
+body {
+    overflow-x: hidden;
+}
 
-    h1.my-4 {
-        text-align: center;
-    }
+h1.my-4 {
+    text-align: center;
+}
 
-    /* Button Styling */
-    button {
-        padding: 4px 8px; /* Reduce padding for smaller buttons */
-        background-color: #5c82b5;
-        color: white;
-        border: none;
-        border-radius: 3px; /* Slightly smaller border radius for compact look */
-        cursor: pointer;
-        font-size: 12px; /* Decrease font size to match the smaller button */
-    }
+/* Button Styling */
+button {
+    padding: 4px 8px; /* Reduce padding for smaller buttons */
+    background-color: #5c82b5;
+    color: white;
+    border: none;
+    border-radius: 3px; /* Slightly smaller border radius for compact look */
+    cursor: pointer;
+    font-size: 12px; /* Decrease font size to match the smaller button */
+}
 
-    button:hover {
-        background-color: #0056b3;
-        font-size: 12px; /* Keep hover state consistent */
-    }
+button:hover {
+    background-color: #0056b3;
+    font-size: 12px; /* Keep hover state consistent */
+}
 
-    /* Table cell layout for smaller rows */
-    th, td {
-        padding: 6px; /* Reduce padding inside cells */
-        text-align: center;
-        vertical-align: middle;
-    }
-
-
-    /* Form layout */
-    form {
-        display: inline;
-    }
-
-    .container {
-        padding-left: 0;
-        padding-right: 0;
-        padding-top: 120px;
-        max-width: 100%; /* Ensure the container doesn't exceed the page width */
-    }
-
-    .table-container {
-        overflow-x: auto; /* Enable horizontal scrolling if necessary */
-        max-width: 100%; /* Restrict the table container to the page width */
-    }
-
-    .table {
-        width: 100%; /* Make the table span the full width of the container */
-        margin: 0 auto; /* Center the table */
-    }
+/* Table cell layout for smaller rows */
+th, td {
+    padding: 6px; /* Reduce padding inside cells */
+    text-align: center;
+    vertical-align: middle;
+}
 
 
+/* Form layout */
+form {
+    display: inline;
+}
 
-    input.form-control {
-        width: 100%; /* Ensure input fields adapt to their column width */
-    }
+.container {
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 120px;
+    max-width: 100%; /* Ensure the container doesn't exceed the page width */
+}
+
+.table-container {
+    overflow-x: auto; /* Enable horizontal scrolling if necessary */
+    max-width: 100%; /* Restrict the table container to the page width */
+}
+
+.table {
+    width: 100%; /* Make the table span the full width of the container */
+    margin: 0 auto; /* Center the table */
+}
 
 
 
-    input[name="memberID"] {
-        width: 70px; /* Adjust width for names */
-    }
-
-    input[name="memberID"]:focus {
-        outline: none;
-        box-shadow: none;
-    }
-
-    input[name="memberName"] {
-        width: 140px; /* Adjust width for names */
-    }
-    input[name="memberAddress"] {
-        width: 120px; /* Adjust width for names */
-    }
-
-
-    input[name="memberEmail"] {
-        width: 220px; /* Larger width for email */
-    }
-    input[name="memberPhonenumber"] {
-        width: 100px; /* Adjust width for names */
-    }
-    input[name="boatName"] {
-        width: 120px; /* Adjust width for names */
-    }
-
-    input[name="boatLength"] {
-        width: 85px; /* Smaller width for "Bådens længde" */
-    }
-
-    /* Add more input-specific styling if needed */
-    input[name="boatWidth"] {
-        width: 85px; /* Keep similar width for related fields */
-    }
-    /* Add more input-specific styling if needed */
-    input[name="boatAreal"] {
-        width: 75px; /* Keep similar width for related fields */
-    }
-
-    input[name="boatAreal"]:focus {
-        outline: none;
-        box-shadow: none;
-    }
-
-
-    /* Add more input-specific styling if needed */
-    input[name="boatPrice"] {
-        width: 80px; /* Keep similar width for related fields */
-    }
-
-    input[name="boatPrice"]:focus {
-        outline: none;
-        box-shadow: none;
-    }
-
-    input[name="boatName"] {
-        width: 85px; /* Keep similar width for related fields */
-    }
-
-    input[name="berthName"]:focus {
-        outline: none;
-        box-shadow: none;
-    }
-
-
-    /* Styling the search input field */
-    #searchInput {
-        border-radius: 4px;
-        border: 1px solid #ccc;
-        font-size: 16px;
-        width: 30%; /* Adjust width as per requirement */
-        margin-right: 10px;
-        transition: border-color 0.3s ease;
-    }
-
-    #searchInput:focus {
-        border-color: #5c82b5; /* Blue border on focus */
-        outline: none;
-    }
-
-    /* Styling the search button */
-    button.btn.btn-primary.mt-2 {
-        background-color: #5c82b5; /* Primary blue color */
-        border: none;
-        color: white;
-        padding: 10px 20px;
-        font-size: 16px;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-        margin-bottom: 7px;
-    }
-
-    button.btn.btn-primary.mt-2:hover {
-        background-color: #0056b3; /* Darker blue on hover */
-    }
-
-    button.btn.btn-primary.mt-2:focus {
-        outline: none; /* Removes focus outline */
-    }
-
-    /* Optional: Center the search bar and button */
-    .mb-3 {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-top: 20px;
-    }
+input.form-control {
+    width: 100%; /* Ensure input fields adapt to their column width */
+}
 
 
 
+input[name="memberID"] {
+    width: 70px; /* Adjust width for names */
+}
+
+input[name="memberID"]:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+input[name="memberName"] {
+    width: 140px; /* Adjust width for names */
+}
+input[name="memberAddress"] {
+    width: 120px; /* Adjust width for names */
+}
 
 
-    .select-container {
-        max-width: 300px; /* Restrict overall container width */
-    }
+input[name="memberEmail"] {
+    width: 220px; /* Larger width for email */
+}
+input[name="memberPhonenumber"] {
+    width: 100px; /* Adjust width for names */
+}
+input[name="boatName"] {
+    width: 120px; /* Adjust width for names */
+}
 
-    .select-container select {
-        height: auto; /* Adjust height if needed */
-        font-size: 0.9rem; /* Adjust font size */
-    }
+input[name="boatLength"] {
+    width: 85px; /* Smaller width for "Bådens længde" */
+}
 
-    .select-container .btn {
-        font-size: 0.875rem; /* Reduce button text size */
-        padding: 0.5rem; /* Adjust button padding */
-    }
+/* Add more input-specific styling if needed */
+input[name="boatWidth"] {
+    width: 85px; /* Keep similar width for related fields */
+}
+/* Add more input-specific styling if needed */
+input[name="boatAreal"] {
+    width: 75px; /* Keep similar width for related fields */
+}
 
-    /* Adjust the width of the export section */
-    #listSelect {
-        width: 200px; /* Reduce the width of the dropdown */
-        margin-right: 10px;
-    }
-
-    #labelForTextExport {
-        margin-right: 10px;
-    }
+input[name="boatAreal"]:focus {
+    outline: none;
+    box-shadow: none;
+}
 
 
+/* Add more input-specific styling if needed */
+input[name="boatPrice"] {
+    width: 80px; /* Keep similar width for related fields */
+}
+
+input[name="boatPrice"]:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+input[name="boatName"] {
+    width: 85px; /* Keep similar width for related fields */
+}
+
+input[name="berthName"]:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+
+/* Styling the search input field */
+#searchInput {
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    width: 30%; /* Adjust width as per requirement */
+    margin-right: 10px;
+    transition: border-color 0.3s ease;
+}
+
+#searchInput:focus {
+    border-color: #5c82b5; /* Blue border on focus */
+    outline: none;
+}
+
+/* Styling the search button */
+button.btn.btn-primary.mt-2 {
+    background-color: #5c82b5; /* Primary blue color */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-bottom: 7px;
+}
+
+button.btn.btn-primary.mt-2:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+button.btn.btn-primary.mt-2:focus {
+    outline: none; /* Removes focus outline */
+}
+
+/* Optional: Center the search bar and button */
+.mb-3 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+
+
+
+
+.select-container {
+    max-width: 300px; /* Restrict overall container width */
+}
+
+.select-container select {
+    height: auto; /* Adjust height if needed */
+    font-size: 0.9rem; /* Adjust font size */
+}
+
+.select-container .btn {
+    font-size: 0.875rem; /* Reduce button text size */
+    padding: 0.5rem; /* Adjust button padding */
+}
+
+/* Adjust the width of the export section */
+#listSelect {
+    width: 200px; /* Reduce the width of the dropdown */
+    margin-right: 10px;
+}
+
+#labelForTextExport {
+    margin-right: 10px;
+}
