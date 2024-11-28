@@ -1,5 +1,6 @@
 package com.example.p3.repository;
 
+import com.example.p3.model.Boat;
 import com.example.p3.model.PendingBoat;
 import com.example.p3.model.PendingMember;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,5 +15,7 @@ public interface PendingBoatRepository extends JpaRepository<PendingBoat, Long> 
 
     // Created to find pending boat by temporary ID
     PendingBoat findById(int pendingBoatId);
+
+    PendingBoat findByBoat(Boat boat);
 }
 

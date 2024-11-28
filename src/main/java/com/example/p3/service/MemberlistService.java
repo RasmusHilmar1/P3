@@ -1,16 +1,9 @@
 package com.example.p3.service;
 
 import com.example.p3.dto.MemberlistDTO;
-import com.example.p3.model.Member;
-import com.example.p3.model.Boat;
-import com.example.p3.model.Berth;
-import com.example.p3.repository.MemberRepository;
-import com.example.p3.repository.BoatRepository;
-import com.example.p3.repository.BerthRepository;
-import com.example.p3.repository.MemberlistRepository;
+import com.example.p3.model.*;
+import com.example.p3.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +24,18 @@ public class MemberlistService {
     @Autowired
     private MemberlistRepository memberlistRepository;
 
-    // Fetch alle member list detaljer
+    @Autowired
+    private ApprovedMemberRepository approvedMemberRepository;
+
+    @Autowired
+    private ApprovedBoatRepository approvedBoatRepository;
+
+    @Autowired
+    private PendingBoatService pendingBoatService;
+    @Autowired
+    private PendingBoatRepository pendingBoatRepository;
+
+    // Fetch all member list details
     public List<MemberlistDTO> getAllMemberlistDetails() {
         return memberlistRepository.fetchAllMemberlistDetails();
     }
@@ -59,7 +63,7 @@ public class MemberlistService {
         memberRepository.save(member);
 
         // Opdater den tilhørende båd, hvis der er en til stede, samme måde som før
-            if (boatID != 0) {
+        if (boatID != 0) {
             Boat boat = boatRepository.findByBoatID(boatID);
             if (boat == null) {
                 throw new IllegalArgumentException("Boat not found with ID: " + boatID);
@@ -89,4 +93,43 @@ public class MemberlistService {
     public List<MemberlistDTO> searchMembers(String query) {
         return memberlistRepository.searchMembers(query);
     }
+
+    @Transactional
+    public MemberlistDTO deleteMemberFromDatabase(MemberlistDTO member) {
+        int memberId = member.getMemberID();
+        int boatId = member.getBoatID();
+
+        // Find Boat entiteten ved hjælp af boatId
+        Boat boat = boatRepository.findById(boatId).orElse(null);
+        if (boat != null) {
+            boat.setMemberID(0); // Fjern medlemmet fra båden
+            boatRepository.save(boat); // Gem opdateret båd
+        }
+
+        // Find og slet PendingBoat, hvis det eksisterer
+        PendingBoat pendingBoat = pendingBoatRepository.findByBoat(boat);
+        if (pendingBoat != null) {
+            pendingBoatRepository.deleteById((long) pendingBoat.getId()); // Brug PendingBoat's ID
+        }
+
+        // Find og slet ApprovedBoat, hvis det eksisterer
+        ApprovedBoat approvedBoat = approvedBoatRepository.findByBoat(boat);
+        if (approvedBoat != null) {
+            approvedBoatRepository.deleteById((long) approvedBoat.getId()); // Brug ApprovedBoat's ID
+        }
+
+        // Slet Boat entiteten
+        if (boat != null) {
+            boatRepository.deleteById(boatId); // Slet båden
+        }
+
+        // Find og slet det tilknyttede medlem
+        Member memberFromList = memberRepository.findByMemberID(memberId); // Find medlem fra medlems-ID
+        ApprovedMember approvedMember = approvedMemberRepository.findByMember(memberFromList); // Find godkendt medlem
+        approvedMemberRepository.delete(approvedMember); // Slet godkendt medlem
+        memberRepository.delete(memberFromList); // Slet medlem
+
+        return member; // Returnér den oprindelige MemberlistDTO
+    }
+
 }
