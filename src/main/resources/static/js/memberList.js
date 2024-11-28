@@ -44,6 +44,53 @@ function updateMemberInformation(rowIndex) {
         });
 }
 
+function deleteMember(rowIndex){
+    // Indsamler alle ændringer i input-felterne
+    const memberToDelete = {
+        memberID: document.querySelector(`input[name="memberID"][data-row="${rowIndex}"]`).value,
+        memberName: document.querySelector(`input[name="memberName"][data-row="${rowIndex}"]`).value,
+        memberAddress: document.querySelector(`input[name="memberAddress"][data-row="${rowIndex}"]`).value,
+        memberEmail: document.querySelector(`input[name="memberEmail"][data-row="${rowIndex}"]`).value,
+        memberPhonenumber: document.querySelector(`input[name="memberPhonenumber"][data-row="${rowIndex}"]`).value,
+        boatID: document.querySelector(`input[name="boatID"][data-row="${rowIndex}"]`).value,
+        boatName: document.querySelector(`input[name="boatName"][data-row="${rowIndex}"]`).value,
+        boatLength: document.querySelector(`input[name="boatLength"][data-row="${rowIndex}"]`).value,
+        boatWidth: document.querySelector(`input[name="boatWidth"][data-row="${rowIndex}"]`).value,
+        boatAreal: document.querySelector(`input[name="boatAreal"][data-row="${rowIndex}"]`).value,
+        boatPrice: document.querySelector(`input[name="boatPrice"][data-row="${rowIndex}"]`).value,
+        berthID: document.querySelector(`input[name="berthID"][data-row="${rowIndex}"]`).value,
+        berthName: document.querySelector(`input[name="berthName"][data-row="${rowIndex}"]`).value,
+    };
+
+    console.log(memberToDelete);
+
+    // Sender POST request til endpoint
+    fetch(`/bookkeeperMemberList/delete`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        // Konverterer til JSON string
+        body: JSON.stringify(memberToDelete),
+    })
+        // Tjekker server respons
+        .then(response => response.json())
+        .then(data => {
+            if (data) {
+                alert("Member was deleted");
+
+                // Genindlæser siden så man kan se ændringer
+                refreshMemberList();
+            } else {
+                alert("Error: Member not found.");
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("Error deleting member");
+        });
+}
+
 // Funktion der genindlæser siden
 function refreshMemberList() {
     // Redirects the page to /bookkeeperMemberList
@@ -91,7 +138,10 @@ function searchMembers() {
                     <td hidden><input type="number" name="berthID" value="${member.berthID}" class="form-control" data-row="${index}" readonly></td>
                     <td><input type="text" name="berthName" value="${member.berthName}" class="form-control" data-row="${index}" readonly></td>
                     <td>
-                        <button onclick="updateMemberInformation(${index})" data-row="${index}">Gem Ændringer</button>
+                        <button onclick="updateMemberInformation(${index})" data-row="${index}">Gem</button>
+                    </td>
+                    <td>
+                        <button onclick="deleteMember(${index})" data-row="${index}">Slet</button>    
                     </td>
                 </tr>`;
                 tableBody.insertAdjacentHTML('beforeend', row);

@@ -102,7 +102,10 @@
           <input type="text" name="berthName" th:value="${member.berthName}" class="form-control" th:data-row="${iterStat.index}" readonly>
         </td>
         <td>
-          <button th:onclick="'updateMemberInformation(' + ${iterStat.index} + ')'" th:data-row="${iterStat.index}">Gem Ændringer</button>
+          <button th:onclick="'updateMemberInformation(' + ${iterStat.index} + ')'" th:data-row="${iterStat.index}">Gem</button>
+        </td>
+        <td>
+          <button th:onclick="'deleteMember(' + ${iterStat.index} + ')'" th:data-row="${iterStat.index}">Slet</button>
         </td>
       </tr>
 

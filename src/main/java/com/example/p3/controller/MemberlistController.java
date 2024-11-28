@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 public class MemberlistController {
 
     @Autowired
+
     private MemberlistService memberlistService;
     @Autowired
     private PrintService printService;
@@ -30,6 +31,12 @@ public class MemberlistController {
     public ResponseEntity<List<MemberlistDTO>> searchMembers(@RequestParam("query") String query) {
         List<MemberlistDTO> members = memberlistService.searchMembers(query);
         return ResponseEntity.ok(members);
+    }
+
+    @PostMapping("/bookkeeperMemberList/delete")
+    @ResponseBody
+    public MemberlistDTO deleteMember(@RequestBody MemberlistDTO dto) {
+        return memberlistService.deleteMemberFromDatabase(dto);
     }
 
     @GetMapping("/bookkeeperMemberlist/MemberExcel")
@@ -58,20 +65,6 @@ public class MemberlistController {
         response.setHeader(headerKey, headerValue);
 
         printService.generateEmailExcel(response);
-
-        response.flushBuffer();
-    }
-
-    @GetMapping("/bookkeeperMemberlist/PladsExcel")
-    public void generatePladsExcel(HttpServletResponse response) throws Exception{
-        response.setContentType("application/octet-stream");
-
-        String headerKey = "Content-Disposition";
-        String headerValue = "attachment;filename=Plads liste.xls";
-
-        response.setHeader(headerKey, headerValue);
-
-        printService.generateBerthlistExcel(response);
 
         response.flushBuffer();
     }
