@@ -286,3 +286,19 @@ function searchBarEvent(){
 }
 
 searchBarEvent();
+
+//eventhandler for exporting list as Excel fil
+function exportTableToExcel(){
+    const table = document.getElementById("berthList");
+    try {
+        // redirect to endpoint for exporting list
+        window.location.href = '/vesselBerthList/PladsExcel';
+    } catch (error) {
+        console.log(error);
+        console.log("List not exported.");
+    }
+}
+
+// function fra printService: generateBerthListExcel
+
+// function fra memberListController:
