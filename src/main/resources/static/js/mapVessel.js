@@ -12,7 +12,7 @@ var map = L.map('map', {
 });
 
 // Set the center for when you open the application-->
-map.setView([57.05778747921157, 9.902244340136367], 18);
+map.setView([57.05778747921157, 9.902244340136367], 18.5);
 
 // Use map from OSM -->
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -61,6 +61,22 @@ harbor1.addEventListener("click", function(event) {
 
 });
 
+var guestAreaBounds = [
+    [57.05742346980074, 9.90033925763862],
+    [57.05734201796358, 9.90061552466426],
+    [57.05728567822284, 9.900799976274303],
+    [57.05732832447959, 9.900841314225922],
+    [57.057682352673424, 9.90090670180615],
+    [57.05775435796488, 9.900683763958938],
+    [57.05742346980074, 9.90033925763862]
+];
+
+// Add an orange polygon for the guest area
+L.polygon(guestAreaBounds, {
+    color: "purple",
+    weight: 2,
+    fillOpacity: 0.6
+}).addTo(map);
 
 //Hvis knappen for "skudehavn" trykket vil kortet for den havn vises
 const harbor2 = document.getElementById("skudehavn");
@@ -100,51 +116,78 @@ harbors.addEventListener('click', function (event) {
     }
 });
 
-let geoJsonLayer;
+// Load berth data from the backend
+async function loadBerthData() {
+    try {
+        const response = await fetch('berths/get'); // Replace with your actual API endpoint
+        const berths = await response.json();
+        return berths;
+    } catch (error) {
+        console.error('Error fetching berth data:', error);
+        return [];
+    }
+}
+
 
 // Update GeoJSON data with berth status
-function updateGeoJsonWithStatus() {
+async function updateGeoJsonWithStatus() {
+    const berths = await loadBerthData();
+
     // Map berth data to GeoJSON features
     myGeoJson.features.forEach(feature => {
-        const berthStatus = berths.find(berth => berth.berthID === Number(feature.properties.id));
+        const berthStatus = berths.find(b => b.name === feature.properties.name);
         feature.properties.status = berthStatus ? berthStatus.availability : 'Unknown';
     });
-
-    // Render updated GeoJSON with styles based on status
-    geoJsonLayer = L.geoJSON(myGeoJson, {
-        onEachFeature: onEachFeature,
-        style: function (feature) {
-            const status = feature.properties.status;
-            let fillColor;
-
-            switch (status) {
-                case 1:
-                    fillColor = "#00FF00";
-                    break;
-                case 0:
-                    fillColor = "red";
-                    break;
-                case 2:
-                    fillColor = "orange";
-                    break;
-                default:
-                    fillColor = "white"; // Default color if status is unknown
-            }
-
-            return {
-                color: "black",
-                weight: 0.1,
-                fillColor: fillColor,
-                fillOpacity: 0.8
-            };
-        }
-    }).addTo(map);
-
-    memberToMap(geoJsonLayer);
-    berthListsToMap(geoJsonLayer)
 }
-// Initial load and update
-updateGeoJsonWithStatus();
+let geoJsonLayer;
+
+// Wait for GeoJSON to be fetched before using it
+async function initializeMap() {
+    await fetchGeoJson(); // Ensure that the GeoJSON is fetched
+
+    if (myGeoJson) {
+        await updateGeoJsonWithStatus(); // Update GeoJSON data with berth statuses
+
+        // Add the updated GeoJSON to the map
+        geoJsonLayer = L.geoJSON(myGeoJson, {
+            onEachFeature: onEachFeature,
+            style: function (feature) {
+                const status = feature.properties.status;
+                let fillColor;
+
+                switch (status) {
+                    case 1:
+                        fillColor = "#00FF00";
+                        break;
+                    case 0:
+                        fillColor = "red";
+                        break;
+                    case 2:
+                        fillColor = "orange";
+                        break;
+                    default:
+                        fillColor = "#F2EFE9";// Default color if status is unknown
+                }
+
+                return {
+                    color: "black",
+                    weight: 0.1,
+                    fillColor: fillColor,
+                    fillOpacity: 0.8
+                };
+            }
+        }).addTo(map);
+
+        memberToMap(geoJsonLayer);
+        berthListsToMap(geoJsonLayer);
+
+    } else {
+        console.error('GeoJSON data not available');
+    }
+}
+
+// Call initializeMap to start the process
+initializeMap();
 
 function onEachFeature(feature, layer) {
 
@@ -200,12 +243,6 @@ function mapToMemberList(feature) {
                             nameBtn.click();
                     }
                 })
-
-/*
-                if ((berthName === feature.properties.name) && (table.style.display === "table")) {
-                    berthNameBtn.scrollIntoView();
-                    berthNameBtn.click();
-                }*/
             }
         });
     });
@@ -235,36 +272,6 @@ function mapToThreeLists(feature){
 
 }
 
-/*
-function berthToSideBarBerthList(feature) {
-    const berthList = document.getElementById("berthList");
-    const rows = berthList.querySelectorAll('tr');
-
-    rows.forEach(row => {
-        const berthNameBtn = row.querySelector(".berthBtn");
-        //console.log("berthNameBtn: " + berthNameBtn);
-        if (berthNameBtn) {
-            const berthName = berthNameBtn.textContent.trim();
-            //console.log("berthName: " + berthName);
-
-            if ((berthName === feature.properties.name) && (berthList.style.display === "table")) {
-                //memberListBoat.style.display = "none";
-                //console.log("display", memberListBoat.style.display = "none");
-                //memberListWithoutBoat.style.display = "none";
-
-                // Loop gennem og skjul hver tabel
-                //allBerthTables.forEach((table) => {
-                //    table.style.display = 'none';
-                //});
-                //berthList.style.display = "table";
-
-                berthNameBtn.click();
-                berthNameBtn.scrollIntoView();
-            }
-        }
-    });
-}
-*/
 function memberToMap(geoJsonLayer){
     const memberList = document.getElementById("memberListBoat");
     memberList.addEventListener("click", (event) => {
@@ -337,89 +344,6 @@ function berthListsToMap(geoJsonLayer){
         });
     }
 }
-
-
-
-
-
-
-
-
-
-
-/*
-function berthListToMap(geoJsonLayer){
-    const berthList = document.getElementById("berthList");
-    berthList.addEventListener("click", (event) => {
-        geoJsonLayer.eachLayer(layer => {
-            layer.setStyle({
-                color: "black",
-                weight: 0.1
-            })
-        });
-
-        const berthBtn = event.target.closest(".berthBtn");
-        console.log("button: " + berthBtn.outerHTML);
-
-        if(berthBtn) {
-
-            const berthName = berthBtn.textContent.trim();
-
-            berths.forEach(berth => {
-                if (berthName === berth.name) {
-                    geoJsonLayer.eachLayer(layer => {
-                       if (Number(layer.featureId) === berth.berthID) {
-                           layer.setStyle({
-                               color: "blue",
-                               weight: 2
-                           })
-                       }
-                    });
-                }
-            });
-        }
-    });
-
-}
-
-
-
-
-
-var memberList = document.getElementById("memberListBoat");
-const rows = memberList.querySelectorAll('tr');
-console.log("memberList: " + memberList);
-console.log("rows: " + rows);
-
-
-rows.forEach(row => {
-
-    row.addEventListener("click", function() {
-        //const memberCell = row.querySelector(".memberCell");
-
-        const markerId = row.getAttribute("")
-
-
-
-        approvedMembers.forEach(approvedMember => {
-            const memberName = row.querySelector(`#memberName${approvedMember.member.memberID}`);
-            //console.log("memberCell: " + memberCell.innerHTML);
-
-            if(memberName) {
-                const memberNameId = memberName.id;
-                const id = memberNameId.replace("memberName", "");
-                //console.log(id);
-
-                boats.forEach(boat => {
-                    if ((Number(id) === boat.memberID) && (boat.berthID !== 9999) && (boat.berthID === Number(feature.properties.id))) {
-                        highlightBerth(e);
-                    }
-                });
-            }
-        });
-    });
-});
-*/
 
 export async function colorButtons(member, boat, berths) {
     try {

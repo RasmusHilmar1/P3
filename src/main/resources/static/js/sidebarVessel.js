@@ -3,10 +3,11 @@ import {updateAvailability, updateBoatBerthId} from "./updateMethods.js";
 import {colorButtons} from "./mapVessel.js";
 
 // Add sidebar -->
-var sidebar = document.getElementById("sidebar");
+let sidebar = document.getElementById("sidebar");
 
 // Open or close sidebar -->
-var menuState = 0;
+let menuState = 0;
+
 function openClose(){
     const sidebarBtnIcon = document.getElementById("sidebarBtn");
     if(menuState === 0){
