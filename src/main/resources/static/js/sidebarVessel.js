@@ -22,7 +22,7 @@ function openClose(){
         sidebarBtnIcon.src = "Images/Icons/closeIcon.svg";
     }
 }
-//openClose();
+openClose();
 
 // Floating button for opening sidebar -->
 let button = document.createElement("Button");
