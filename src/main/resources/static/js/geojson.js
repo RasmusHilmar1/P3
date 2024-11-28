@@ -14,8 +14,5 @@ async function fetchGeoJson() {
     }
 }
 
-// Call fetchGeoJson to initialize `myGeoJson` as soon as possible
-fetchGeoJson();
-
 // Export the GeoJSON (note: it will be `null` initially, until fetched)
 export { myGeoJson, fetchGeoJson };
