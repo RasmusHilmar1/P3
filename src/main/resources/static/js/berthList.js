@@ -67,6 +67,43 @@ function addCells(tr, data, editableIndexes = []){
     });
 }
 
+function getBerthListRefactored(data, sortedBy){
+    const table = document.getElementById("berthListBody"); // get the HTML element for the dynamic table
+
+    // For each berth, find corresponding boat and member
+    data.forEach(berth => {
+        berth.correspondingBoat = boats.find(boat => boat.berthID === berth.berthID);
+        console.log(berth.correspondingBoat);
+
+        if (berth.correspondingBoat) {
+            berth.correspondingMember = members.find(member =>
+                member.member.memberID === berth.correspondingBoat.memberID); //if there is found a boat, find the corresponding member
+
+            if (berth.correspondingMember) {
+                console.log(berth.correspondingMember.member.memberID);
+            }
+        }
+    });
+
+    //For each berth, create a row and add cells with the data
+    data.forEach(berth => {
+        // do not include the default berth
+        if (berth.berthID !== 9999) {
+            var row = table.insertRow();
+            row.className = "berthTableRow";
+            if (sortedBy === "berths"){
+                getBerthListSortedBerths(data);
+            } else if (sortedBy === "members"){
+                getBerthListSortedMembers(data);
+            }
+        }
+    });
+}
+
+function getBerthListSortedBerths(data){
+
+}
+
 function getBerthList(data) {
     const table = document.getElementById("berthListBody"); // get the HTML element for the dynamic table
 
@@ -137,8 +174,10 @@ function getBerthList(data) {
 
 getBerthList(berths);
 
+// FUNCTIONS FOR SORTING THE TABLE ---->
+
 function sortBerthListMember(data){
-    console.log("Sorting function called!")
+    console.log("Sorting function after members called!");
 
     let filteredRows, sorted;
 
@@ -154,12 +193,31 @@ function sortBerthListMember(data){
     getBerthList(sorted); //create the new table with the sorted rows
 }
 
-sortBerthListMember(berths);
-
 function sortBerthListBerth(data){
-    const sorted = data.sort((a,b) => a.berthName.localeCompare(b.berthName));
-    getBerthList(sorted);
+    console.log("Sorting function after berths called!");
+
+    const sorted = data.sort((a,b) => a.name.localeCompare(b.name));
+    console.log(sorted);
+
+    const table = document.getElementById("berthListBody");
+    table.innerHTML = ""; //clear out the table in order to rerender
+
+    getBerthList(sorted); //create new table with the sorted rows
 }
+
+//event handler for the sorting buttons
+function sortingBtnHandler(){
+    let berthSortBtn = document.getElementById("berthSort");
+    let memberSortBtn = document.getElementById("memberSort");
+
+    berthSortBtn.addEventListener("click", () => sortBerthListBerth(berths));
+    memberSortBtn.addEventListener("click", () => sortBerthListMember(berths));
+}
+
+sortingBtnHandler();
+
+
+// FUNCTIONS FOR UPDATING THE CHANGES IN THE EDITABLE CELLS ---->
 
 // function for saving the changes
 async function saveBerthChanges(row, berth) {
@@ -237,6 +295,8 @@ async function saveBerthChanges(row, berth) {
     }
 }
 
+// FUNCTION FOR SEARCH FUNCTIONALITY ----->
+
 // IMPORTANT: Maybe add such that users can only search for names and IDs, not areal, length and width
 function searchBarBerthList() {
     console.log("Search function triggered"); //console logging to make sure that the function runs
@@ -287,17 +347,19 @@ function searchBarEvent(){
 
 searchBarEvent();
 
+// FUNCTIONS FOR EXPORTING TABLE TO EXCEL ---->
+
 //eventhandler for exporting list as Excel fil
 function exportTableToExcel(){
     const table = document.getElementById("berthList");
     try {
-        // redirect to endpoint for exporting list
-        window.location.href = '/vesselBerthList/PladsExcel';
+        window.location.href = '/vesselBerthList/PladsExcel'; // redirect to endpoint for exporting list
     } catch (error) {
         console.log(error);
         console.log("List not exported.");
     }
 }
+document.getElementById("exportBtn").addEventListener("click", exportTableToExcel);
 
 // function fra printService: generateBerthListExcel
 
