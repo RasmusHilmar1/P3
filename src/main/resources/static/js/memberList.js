@@ -62,33 +62,36 @@ function deleteMember(rowIndex){
         berthName: document.querySelector(`input[name="berthName"][data-row="${rowIndex}"]`).value,
     };
 
-    console.log(memberToDelete);
+    const confirmation = confirm(`Are you sure you want to delete the member ${memberToDelete.memberName}?`);
+    if (confirmation) {
 
-    // Sender POST request til endpoint
-    fetch(`/bookkeeperMemberList/delete`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        // Konverterer til JSON string
-        body: JSON.stringify(memberToDelete),
-    })
-        // Tjekker server respons
-        .then(response => response.json())
-        .then(data => {
-            if (data) {
-                alert("Member was deleted");
 
-                // Genindlæser siden så man kan se ændringer
-                refreshMemberList();
-            } else {
-                alert("Error: Member not found.");
-            }
+        // Sender POST request til endpoint
+        fetch(`/bookkeeperMemberList/delete`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            // Konverterer til JSON string
+            body: JSON.stringify(memberToDelete),
         })
-        .catch(error => {
-            console.error("Error:", error);
-            alert("Error deleting member");
-        });
+            // Tjekker server respons
+            .then(response => response.json())
+            .then(data => {
+                if (data) {
+                    alert("Member was deleted");
+
+                    // Genindlæser siden så man kan se ændringer
+                    refreshMemberList();
+                } else {
+                    alert("Error: Member not found.");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Error deleting member");
+            });
+    }
 }
 
 // Funktion der genindlæser siden
