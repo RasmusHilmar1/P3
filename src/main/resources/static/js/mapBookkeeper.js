@@ -1,4 +1,4 @@
-import {myGeoJson} from "./geojson.js";
+import {fetchGeoJson, myGeoJson} from "./geojson.js";
 import {fetchApprovedMembers, fetchBerth, fetchBoats} from "./fetchMethods.js";
 
 const approvedMembers = await fetchApprovedMembers();
@@ -100,50 +100,77 @@ harbors.addEventListener('click', function (event) {
     }
 });
 
-let geoJsonLayer;
+
+// Load berth data from the backend
+async function loadBerthData() {
+    try {
+        const response = await fetch('berths/get'); // Replace with your actual API endpoint
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching berth data:', error);
+        return [];
+    }
+}
+
 
 // Update GeoJSON data with berth status
-function updateGeoJsonWithStatus() {
+async function updateGeoJsonWithStatus() {
+    const berths = await loadBerthData();
+
     // Map berth data to GeoJSON features
     myGeoJson.features.forEach(feature => {
-        const berthStatus = berths.find(berth => berth.berthID === Number(feature.properties.id));
+        const berthStatus = berths.find(b => b.name === feature.properties.name);
         feature.properties.status = berthStatus ? berthStatus.availability : 'Unknown';
     });
-
-    // Render updated GeoJSON with styles based on status
-    geoJsonLayer = L.geoJSON(myGeoJson, {
-        onEachFeature: onEachFeature,
-        style: function (feature) {
-            const status = feature.properties.status;
-            let fillColor;
-
-            switch (status) {
-                case 1:
-                    fillColor = "#00FF00";
-                    break;
-                case 0:
-                    fillColor = "red";
-                    break;
-                case 2:
-                    fillColor = "orange";
-                    break;
-                default:
-                    fillColor = "white"; // Default color if status is unknown
-            }
-
-            return {
-                color: "black",
-                weight: 0.1,
-                fillColor: fillColor,
-                fillOpacity: 0.8
-            };
-        }
-    }).addTo(map);
-
-    memberToMap(geoJsonLayer);
 }
-// Initial load and update
-updateGeoJsonWithStatus();
+let geoJsonLayer;
+
+// Wait for GeoJSON to be fetched before using it
+async function initializeMap() {
+    await fetchGeoJson(); // Ensure that the GeoJSON is fetched
+
+    if (myGeoJson) {
+        await updateGeoJsonWithStatus(); // Update GeoJSON data with berth statuses
+
+        // Add the updated GeoJSON to the map
+        geoJsonLayer = L.geoJSON(myGeoJson, {
+            onEachFeature: onEachFeature,
+            style: function (feature) {
+                const status = feature.properties.status;
+                let fillColor;
+
+                switch (status) {
+                    case 1:
+                        fillColor = "#00FF00";
+                        break;
+                    case 0:
+                        fillColor = "red";
+                        break;
+                    case 2:
+                        fillColor = "orange";
+                        break;
+                    default:
+                        fillColor = "#F2EFE9";// Default color if status is unknown
+                }
+
+                return {
+                    color: "black",
+                    weight: 0.1,
+                    fillColor: fillColor,
+                    fillOpacity: 0.8
+                };
+            }
+        }).addTo(map);
+
+        memberToMap(geoJsonLayer);
+
+    } else {
+        console.error('GeoJSON data not available');
+    }
+}
+
+// Call initializeMap to start the process
+initializeMap();
 
 function onEachFeature(feature, layer) {
 
