@@ -1,6 +1,5 @@
 import {myGeoJson} from "./geojson.js";
-import {fetchApprovedMembers, fetchBerth, fetchBoats} from "./fetchMethods.js";
-import {switchHeader} from "./sidebarVessel.js";
+import {fetchApprovedMembers, fetchBoats, fetchBerth} from "./fetchMethods.js";
 
 const approvedMembers = await fetchApprovedMembers();
 const boats = await fetchBoats();
@@ -171,7 +170,6 @@ function highlightBerth(e) {
     });
     selectedLayer = layer;
 }
-
 
 function removeHighlight(layer) {
     if (selectedLayer && (selectedLayer !== layer)){
@@ -422,3 +420,69 @@ rows.forEach(row => {
     });
 });
 */
+
+export async function colorButtons(member, boat, berths) {
+    try {
+        // API call to get compatible berths for the given boat dimensions
+        const response = await fetch(`/berths/find?length=${boat.length}&width=${boat.width}`);
+        if (!response.ok) {
+            throw new Error(`API call failed with status: ${response.status}`);
+        }
+
+        // Parse the response to get compatible berths
+        const compatibleBerths = await response.json();
+
+        console.log("Compatible berths:", compatibleBerths);
+
+        // Loop through GeoJSON features and update styles for compatible berths
+        myGeoJson.features.forEach(feature => {
+            const compatibleBerth = compatibleBerths.find(b => b.berth.berthID === Number(feature.properties.id));
+            console.log(compatibleBerth)
+            // Find the corresponding layer for this GeoJSON feature
+            const layer = getLayerByFeature(feature);
+
+            if (compatibleBerth) {
+                // Update status with the availability returned by the API
+                feature.properties.color = compatibleBerth.color;
+                console.log("Berth status updated:", feature.properties.color);
+               var red = feature.properties.color.red;
+               var green = feature.properties.color.green;
+               var blue = 0;
+
+               console.log(red,green,blue);
+
+
+                if (layer) {
+                    layer.setStyle({
+                        color: "black",
+                        weight: 0.1,
+                        //RGB color fill
+                        fillColor: `rgb(${red}, ${green}, ${blue})` ,
+                        fillOpacity: 1
+                    });
+                }
+            }
+            else layer.setStyle({
+                color: "black",
+                weight: 0.1,
+                fillColor: "red",
+                fillOpacity: 1
+            });
+        });
+    } catch (error) {
+        console.error("Error in colorButtons:", error);
+    }
+}
+
+// Helper function to retrieve a layer from a GeoJSON feature
+function getLayerByFeature(feature) {
+    let targetLayer = null;
+
+    map.eachLayer(layer => {
+        if (layer.feature && layer.feature.properties.id === feature.properties.id) {
+            targetLayer = layer;
+        }
+    });
+
+    return targetLayer;
+}
