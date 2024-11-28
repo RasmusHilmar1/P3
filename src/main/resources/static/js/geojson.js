@@ -3,7 +3,8 @@ let myGeoJson = null;
 // Fetch GeoJSON file
 async function fetchGeoJson() {
     try {
-        const response = await fetch('/berths.geojson'); // Adjust the path as needed
+
+        const response = await fetch('/berths.geojson'); 
         if (!response.ok) {
             throw new Error('Failed to load GeoJSON file');
         }
