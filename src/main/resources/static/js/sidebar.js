@@ -144,6 +144,7 @@ class BerthList {
         tbody.innerHTML = ''; // Clear existing rows
 
         let currentSelectedButton = null; // Variable to keep track of the currently selected button
+        let selectedButton = null;
         let currenInfoCell = null; // Variable to keep track of the currently selected info cell
 
         data.forEach(item => {
@@ -178,32 +179,40 @@ class BerthList {
 
             // Add event listener for expanding/collapsing the info container
             berthNameBtn.addEventListener("click", function () {
-                berthNameBtn.classList.toggle('selectedNameBtn');
-                const infoCells = infoContainer.querySelectorAll(".infoCell");
-                console.log(infoCells);
-                // Remove the 'selectedNameBtn' class from the previously selected button, if any
-                if (currentSelectedButton && currentSelectedButton !== berthNameBtn) {
-                    currentSelectedButton.classList.remove('selectedNameBtn');
+                // Check if the clicked button is already the selected button
+                if (currentSelectedButton === berthNameBtn) {
+                    // If it is, toggle off the CSS and collapse the info cells
+                    berthNameBtn.classList.remove('selectedNameBtn');
+                    const infoCells = infoContainer.querySelectorAll(".infoCell");
+                    infoCells.forEach(cell => cell.style.maxHeight = null);
+
+                    // Reset current selections
+                    currentSelectedButton = null;
+                    currenInfoCell = null;
+                } else {
+                    // If a different button is clicked, handle the previous selection
+                    if (currentSelectedButton) {
+                        currentSelectedButton.classList.remove('selectedNameBtn');
+                    }
+
+                    if (currenInfoCell) {
+                        currenInfoCell.forEach(cell => cell.style.maxHeight = null);
+                    }
+
+                    // Set the clicked button as the new selected button
+                    berthNameBtn.classList.add('selectedNameBtn');
+                    currentSelectedButton = berthNameBtn;
+
+                    // Expand the associated info cells
+                    const infoCells = infoContainer.querySelectorAll(".infoCell");
+                    infoCells.forEach(cell => {
+                        cell.style.maxHeight = cell.scrollHeight + "px";
+                    });
+
+                    currenInfoCell = infoCells;
                 }
-
-                if(currenInfoCell && currenInfoCell !== infoCells) {
-                    currenInfoCell.forEach(cell => cell.style.maxHeight = null);
-                }
-
-                currenInfoCell = infoCells; // Update the current info cell
-
-                // Toggle the 'selectedNameBtn' class on the newly clicked button
-                berthNameBtn.classList.toggle('selectedNameBtn');
-
-                // Set the current button as the selected button
-                currentSelectedButton = berthNameBtn;
-
-                // Toggle the visibility of the info container
-
-                infoCells.forEach(cell => {
-                    cell.style.maxHeight = cell.style.maxHeight ? null : cell.scrollHeight + "px";
-                });
             });
+
 
             searchHandler.updateRows(); // Sørger for at mine dynamisk oprettet tabeller indeholder data.
 
