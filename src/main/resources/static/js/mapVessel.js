@@ -1,4 +1,4 @@
-import {myGeoJson} from "./geojson.js";
+import { myGeoJson, fetchGeoJson } from "./geojson.js";
 import {fetchApprovedMembers, fetchBoats, fetchBerth} from "./fetchMethods.js";
 
 const approvedMembers = await fetchApprovedMembers();
