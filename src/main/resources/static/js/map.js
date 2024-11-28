@@ -1,5 +1,5 @@
 import { myGeoJson, fetchGeoJson } from "./geojson.js";
-import {fetchApprovedMembers, fetchBoats, fetchBerth} from "./memberFetch.js";
+import {fetchApprovedMembers, fetchBoats, fetchBerth} from "./fetchMethods.js";
 
 // Create map for leaflet -->
 var map = L.map('map', {
@@ -233,7 +233,7 @@ function onEachFeature(feature, layer) {
                 const berthName = berthNameBtn.textContent.trim();
 
                 // Compare berth.id with berthName (ensure matching data format)
-                if (berthName === berth.id) {
+                if (berthName === berth.name) {
                     berthNameBtn.click(); // Simulate a click on the berth button
                     berthNameBtn.scrollIntoView(scrolledIntoViewOptions); // Scroll into view with smooth scroll
                 }
