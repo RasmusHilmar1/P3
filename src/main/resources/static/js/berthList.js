@@ -92,19 +92,81 @@ function getBerthListRefactored(data, sortedBy){
             var row = table.insertRow();
             row.className = "berthTableRow";
             if (sortedBy === "berths"){
-                getBerthListSortedBerths(data);
+                getBerthListSortedBerths(berth);
             } else if (sortedBy === "members"){
                 getBerthListSortedMembers(data);
             }
         }
+        // add a cell  with a save button for each row
+        const saveCell = row.insertCell(); // Insert a final cell for the Save button
+        const saveButton = document.createElement("button");
+        saveButton.textContent = "Gem Ændringer";
+        saveCell.className = "saveBtnCell";
+        saveButton.className = "saveBtn";
+        saveCell.appendChild(saveButton); // Append the Save button to the last cell
+
+        // Add click event to the save button
+        saveButton.addEventListener("click", () => saveBerthChanges(row, berth));
     });
 }
 
-function getBerthListSortedBerths(data){
+function getBerthListSortedBerths(data, row){
+    const berthData = [data.berthID, data.name, data.length + "m", data.width + "m", data.areal + "m", data.depth + "m", data.utilizationPercentage];
+
+    // set name, length and width as editable
+    const editableColumns = [1, 2, 3];
+    addCells(row, berthData, editableColumns);
+    data.correspondingBerthCells = berthData;
+
+    // find boat assigned to berth and corresponding member
+    if (data.correspondingMember && data.correspondingBoat) {
+        if (data.correspondingBoat.memberID === data.correspondingMember.member.memberID && data.correspondingBoat.berthID === data.berthID) {
+
+            const memberAndBoatData = [
+                data.correspondingMember.member.name,
+                data.correspondingBoat.memberID,
+                data.correspondingBoat.name,
+                data.correspondingBoat.length,
+                data.correspondingBoat.width,
+                data.correspondingBoat.areal,
+                data.correspondingMember.member.phonenumber];
+
+            addCells(row, memberAndBoatData);
+            data.correspondingMemberAndBoatCells = memberAndBoatData;
+        }
+    }
+    // else add empty cells
+    else {
+        addCells(row, ["", "", "", "", "", "", ""]);
+    }
+}
+
+function getBerthListSortedMembers(data){
+    if (data.correspondingMember && data.correspondingBoat) {
+        if (data.correspondingBoat.memberID === data.correspondingMember.member.memberID && data.correspondingBoat.berthID === data.berthID) {
+
+            const memberAndBoatData = [
+                data.correspondingMember.member.name,
+                data.correspondingBoat.memberID,
+                data.correspondingBoat.name,
+                data.correspondingBoat.length,
+                data.correspondingBoat.width,
+                data.correspondingBoat.areal,
+                data.correspondingMember.member.phonenumber];
+
+            addCells(row, memberAndBoatData);
+            data.correspondingMemberAndBoatCells = memberAndBoatData;
+        }
+    }
+    const berthData = [data.berthID, data.name, data.length + "m", data.width + "m", data.areal + "m", data.depth + "m", data.utilizationPercentage];
+    // set name, length and width as editable
+    const editableColumns = [1, 2, 3];
+    addCells(row, berthData, editableColumns);
+    data.correspondingBerthCells = berthData;
 
 }
 
-function getBerthList(data) {
+/*function getBerthList(data) {
     const table = document.getElementById("berthListBody"); // get the HTML element for the dynamic table
 
     // For each berth, find corresponding boat and member
@@ -120,10 +182,10 @@ function getBerthList(data) {
                 console.log(berth.correspondingMember.member.memberID);
             }
         }
-    });
+    }); */
 
     //For each berth, create a row and add cells with the data
-    data.forEach(berth => {
+   /* data.forEach(berth => {
         // do not include the default berth
         if (berth.berthID !== 9999) {
             var row = table.insertRow();
@@ -171,8 +233,8 @@ function getBerthList(data) {
     });
     return table;
 }
+getBerthList(berths); */
 
-getBerthList(berths);
 
 // FUNCTIONS FOR SORTING THE TABLE ---->
 
