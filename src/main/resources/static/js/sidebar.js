@@ -21,6 +21,118 @@ class Sidebar {
     }
 }
 
+class MemberList {
+    constructor(apiEndpoint) {
+        this.apiEndpoint = apiEndpoint;
+        this.labelMapping = {
+            phoneNumber: "Telefon Nummer",
+            boatAssigned: "Båd Navn",
+            berthAssigned: "Båd Plads",
+        };
+    }
+
+    fetchMembers() {
+        fetch(this.apiEndpoint)
+            .then(response => response.json())
+            .then(members => {
+                this.createMemberList(members);
+            })
+            .catch(error => {
+                console.error('Error fetching members:', error);
+                alert('Error fetching members. Please try again later.');
+            });
+    }
+
+    createMemberList(members) {
+        const table = document.getElementById("memberList");
+        const tbody = table.querySelector('tbody');
+        tbody.innerHTML = ''; // Clear existing rows
+
+        members.forEach(item => {
+            const memberRow = tbody.insertRow();
+            const memberCell = memberRow.insertCell();
+            memberCell.className = "memberCell";
+
+            // Button for the member's name
+            const memberName = document.createElement("button");
+            memberName.textContent = item.name || 'N/A';
+            memberName.className = "nameBtn";
+            memberCell.appendChild(memberName);
+
+            // Collapsible info container
+            const infoContainer = document.createElement("div");
+            memberCell.appendChild(infoContainer);
+
+            // Displaying the phone number
+            const phoneCell = document.createElement("div");
+            phoneCell.textContent = `${this.labelMapping.phoneNumber}: ${item.phoneNumber || 'N/A'}`;
+            phoneCell.className = "infoCell";
+            infoContainer.appendChild(phoneCell);
+
+            // Fetch boats and berths if they haven't been loaded
+            if (!infoContainer.querySelector(".boatCell")) {
+                this.fetchBoatsByMemberId(item.memberID, infoContainer);
+            }
+
+            // Add event listener for collapsing/expanding
+            memberName.addEventListener("click", function () {
+                memberName.classList.toggle('selectedNameBtn');
+                const infoCells = infoContainer.querySelectorAll(".infoCell");
+                infoCells.forEach(cell => {
+                    cell.style.maxHeight = cell.style.maxHeight ? null : cell.scrollHeight + "px";
+                });
+            });
+        });
+        searchHandler.updateRows(); // Sørger for at mine dynamisk oprettet tabeller indeholder data.
+    }
+
+    fetchBoatsByMemberId(memberId, infoContainer) {
+        fetch(`/boats/public/${memberId}`)
+            .then(response => response.json())
+            .then(boats => {
+                if (boats.length > 0) {
+                    boats.forEach(boat => {
+                        const boatCell = document.createElement("div");
+                        boatCell.textContent = `${this.labelMapping.boatAssigned}: ${boat.name || 'N/A'}`;
+                        boatCell.className = "infoCell boatCell";
+                        infoContainer.appendChild(boatCell);
+                        if (!infoContainer.querySelector(".berthCell")) {
+                            this.fetchBerthByMemberId(boat.berth, infoContainer);
+                        }
+                    });
+
+                } else {
+                    const noBoatCell = document.createElement("div");
+                    noBoatCell.textContent = `${this.labelMapping.boatAssigned}: N/A`;
+                    noBoatCell.className = "infoCell boatCell";
+                    infoContainer.appendChild(noBoatCell);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching boats:', error);
+                alert('Error fetching boat information. Please try again later.');
+            });
+    }
+
+    fetchBerthByMemberId(BerthID, infoContainer) {
+        fetch(`/berths/getBerth/${BerthID}`)
+            .then(response => response.json())
+            .then(berth => {
+                const berthCell = document.createElement("div");
+                berthCell.textContent = `${this.labelMapping.berthAssigned}: ${berth && berth.name ? berth.name : 'N/A'}`;
+                berthCell.className = "infoCell berthCell";
+                infoContainer.appendChild(berthCell);
+            })
+            .catch(error => {
+                console.error('Error fetching berth information:', error);
+                const berthCell = document.createElement("div");
+                berthCell.textContent = `${this.labelMapping.berthAssigned}: N/A`;
+                berthCell.className = "infoCell berthCell";
+                infoContainer.appendChild(berthCell);
+            });
+    }
+}
+
 class BerthList {
     constructor(apiEndpoint) {
         this.apiEndpoint = apiEndpoint;
@@ -66,6 +178,7 @@ class BerthList {
 
             // Add event listener for expanding/collapsing the info container
             berthNameBtn.addEventListener("click", function () {
+                berthNameBtn.classList.toggle('selectedNameBtn');
                 const infoCells = infoContainer.querySelectorAll(".infoCell");
                 console.log(infoCells);
                 // Remove the 'selectedNameBtn' class from the previously selected button, if any
@@ -92,13 +205,12 @@ class BerthList {
                 });
             });
 
-            searchHandler.updateRows();
+            searchHandler.updateRows(); // Sørger for at mine dynamisk oprettet tabeller indeholder data.
 
             // Append berth row to the table body
             row.appendChild(berthCell);
             tbody.appendChild(row);
         });
-
     }
 
     getAvailabilityText(availability) {

@@ -1,5 +1,7 @@
 
-export {fetchApprovedMembers, fetchBoats, fetchBerth, fetchPendingMembers};
+export {fetchApprovedMembers, fetchBoats, fetchBerth, fetchPendingMembers, fetchPendingBoats, parseData};
+export {boats, pendingBoats, approvedMembers, pendingMembers, berths};
+import {Boat, PendingBoat, Berth, Member} from "./objects.js";
 
 //var memberBtn = document.getElementById("memberBtn");
 
@@ -13,7 +15,7 @@ async function fetchApprovedMembers() {
         }
 
         const approvedMembers = await response.json();
-        console.log("Fetched approved members:", approvedMembers); // Debug output
+        //console.log("Fetched approved members:", approvedMembers); // Debug output
 
         return approvedMembers;
 
@@ -41,7 +43,7 @@ async function fetchBoats() {
         }
 
         const boats = await response.json();
-        console.log("Fetched boats:", boats); // Debug output
+        //console.log("Fetched boats:", boats); // Debug output
 
         return boats;
 
@@ -59,7 +61,7 @@ async function fetchBerth() {
         }
 
         const berths = await response.json();
-        console.log("Fetched berths:", berths); // Debug output
+        //console.log("Fetched berths:", berths); // Debug output
 
         return berths;
 
@@ -76,7 +78,7 @@ async function fetchPendingMembers(){
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const members = await response.json();
-        console.log("Fetched pending members:", members);
+        //console.log("Fetched pending members:", members);
 
         return members;
 
@@ -85,7 +87,7 @@ async function fetchPendingMembers(){
     }
 }
 
-export async function fetchPendingBoats(){
+async function fetchPendingBoats(){
     try {
         const response = await fetch("/api/pendingBoats");
         if (!response.ok) {
@@ -93,10 +95,40 @@ export async function fetchPendingBoats(){
         }
         const boats = await response.json();
         console.log("Fetched pending boats:", boats);
-
+        boats.forEach(boat => {
+            console.log(boat);
+            console.log("Boat ID:", boat.boat.boatID);
+            console.log("Fee Sent:", boat.boat.feeSent);
+            console.log("Fee Paid:", boat.boat.feePaid);
+        });
         return boats;
 
     } catch (error) {
         console.error("Error fetching pending boats:", error);
     }
+}
+
+// initialize empty arrays for the data
+let boats = [], pendingBoats=[], approvedMembers = [], pendingMembers = [], berths = [];
+
+// parsing the data from fetch
+async function parseData(method, object, array){
+
+    const parsedData = await method;
+    console.log(parsedData);
+
+    parsedData.map(objectData => {
+        if (object === Berth){
+            array.push(new object(objectData.berthID, objectData.name, objectData.availability, objectData.length, objectData.width, objectData.depth, objectData.pierId));
+        } else if(object === Boat){
+            array.push(new Boat(objectData.boatID, objectData.memberID, objectData.berthID, objectData.name, objectData.type, objectData.manufacturer, objectData.length, objectData.width, objectData.draught, objectData.insurance, objectData.feeSent, objectData.feePaid));
+        } else if(object === PendingBoat){
+            array.push(new object(objectData.id, objectData.boat));
+            console.log(objectData.id, objectData.boat);
+        } else if (object === Member) {
+            array.push(new object(objectData.id, objectData.member));
+        }
+    });
+    // return the array with elements
+    return array;
 }

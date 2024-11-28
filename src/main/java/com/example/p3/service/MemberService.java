@@ -1,8 +1,14 @@
 package com.example.p3.service;
 
 import com.example.p3.dto.MemberDTO;
-import com.example.p3.model.Member;
+import com.example.p3.model.*;
+import com.example.p3.model.ApprovedMember;
+import com.example.p3.model.PendingMember;
+import com.example.p3.repository.ApprovedMemberRepository;
 import com.example.p3.repository.MemberRepository;
+import com.example.p3.repository.PendingMemberRepository;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +20,10 @@ public class MemberService {
 
     @Autowired
     private MemberRepository memberRepository;
+    @Autowired
+    private PendingMemberRepository pendingMemberRepository;
+    @Autowired
+    private ApprovedMemberRepository approvedMemberRepository;
 
     public String getMemberName(int memberId) {
         Member member = memberRepository.findByMemberID(memberId);
@@ -114,6 +124,49 @@ public class MemberService {
         // Method to fetch all members
         return memberRepository.findAll(); // Assuming you have a MemberRepository extending JpaRepository
 
+    }
+
+    // Function for moving pending members to approved members
+    @Transactional
+    public Member approveMember(int pendingMemberId) {
+        PendingMember pendingMember = pendingMemberRepository.findById(pendingMemberId);// find the pending member with use of id
+        System.out.println(pendingMember);
+        if (pendingMember != null) {
+            Member member = pendingMember.getMember(); // get the member object nested in the pending member
+            int memberId = pendingMember.getId();
+            ApprovedMember approvedMember = new ApprovedMember(); // create new approved member
+
+            approvedMember.setMember(member); // move the member object to the new approved member
+            approvedMember.setId(memberId); // set the ID as the member's ID
+
+            approvedMemberRepository.save(approvedMember);
+            pendingMemberRepository.delete(pendingMember);
+
+            System.out.println("Approved member saved and pending member deleted.");
+
+            return member;
+        }
+        return null;
+    }
+
+    // Function for denying and deleting pending member
+    @Transactional
+    public Member denyMember(int pendingMemberId) {
+        // get both pending member from database
+        PendingMember pendingMember = pendingMemberRepository.findById(pendingMemberId);
+
+        if (pendingMember == null) {
+            System.out.println("Pending member not found."); // check whether pending member is found
+            return null; // return null if member is not found
+        }
+
+        // get corresponding member object
+        Member member = pendingMember.getMember();
+
+        pendingMemberRepository.delete(pendingMember);// delete the member from both repositories if it is denied
+        memberRepository.delete(member);
+
+        return member;
     }
 
     // Function for updating berth information

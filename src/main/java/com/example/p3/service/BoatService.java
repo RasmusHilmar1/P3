@@ -1,8 +1,12 @@
 package com.example.p3.service;
 
 import com.example.p3.dto.BoatDTO;
+import com.example.p3.model.ApprovedBoat;
 import com.example.p3.model.Boat;
+import com.example.p3.model.PendingBoat;
+import com.example.p3.repository.ApprovedBoatRepository;
 import com.example.p3.repository.BoatRepository;
+import com.example.p3.repository.PendingBoatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +18,10 @@ public class BoatService {
 
     @Autowired
     private BoatRepository boatRepository;
+    @Autowired
+    private PendingBoatRepository pendingBoatRepository;
+    @Autowired
+    private ApprovedBoatRepository approvedBoatRepository;
 
     public Boat updateBoatName(int boatId, String newName) {
         Boat boat = boatRepository.findByBoatID(boatId);
@@ -104,10 +112,62 @@ public class BoatService {
         return null;  // Return null if boat not found
     }
 
+    public Boat updateBoatFeeSent(int boatId, int newFeeSent) {
+        Boat boat = boatRepository.findByBoatID(boatId);
+        if (boat != null) {
+            boat.setFeeSent(newFeeSent);
+            return boatRepository.save(boat);
+        }
+        return null;
+    }
+
+    public Boat updateBoatFeePaid(int boatId, int newFeePaid) {
+        Boat boat = boatRepository.findByBoatID(boatId);
+        if (boat != null) {
+            boat.setFeePaid(newFeePaid);
+            return boatRepository.save(boat);
+        }
+        return null;
+    }
+
+
+    // Function for approving boats and moving them from pending to approved
+    public Boat approveBoat(int pendingBoatId) {
+        PendingBoat pendingBoat = pendingBoatRepository.findById(pendingBoatId); // find the pending boat
+        Boat boat = pendingBoat.getBoat(); // get the boat object nested in the pending boat
+        int boatId = boat.getBoatID();
+        if (boat.getFeeSent() == 1 && boat.getFeePaid() == 1){ // check if both are labeled as 'done'
+            ApprovedBoat approvedBoat = new ApprovedBoat(); // create new approved boat
+
+            approvedBoat.setBoat(boat); // move the boat object to the new approved boat
+            approvedBoat.setId(boatId); // set the ID as the boat's ID
+
+            approvedBoatRepository.save(approvedBoat);
+            pendingBoatRepository.delete(pendingBoat);
+        }
+        return null; // return null if boat is not found
+    }
+
+    public Boat denyBoat(int pendingBoatId) {
+        PendingBoat pendingBoat = pendingBoatRepository.findById(pendingBoatId); // get the pending boat
+
+
+        if (pendingBoat == null) {
+            System.out.println("Pending boat not found."); // check whether pending member is found
+            return null; // return null if boat is not found
+        }
+
+        Boat boat = pendingBoat.getBoat(); // get the corresponding boat object
+
+        pendingBoatRepository.delete(pendingBoat); // delete from both repositories
+        boatRepository.delete(boat);
+
+        return boat;
+    }
+
     public List<Boat> getAllBoats() {
         // Method to fetch all boats
             return boatRepository.findAll(); // Assuming you have a BoatRepository extending JpaRepository
-
     }
 
     public BoatDTO convertToDTO(Boat boat) {

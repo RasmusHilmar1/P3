@@ -1,5 +1,5 @@
 // import fetch functions
-import {fetchApprovedMembers, fetchBoats, fetchBerth} from "./memberFetch.js";
+import {fetchApprovedMembers, fetchBoats, fetchBerth} from "./fetchMethods.js";
 
 const members = await fetchApprovedMembers();
 console.log(members);
@@ -8,22 +8,21 @@ console.log(boats);
 const berths = await fetchBerth();
 console.log(berths);
 
-// calculate areal for berth and boats for the dynamic table and calculating the utilization percentage
+// calculate areal for berth and boats for the dynamic table and calculating the utilization percentage. This should be connected to back-end.
 function calculateAreal(){
     berths.forEach(berth => {
-        berth.areal = berth.length * berth.width;
+        berth.areal = (berth.length * berth.width).toFixed(2);
         console.log("berth ID:" + berth.berthID +"berth areal:" + berth.areal); // console logging each berth and corresponding areal
     });
     boats.forEach(boat => {
-        boat.areal = boat.length * boat.width;
+        boat.areal = (boat.length * boat.width).toFixed(2);
         console.log("boats berth ID:" + boat.berthID + "boat areal:" + boat.areal); // console logging each boat and corresponding areal
-    })
+    });
 }
 
 calculateAreal();
 
 // calculating the utilization of occupied berth in percentage - should be connected to back-end
-//IMPORTANT: cannot find function in back-end that calculates utilization in percentage
 function calculateUtilization(){
     calculateAreal();
     berths.forEach(berth => {
@@ -41,30 +40,38 @@ function addCells(tr, data, editableIndexes = []){
     // insert a new cell for each of the item in the data
     data.forEach((item, index) => {
         td = tr.insertCell();
-        td.textContent = item;
+        tr.className = "berthTableRow";
 
         if (editableIndexes.includes(index)) {
-            td.contentEditable = "true"; // make the cell editable
+            const input = document.createElement("input");
+            td.appendChild(input);
+            input.type = "text";
+            input.value = item;
+            td.className = "editableCells";// divided them into two classes for styling
+            input.className = "editableInput";
+        } else {
+            td.innerHTML = item;
+            td.className = "uneditableCells";
+        }
 
-            if (index === 2 || index === 3) { // if the edited cells are length or width column
-                td.addEventListener('input', () => {
-                    // update the areal after length or width is edited
-                    const length = parseFloat(tr.cells[2].textContent);
-                    const width = parseFloat(tr.cells[3].textContent);
-                    const newAreal = (length * width).toFixed(2); // recalculate areal
-                    tr.cells[4].textContent = newAreal + "m"; // update cell
-                });
-            }
+        if (index === 2 || index === 3) { // if the edited cells are length or width column
+            td.addEventListener('input', () => {
+                // update the areal after length or width is edited
+                const length = parseFloat(tr.cells[2].textContent);
+                const width = parseFloat(tr.cells[3].textContent);
+                const newAreal = (length * width).toFixed(2); // recalculate areal
+                tr.cells[4].textContent = newAreal + "m"; // update cell
+            });
         }
         console.log(item);
     });
 }
 
-function getBerthList() {
+function getBerthList(data) {
     const table = document.getElementById("berthListBody"); // get the HTML element for the dynamic table
 
     // For each berth, find corresponding boat and member
-    berths.forEach(berth => {
+    data.forEach(berth => {
         berth.correspondingBoat = boats.find(boat => boat.berthID === berth.berthID);
         console.log(berth.correspondingBoat);
 
@@ -79,7 +86,7 @@ function getBerthList() {
     });
 
     //For each berth, create a row and add cells with the data
-    berths.forEach(berth => {
+    data.forEach(berth => {
         // do not include the default berth
         if (berth.berthID !== 9999) {
             var row = table.insertRow();
@@ -117,6 +124,7 @@ function getBerthList() {
             const saveCell = row.insertCell(); // Insert a final cell for the Save button
             const saveButton = document.createElement("button");
             saveButton.textContent = "Gem Ændringer";
+            saveCell.className = "saveBtnCell";
             saveButton.className = "saveBtn";
             saveCell.appendChild(saveButton); // Append the Save button to the last cell
 
@@ -124,8 +132,34 @@ function getBerthList() {
             saveButton.addEventListener("click", () => saveBerthChanges(row, berth));
         }
     });
+    return table;
 }
-getBerthList();
+
+getBerthList(berths);
+
+function sortBerthListMember(data){
+    console.log("Sorting function called!")
+
+    let filteredRows, sorted;
+
+    filteredRows = data.filter(row => row.correspondingMember); // filter data to include only the rows with a corresponding member and boat
+    console.log(filteredRows);
+
+    sorted = filteredRows.sort((a,b) => a.correspondingBoat.memberID - b.correspondingBoat.memberID); // sort the filtered rows
+    console.log(sorted);
+
+    const table = document.getElementById("berthListBody");
+    table.innerHTML = ""; //clear out the table
+
+    getBerthList(sorted); //create the new table with the sorted rows
+}
+
+sortBerthListMember(berths);
+
+function sortBerthListBerth(data){
+    const sorted = data.sort((a,b) => a.berthName.localeCompare(b.berthName));
+    getBerthList(sorted);
+}
 
 // function for saving the changes
 async function saveBerthChanges(row, berth) {
@@ -212,12 +246,20 @@ function searchBarBerthList() {
 
         //Iterate through all cells in the respective row
         for (let j = 0; j < rowCells.length; j++) {
-            const cellText = rowCells[j].textContent.toLowerCase(); //have all cell content converted into lowercase since input is also converted to lowercase
+            const cell = rowCells[j];
+            let cellText = cell.textContent.toLowerCase(); // check content of the cell
+
+            // check if there is an input field inside the cell
+            const inputField = cell.querySelector('input');
+            if (inputField){
+                cellText = inputField.value.toLowerCase();
+            }
             if (cellText.includes(filter)){
                 result = true;
                 break;
             }
         }
+
         // make sure the rows with no match are hidden while the one with a match are displayed
         if (result){
             tableRows[i].style.display = "table-row";
@@ -234,4 +276,3 @@ function searchBarEvent(){
 }
 
 searchBarEvent();
-

@@ -1,47 +1,158 @@
+/* Style for the member requests container */
 .memberRequestsContainer {
+    padding-top: 150px;
     z-index: 20;
     background-color: white;
-    gap: 10px;
-    padding-top: 110px; /*Dette skal passe med navigationsbaren når det laves om*/
     font-size: 25px;
+    max-width: 800px; /* Limit the width for better readability */
+    margin: 0 auto; /* Center the container */
+    border-radius: 10px;
+    height: 100%
 }
 
+/* Table styling */
 table {
-    border: 1px solid;
-    border-collapse: separate;
-    table-border-color-dark: #222222;
     width: 100%;
-    table-layout: auto;
+    border: none;
+    border-radius: 10px;
+    margin: 25px 0;
+    font-size: 1em;
+    font-family: sans-serif;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-tr {
-    border: 1px solid;
-    border-collapse: separate;
-    table-border-color-dark: #222222;
-    width: 100%;
+.tableTitle {
+    border: none;
+    color: #5c82b5;
 }
 
-th {
-    border: 1px solid;
-    border-collapse: separate;
-    table-border-color-dark: #222222;
-}
-
-td {
-    border: 1px solid;
-    border-collapse: separate;
-    table-border-color-dark: #222222;
+/* Cell styling */
+.memberCells {
     vertical-align: middle;
-    padding: 8px;
+    text-align: center;
+    border: none;
+    border-radius: 10px;
 }
 
-.iconsBoatRequests {
-    margin: 0 auto;
-    display: block;
-    width: 30px;
-    height: 30px;
+/* Button styling */
+
+.btnCells {
+    vertical-align: middle;
+    text-align: center;
+    border-radius: 10px;
+    border-color: #5c82b5;
+    border-width: 2px;
 }
 
-a {
-    text-decoration: none;
+.btnCells:hover {
+    background-color: #f4f4f4;
+}
+
+.addBtn {
+    border: none;
+    background-color: transparent;
+    height: 100%;
+    width: 100%;
+    cursor: pointer;
+}
+
+.addBtn:hover {
+    background-color: #f4f4f4;
+}
+
+/* Button styling for the member info */
+.memberInfoBtn {
+    font-size: 18px;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    padding: 15px; /* Add padding for a larger click area */
+    background-color: white;
+    border: 2px solid #5c82b5;
+    color: #5c82b5;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Center icon and text vertically */
+}
+
+/* Icon style within the button */
+.memberInfoBtn:after {
+    content: "";
+    background-image: url('http://localhost:8080/Images/Icons/infoIconBlue.svg'); /* Update URL if needed */
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 18px;
+    height: 18px;
+    margin-left: 10px;
+}
+
+/* Change button appearance on hover */
+.memberInfoBtn:hover {
+    background-color: #5c82b5;
+    color: white;
+}
+
+/* Selected button styling */
+.selectedMemberBtn {
+    background-color: #5c82b5;
+    color: white;
+    border: none;
+}
+
+.selectedMemberBtn:after {
+    background-image: url('http://localhost:8080/Images/Icons/infoIconWhite.svg');
+}
+
+/* Collapsible content styling */
+.infoRowMemberReq {
+    display: none;  /* Hide by default*/
+    position: absolute;  /* Position it absolutely within the table cell*/
+    background-color: white;
+    border-radius: 10px;
+    border-color: #5c82b5;
+    border-width: 2px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 100;  /* Ensure it’s on top*/
+    transition: height 0.3s ease;  /* Smooth transition for expanding */
+    width: 100%;
+    overflow: hidden;
+}
+
+/*Show the content when the button is clicked*/
+.infoRowMemberReq.visible {
+    display: block; /* Make the row visible */
+    height: auto;
+}
+
+.infoCellMemberReq {
+    padding: 10px;
+    width: 100%;  /* Ensure it’s as wide as the parent cell */
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+    background-color: white;
+    color: #5c82b5;
+    border-radius: 10px;
+    border: none;
+}
+
+.infoCellMemberReq.visible {
+    height: auto;  /* You can adjust the height as needed */
+    width: 100%
+}
+
+/* Collapsible content style */
+.collapsibleContent {
+    padding: 10px;
+    background-color: white;
+    color: #5c82b5;
+    width: 100%;  /* Ensure it’s as wide as the parent cell */
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+}
+
+/*When visible, the content expands*/
+.collapsibleContent.visible {
+    height: auto;  /* You can adjust the height as needed*/
+    padding: 10px;  /* Expand the padding when visible*/
 }

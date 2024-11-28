@@ -77,6 +77,29 @@ public class BoatController {
         return boatService.updateBoatMemberID(id, newMemberID);
     }
 
+    //Endpoints to update boat fee status
+    @PutMapping("/update/feeSent/{id}")
+    public Boat updateBoatFeeSent(@PathVariable int id, @RequestBody int newFeeStatus) {
+        return boatService.updateBoatFeeSent(id, newFeeStatus);
+    }
+
+    @PutMapping("/update/feePaid/{id}")
+    public Boat updateBoatFeePaid(@PathVariable int id, @RequestBody int newFeeStatus) {
+        return boatService.updateBoatFeePaid(id, newFeeStatus);
+    }
+
+    // Endpoint for approving boats and moving them from pending to approved
+    @PostMapping("/update/approve/boat/{id}")
+    public Boat approveBoat(@PathVariable int id) {
+        return boatService.approveBoat(id);
+    }
+
+    // Endpoint for denying and deleting boats
+    @PostMapping("/update/deny/boat/{id}")
+    public Boat denyBoat(@PathVariable int id) {
+        return boatService.denyBoat(id);
+    }
+
     @GetMapping("/public/{memberId}")
     public List<BoatDTO> getBoatsByMemberId(@PathVariable int memberId) {
         return boatService.getBoatsByMemberId(memberId);

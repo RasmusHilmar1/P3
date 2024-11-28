@@ -18,6 +18,8 @@ public class Boat {
     private double width;
     private double draught;
     private String insurance;
+    private int feesent;
+    private int feepaid;
 
 
 
@@ -100,5 +102,21 @@ public class Boat {
 
     public void setInsurance(String insurance) {
         this.insurance = insurance;
+    }
+
+    public int getFeeSent() {
+        return feesent;
+    }
+
+    public void setFeeSent(int feeSent) {
+        this.feesent = feeSent;
+    }
+
+    public int getFeePaid() {
+        return feepaid;
+    }
+
+    public void setFeePaid(int feePaid) {
+        this.feepaid = feePaid;
     }
 }

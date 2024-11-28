@@ -9,6 +9,8 @@ import com.example.p3.repository.BoatRepository;
 import com.example.p3.repository.BerthRepository;
 import com.example.p3.repository.MemberlistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

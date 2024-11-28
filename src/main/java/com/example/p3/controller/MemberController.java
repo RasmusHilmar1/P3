@@ -1,6 +1,7 @@
 package com.example.p3.controller;
 
 import com.example.p3.dto.MemberDTO;
+import com.example.p3.model.Boat;
 import com.example.p3.model.Member;
 import com.example.p3.repository.MemberRepository;
 import com.example.p3.service.MemberService;
@@ -99,6 +100,18 @@ public class MemberController {
     @PutMapping("/update/information/{id}")
     public Member updateMemberInformation(@PathVariable int id, @RequestBody Member info) {
         return memberService.updateMemberInformation(id, info);
+    }
+
+    // Endpoint for approving members and moving them from pending to approved
+    @PostMapping("/update/approve/member/{id}")
+    public Member approveMember(@PathVariable int id) {
+        return memberService.approveMember(id);
+    }
+
+    // Endpoint for deleting pending members when denying
+    @PostMapping("/update/deny/member/{id}")
+    public Member denyMember(@PathVariable int id) {
+        return memberService.denyMember(id);
     }
 
     public Member getPublicMember(int memberId) {

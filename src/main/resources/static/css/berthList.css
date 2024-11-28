@@ -1,66 +1,175 @@
-#berthListSearchBar {
-    font-size: 18px;
-    width: 500px;
-    left: 50%;
-}
-
-#searchBarCell {
-    text-align: center;
-    margin: 0 auto;
-    padding-top: 5px;
-    padding-bottom: 5px;
-}
-
+/* Style for the table container */
 #berthListContainer {
-    padding-top: 110px;
+    padding-top: 150px;
+    background-color: #f4f4f4;
+}
+
+/* Styling for the sorting buttons */
+#sortingBtnRow {
+    text-align: center;
+    vertical-align: middle;
+    border: none;
+}
+
+#sortingBtnCell {
+    text-align: center;
+    vertical-align: middle;
+    border: none;
+}
+
+#sortingBtnsContainer {
+    text-align: center;
+    vertical-align: middle;
+    display: inline;
+    border: none;
+}
+
+.sortingBtn {
+    display: inline;
+    border-color: #5c82b5;
+    border-radius: 10px;
+    color: #5c82b5;
+}
+
+/* styling for sorting buttons when selected */
+.sortingBtn.selected {
+    background-color: #5c82b5;
+    color: white;
+}
+
+/* Style for the dynamic table */
+table {
+    width: 100%;
+    border-collapse: collapse;
 }
 
 #berthListHeader {
-    font-size: 25px;
-}
-
-.berthListInfo{
-    font-size: 20px;
-    text-align: center;
-}
-
-#berthList {
-    border: 1px solid;
-    border-collapse: separate;
-    table-border-color-dark: #222222;
+    font-size: 28px;
+    padding-top: 20px;
+    text-align: center; /* Ensure the text is centered */
+    border: none;
+    font-weight: bold;
     width: 100%;
-    table-layout: auto;
-    margin-top: 10px;
-}
-
-#berthListBody {
-    font-size: 18px;
-}
-
-tr {
-    border: 1px solid;
-    border-collapse: separate;
-    table-border-color-dark: #222222;
-    width: 100%;
-}
-
-th {
-    border: 1px solid;
-    border-collapse: separate;
-    table-border-color-dark: #222222;
-}
-
-td {
-    border: 1px solid;
-    border-collapse: separate;
-    table-border-color-dark: #222222;
     vertical-align: middle;
 }
 
-.berthTableRow:hover {
-    background-color: #5c82b5;
+.berthListInfo {
+    font-size: 18px;
+    padding: 20px 10px; /* Increased padding to add more space above and below */
+    text-align: left;
+    border: none;
+    font-weight: bold;
+    margin-top: 10px; /* Adds more space above */
+    margin-bottom: 10px; /* Adds more space below */
+    vertical-align: middle;
 }
 
-.berthList {
-    display: none;
+td {
+    padding: 10px; /* Ensures consistent padding in both headers and cells */
+    text-align: left; /* Aligns text to the left */
+    vertical-align: middle; /* Vertically centers text */
+    font-size: 18px;
+    word-wrap: break-word;
+    max-width: 250px;
+}
+
+/* Row hover effect */
+.berthTableRow:hover {
+    background-color: #d3cfcc;
+}
+
+.berthTableRow:nth-child(odd) {
+    background-color: #e8e5e2; /* Color for odd rows */
+}
+
+.berthTableRow:nth-child(odd):hover {
+    background-color: #d3cfcc;
+}
+
+/* Specific styling for editable cells */
+.editableCells {
+    max-width: 100px; /* Limit cell width to prevent overly wide cells */
+    padding: 5px; /* Add padding for a centered look */
+    text-align: left; /* Center text in cell */
+}
+.editableInput {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin: 2px auto; /* Center the input field within the cell */
+    font-size: 18px;
+    max-width: 70px;
+}
+
+.editableInput:focus {
+    outline: none;
+    border-color: #5c5db5;
+    box-shadow: 0 0 5px 1px rgb(92, 130, 181);
+}
+
+/* Styling for the uneditable cells */
+.uneditableCells {
+    max-width: 100px; /* Limit cell width to prevent overly wide cells */
+    padding: 5px; /* Add padding for a centered look */
+    text-align: left; /* Center text in cell */
+}
+.uneditableInput {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin: 2px auto; /* Center the input field within the cell */
+    font-size: 18px;
+    width: auto;
+    cursor: auto;
+}
+
+.uneditableInput:focus {
+    outline: none;
+    border: none;
+    cursor: auto;
+}
+
+/* Styles for the save button */
+.saveBtn {
+    background-color: #5c82b5;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.saveBtn:hover {
+    background-color: #4f74a3;
+}
+
+.saveBtnCell {
+    border: none;
+    background-color: transparent;
+}
+
+/* Search bar styling */
+#searchBarCell {
+    padding: 10px;
+}
+
+#berthListSearchBar {
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    font-size: 16px;
+    width: 30%; /* Adjust width as per requirement */
+    margin: 20px auto; /* Center the search bar */
+    display: block; /* Ensure it's treated as a block-level element */
+    transition: border-color 0.3s ease;
+}
+
+#berthListSearchBar:focus {
+    border-color: #5c5db5; /* Blue border on focus */
+    outline: none;
+    box-shadow: 0 0 5px 2px rgb(92, 130, 181); /* Creates a blue glow */
+}
+
+/* Table row styling for better differentiation */
+.berthTableRow {
+    background-color: white;
 }

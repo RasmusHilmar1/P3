@@ -11,7 +11,7 @@
             crossorigin=""></script>
     <link rel="stylesheet" href="/css/main.css" />
     <link rel="stylesheet" href="/css/navigationBar.css" />
-    <link rel="stylesheet" href="/css/sidebar.css" />
+    <link rel="stylesheet" href="/css/sidebarNy.css" />
     <link rel="stylesheet" href="/css/map.css" />
 </head>
 <body>
@@ -33,7 +33,7 @@
     </button>
 </div>
 <div id="sidebar" class="sidebar">
-    <label for="searchBar"></label><input type="text" id="searchBar" class="searchBar" placeholder="Søg på medlem, båd eller bådplads">
+    <label for="searchBarSidebar"></label><input type="text" id="searchBarSidebar" class="searchBar" placeholder="Søg på medlem, båd eller bådplads">
 
     <form action="/default" method="post" style="display:inline;">
         <button id="memberBtn" class="sidebarMenuBtn">Medlemmer</button>
@@ -41,7 +41,7 @@
     <button id="berthBtn" class="sidebarMenuBtn">Bådpladser</button>
 
 
-    <table id="memberListWithoutBoat" class="memberList">
+    <table id="memberListWithoutBoat" class="memberList" style="display: table;">
         <thead id="memberWithoutBoatTableHeader" class="tableHeader">
         <!-- Dynamic header is added here -->
         </thead>
@@ -49,7 +49,7 @@
         <!-- Dynamic table is added here -->
         </tbody>
     </table>
-    <table id="memberListBoat" class="memberList">
+    <table id="memberListBoat" class="memberList" style="display: table;">
         <thead id="memberBoatTableHeader" class="tableHeader">
         <!-- Dynamic header is added here -->
         </thead>
@@ -61,7 +61,7 @@
         <thead id="berthTableHeader" class="tableHeader">
         <!-- Dynamic header is added here -->
         </thead>
-        <tbody>
+        <tbody id="berthListSidebarBody">
         <!-- Dynamic table is added here -->
         </tbody>
     </table>
@@ -80,9 +80,8 @@
 </div>
 <!-- Kort -->
 <div id="map" class="map"></div>
-<script type="module" src="/js/map.js"></script>
+<script type="module" src="/js/mapVessel.js"></script>
 <script type="module" src="/js/sidebarVessel.js"></script>
-<script src="/js/navigationbar.js"></script>
-<script type="module" src="/js/memberFetch.js"></script>
+<script type="module" src="/js/fetchMethods.js"></script>
 </body>
 </html>

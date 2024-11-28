@@ -1,50 +1,89 @@
+/* General body styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+/* Style for table container */
 .boatRequestsContainer {
     z-index: 20;
-    background-color: white;
     gap: 10px;
-    padding-top: 110px; /*Dette skal passe med navigationsbaren når det laves om*/
+    padding-top: 110px;
+    background-color: #f4f4f4;
     font-size: 25px;
 }
 
 table {
-    border: 1px solid;
-    border-collapse: separate;
-    table-border-color-dark: #222222;
     width: 100%;
-    table-layout: auto;
+    border-collapse: collapse;
+    border: none;
 }
 
-tr {
-    border: 1px solid;
-    border-collapse: separate;
-    table-border-color-dark: #222222;
+/* Title of table */
+.tableTitle {
+    font-size: 28px;
+    padding-top: 20px;
+    border: none;
+    font-weight: bold;
     width: 100%;
+    vertical-align: middle;
+    text-align: center;
 }
 
-th {
-    border: 1px solid;
-    border-collapse: separate;
-    table-border-color-dark: #222222;
+/* Row with header cells */
+.headerCellsLeft {
+    font-size: 18px;
+    padding: 20px 10px; /* Increased padding to add more space above and below */
+    text-align: left;
+    border: none;
+    font-weight: bold;
+    margin-top: 10px; /* Adds more space above */
+    margin-bottom: 10px; /* Adds more space below */
+    vertical-align: middle;
+}
+
+.headerCellsCenter {
+    font-size: 18px;
+    padding: 20px 10px; /* Increased padding to add more space above and below */
+    text-align: center;
+    border: none;
+    font-weight: bold;
+    margin-top: 10px; /* Adds more space above */
+    margin-bottom: 10px; /* Adds more space below */
+    vertical-align: middle;
+}
+
+/* Rows with information */
+.infoRows {
+    padding: 10px; /* Ensures consistent padding in both headers and cells */
+    vertical-align: middle; /* Vertically centers text */
+    font-size: 18px;
+    word-wrap: break-word;
+    max-width: 250px;
+    border: none;
+}
+
+/* Row hover effect */
+.infoRows:hover {
+    background-color: #d3cfcc;
+}
+
+.infoRows:nth-child(odd) {
+    background-color: #e8e5e2; /* Color for odd rows */
+}
+
+.infoRows:nth-child(odd):hover {
+    background-color: #d3cfcc;
 }
 
 td {
-    border: 1px solid;
-    border-collapse: separate;
-    table-border-color-dark: #222222;
-    vertical-align: middle;
-    padding: 8px;
-}
-
-td button.distributeBerthsBtn {
-    font-size: 20px;
-    cursor: pointer;
-    display: block;
-    margin: 0 auto;
-}
-
-td button.distributeBerthsBtn:hover{
-    background-color: #5c82b5;
-    color: white;
+    padding: 10px; /* Ensures consistent padding in both headers and cells */
+    text-align: left; /* Aligns text to the left */
+    vertical-align: middle; /* Vertically centers text */
+    font-size: 18px;
+    word-wrap: break-word;
+    max-width: 250px;
+    border: none;
 }
 
 .iconsBoatRequests {
@@ -54,6 +93,50 @@ td button.distributeBerthsBtn:hover{
     height: 30px;
 }
 
+.iconCells {
+    vertical-align: middle;
+    text-align: center;
+}
+
 a {
     text-decoration: none;
+}
+
+/* Button styling */
+.addBtn {
+    background-color: white;
+    padding: 8px 15px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #5c82b5;
+    vertical-align: center;
+    border: none;
+}
+
+.addBtn:hover{
+    background-color: #4f74a3;
+    color: white;
+    border: none;
+}
+
+.buttonAssigned{
+    background-color: #4f74a3;
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.2);
+    padding: 8px 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+    color: white;
+    vertical-align: center;
+}
+
+button[disabled] {
+    opacity: 90%;
+    cursor: not-allowed;
+}
+
+.btnCells {
+    text-align: center;
 }

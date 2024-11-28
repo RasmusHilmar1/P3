@@ -1,5 +1,10 @@
 import {myGeoJson} from "./geojson.js";
-import {fetchApprovedMembers, fetchBoats, fetchBerth} from "./memberFetch.js";
+import {fetchApprovedMembers, fetchBerth, fetchBoats} from "./fetchMethods.js";
+import {switchHeader} from "./sidebarVessel.js";
+
+const approvedMembers = await fetchApprovedMembers();
+const boats = await fetchBoats();
+const berths = await fetchBerth();
 
 // Create map for leaflet -->
 var map = L.map('map', {
@@ -46,7 +51,6 @@ harbor1.addEventListener("click", function(event) {
     ];
 
     //var imageUrl = '../../Images/vestre_badelaug_kort_kopi.jpeg';
-
     //var imageOverlay = L.imageOverlay(imageUrl, imageBounds).addTo(map);
 
     const bounds = L.latLngBounds(
@@ -61,7 +65,6 @@ harbor1.addEventListener("click", function(event) {
 
 //Hvis knappen for "skudehavn" trykket vil kortet for den havn vises
 const harbor2 = document.getElementById("skudehavn");
-
 
 harbor2.addEventListener("click", function(event) {
 
@@ -82,12 +85,8 @@ harbor2.addEventListener("click", function(event) {
 
 });
 
-
 // Move zoom buttons -->
 map.zoomControl.setPosition('bottomright');
-
-
-
 
 //const btnHarbor1 = document.querySelector('.vestreBaadehavn');
 //const btnHarbor2 = document.querySelector('.skudehavn');
@@ -102,94 +101,324 @@ harbors.addEventListener('click', function (event) {
     }
 });
 
+let geoJsonLayer;
 
-L.geoJSON(myGeoJson, {
-    onEachFeature: onEachFeature,
-    style: function(feature) {
-        var status = feature.properties.status;
+// Update GeoJSON data with berth status
+function updateGeoJsonWithStatus() {
+    // Map berth data to GeoJSON features
+    myGeoJson.features.forEach(feature => {
+        const berthStatus = berths.find(berth => berth.berthID === Number(feature.properties.id));
+        feature.properties.status = berthStatus ? berthStatus.availability : 'Unknown';
+    });
 
-        var fillColor;
+    // Render updated GeoJSON with styles based on status
+    geoJsonLayer = L.geoJSON(myGeoJson, {
+        onEachFeature: onEachFeature,
+        style: function (feature) {
+            const status = feature.properties.status;
+            let fillColor;
 
-        if (status === "Available") {
-            fillColor = "#00FF00";
-        } else if (status === "Unavailable") {
-            fillColor = "red";
-        } else if (status === "TempAvailable") {
-            fillColor = "orange";
-        } else if (status === "Structure") {
-            fillColor = "white";
+            switch (status) {
+                case 1:
+                    fillColor = "#00FF00";
+                    break;
+                case 0:
+                    fillColor = "red";
+                    break;
+                case 2:
+                    fillColor = "orange";
+                    break;
+                default:
+                    fillColor = "white"; // Default color if status is unknown
+            }
+
+            return {
+                color: "black",
+                weight: 0.1,
+                fillColor: fillColor,
+                fillOpacity: 0.8
+            };
         }
+    }).addTo(map);
 
-        return {
-            //color: "#00bfff",    // Sets the border color to black
-            color: "black",
-            weight: 0.1,         // Adjusts border thickness
-            fillColor: fillColor,
-            fillOpacity: 0.8   // Adjusts fill opacity
-        };
-    }
-}).addTo(map);
-
-
-const approvedMembers = await fetchApprovedMembers();
-console.log("members info:" + JSON.stringify(approvedMembers));
-
-const boats = await fetchBoats();
-console.log("boats" + boats);
-//console.log("boatID" + boats.name);
-
-const berths = await fetchBerth();
-console.log("berths" + berths);
-
+    memberToMap(geoJsonLayer);
+    berthListsToMap(geoJsonLayer)
+}
+// Initial load and update
+updateGeoJsonWithStatus();
 
 function onEachFeature(feature, layer) {
-    //console.log(feature.properties);
+
     layer.on('click', function(e) {
-        var memberList = document.getElementById("memberListBoat");
-        const rows = memberList.querySelectorAll('tr');
-        console.log("memberList: " + memberList);
-        console.log("rows: " + rows);
+        highlightBerth(e);
+        //berthToSideBarBerthList(feature);
+        mapToThreeLists(feature);
+        mapToMemberList(feature);
+    });
+
+    layer.featureId = feature.properties.id;
+}
+
+let selectedLayer;
+
+function highlightBerth(e) {
+    let layer = e.target;
+    removeHighlight(layer);
+    layer.setStyle({
+        color: "blue",
+        weight: 2,
+        //fillOpacity: 0.5
+    });
+    selectedLayer = layer;
+}
+
+
+function removeHighlight(layer) {
+    if (selectedLayer && (selectedLayer !== layer)){
+        selectedLayer.setStyle({
+            color: "black",
+            weight: 0.1,
+        });
+    }
+}
+
+function mapToMemberList(feature) {
+    const tables = document.querySelectorAll(".memberList");
+
+    tables.forEach(table => {
+        const rows = table.querySelectorAll("tr");
 
         rows.forEach(row => {
-            const memberCell = row.querySelector(".memberCell");
-            console.log("memberCell: " + memberCell.innerHTML);
+            const nameBtn = row.querySelector(".nameBtn");
+            console.log("nameBtn: " + nameBtn.outerHTML);
 
-            //if (memberCell) {
-            //const memberName = memberCell.textContent.trim();
-            //console.log("memberName:" + memberName);
-            approvedMembers.forEach(approvedMember => {
-                const memberName = row.querySelector(`#memberName${approvedMember.member.memberID}`);
-                //console.log("memberCell: " + memberCell.innerHTML);
+            if (nameBtn) {
+                const memberId = nameBtn.id.replace("memberName", "");
 
-                if(memberName) {
-                    const memberNameId = memberName.id;
-                    const id = memberNameId.replace("memberName", "");
-                    console.log(id);
+                boats.forEach(boat => {
+                    if ((Number(memberId) === boat.memberID) && (boat.berthID !== 9999) &&
+                        (boat.berthID === Number(feature.properties.id)) && (table.style.display === "table")) {
+                            nameBtn.scrollIntoView();
+                            nameBtn.click();
+                    }
+                })
 
-                    //if (id === approvedMember.member.memberID) {
-                    //  console.log("id match member");
-                    boats.forEach(boat => {
-                        if ((Number(id) === boat.memberID) && (boat.berthID !== 9999) && (boat.berthID === Number(feature.properties.id))) {
-                            memberCell.click();
-                            console.log("membercell clicked");
-                        }
-                    });
-                    //}
+/*
+                if ((berthName === feature.properties.name) && (table.style.display === "table")) {
+                    berthNameBtn.scrollIntoView();
+                    berthNameBtn.click();
+                }*/
+            }
+        });
+    });
+
+}
+
+function mapToThreeLists(feature){
+    const tables = document.querySelectorAll("[id^='berthList']");
+
+    tables.forEach(table => {
+        const rows = table.querySelectorAll("tr");
+
+        rows.forEach(row => {
+            const berthNameBtn = row.querySelector(".berthBtn");
+            //console.log("berthNameBtn: " + berthNameBtn);
+            if (berthNameBtn) {
+                const berthName = berthNameBtn.textContent.trim();
+                //console.log("berthName: " + berthName);
+
+                if ((berthName === feature.properties.name) && (table.style.display === "table")) {
+                    berthNameBtn.scrollIntoView();
+                    berthNameBtn.click();
                 }
-            });
+            }
+        });
+    });
 
-            //}
+}
+
+/*
+function berthToSideBarBerthList(feature) {
+    const berthList = document.getElementById("berthList");
+    const rows = berthList.querySelectorAll('tr');
+
+    rows.forEach(row => {
+        const berthNameBtn = row.querySelector(".berthBtn");
+        //console.log("berthNameBtn: " + berthNameBtn);
+        if (berthNameBtn) {
+            const berthName = berthNameBtn.textContent.trim();
+            //console.log("berthName: " + berthName);
+
+            if ((berthName === feature.properties.name) && (berthList.style.display === "table")) {
+                //memberListBoat.style.display = "none";
+                //console.log("display", memberListBoat.style.display = "none");
+                //memberListWithoutBoat.style.display = "none";
+
+                // Loop gennem og skjul hver tabel
+                //allBerthTables.forEach((table) => {
+                //    table.style.display = 'none';
+                //});
+                //berthList.style.display = "table";
+
+                berthNameBtn.click();
+                berthNameBtn.scrollIntoView();
+            }
+        }
+    });
+}
+*/
+function memberToMap(geoJsonLayer){
+    const memberList = document.getElementById("memberListBoat");
+    memberList.addEventListener("click", (event) => {
+        geoJsonLayer.eachLayer(layer => {
+            layer.setStyle({
+                color: "black",
+                weight: 0.1
+            })
         });
 
-        /*
-        document.getElementById("berthId").innerHTML = feature.properties.id;
-        document.getElementById("berthName").innerHTML = feature.properties.name;
-        document.getElementById("berthStatus").innerHTML = feature.properties.status;
-         */
+        const button = event.target.closest(".nameBtn");
+        console.log("button member: " + button.outerHTML);
+
+        if(button) {
+            const memberId = button.id.replace("memberName", "");
+
+            boats.forEach(boat => {
+                if ((Number(memberId) === boat.memberID) && (boat.berthID !== 9999)) {
+                    geoJsonLayer.eachLayer(layer => {
+                        if(Number(layer.featureId) === boat.berthID) {
+                            layer.setStyle({
+                                color: "blue",
+                                weight: 2
+                            })
+                            //console.log("fundet");
+                        /*} else {
+                            layer.setStyle({
+                                color: "black",
+                                weight: 0.1
+                            })*/
+                        }
+                    })
+                }
+            });
+        }
     });
+
+}
+
+function berthListsToMap(geoJsonLayer){
+    const berthList = document.getElementsByClassName("berthList");
+    for(let i = 0; i < berthList.length; i++) {
+        berthList[i].addEventListener("click", (event) => {
+            geoJsonLayer.eachLayer(layer => {
+                layer.setStyle({
+                    color: "black",
+                    weight: 0.1
+                })
+            });
+
+            const berthBtn = event.target.closest(".berthBtn");
+            console.log("button: " + berthBtn.outerHTML);
+
+            if (berthBtn) {
+                const berthName = berthBtn.textContent.trim();
+
+                berths.forEach(berth => {
+                    if (berthName === berth.name) {
+                        geoJsonLayer.eachLayer(layer => {
+                            if (Number(layer.featureId) === berth.berthID) {
+                                layer.setStyle({
+                                    color: "blue",
+                                    weight: 2
+                                })
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }
 }
 
 
 
 
 
+
+
+
+
+
+/*
+function berthListToMap(geoJsonLayer){
+    const berthList = document.getElementById("berthList");
+    berthList.addEventListener("click", (event) => {
+        geoJsonLayer.eachLayer(layer => {
+            layer.setStyle({
+                color: "black",
+                weight: 0.1
+            })
+        });
+
+        const berthBtn = event.target.closest(".berthBtn");
+        console.log("button: " + berthBtn.outerHTML);
+
+        if(berthBtn) {
+
+            const berthName = berthBtn.textContent.trim();
+
+            berths.forEach(berth => {
+                if (berthName === berth.name) {
+                    geoJsonLayer.eachLayer(layer => {
+                       if (Number(layer.featureId) === berth.berthID) {
+                           layer.setStyle({
+                               color: "blue",
+                               weight: 2
+                           })
+                       }
+                    });
+                }
+            });
+        }
+    });
+
+}
+
+
+
+
+
+var memberList = document.getElementById("memberListBoat");
+const rows = memberList.querySelectorAll('tr');
+console.log("memberList: " + memberList);
+console.log("rows: " + rows);
+
+
+rows.forEach(row => {
+
+    row.addEventListener("click", function() {
+        //const memberCell = row.querySelector(".memberCell");
+
+        const markerId = row.getAttribute("")
+
+
+
+        approvedMembers.forEach(approvedMember => {
+            const memberName = row.querySelector(`#memberName${approvedMember.member.memberID}`);
+            //console.log("memberCell: " + memberCell.innerHTML);
+
+            if(memberName) {
+                const memberNameId = memberName.id;
+                const id = memberNameId.replace("memberName", "");
+                //console.log(id);
+
+                boats.forEach(boat => {
+                    if ((Number(id) === boat.memberID) && (boat.berthID !== 9999) && (boat.berthID === Number(feature.properties.id))) {
+                        highlightBerth(e);
+                    }
+                });
+            }
+        });
+    });
+});
+*/
