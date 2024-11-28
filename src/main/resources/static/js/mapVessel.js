@@ -1,5 +1,5 @@
-import { myGeoJson, fetchGeoJson } from "./geojson.js";
-import {fetchApprovedMembers, fetchBoats, fetchBerth} from "./fetchMethods.js";
+import {fetchGeoJson, myGeoJson} from "./geojson.js";
+import {fetchApprovedMembers, fetchBerth, fetchBoats} from "./fetchMethods.js";
 
 const approvedMembers = await fetchApprovedMembers();
 const boats = await fetchBoats();
@@ -120,8 +120,7 @@ harbors.addEventListener('click', function (event) {
 async function loadBerthData() {
     try {
         const response = await fetch('berths/get'); // Replace with your actual API endpoint
-        const berths = await response.json();
-        return berths;
+        return await response.json();
     } catch (error) {
         console.error('Error fetching berth data:', error);
         return [];

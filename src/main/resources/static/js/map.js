@@ -1,6 +1,9 @@
 import { myGeoJson, fetchGeoJson } from "./geojson.js";
 import {fetchApprovedMembers, fetchBoats, fetchBerth} from "./fetchMethods.js";
 
+const boats = await fetchBoats();
+const berths = await fetchBerth();
+
 // Create map for leaflet -->
 var map = L.map('map', {
    // minZoom: 17,
@@ -147,6 +150,8 @@ async function updateGeoJsonWithStatus() {
     });
 }
 
+let geoJsonLayer;
+
 // Wait for GeoJSON to be fetched before using it
 async function initializeMap() {
     await fetchGeoJson(); // Ensure that the GeoJSON is fetched
@@ -155,7 +160,7 @@ async function initializeMap() {
         await updateGeoJsonWithStatus(); // Update GeoJSON data with berth statuses
 
         // Add the updated GeoJSON to the map
-        L.geoJSON(myGeoJson, {
+        geoJsonLayer = L.geoJSON(myGeoJson, {
             onEachFeature: onEachFeature,
             style: function (feature) {
                 const status = feature.properties.status;
@@ -183,6 +188,9 @@ async function initializeMap() {
                 };
             }
         }).addTo(map);
+
+        berthListsToMap(geoJsonLayer)
+
     } else {
         console.error('GeoJSON data not available');
     }
@@ -193,28 +201,14 @@ initializeMap();
 
 
 function onEachFeature(feature, layer) {
-    const berthId = feature.properties.id;
 
-    layer.on('click', function () {
+    layer.featureId = feature.properties.id;
+    
+    layer.on('click', function (e) {
+        highlightBerth(e);
         updateSidebarWithBerth(feature.properties);
     });
 
-    // Bind popup with updated status
-    const status = feature.properties.status === 1 ? "Tilgængelig" : feature.properties.status === 0 ? "Optaget" : feature.properties.status === 2 ? "Midlertidig Utilgængelig" : "Unknown";
-    /*
-    const popupContent = `
-           <div>
-                <b>Address:</b> ${berthId || 'N/A'}<br>
-                <b>Name:</b> ${feature.properties.name || 'N/A'}<br>
-                <b>Status:</b> ${status}
-            </div>
-        `;
-        layer.bindPopup(popupContent);
-    }
-
-
-
-     */
 // Define scroll options
     const scrolledIntoViewOptions = {
         behavior: 'smooth', // Enables smooth scrolling
@@ -240,4 +234,59 @@ function onEachFeature(feature, layer) {
             }
         });
     }
+}
+
+
+let selectedLayer;
+
+function highlightBerth(e) {
+    let layer = e.target;
+    removeHighlight(layer);
+    layer.setStyle({
+        color: "blue",
+        weight: 2,
+        //fillOpacity: 0.5
+    });
+    selectedLayer = layer;
+}
+
+function removeHighlight(layer) {
+    if (selectedLayer && (selectedLayer !== layer)){
+        selectedLayer.setStyle({
+            color: "black",
+            weight: 0.1,
+        });
+    }
+}
+
+function berthListsToMap(geoJsonLayer){
+    const berthList = document.getElementById("berthList");
+    berthList.addEventListener("click", (event) => {
+            geoJsonLayer.eachLayer(layer => {
+                layer.setStyle({
+                    color: "black",
+                    weight: 0.1
+                })
+            });
+
+            const berthBtn = event.target.closest(".berthBtn");
+            console.log("button: " + berthBtn.outerHTML);
+
+            if (berthBtn) {
+                const berthName = berthBtn.textContent.trim();
+
+                berths.forEach(berth => {
+                    if (berthName === berth.name) {
+                        geoJsonLayer.eachLayer(layer => {
+                            if (Number(layer.featureId) === berth.berthID) {
+                                layer.setStyle({
+                                    color: "blue",
+                                    weight: 2
+                                })
+                            }
+                        });
+                    }
+                });
+            }
+        });
 }
