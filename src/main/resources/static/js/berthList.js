@@ -168,14 +168,24 @@ async function saveBerthChanges(row, berth) {
     const cells = row.cells;
 
     //calculate new areal
-    const length = parseFloat(cells[2].textContent); // length
-    const width = parseFloat(cells[3].textContent); // width
+/*    const length = parseFloat(cells[2].textContent); // length
+    const width = parseFloat(cells[3].textContent); // width */
+
+    const lengthInput = cells[2].querySelector("input");
+    const widthInput = cells[3].querySelector("input");
+
+    const length = lengthInput ? parseFloat(lengthInput.value.trim().replace("m", "")) : NaN;
+    const width = widthInput ? parseFloat(widthInput.value.trim().replace("m", "")) : NaN;
+
+    const nameInput = cells[1].querySelector("input");
+    const name = nameInput ? nameInput.value.trim() : "";
+    
 
     const updatedBerth = {
         berthID: berth.berthID,
-        name: cells[1].textContent, // name
-        length: parseFloat(cells[2].textContent), // length
-        width: parseFloat(cells[3].textContent), // width
+        name: name, // name
+        length: length, // length
+        width: width, // width
     };
 
     // send PUT request to update the berth data
