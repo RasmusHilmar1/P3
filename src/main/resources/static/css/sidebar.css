@@ -1,6 +1,20 @@
-/*SIDEBAR*/
+/* Make the search bar sticky at the top of the sidebar */
+.sidebar input {
+    margin-top: 10px;
+    margin-left: 15px;
+    width: 300px;
+    font-size: 24px;
+    border: 1px solid #5c82b5;
+    border-radius: 5px;
+    position: sticky;
+    top: 10px; /* Keeps the search bar 10px from the top when scrolling */
+    z-index: 10; /* Ensures it stays above other content */
+    background-color: white;
+}
+
+/* Rest of the sidebar styles */
 .sidebar {
-    height: calc(100vh - 120px); /* Height set to max minus the height of the navigation bar. Remember this when size of navigation bar is changed. This also makes it dynamic. */
+    height: calc(100vh - 120px); /* Height set to max minus the height of the navigation bar */
     width: 350px;
     position: fixed;
     z-index: 1;
@@ -10,16 +24,7 @@
     overflow: auto;
     transition: width 0.5s;
     margin-top: 120px;
-    overflow-y:scroll;
-}
-
-.sidebar input{
-    margin-top: 10px;
-    margin-left: 15px;
-    width: 300px;
-    font-size: 24px;
-    border:1px solid #5c82b5;
-    border-radius:5px
+    overflow-y: scroll;
 }
 
 ::placeholder {
@@ -187,6 +192,7 @@ td {
 .selectedNameBtn, .selected {
     background-color: #5c82b5;
     color: white;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .selectedNameBtn:after {
@@ -199,6 +205,18 @@ td {
 */
 .berthListAv {
     display: none;
+}
+
+.searchBar {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    background-color: transparent; /* Initial background */
+}
+
+.searchBar.scrolled {
+    background-color: #f1f1f1; /* Change to any color when scrolled */
 }
 
 

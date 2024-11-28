@@ -27,9 +27,15 @@
     </button>
 </div>
 <div id="sidebar" class="sidebar">
-    <input type="text" id="searchBar" class="searchBar" placeholder="Søg på medlem, båd eller bådplads">
-    <button id="memberBtn" class="sidebarMenuBtn" onclick="toggleMemberList()">Medlemmer</button>
-    <button id="berthBtn" class="sidebarMenuBtn">Bådpladser</button>
+    <label for="searchBar"></label><input type="text" id="searchBar" class="searchBar" placeholder="Søg på medlem, båd eller bådplads">
+    <!-- Berth List Table (Initially hidden, can be implemented similarly) -->
+    <table id="berthList" class="berthList">
+        <thead id="berthTableHeader" class="tableHeader">
+        </thead>
+        <tbody>
+        <!-- Dynamic berth rows will be added here -->
+        </tbody>
+    </table>
 
     <!-- Member List Table (Initially hidden, shown when "Medlemmer" button is clicked) -->
     <table id="memberList" class="memberList">
@@ -40,14 +46,6 @@
         </tbody>
     </table>
 
-    <!-- Berth List Table (Initially hidden, can be implemented similarly) -->
-    <table id="berthList" class="berthList">
-        <thead id="berthTableHeader" class="tableHeader">
-        </thead>
-        <tbody>
-        <!-- Dynamic berth rows will be added here -->
-        </tbody>
-    </table>
 </div>
 <div id="harbor" class="harbor">
     <button id="vestreBaadehavn" class="btnHarbor pressed">Vestre Bådehavn</button>
@@ -60,6 +58,21 @@
 <script type="module" src="/js/map.js" defer></script>
 <script src="/js/sidebar.js" defer></script>
 <script src="/js/navigationbar.js"></script>
+<!-- Legend for berth statuses -->
+<div id="mapLegend" class="map-legend">
+    <div class="legend-item">
+        <span class="legend-color available"></span> Tilgængelig
+    </div>
+    <div class="legend-item">
+        <span class="legend-color occupied"></span> Optaget
+    </div>
+    <div class="legend-item">
+        <span class="legend-color unavailable"></span> Midlertidig Utilgængelig
+    </div>
+    <div class="legend-item">
+        <span class="legend-color chosen"></span> Valgt
+    </div>
+</div>
 
 </body>
 </html>
