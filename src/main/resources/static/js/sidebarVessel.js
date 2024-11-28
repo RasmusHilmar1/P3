@@ -614,13 +614,13 @@ function createBerthListUnavailable(member) {
     });
 }
 
-function collapsableListEventListener(nameList, infoContainer) {
+function collapsableListEventListener(button, infoContainer) {
     // event listener for the collapsable list
-    nameList.addEventListener("click", function () {
+    button.addEventListener("click", function (event) {
         const infoCells = infoContainer.querySelectorAll(".infoCell");
-        nameList.classList.toggle('selectedNameBtn');
+        button.classList.toggle('selectedNameBtn');
 
-        if(currentSelectedButton && currentSelectedButton!== nameList) {
+        if(currentSelectedButton && currentSelectedButton!== button) {
             currentSelectedButton.classList.remove("selectedNameBtn");
         }
         if(currentInfoCell && currentInfoCell !== infoCells) {
@@ -628,8 +628,8 @@ function collapsableListEventListener(nameList, infoContainer) {
         }
 
         currentInfoCell = infoCells;
-        nameList.classList.toggle("selectedNameBtn");
-        currentSelectedButton = nameList;
+        //button.classList.toggle("selectedNameBtn");
+        currentSelectedButton = button;
 
         infoCells.forEach(cell => {
             cell.style.maxHeight = cell.style.maxHeight ? null : cell.scrollHeight + "px";
