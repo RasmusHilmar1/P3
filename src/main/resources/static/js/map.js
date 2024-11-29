@@ -150,6 +150,8 @@ async function updateGeoJsonWithStatus() {
     });
 }
 
+let geoJsonLayer;
+
 // Wait for GeoJSON to be fetched before using it
 async function initializeMap() {
     await fetchGeoJson(); // Ensure that the GeoJSON is fetched
@@ -158,7 +160,7 @@ async function initializeMap() {
         await updateGeoJsonWithStatus(); // Update GeoJSON data with berth statuses
 
         // Add the updated GeoJSON to the map
-        L.geoJSON(myGeoJson, {
+        geoJsonLayer = L.geoJSON(myGeoJson, {
             onEachFeature: onEachFeature,
             style: function (feature) {
                 const status = feature.properties.status;
@@ -194,30 +196,48 @@ async function initializeMap() {
 // Call initializeMap to start the process
 initializeMap();
 
+let selectedLayer;
 
-function onEachFeature(feature, layer) {
-    const berthId = feature.properties.id;
+function highlightBerth(e) {
+    const layer = e.target;
 
-    layer.on('click', function () {
-        updateSidebarWithBerth(feature.properties);
-    });
-
-    // Bind popup with updated status
-    const status = feature.properties.status === 1 ? "Tilgængelig" : feature.properties.status === 0 ? "Optaget" : feature.properties.status === 2 ? "Midlertidig Utilgængelig" : "Unknown";
-    /*
-    const popupContent = `
-           <div>
-                <b>Address:</b> ${berthId || 'N/A'}<br>
-                <b>Name:</b> ${feature.properties.name || 'N/A'}<br>
-                <b>Status:</b> ${status}
-            </div>
-        `;
-        layer.bindPopup(popupContent);
+    // Reset all layers to default style
+    if (geoJsonLayer) {
+        geoJsonLayer.eachLayer(l => {
+            l.setStyle({
+                color: "black",
+                weight: 0.1,
+                fillOpacity: 0.8, // Default opacity
+            });
+        });
     }
 
+    // Highlight the selected layer
+    layer.setStyle({
+        color: "blue",
+        weight: 2,
+    });
+
+    selectedLayer = layer; // Update the selected layer reference
+}
 
 
-     */
+function onEachFeature(feature, layer) {
+    const name = feature.properties?.name || "";
+    const isPier = name.toLowerCase().startsWith("pier");
+
+    layer.on("click", function (e) {
+        if (!isPier) {
+            highlightBerth(e); // Highlight only berths
+            updateSidebarWithBerth(feature.properties); // Update the sidebar
+        } else {
+            console.log("Piers are not interactive.");
+        }
+    });
+
+    layer.featureId = feature.properties?.id; // Assign a unique ID to each feature
+}
+
 // Define scroll options
     const scrolledIntoViewOptions = {
         behavior: 'smooth', // Enables smooth scrolling
@@ -242,5 +262,4 @@ function onEachFeature(feature, layer) {
                 }
             }
         });
-    }
 }

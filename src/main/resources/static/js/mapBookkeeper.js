@@ -194,27 +194,47 @@ async function initializeMap() {
 initializeMap();
 
 function onEachFeature(feature, layer) {
+    const name = feature.properties?.name || "";
+    const isPier = name.toLowerCase().startsWith("pier");
 
-    layer.on('click', function(e) {
-        highlightBerth(e);
-        berthToSideBar(feature);
+    layer.on("click", function (e) {
+        if (!isPier) {
+            highlightBerth(e); // Highlight only berths
+            updateSidebarWithBerth(feature.properties); // Update the sidebar
+        } else {
+            console.log("Piers are not interactive.");
+        }
     });
 
-    layer.featureId = feature.properties.id;
+    layer.featureId = feature.properties?.id; // Assign a unique ID to each feature
 }
+
 
 let selectedLayer;
 
 function highlightBerth(e) {
-    let layer = e.target;
-    removeHighlight(layer);
+    const layer = e.target;
+
+    // Reset all layers to default style
+    if (geoJsonLayer) {
+        geoJsonLayer.eachLayer(l => {
+            l.setStyle({
+                color: "black",
+                weight: 0.1,
+                fillOpacity: 0.8, // Default opacity
+            });
+        });
+    }
+
+    // Highlight the selected layer
     layer.setStyle({
         color: "blue",
         weight: 2,
-        //fillOpacity: 0.5
     });
-    selectedLayer = layer;
+
+    selectedLayer = layer; // Update the selected layer reference
 }
+
 
 
 function removeHighlight(layer) {
