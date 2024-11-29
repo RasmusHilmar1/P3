@@ -243,6 +243,12 @@ function removeHighlight(layer) {
     }
 }
 
+const scrolledIntoViewOptions = {
+    behavior: 'smooth', // Glidende scroll
+    block: 'center', // Placer elementet vertikalt i midten
+    inline: 'center' // Placer elementet horisontalt i midten
+};
+
 
 function berthToSideBar(feature) {
     const memberList = document.getElementById("memberList");
@@ -260,7 +266,7 @@ function berthToSideBar(feature) {
                     boats.forEach(boat => {
                         if ((approvedMember.member.memberID === boat.memberID) && (boat.berthID === Number(feature.properties.id))) {
                             memberNameBtn.click();
-                            memberNameBtn.scrollIntoView();
+                            memberNameBtn.scrollIntoView(scrolledIntoViewOptions);
                         }
                     })
                 }
