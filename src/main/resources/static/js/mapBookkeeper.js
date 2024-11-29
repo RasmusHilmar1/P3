@@ -7,12 +7,12 @@ const berths = await fetchBerth();
 
 // Create map for leaflet -->
 var map = L.map('map', {
-    minZoom: 17,
-    maxZoom: 23
+    maxZoom: 20,
+    minZoom: 18
 });
 
 // Set the center for when you open the application-->
-map.setView([57.05778747921157, 9.902244340136367], 18);
+map.setView([57.05778747921157, 9.902244340136367], 18.5);
 
 // Use map from OSM -->
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
