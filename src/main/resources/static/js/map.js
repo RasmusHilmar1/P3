@@ -1,42 +1,31 @@
+// map.js
+
 import { myGeoJson, fetchGeoJson } from "./geojson.js";
-import {fetchApprovedMembers, fetchBoats, fetchBerth} from "./fetchMethods.js";
+import { fetchApprovedMembers, fetchBoats, fetchBerth } from "./fetchMethods.js";
 
-// Create map for leaflet -->
-var map = L.map('map', {
-   // minZoom: 17,
-   // maxZoom: 19
-});
+// Create map for Leaflet
+var map = L.map('map', {});
 
-// Set the center for when you open the application-->
+// Set the center when the application opens
 map.setView([57.057740645009346, 9.901853509671989], 18.5);
 
-// Use map from OSM -->
+// Use map from OpenStreetMap
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="https://tile.openstreetmap.org/">OpenMapTiles</a>',
+    attribution: '&copy; OpenStreetMap contributors',
     maxZoom: 20,
     minZoom: 18
 }).addTo(map);
 
-// Initialize the bounds of the image used for overlay -->
-var imageBounds = [
-    [57.05861, 9.89969], // Top-left
-    [57.05692, 9.90523]  // Bottom-right
-];
-
-// Get picture for overlay -->
-//var imageUrl = '../../Images/vestre_badelaug_kort_kopi.jpeg';
-
-// Create image overlay -->
-//var imageOverlay = L.imageOverlay(imageUrl, imageBounds).addTo(map);
-
-//Initialize bounds for map as the bounds of picture in coordinates -->
+// Define the bounds for the map
 const bounds = L.latLngBounds(
     [57.05861, 9.70969],
     [57.05692, 9.99093]
 );
 
-// Set the max bounds for navigating map as the bounds of picture -->
+// Set the max bounds for navigating the map
 map.setMaxBounds(bounds);
+
+// Add Guest Area
 function addGuestArea() {
     var guestAreaBounds = [
         [57.05742346980074, 9.90033925763862],
@@ -48,7 +37,7 @@ function addGuestArea() {
         [57.05742346980074, 9.90033925763862]
     ];
 
-// Add an orange polygon for the guest area
+    // Add a polygon for the guest area
     L.polygon(guestAreaBounds, {
         color: "purple",
         weight: 1,
@@ -58,79 +47,55 @@ function addGuestArea() {
 
 addGuestArea();
 
-
+// Harbor button event listeners
 const harbor1 = document.getElementById("vestreBaadehavn");
-harbor1.addEventListener("click", function(event) {
-    event.preventDefault();
+if (harbor1) {
+    harbor1.addEventListener("click", function(event) {
+        event.preventDefault();
 
-    var imageBounds = [
-        [57.05861, 9.89969], // Top-left
-        [57.05692, 9.90523]  // Bottom-right
-    ];
+        const bounds = L.latLngBounds(
+            [57.05861, 9.89969],
+            [57.05692, 9.90523]
+        );
 
-    //var imageUrl = '../../Images/vestre_badelaug_kort_kopi.jpeg';
+        map.setMaxBounds(bounds);
+    });
+}
 
-    //var imageOverlay = L.imageOverlay(imageUrl, imageBounds).addTo(map);
-
-    const bounds = L.latLngBounds(
-        [57.05861, 9.89969],
-        [57.05692, 9.90523]
-    );
-
-    map.setMaxBounds(bounds);
-
-});
-
-
-//Hvis knappen for "skudehavn" trykket vil kortet for den havn vises
 const harbor2 = document.getElementById("skudehavn");
+if (harbor2) {
+    harbor2.addEventListener("click", function(event) {
+        const bounds2 = L.latLngBounds(
+            [57.06018973534202, 9.894721266122263],
+            [57.057196830597924, 9.897628780728576]
+        );
 
+        map.setMaxBounds(bounds2);
 
-harbor2.addEventListener("click", function(event) {
+        map.setView([57.05895016317979, 9.895671278476893], 18.2);
+    });
+}
 
-    var imageBounds2 = [
-        [57.060017, 9.893899], // Top-left
-        [57.057100, 9.898600]  // Bottom-right
-    ];
-
-    //var imageUrl2 = '../../Images/skudehavn.jpeg';
-    //var imageOverlay2 = L.imageOverlay(imageUrl2, imageBounds2).addTo(map);
-
-    const bounds2 = L.latLngBounds(
-        [57.06018973534202, 9.894721266122263], // Top-left
-        [57.057196830597924, 9.897628780728576]
-    );
-
-    map.setMaxBounds(bounds2);
-
-    map.setView([57.05895016317979, 9.895671278476893], 18.2);
-
-});
-
-
-// Move zoom buttons -->
+// Move zoom buttons to the bottom right
 map.zoomControl.setPosition('bottomright');
 
-
-
-
-//const btnHarbor1 = document.querySelector('.vestreBaadehavn');
-//const btnHarbor2 = document.querySelector('.skudehavn');
+// Harbor button styling
 const harbors = document.getElementById('harbor');
+if (harbors) {
+    harbors.addEventListener('click', function (event) {
+        if(event.target.classList.contains('btnHarbor')) {
+            const btnHarbors = harbors.querySelectorAll('.btnHarbor');
+            btnHarbors.forEach(btnHarbor => btnHarbor.classList.remove('pressed'));
 
-harbors.addEventListener('click', function (event) {
-    if(event.target.classList.contains('btnHarbor')) {
-        const btnHarbors = harbors.querySelectorAll('.btnHarbor');
-        btnHarbors.forEach(btnHarbors => btnHarbors.classList.remove('pressed'));
-
-        event.target.classList.add('pressed');
-    }
-});
+            event.target.classList.add('pressed');
+        }
+    });
+}
 
 // Load berth data from the backend
 async function loadBerthData() {
     try {
-        const response = await fetch('berths/get'); // Replace with your actual API endpoint
+        const response = await fetch('/berths/get'); // Ensure the correct API endpoint with a leading slash
         const berths = await response.json();
         return berths;
     } catch (error) {
@@ -139,7 +104,7 @@ async function loadBerthData() {
     }
 }
 
-// Update GeoJSON data with berth status
+// Update GeoJSON data with berth statuses
 async function updateGeoJsonWithStatus() {
     const berths = await loadBerthData();
 
@@ -174,7 +139,7 @@ async function initializeMap() {
                         fillColor = "Crimson";
                         break;
                     default:
-                        fillColor = "#F2EFE9";// Default color if status is unknown
+                        fillColor = "#F2EFE9"; // Default color if status is unknown
                 }
 
                 return {
@@ -195,13 +160,11 @@ initializeMap();
 
 let selectedLayer;
 
-function highlightBerth(e) {
-    const layer = e.target;
-
+function removeHighlight() {
     // Reset all layers to default style
     if (geoJsonLayer) {
-        geoJsonLayer.eachLayer(l => {
-            l.setStyle({
+        geoJsonLayer.eachLayer(layer => {
+            layer.setStyle({
                 color: "black",
                 weight: 0.3,
                 fillOpacity: 1, // Default opacity
@@ -209,7 +172,13 @@ function highlightBerth(e) {
         });
     }
 
-    // Highlight the selected layer
+    // Clear the selected layer reference
+    selectedLayer = null;
+}
+
+function highlightBerth(e) {
+    const layer = e.target;
+    removeHighlight(); // Reset previous highlight
     layer.setStyle({
         color: "blue",
         weight: 2,
@@ -217,7 +186,6 @@ function highlightBerth(e) {
 
     selectedLayer = layer; // Update the selected layer reference
 }
-
 
 function onEachFeature(feature, layer) {
     const name = feature.properties?.name || "";
@@ -236,27 +204,31 @@ function onEachFeature(feature, layer) {
 }
 
 // Define scroll options
-    const scrolledIntoViewOptions = {
-        behavior: 'smooth', // Enables smooth scrolling
-        block: 'center', // Scroll the element to the center of the viewport
-        inline: 'center' // Align the element horizontally to the center
-    };
+const scrolledIntoViewOptions = {
+    behavior: 'smooth', // Enables smooth scrolling
+    block: 'center',    // Scroll the element to the center of the viewport
+    inline: 'center'    // Align the element horizontally to the center
+};
 
 // Function to update the sidebar with the clicked berth details
-    function updateSidebarWithBerth(berth) {
-        const berthList = document.getElementById("berthList");
-        const rows = berthList.querySelectorAll('tr');
+function updateSidebarWithBerth(berth) {
+    const berthList = document.getElementById("berthList");
+    if (!berthList) {
+        console.error("berthList element not found.");
+        return;
+    }
+    const rows = berthList.querySelectorAll('tr');
 
-        rows.forEach(row => {
-            const berthNameBtn = row.querySelector(".berthBtn");
-            if (berthNameBtn) {
-                const berthName = berthNameBtn.textContent.trim();
+    rows.forEach(row => {
+        const berthNameBtn = row.querySelector(".berthBtn");
+        if (berthNameBtn) {
+            const berthName = berthNameBtn.textContent.trim();
 
-                // Compare berth.id with berthName (ensure matching data format)
-                if (berthName === berth.name) {
-                    berthNameBtn.click(); // Simulate a click on the berth button
-                    berthNameBtn.scrollIntoView(scrolledIntoViewOptions); // Scroll into view with smooth scroll
-                }
+            // Compare berth.name with berthName
+            if (berthName === berth.name) {
+                berthNameBtn.click(); // Simulate a click on the berth button
+                berthNameBtn.scrollIntoView(scrolledIntoViewOptions); // Scroll into view with smooth scroll
             }
-        });
+        }
+    });
 }
