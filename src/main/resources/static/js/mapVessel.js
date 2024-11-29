@@ -387,7 +387,6 @@ function berthListsToMap(geoJsonLayer){
         });
     }
 }
-
 export async function colorButtons(member, boat, berths) {
     try {
         // API call to get compatible berths for the given boat dimensions
@@ -403,8 +402,15 @@ export async function colorButtons(member, boat, berths) {
 
         // Loop through GeoJSON features and update styles for compatible berths
         myGeoJson.features.forEach(feature => {
-            const compatibleBerth = compatibleBerths.find(b => b.berth.berthID === Number(feature.properties.id));
-            console.log(compatibleBerth)
+            // Skip features that are not berths
+            console.log(feature.properties);
+            if (feature.properties.name.startsWith("Pier")) {
+                return;
+            }
+
+            const compatibleBerth = compatibleBerths.find(b => b.berth.name === feature.properties.name);
+            console.log(compatibleBerth);
+
             // Find the corresponding layer for this GeoJSON feature
             const layer = getLayerByFeature(feature);
 
@@ -412,29 +418,24 @@ export async function colorButtons(member, boat, berths) {
                 // Update status with the availability returned by the API
                 feature.properties.color = compatibleBerth.color;
                 console.log("Berth status updated:", feature.properties.color);
-               var red = feature.properties.color.red;
-               var green = feature.properties.color.green;
-               var blue = 0;
-
-               console.log(red,green,blue);
-
+                const { red, green, blue } = feature.properties.color;
 
                 if (layer) {
                     layer.setStyle({
                         color: "black",
                         weight: 0.1,
-                        //RGB color fill
-                        fillColor: `rgb(${red}, ${green}, ${blue})` ,
+                        fillColor: `rgb(${red}, ${green}, ${blue})`,
                         fillOpacity: 1
                     });
                 }
+            } else if (layer) {
+                layer.setStyle({
+                    color: "black",
+                    weight: 0.1,
+                    fillColor: "red",
+                    fillOpacity: 1
+                });
             }
-            else layer.setStyle({
-                color: "black",
-                weight: 0.1,
-                fillColor: "red",
-                fillOpacity: 1
-            });
         });
     } catch (error) {
         console.error("Error in colorButtons:", error);
@@ -446,7 +447,7 @@ function getLayerByFeature(feature) {
     let targetLayer = null;
 
     map.eachLayer(layer => {
-        if (layer.feature && layer.feature.properties.id === feature.properties.id) {
+        if (layer.feature && layer.feature.properties.name === feature.properties.name) {
             targetLayer = layer;
         }
     });

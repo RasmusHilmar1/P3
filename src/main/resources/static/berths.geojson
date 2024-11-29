@@ -32,8 +32,9 @@
       },
       "properties": {
         "id": 2,
-        "name": "FB Bro",
-        "side": "both"
+        "name": "Pier FB",
+        "side": "both",
+        "status": null
       }
     },
     {
@@ -1292,7 +1293,8 @@
       "properties": {
         "id": 3,
         "name": "Pier 3",
-        "side": "both"
+        "side": "both",
+        "status": null
       }
     },
     {
@@ -2415,7 +2417,8 @@
       "properties": {
         "id": 4,
         "name": "Pier 4",
-        "side": "left"
+        "side": "left",
+        "status": null
       }
     },
     {
@@ -2688,7 +2691,8 @@
       "properties": {
         "id": 5,
         "name": "Pier 5",
-        "side": "both"
+        "side": "both",
+        "status": null
       }
     },
     {
@@ -4865,7 +4869,8 @@
       "properties": {
         "id": 6,
         "name": "Pier 6",
-        "side": "both"
+        "side": "both",
+        "status": null
       }
     },
     {
@@ -6226,7 +6231,8 @@
       "properties": {
         "id": 7,
         "name": "Pier 7",
-        "side": "both"
+        "side": "both",
+        "status": null
       }
     },
     {
@@ -6261,7 +6267,8 @@
       "properties": {
         "id": 8,
         "name": "Pier 8",
-        "side": "right"
+        "side": "right",
+        "status": null
       }
     }
   ]
