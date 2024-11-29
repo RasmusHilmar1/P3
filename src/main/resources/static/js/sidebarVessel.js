@@ -6,10 +6,12 @@ import {colorButtons} from "./mapVessel.js";
 let sidebar = document.getElementById("sidebar");
 
 // Open or close sidebar -->
-let menuState = 0;
+let menuState = 1;
+
+const sidebarBtnIcon = document.getElementById("sidebarBtn");
+sidebarBtnIcon.addEventListener("click", openClose);
 
 function openClose(){
-    const sidebarBtnIcon = document.getElementById("sidebarBtn");
     if(menuState === 0){
         menuState = 1;
         document.getElementById("sidebar").style.width = "0";
@@ -23,6 +25,8 @@ function openClose(){
     }
 }
 openClose();
+
+
 
 // Floating button for opening sidebar -->
 let button = document.createElement("Button");
@@ -216,6 +220,7 @@ function createMemberListWithoutBoats(approvedMembers, boats, berths) {
 
                         addBtn.addEventListener("click", function () {
                             colorButtons(member, boat, berths);
+                            memberBox (member);
                         });
 
                     }
@@ -364,6 +369,7 @@ function showThreeTables(member, addBtn) {
     var berthListAvailable = document.getElementById(`berthListAv${member}`);
     var berthListSmall = document.getElementById(`berthListSmall${member}`);
     var berthListUav = document.getElementById(`berthListUav${member}`);
+    const memberBox = document.getElementById("memberBox");
     //var berthListAvailable = document.querySelector(".berthListAv")
 
     console.log("listen: "+ `berthListAv${member}`);
@@ -376,7 +382,49 @@ function showThreeTables(member, addBtn) {
         berthListAvailable.style.display = 'table';
         berthListSmall.style.display = 'table';
         berthListUav.style.display = 'table';
+        memberBox.style.display = 'block';
+
     }
+}
+
+function memberBox (member) {
+    const memberBox = document.getElementById("memberBox");
+
+
+        boats.forEach(boat => {
+            if ((member.memberID === boat.memberID) && (boat.berthID === 9999)) {
+
+                let memberName = document.createElement("div");
+                memberName.textContent = member.name;
+                memberName.className = "member-name";
+                memberBox.appendChild(memberName);
+
+                for (const key in member) {
+                    if ((key === 'name') || (key === 'memberID')) {
+                        var memberInfo = document.createElement("div");
+                        memberInfo.textContent = key + ":  " + member[key];
+                        memberInfo.className = "member-item";
+                        memberBox.appendChild(memberInfo);
+                    }
+                }
+
+                var size = document.createElement("div");
+                size.textContent = "størrelse: ";
+                size.className = "member-item";
+
+                for (const key in boat) {
+                    if ((key === 'length') || (key === 'width')) {
+                        let sizeInfo = document.createElement("div");
+                        //console.log("key : " + boat[key]);
+                        sizeInfo.textContent = key + ":  " + boat[key];
+                        sizeInfo.className = "size-item"; // Tilføjer klassen
+                        size.appendChild(sizeInfo);
+                    }
+                }
+                memberBox.appendChild(size);
+            }
+
+        });
 }
 
 function showBerthsForBoat() {
@@ -679,22 +727,6 @@ function collapsableListEventListener(button, infoContainer) {
     });
 }
 
-/*
-function collapsableListEventListener(nameList, infoContainer) {
-    nameList.addEventListener("click", function () {
-        const infoCells = infoContainer.querySelectorAll(".infoCell");
-        infoCells.forEach(cell => {
-            if (cell.style.maxHeight) {
-                nameList.classList.remove('selectedNameBtn');
-                cell.style.maxHeight = null;
-            } else {
-                nameList.classList.add('selectedNameBtn');
-                cell.style.maxHeight = cell.scrollHeight + "px";
-            }
-        });
-    });
-}
-*/
 function createTable(member, sidebar, berthList, ListTitel){
     var table = document.createElement("table");
     table.id = berthList + member;

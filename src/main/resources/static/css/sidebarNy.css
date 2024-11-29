@@ -131,7 +131,7 @@ table {
         border-radius: 6px; /* Bløde hjørner */
         margin-top: 5px; /* Lille afstand over cellen */
         margin-bottom: 5px; /* Lille afstand under cellen */
-
+        width: 100%;
 }
 
 thead {
@@ -224,4 +224,5 @@ td {
 
 .berthListAv {
     display: none;
+    width: 100%;
 }

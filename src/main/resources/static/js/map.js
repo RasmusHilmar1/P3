@@ -203,7 +203,7 @@ initializeMap();
 function onEachFeature(feature, layer) {
 
     layer.featureId = feature.properties.id;
-    
+
     layer.on('click', function (e) {
         highlightBerth(e);
         updateSidebarWithBerth(feature.properties);
