@@ -161,6 +161,9 @@ class MemberEvent {
                         approveMember(member.id);
                         console.log("Member accepted with member ID:", member.member.memberID);
                     }
+                    setTimeout(function() {
+                        location.reload();
+                    }, 500);
                 });
             }
             if (denyBtn){

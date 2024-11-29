@@ -135,12 +135,12 @@ public class BoatService {
     public Boat approveBoat(int pendingBoatId) {
         PendingBoat pendingBoat = pendingBoatRepository.findById(pendingBoatId); // find the pending boat
         Boat boat = pendingBoat.getBoat(); // get the boat object nested in the pending boat
-        int boatId = boat.getBoatID();
+        //int boatId = boat.getBoatID();
         if (boat.getFeeSent() == 1 && boat.getFeePaid() == 1){ // check if both are labeled as 'done'
             ApprovedBoat approvedBoat = new ApprovedBoat(); // create new approved boat
 
             approvedBoat.setBoat(boat); // move the boat object to the new approved boat
-            approvedBoat.setId(boatId); // set the ID as the boat's ID
+            approvedBoat.setId(pendingBoatId);
 
             approvedBoatRepository.save(approvedBoat);
             pendingBoatRepository.delete(pendingBoat);

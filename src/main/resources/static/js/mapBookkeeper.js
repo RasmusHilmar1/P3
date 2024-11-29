@@ -39,6 +39,27 @@ const bounds = L.latLngBounds(
 
 // Set the max bounds for navigating map as the bounds of picture -->
 map.setMaxBounds(bounds);
+function addGuestArea() {
+    var guestAreaBounds = [
+        [57.05742346980074, 9.90033925763862],
+        [57.05734201796358, 9.90061552466426],
+        [57.05728567822284, 9.900799976274303],
+        [57.05732832447959, 9.900841314225922],
+        [57.057682352673424, 9.90090670180615],
+        [57.05775435796488, 9.900683763958938],
+        [57.05742346980074, 9.90033925763862]
+    ];
+
+// Add an orange polygon for the guest area
+    L.polygon(guestAreaBounds, {
+        color: "purple",
+        weight: 1,
+        fillOpacity: 0.7
+    }).addTo(map);
+}
+
+addGuestArea();
+
 
 const harbor1 = document.getElementById("vestreBaadehavn");
 harbor1.addEventListener("click", function(event) {
@@ -141,13 +162,10 @@ async function initializeMap() {
 
                 switch (status) {
                     case 1:
-                        fillColor = "#00FF00";
+                        fillColor = "LimeGreen";
                         break;
                     case 0:
-                        fillColor = "red";
-                        break;
-                    case 2:
-                        fillColor = "orange";
+                        fillColor = "Crimson";
                         break;
                     default:
                         fillColor = "#F2EFE9";// Default color if status is unknown
@@ -155,9 +173,9 @@ async function initializeMap() {
 
                 return {
                     color: "black",
-                    weight: 0.1,
+                    weight: 0.3,
                     fillColor: fillColor,
-                    fillOpacity: 0.8
+                    fillOpacity: 1
                 };
             }
         }).addTo(map);
@@ -173,27 +191,47 @@ async function initializeMap() {
 initializeMap();
 
 function onEachFeature(feature, layer) {
+    const name = feature.properties?.name || "";
+    const isPier = name.toLowerCase().startsWith("pier");
 
-    layer.on('click', function(e) {
-        highlightBerth(e);
-        berthToSideBar(feature);
+    layer.on("click", function (e) {
+        if (!isPier) {
+            highlightBerth(e); // Highlight only berths
+            updateSidebarWithBerth(feature.properties); // Update the sidebar
+        } else {
+            console.log("Piers are not interactive.");
+        }
     });
 
-    layer.featureId = feature.properties.id;
+    layer.featureId = feature.properties?.id; // Assign a unique ID to each feature
 }
+
 
 let selectedLayer;
 
 function highlightBerth(e) {
-    let layer = e.target;
-    removeHighlight(layer);
+    const layer = e.target;
+
+    // Reset all layers to default style
+    if (geoJsonLayer) {
+        geoJsonLayer.eachLayer(l => {
+            l.setStyle({
+                color: "black",
+                weight: 0.3,
+                fillOpacity: 1, // Default opacity
+            });
+        });
+    }
+
+    // Highlight the selected layer
     layer.setStyle({
         color: "blue",
         weight: 2,
-        //fillOpacity: 0.5
     });
-    selectedLayer = layer;
+
+    selectedLayer = layer; // Update the selected layer reference
 }
+
 
 
 function removeHighlight(layer) {

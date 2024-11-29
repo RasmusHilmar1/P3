@@ -7,8 +7,8 @@ const berths = await fetchBerth();
 
 // Create map for leaflet -->
 var map = L.map('map', {
-    minZoom: 17,
-    maxZoom: 23
+   // minZoom: 17,
+    //maxZoom: 23
 });
 
 // Set the center for when you open the application-->
@@ -16,8 +16,11 @@ map.setView([57.05778747921157, 9.902244340136367], 18.5);
 
 // Use map from OSM -->
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="https://tile.openstreetmap.org/">OpenMapTiles</a>'
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="https://tile.openstreetmap.org/">OpenMapTiles</a>',
+    maxZoom: 20,
+    minZoom: 18
 }).addTo(map);
+
 
 // Initialize the bounds of the image used for overlay -->
 var imageBounds = [
@@ -40,6 +43,28 @@ const bounds = L.latLngBounds(
 // Set the max bounds for navigating map as the bounds of picture -->
 map.setMaxBounds(bounds);
 
+function addGuestArea() {
+    var guestAreaBounds = [
+        [57.05742346980074, 9.90033925763862],
+        [57.05734201796358, 9.90061552466426],
+        [57.05728567822284, 9.900799976274303],
+        [57.05732832447959, 9.900841314225922],
+        [57.057682352673424, 9.90090670180615],
+        [57.05775435796488, 9.900683763958938],
+        [57.05742346980074, 9.90033925763862]
+    ];
+
+// Add an orange polygon for the guest area
+    L.polygon(guestAreaBounds, {
+        color: "purple",
+        weight: 1,
+        fillOpacity: 0.7
+    }).addTo(map);
+}
+
+addGuestArea();
+
+
 const harbor1 = document.getElementById("vestreBaadehavn");
 harbor1.addEventListener("click", function(event) {
     event.preventDefault();
@@ -60,23 +85,6 @@ harbor1.addEventListener("click", function(event) {
     map.setMaxBounds(bounds);
 
 });
-
-var guestAreaBounds = [
-    [57.05742346980074, 9.90033925763862],
-    [57.05734201796358, 9.90061552466426],
-    [57.05728567822284, 9.900799976274303],
-    [57.05732832447959, 9.900841314225922],
-    [57.057682352673424, 9.90090670180615],
-    [57.05775435796488, 9.900683763958938],
-    [57.05742346980074, 9.90033925763862]
-];
-
-// Add an orange polygon for the guest area
-L.polygon(guestAreaBounds, {
-    color: "purple",
-    weight: 2,
-    fillOpacity: 0.6
-}).addTo(map);
 
 //Hvis knappen for "skudehavn" trykket vil kortet for den havn vises
 const harbor2 = document.getElementById("skudehavn");
@@ -156,13 +164,10 @@ async function initializeMap() {
 
                 switch (status) {
                     case 1:
-                        fillColor = "#00FF00";
+                        fillColor = "LimeGreen";
                         break;
                     case 0:
-                        fillColor = "red";
-                        break;
-                    case 2:
-                        fillColor = "orange";
+                        fillColor = "Crimson";
                         break;
                     default:
                         fillColor = "#F2EFE9";// Default color if status is unknown
@@ -170,9 +175,9 @@ async function initializeMap() {
 
                 return {
                     color: "black",
-                    weight: 0.1,
+                    weight: 0.3,
                     fillColor: fillColor,
-                    fillOpacity: 0.8
+                    fillOpacity: 1
                 };
             }
         }).addTo(map);
@@ -189,19 +194,22 @@ async function initializeMap() {
 initializeMap();
 
 function onEachFeature(feature, layer) {
-    // Tilføj én samlet click-eventlistener for lag
+    // Check if the feature has a valid name property
+    const name = feature.properties?.name || ""; // Fallback to an empty string if undefined
+    const isPier = name.toLowerCase().startsWith("pier"); // Case-insensitive check
+
     layer.on('click', function (e) {
-        // Fremhæv det klikkede berth
-        highlightBerth(e);
-
-        // Mapper feature-data til lister
-        mapToThreeLists(feature);
-        mapToMemberList(feature);
-
-        // Opdater sidebaren med detaljer fra det valgte berth
-        updateSidebarWithBerth(feature.properties);
+        if (!isPier) {
+            // Allow highlighting only for berths
+            highlightBerth(e);
+            mapToThreeLists(feature);
+            mapToMemberList(feature);
+        } else {
+            console.log("Highlighting disabled for piers.");
+        }
     });
 
+    layer.featureId = feature.properties?.id; // Safely assign feature ID
     // Funktion til at opdatere sidebaren med det klikkede berth
     function updateSidebarWithBerth(berth) {
         const berthList = document.getElementById("berthList");
@@ -247,7 +255,7 @@ let selectedLayer;
 
 function highlightBerth(e) {
     let layer = e.target;
-    removeHighlight(layer);
+    removeHighlight();
     layer.setStyle({
         color: "blue",
         weight: 2,
@@ -256,14 +264,22 @@ function highlightBerth(e) {
     selectedLayer = layer;
 }
 
-function removeHighlight(layer) {
-    if (selectedLayer && (selectedLayer !== layer)){
-        selectedLayer.setStyle({
-            color: "black",
-            weight: 0.1,
+function removeHighlight() {
+    // Reset all layers to default style
+    if (geoJsonLayer) {
+        geoJsonLayer.eachLayer(layer => {
+            layer.setStyle({
+                color: "black",
+                weight: 0.3,
+                fillOpacity: 1, // Default opacity
+            });
         });
     }
+
+    // Clear the selected layer reference
+    selectedLayer = null;
 }
+
 
 function mapToMemberList(feature) {
     const tables = document.querySelectorAll(".memberList");
@@ -316,13 +332,10 @@ function mapToThreeLists(feature){
 
 function memberToMap(geoJsonLayer){
     const memberList = document.getElementById("memberListBoat");
+
     memberList.addEventListener("click", (event) => {
-        geoJsonLayer.eachLayer(layer => {
-            layer.setStyle({
-                color: "black",
-                weight: 0.1
-            })
-        });
+        // Clear all highlights
+        removeHighlight();
 
         const button = event.target.closest(".nameBtn");
         console.log("button member: " + button.outerHTML);
@@ -337,7 +350,8 @@ function memberToMap(geoJsonLayer){
                             layer.setStyle({
                                 color: "blue",
                                 weight: 2
-                            })
+                            });
+                            selectedLayer = layer;
                             //console.log("fundet");
                         /*} else {
                             layer.setStyle({
@@ -355,14 +369,11 @@ function memberToMap(geoJsonLayer){
 
 function berthListsToMap(geoJsonLayer){
     const berthList = document.getElementsByClassName("berthList");
+
     for(let i = 0; i < berthList.length; i++) {
         berthList[i].addEventListener("click", (event) => {
-            geoJsonLayer.eachLayer(layer => {
-                layer.setStyle({
-                    color: "black",
-                    weight: 0.1
-                })
-            });
+            // Clear all highlights
+            removeHighlight();
 
             const berthBtn = event.target.closest(".berthBtn");
             console.log("button: " + berthBtn.outerHTML);
@@ -377,7 +388,8 @@ function berthListsToMap(geoJsonLayer){
                                 layer.setStyle({
                                     color: "blue",
                                     weight: 2
-                                })
+                                });
+                                selectedLayer=Layer;
                             }
                         });
                     }
@@ -386,7 +398,6 @@ function berthListsToMap(geoJsonLayer){
         });
     }
 }
-
 export async function colorButtons(member, boat, berths) {
     try {
         // API call to get compatible berths for the given boat dimensions
@@ -402,8 +413,15 @@ export async function colorButtons(member, boat, berths) {
 
         // Loop through GeoJSON features and update styles for compatible berths
         myGeoJson.features.forEach(feature => {
-            const compatibleBerth = compatibleBerths.find(b => b.berth.berthID === Number(feature.properties.id));
-            console.log(compatibleBerth)
+            // Skip features that are not berths
+            console.log(feature.properties);
+            if (feature.properties.name.startsWith("Pier")) {
+                return;
+            }
+
+            const compatibleBerth = compatibleBerths.find(b => b.berth.name === feature.properties.name);
+            console.log(compatibleBerth);
+
             // Find the corresponding layer for this GeoJSON feature
             const layer = getLayerByFeature(feature);
 
@@ -411,29 +429,24 @@ export async function colorButtons(member, boat, berths) {
                 // Update status with the availability returned by the API
                 feature.properties.color = compatibleBerth.color;
                 console.log("Berth status updated:", feature.properties.color);
-               var red = feature.properties.color.red;
-               var green = feature.properties.color.green;
-               var blue = 0;
-
-               console.log(red,green,blue);
-
+                const { red, green, blue } = feature.properties.color;
 
                 if (layer) {
                     layer.setStyle({
                         color: "black",
                         weight: 0.1,
-                        //RGB color fill
-                        fillColor: `rgb(${red}, ${green}, ${blue})` ,
+                        fillColor: `rgb(${red}, ${green}, ${blue})`,
                         fillOpacity: 1
                     });
                 }
+            } else if (layer) {
+                layer.setStyle({
+                    color: "black",
+                    weight: 0.1,
+                    fillColor: "red",
+                    fillOpacity: 1
+                });
             }
-            else layer.setStyle({
-                color: "black",
-                weight: 0.1,
-                fillColor: "red",
-                fillOpacity: 1
-            });
         });
     } catch (error) {
         console.error("Error in colorButtons:", error);
@@ -445,7 +458,7 @@ function getLayerByFeature(feature) {
     let targetLayer = null;
 
     map.eachLayer(layer => {
-        if (layer.feature && layer.feature.properties.id === feature.properties.id) {
+        if (layer.feature && layer.feature.properties.name === feature.properties.name) {
             targetLayer = layer;
         }
     });
