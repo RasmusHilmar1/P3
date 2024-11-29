@@ -319,8 +319,7 @@ function memberToMap(geoJsonLayer){
     const memberList = document.getElementById("memberListBoat");
 
     memberList.addEventListener("click", (event) => {
-        // Clear all highlights
-        removeHighlight();
+        removeHighlight(); // Clear all highlights
 
         const button = event.target.closest(".nameBtn");
         console.log("button member: " + button.outerHTML);
@@ -331,7 +330,9 @@ function memberToMap(geoJsonLayer){
             boats.forEach(boat => {
                 if ((Number(memberId) === boat.memberID) && (boat.berthID !== 9999)) {
                     geoJsonLayer.eachLayer(layer => {
-                        if(Number(layer.featureId) === boat.berthID) {
+                        const name = layer.feature?.properties?.name || "";
+                        const isPier = name.toLowerCase().startsWith("pier");
+                        if(Number(layer.featureId) === boat.berthID && !isPier) {
                             layer.setStyle({
                                 color: "blue",
                                 weight: 2
