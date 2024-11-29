@@ -153,25 +153,25 @@ public class PrintService {
         ops.close();
     }
 
-    public void generateBerthlistExcel(HttpServletResponse response) throws Exception {
+    public void generateBerthListByBerthsExcel(HttpServletResponse response) throws Exception {
 
         List<BerthlistDTO> berths = berthlistRepository.fetchAllBerthlistDetails();
 
         HSSFWorkbook workbook = new HSSFWorkbook();
-        HSSFSheet sheet = workbook.createSheet("Pladsliste");
+        HSSFSheet sheet = workbook.createSheet("PladslisteBådpladser");
 
         // Create header font and style using helper methods
-        HSSFFont headerFont = createFont(workbook, true, (short) 13, "Arial");
+        HSSFFont headerFont = createFont(workbook, true, (short) 12, "Arial");
         HSSFCellStyle headerStyle = createCellStyle(workbook, headerFont, BorderStyle.MEDIUM);
 
         // Create data font and style using helper methods
-        HSSFFont dataFont = createFont(workbook, false, (short) 13, "Arial");
+        HSSFFont dataFont = createFont(workbook, false, (short) 12, "Arial");
         HSSFCellStyle dataStyle = createCellStyle(workbook, dataFont, BorderStyle.THIN);
 
         // Create header row
         HSSFRow headerRow = sheet.createRow(0);
         String[] headers = {"Plads nr.", "Plads", "Længde", "Bredde", "Areal", "Udnyttelse i %",
-                "Medlems nr.", "Bådnavn", "Længde", "Bredde", "Areal", "Telefon nr."};
+                "Medlems nr.", "Navn", "Bådnavn", "Længde", "Bredde", "Areal", "Telefon nr."};
         for (int i = 0; i < headers.length; i++) {
             HSSFCell cell = headerRow.createCell(i);
             cell.setCellValue(headers[i]);
@@ -188,15 +188,16 @@ public class PrintService {
             dataRow.createCell(3).setCellValue(berthlistDTO.getBerthWidth());
             dataRow.createCell(4).setCellValue(berthlistDTO.getBerthAreal());
             dataRow.createCell(5).setCellValue(Math.round((berthlistDTO.getBerthUtil())));
-            dataRow.createCell(6).setCellValue(berthlistDTO.getMemberName());
-            dataRow.createCell(7).setCellValue(berthlistDTO.getMemberID());
+            dataRow.createCell(6).setCellValue(berthlistDTO.getMemberID());
+            dataRow.createCell(7).setCellValue(berthlistDTO.getMemberName());
             dataRow.createCell(8).setCellValue(berthlistDTO.getBoatName());
             dataRow.createCell(9).setCellValue(berthlistDTO.getBoatLength());
             dataRow.createCell(10).setCellValue(berthlistDTO.getBoatWidth());
             dataRow.createCell(11).setCellValue(berthlistDTO.getBoatAreal());
+            dataRow.createCell(12).setCellValue(berthlistDTO.getMemberPhoneNumber());
 
             // Apply data style with highlighted borders to each cell
-            for (int i = 0; i <= 10; i++) {
+            for (int i = 0; i <= 12; i++) {
                 dataRow.getCell(i).setCellStyle(dataStyle);
             }
 
@@ -212,6 +213,66 @@ public class PrintService {
         workbook.write(ops);
         workbook.close();
         ops.close();
+    }
 
+    public void generateBerthListByMembersExcel(HttpServletResponse response) throws Exception {
+        List<BerthlistDTO> berths = berthlistRepository.fetchAllBerthlistDetails();
+
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        HSSFSheet sheet = workbook.createSheet("PladslisteMedlemmer");
+
+        // Create header font and style using helper methods
+        HSSFFont headerFont = createFont(workbook, true, (short) 12, "Arial");
+        HSSFCellStyle headerStyle = createCellStyle(workbook, headerFont, BorderStyle.MEDIUM);
+
+        // Create data font and style using helper methods
+        HSSFFont dataFont = createFont(workbook, false, (short) 12, "Arial");
+        HSSFCellStyle dataStyle = createCellStyle(workbook, dataFont, BorderStyle.THIN);
+
+        // Create header row
+        HSSFRow headerRow = sheet.createRow(0);
+        String[] headers = {"Medlems nr.", "Navn", "Bådnavn", "Telefonnummer", "Plads nr.", "Plads navn"};
+
+        for (int i = 0; i < headers.length; i++) {
+            HSSFCell cell = headerRow.createCell(i);
+            cell.setCellValue(headers[i]);
+            cell.setCellStyle(headerStyle); // Apply header style
+        }
+
+        int dataRowIndex = 1;
+
+        for (BerthlistDTO berthlistDTO : berths) {
+
+            if (berthlistDTO.getMemberID() > 0 &&
+                    berthlistDTO.getMemberName() != null && !berthlistDTO.getMemberName().isEmpty() &&
+                    berthlistDTO.getBoatName() != null && !berthlistDTO.getBoatName().isEmpty()) {
+                HSSFRow dataRow = sheet.createRow(dataRowIndex);
+                dataRow.createCell(0).setCellValue(berthlistDTO.getMemberID());
+                dataRow.createCell(1).setCellValue(berthlistDTO.getMemberName());
+                dataRow.createCell(2).setCellValue(berthlistDTO.getBoatName());
+                dataRow.createCell(3).setCellValue(berthlistDTO.getMemberPhoneNumber());
+                dataRow.createCell(4).setCellValue(berthlistDTO.getBerthID());
+                dataRow.createCell(5).setCellValue(berthlistDTO.getBerthName());
+
+                // Apply data style with highlighted borders to each cell
+                for (int i = 0; i <= 5; i++) {
+                    dataRow.getCell(i).setCellStyle(dataStyle);
+                }
+
+                dataRowIndex++;
+            }
+
+        }
+
+        // Auto-size all columns to fit content
+        for (int i = 0; i < headers.length; i++) {
+            sheet.autoSizeColumn(i);
+        }
+
+        ServletOutputStream ops = response.getOutputStream();
+        workbook.write(ops);
+        workbook.close();
+        ops.close();
     }
 }
+

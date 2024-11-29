@@ -8,6 +8,26 @@ console.log(boats);
 const berths = await fetchBerth();
 console.log(berths);
 
+// FUNCTIONS FOR EXPORTING TABLE TO EXCEL ---->
+
+function exportBerthTableBerthsToExcel(){
+    try {
+        window.location.href = '/vesselBerthListByBerths/PladsExcel'; // redirect to endpoint for exporting list
+    } catch (error) {
+        console.log(error);
+        console.log("List not exported.");
+    }
+}
+
+function exportBerthTableMembersToExcel(){
+    try {
+        window.location.href = '/vesselBerthListByMembers/PladsExcel';
+    } catch (error) {
+        console.log(error);
+        console.log("List not exported.");
+    }
+}
+
 // FUNCTIONS FOR CALCULATING AREAL AND UTILIZATION ----->
 
 // calculate areal for berth and boats for the dynamic table and calculating the utilization percentage. This should be connected to back-end.
@@ -173,32 +193,38 @@ function getBerthListSortedBerths(data, table){
         "Berths");
 
     //For each berth, create a row and add cells with the data
-        data.forEach(berth => {
-            if (berth.berthID !== 9999) { // do not include the default berth
+    data.forEach(berth => {
+        if (berth.berthID !== 9999) { // do not include the default berth
 
-                // declare data for each berth
-                berthData = findBerthData(berth);
-                memberAndBoatData = findCorrespondingMemberAndBoat(berth);
+            // declare data for each berth
+            berthData = findBerthData(berth);
+            memberAndBoatData = findCorrespondingMemberAndBoat(berth);
 
-                // initialize table rows for each berth
-                row = table.insertRow();
-                row.className = "berthTableRow";
+            // initialize table rows for each berth
+            row = table.insertRow();
+            row.className = "berthTableRow";
 
-                editableColumns = [1, 2, 3]; // set the columns with name, length, and width as editable
+            editableColumns = [1, 2, 3]; // set the columns with name, length, and width as editable
 
-                lengthAndWidthIndexes = [2, 3]; // set the columns with length and width
+            lengthAndWidthIndexes = [2, 3]; // set the columns with length and width
 
-                addCells(row, berthData, editableColumns, lengthAndWidthIndexes); // call addCells with berth data first
+            addCells(row, berthData, editableColumns, lengthAndWidthIndexes); // call addCells with berth data first
 
-                if (memberAndBoatData) {
-                    // call addCells with member data after with empty arrays in order to add member data cells
-                    addCells(row, memberAndBoatData, [], []);
-                } else {
-                    addCells(row, ["", "", "", "", "", "", ""], [], []);
-                }
-                addSaveBtn(row, berth); // add save button in each row
+            if (memberAndBoatData) {
+                // call addCells with member data after with empty arrays in order to add member data cells
+                addCells(row, memberAndBoatData, [], []);
+            } else {
+                addCells(row, ["", "", "", "", "", "", ""], [], []);
             }
-        });
+            addSaveBtn(row, berth); // add save button in each row
+        }
+    });
+
+    // get the corresponding exportBtn
+    let exportBtn = document.getElementById("exportBtnBerths");
+    console.log(exportBtn);
+
+    exportBtn.addEventListener("click", exportBerthTableBerthsToExcel);
 }
 
 function getBerthListSortedMembers(data, table){
@@ -207,8 +233,8 @@ function getBerthListSortedMembers(data, table){
     table.innerHTML = ""; //clear out the table in order to rerender
 
     createTableHeaders( // create correct headers for the list when sorted by berths
-        ["Navn",
-            "Medlems nr.",
+        ["Medlems nr.",
+            "Navn",
             "Bådnavn",
             "Længde",
             "Bredde",
@@ -250,6 +276,12 @@ function getBerthListSortedMembers(data, table){
             addSaveBtn(row, berth); // add save button in each row
         }
     });
+
+    // get the corresponding exportBtn
+    let exportBtn = document.getElementById("exportBtnMembers");
+    console.log(exportBtn);
+
+    exportBtn.addEventListener("click", exportBerthTableMembersToExcel);
 }
 
 // FUNCTION FOR CREATING TABLE ------>
@@ -415,17 +447,16 @@ function searchBarEvent(){
 
 searchBarEvent();
 
-// FUNCTIONS FOR EXPORTING TABLE TO EXCEL ---->
 
-function exportBerthTableToExcel(){
-    try {
-        window.location.href = '/vesselBerthList/PladsExcel'; // redirect to endpoint for exporting list
-    } catch (error) {
-        console.log(error);
-        console.log("List not exported.");
-    }
-}
-document.getElementById("exportBtnBerths").addEventListener("click", exportBerthTableToExcel);
+
+
+
+/*let exportBtnMembers = document.getElementById("exportBtnMembers");
+console.log(exportBtnMembers);*/
+
+
+
+
 
 // exportBtnBerths and exportBtnMembers - remember these.
 
