@@ -13,7 +13,7 @@ public interface BerthlistRepository extends JpaRepository<Berth, Integer> {
             "COALESCE(b.boatID, 0), COALESCE(b.name, 'No Boat'), COALESCE(b.length, 0), COALESCE(b.width, 0), " +
             "COALESCE(m.memberID, 0), COALESCE(m.name, 'No Member')) " +
             "FROM Berth br " +
-            "LEFT JOIN Boat b ON b.boatID = br.berthID " +
+            "LEFT JOIN Boat b ON b.berthID = br.berthID " +
             "LEFT JOIN Member m ON b.memberID = m.memberID " +
             "WHERE br.berthID != 9999")
 

@@ -311,6 +311,11 @@ function createBerthList(berths){
                         infoCell.textContent = "medlem: " + approvedMember.member.name;
                         infoCell.className = "infoCell";
                         infoContainer.appendChild(infoCell);
+                        let utilCell = document.createElement("div");
+                        let utilization = (boat.length * boat.width) / (berth.length * berth.width) * 100;
+                        utilCell.textContent = "Udnyttelse: " + utilization.toFixed(0) + " %";
+                        utilCell.className = "infoCell";
+                        infoContainer.appendChild(utilCell);
                     }
                 })
             }
