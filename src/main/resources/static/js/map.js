@@ -7,11 +7,11 @@ import { fetchApprovedMembers, fetchBoats, fetchBerth } from "./fetchMethods.js"
 var map = L.map('map', {});
 
 // Set the center when the application opens
-map.setView([57.057740645009346, 9.901853509671989], 18.5);
+map.setView([57.05986605976934, 9.901956256639835], 15.5);
 
 // Use map from OpenStreetMap
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; OpenStreetMap contributors',
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="https://tile.openstreetmap.org/">OpenMapTiles</a>',
     maxZoom: 20,
     minZoom: 18
 }).addTo(map);
