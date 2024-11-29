@@ -71,13 +71,13 @@
 }
 
 .legend-color.available {
-    background-color: #00FF00; /* Green for available */
-    border: #00FF00 2px solid;
+    background-color: limeGreen; /* Green for available */
+    border: limeGreen 2px solid;
 }
 
 .legend-color.occupied {
-    background-color: red; /* Red for occupied */
-    border: red 2px solid;
+    background-color: crimson; /* Red for occupied */
+    border: crimson 2px solid;
 }
 
 .legend-color.unavailable {
