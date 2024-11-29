@@ -1,5 +1,6 @@
 import {fetchGeoJson, myGeoJson} from "./geojson.js";
 import {fetchApprovedMembers, fetchBerth, fetchBoats} from "./fetchMethods.js";
+import {addGuestArea} from "./map.js";
 
 const approvedMembers = await fetchApprovedMembers();
 const boats = await fetchBoats();
@@ -39,6 +40,8 @@ const bounds = L.latLngBounds(
 
 // Set the max bounds for navigating map as the bounds of picture -->
 map.setMaxBounds(bounds);
+
+addGuestArea();
 
 const harbor1 = document.getElementById("vestreBaadehavn");
 harbor1.addEventListener("click", function(event) {
