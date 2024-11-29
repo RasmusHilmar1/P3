@@ -176,19 +176,22 @@ async function initializeMap() {
 initializeMap();
 
 function onEachFeature(feature, layer) {
-    // Tilføj én samlet click-eventlistener for lag
+    // Check if the feature has a valid name property
+    const name = feature.properties?.name || ""; // Fallback to an empty string if undefined
+    const isPier = name.toLowerCase().startsWith("pier"); // Case-insensitive check
+
     layer.on('click', function (e) {
-        // Fremhæv det klikkede berth
-        highlightBerth(e);
-
-        // Mapper feature-data til lister
-        mapToThreeLists(feature);
-        mapToMemberList(feature);
-
-        // Opdater sidebaren med detaljer fra det valgte berth
-        updateSidebarWithBerth(feature.properties);
+        if (!isPier) {
+            // Allow highlighting only for berths
+            highlightBerth(e);
+            mapToThreeLists(feature);
+            mapToMemberList(feature);
+        } else {
+            console.log("Highlighting disabled for piers.");
+        }
     });
 
+    layer.featureId = feature.properties?.id; // Safely assign feature ID
     // Funktion til at opdatere sidebaren med det klikkede berth
     function updateSidebarWithBerth(berth) {
         const berthList = document.getElementById("berthList");
@@ -234,7 +237,7 @@ let selectedLayer;
 
 function highlightBerth(e) {
     let layer = e.target;
-    removeHighlight(layer);
+    removeHighlight();
     layer.setStyle({
         color: "blue",
         weight: 2,
@@ -243,14 +246,22 @@ function highlightBerth(e) {
     selectedLayer = layer;
 }
 
-function removeHighlight(layer) {
-    if (selectedLayer && (selectedLayer !== layer)){
-        selectedLayer.setStyle({
-            color: "black",
-            weight: 0.1,
+function removeHighlight() {
+    // Reset all layers to default style
+    if (geoJsonLayer) {
+        geoJsonLayer.eachLayer(layer => {
+            layer.setStyle({
+                color: "black",
+                weight: 0.1,
+                fillOpacity: 0.8, // Default opacity
+            });
         });
     }
+
+    // Clear the selected layer reference
+    selectedLayer = null;
 }
+
 
 function mapToMemberList(feature) {
     const tables = document.querySelectorAll(".memberList");
@@ -303,13 +314,10 @@ function mapToThreeLists(feature){
 
 function memberToMap(geoJsonLayer){
     const memberList = document.getElementById("memberListBoat");
+
     memberList.addEventListener("click", (event) => {
-        geoJsonLayer.eachLayer(layer => {
-            layer.setStyle({
-                color: "black",
-                weight: 0.1
-            })
-        });
+        // Clear all highlights
+        removeHighlight();
 
         const button = event.target.closest(".nameBtn");
         console.log("button member: " + button.outerHTML);
@@ -324,7 +332,8 @@ function memberToMap(geoJsonLayer){
                             layer.setStyle({
                                 color: "blue",
                                 weight: 2
-                            })
+                            });
+                            selectedLayer = layer;
                             //console.log("fundet");
                         /*} else {
                             layer.setStyle({
@@ -342,14 +351,11 @@ function memberToMap(geoJsonLayer){
 
 function berthListsToMap(geoJsonLayer){
     const berthList = document.getElementsByClassName("berthList");
+
     for(let i = 0; i < berthList.length; i++) {
         berthList[i].addEventListener("click", (event) => {
-            geoJsonLayer.eachLayer(layer => {
-                layer.setStyle({
-                    color: "black",
-                    weight: 0.1
-                })
-            });
+            // Clear all highlights
+            removeHighlight();
 
             const berthBtn = event.target.closest(".berthBtn");
             console.log("button: " + berthBtn.outerHTML);
@@ -364,7 +370,8 @@ function berthListsToMap(geoJsonLayer){
                                 layer.setStyle({
                                     color: "blue",
                                     weight: 2
-                                })
+                                });
+                                selectedLayer=Layer;
                             }
                         });
                     }

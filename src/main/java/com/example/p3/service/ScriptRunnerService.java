@@ -11,10 +11,34 @@ import java.util.Map;
 public class ScriptRunnerService {
     public void runPythonScript() {
         try {
-            // Specify the path to the Python executable in the virtual environment
+            // Get the OS name
+            String osName = System.getProperty("os.name").toLowerCase();
+
+            // Specify the project root directory and scripts folder
             String projectRoot = System.getProperty("user.dir");
             String scriptsDir = projectRoot + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "scripts";
-            String pythonExecutable = scriptsDir + File.separator + "venv" + File.separator + "Scripts" + File.separator + "python";
+
+            // Determine the Python executable path based on the OS
+            String pythonExecutable;
+            if (osName.contains("win")) {
+                pythonExecutable = scriptsDir + File.separator + "venv" + File.separator + "Scripts" + File.separator + "python.exe";
+            } else if (osName.contains("mac") || osName.contains("nix") || osName.contains("nux")) {
+                // For Mac/Linux, check for both 'python3' and 'python'
+                File python3Path = new File(scriptsDir + File.separator + "venv" + File.separator + "bin" + File.separator + "python3");
+                if (python3Path.exists()) {
+                    pythonExecutable = python3Path.getAbsolutePath();
+                } else {
+                    pythonExecutable = scriptsDir + File.separator + "venv" + File.separator + "bin" + File.separator + "python";
+                }
+            } else {
+                throw new UnsupportedOperationException("Unsupported operating system: " + osName);
+            }
+
+            // Ensure the Python executable exists
+            File pythonFile = new File(pythonExecutable);
+            if (!pythonFile.exists()) {
+                throw new RuntimeException("Python executable not found at: " + pythonExecutable);
+            }
 
             // Build the command
             ProcessBuilder pb = new ProcessBuilder(
@@ -22,7 +46,7 @@ public class ScriptRunnerService {
                     "BerthCoordinatesScript.py"
             );
 
-            // Set the working directory to the Scripts directory
+            // Set the working directory to the scripts directory
             pb.directory(new File(scriptsDir));
 
             // Merge error stream with output stream
