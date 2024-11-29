@@ -256,8 +256,9 @@ function memberToMap(geoJsonLayer){
                     boats.forEach(boat => {
                         if ((approvedMember.member.memberID === boat.memberID) && (boat.berthID !== 9999)) {
                             geoJsonLayer.eachLayer(layer => {
-
-                                if (Number(layer.featureId) === boat.berthID) {
+                                const name = layer.feature?.properties?.name || "";
+                                const isPier = name.toLowerCase().startsWith("pier");
+                                if(Number(layer.featureId) === boat.berthID && !isPier) {
                                     layer.setStyle({
                                         color: "blue",
                                         weight: 2
