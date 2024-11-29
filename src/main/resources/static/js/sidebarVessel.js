@@ -241,6 +241,7 @@ function createBerthList(berths){
     var tableHeader = table.createTHead();
     tableHeader.textContent = "Bådpladser";
 
+
     berths.forEach(berth => {
         // Creating a row for each berth
         var berthRow = table.insertRow();
@@ -288,7 +289,7 @@ function createBerthList(berths){
                 //infoSize.className = "infoCell";
                 //infoSize.id = berth.name;
                 size.appendChild(infoSize);
-                infoSize.className = "infoSize";
+                infoSize.className = "size-item";
                 infoSize.id = berth.berthID;
                 infoContainer.appendChild(size);
             }
@@ -317,7 +318,7 @@ function createBerthList(berths){
                         infoCell.className = "infoCell";
                         infoContainer.appendChild(infoCell);
                     }
-                })
+                });
             }
         });
 
@@ -480,6 +481,7 @@ function getCompatibilityScore(boat, berth) {
         });
 }
 
+
 export async function createBerthListAvailable(member) {
     var sidebar = document.getElementById("sidebar");
 
@@ -528,7 +530,7 @@ export async function createBerthListAvailable(member) {
         berthCell.appendChild(infoContainer);
 
         var size = document.createElement("div");
-        size.textContent = "størrelse";
+        size.textContent = "størrelse: ";
         size.className = "infoCell";
 
                     for (const key in berth) {

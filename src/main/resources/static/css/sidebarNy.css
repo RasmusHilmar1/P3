@@ -113,6 +113,7 @@
 
 .berthList {
     display: none;
+    width: 100%;
 }
 
 .memberBtn:active{
