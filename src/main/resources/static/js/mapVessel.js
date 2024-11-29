@@ -208,6 +208,8 @@ function onEachFeature(feature, layer) {
             highlightBerth(e);
             mapToThreeLists(feature);
             mapToMemberList(feature);
+
+            updateSidebarWithBerth(feature.properties);
         } else {
             console.log("Highlighting disabled for piers.");
         }
@@ -301,7 +303,7 @@ function mapToMemberList(feature) {
                 boats.forEach(boat => {
                     if ((Number(memberId) === boat.memberID) && (boat.berthID !== 9999) &&
                         (boat.berthID === Number(feature.properties.id)) && (table.style.display === "table")) {
-                            nameBtn.scrollIntoView();
+                            nameBtn.scrollIntoView(scrolledIntoViewOptions);
                             nameBtn.click();
                     }
                 })
@@ -310,6 +312,12 @@ function mapToMemberList(feature) {
     });
 
 }
+
+const scrolledIntoViewOptions = {
+    behavior: 'smooth', // Enables smooth scrolling
+    block: 'center', // Scroll the element to the center of the viewport
+    inline: 'center' // Align the element horizontally to the center
+};
 
 function mapToThreeLists(feature){
     const tables = document.querySelectorAll("[id^='berthList']");
@@ -325,7 +333,7 @@ function mapToThreeLists(feature){
                 //console.log("berthName: " + berthName);
 
                 if ((berthName === feature.properties.name) && (table.style.display === "table")) {
-                    berthNameBtn.scrollIntoView();
+                    berthNameBtn.scrollIntoView(scrolledIntoViewOptions);
                     berthNameBtn.click();
                 }
             }
