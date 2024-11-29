@@ -227,3 +227,32 @@ td {
     display: none;
     width: 100%;
 }
+
+.btnSidebar {
+    text-decoration: none;
+    font-size: 25px;
+    display: inline;
+    transition: 0.1s;
+    width: 170px;
+    margin-top: 10px;
+    margin-left: 1px;
+    border-radius: 10px;
+    color: #5c82b5;
+    background: white;
+    border-color: #5c82b5;
+}
+
+
+.btnSidebar.pressed {
+    text-decoration: none;
+    font-size: 25px;
+    display: inline;
+    transition: 0.1s;
+    width: 170px;
+    margin-top: 10px;
+    margin-left: 1px;
+    border-radius: 10px;
+    color: white;
+    background: #5c82b5;
+    border-color: #5c82b5;
+}
