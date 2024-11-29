@@ -33,13 +33,15 @@
     </button>
 </div>
 <div id="sidebar" class="sidebar">
-    <label for="searchBarSidebar"></label><input type="text" id="searchBarSidebar" class="searchBar" placeholder="Søg på medlem, båd eller bådplads">
-
+    <div id="searchWithIcon">
+        <img class="vector" src="/Images/vector.svg" alt="Icon"/>
+        <label for="searchBarSidebar"></label>
+        <input type="text" id="searchBarSidebar" class="searchBar" placeholder="Søg på medlem, båd eller bådplads">
+    </div>
     <form action="/default" method="post" style="display:inline;">
-        <button id="memberBtn" class="sidebarMenuBtn">Medlemmer</button>
+        <button id="memberBtn" class="sidebarMenuBtn pressed">Medlemmer</button>
     </form>
     <button id="berthBtn" class="sidebarMenuBtn">Bådpladser</button>
-
 
     <table id="memberListWithoutBoat" class="memberList" style="display: table;">
         <thead id="memberWithoutBoatTableHeader" class="tableHeader">

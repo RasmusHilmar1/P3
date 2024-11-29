@@ -338,12 +338,22 @@ function switchHeader(){
     var memberBtn = document.getElementById("memberBtn");
     var berthBtn = document.getElementById("berthBtn");
 
-    memberBtn.onclick = function (){
+    function clearPressedClass() {
+        memberBtn.classList.remove("pressed");
+        berthBtn.classList.remove("pressed");
+    }
+
+
+    memberBtn.addEventListener('click', function (event) {
         memberTableNoBoat.style.display = 'table';
-        memberTableBoat.style.display = 'table'
-        berthTable.style.display = 'none'
-    };
-    berthBtn.onclick = function () {
+        memberTableBoat.style.display = 'table';
+        berthTable.style.display = 'none';
+
+        clearPressedClass();
+        memberBtn.classList.add("pressed");
+
+    });
+    berthBtn.addEventListener('click', function (event) {
         // Finder alle elementer med klassen berthList
         const berthTables = document.querySelectorAll('.berthList');
 
@@ -358,8 +368,11 @@ function switchHeader(){
         // Skjul medlemslisterne
         memberTableNoBoat.style.display = 'none';
         memberTableBoat.style.display = 'none';
-        currentSelectedButton = null;
-    };
+
+        // Opdater knapstilstand
+        clearPressedClass();
+        berthBtn.classList.add("pressed");
+    });
 }
 switchHeader();
 

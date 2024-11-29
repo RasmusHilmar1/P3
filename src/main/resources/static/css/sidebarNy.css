@@ -12,49 +12,52 @@
     margin-top: 120px;
     overflow-y:scroll;
 }
-
+/*
 .sidebar input{
     margin-top: 10px;
     margin-left: 15px;
-    width: 300px;
+    /*width: 300px;*//*
     font-size: 24px;
     border:1px solid #5c82b5;
     border-radius:5px
 }
-
+*/
 ::placeholder {
     color: #5c82b5;
     opacity: 1;
     font-size: 18px;
 }
 
+
 .sidebarMenuBtn {
     text-decoration: none;
-    font-size: 17px;
+    font-size: 19px;
     display: inline;
-    transition: 0.1s;
     width: 160px;
     margin-top: 10px;
     margin-left: 1px;
-    border-radius: 10px;
+    border-radius: 6px;
     color: #5c82b5;
     background: white;
     border-color: #5c82b5;
+    border-style: solid;
 }
 
 
 .sidebarMenuBtn.pressed {
     text-decoration: none;
-    font-size: 17px;
+    font-size: 19px;
     display: inline;
-    transition: 0.1s;
     width: 160px;
     margin-top: 10px;
     margin-left: 1px;
-    border-radius: 10px;
+    margin-bottom: 10px;
+    border-radius: 6px;
     color: white;
     background: #5c82b5;
     border-color: #5c82b5;
+    border-style: solid;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
 
@@ -228,31 +231,65 @@ td {
     width: 100%;
 }
 
-.btnSidebar {
-    text-decoration: none;
-    font-size: 25px;
-    display: inline;
-    transition: 0.1s;
-    width: 170px;
+#searchWithIcon {
+    position: relative;
     margin-top: 10px;
-    margin-left: 1px;
+    margin-left: 15px;
+    font-size: 24px;
+    border:1px solid #5c82b5;
     border-radius: 10px;
+    padding: 5px
+}
+
+#searchWithIcon .vector {
+    position: relative;
+    left: 5px;
+    top: 50%;
+    transform: translateY(15%);
+    width: 20px; /* Billedets bredde */
+    height: 20px; /* Billedets højde */
+}
+/*
+.searchWithIcon input {
+    padding-left: 35px; /* Gør plads til ikonet *//*
+    position: relative;
+    margin-top: 10px;
+    margin-left: 15px;
+    font-size: 24px;
+    border:1px solid #5c82b5;
+    border-radius: 10px;
+
+}*/
+
+#searchBarSidebar {
+    border: none;
+    /*width: 90%;*/
+    line-height: 22px;
+    /* padding-left: 35px; */
+    position: relative;
+    margin-top: 10px;
+    /* margin-left: 15px; */
+    font-size: 24px;
+    /* border-radius: 10px;*/
+}
+
+.vector,
+.vector * {
+    box-sizing: border-box;
     color: #5c82b5;
-    background: white;
-    border-color: #5c82b5;
+}
+.vector {
+    width: 21px;
+    height: 21px;
+    position: relative;
+    overflow: visible;
+    color: #5c82b5;
+}
+
+/* Figma Styles of your File */
+:root {
+    /* Fonts */
+    /* Effects */
 }
 
 
-.btnSidebar.pressed {
-    text-decoration: none;
-    font-size: 25px;
-    display: inline;
-    transition: 0.1s;
-    width: 170px;
-    margin-top: 10px;
-    margin-left: 1px;
-    border-radius: 10px;
-    color: white;
-    background: #5c82b5;
-    border-color: #5c82b5;
-}
