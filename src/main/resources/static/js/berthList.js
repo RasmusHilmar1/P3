@@ -37,7 +37,7 @@ function calculateUtilization(){
 
 calculateUtilization();
 
-// FUNCTION FOR ADDING CELLS TO TABLE ----->
+// FUNCTIONS FOR ADDING CELLS TO TABLE ----->
 
 function addCells(tr, data, editableIndexes = [], lengthAndWidthIndexes = []){
     let td;
@@ -80,12 +80,12 @@ function addSaveBtn(row, data) {
     saveBtn.textContent = "Gem Ændringer";
     saveCell.className = "saveBtnCell";
     saveBtn.className = "saveBtn";
-    saveCell.appendChild(saveButton); // Append the Save button to the last cell
+    saveCell.appendChild(saveBtn); // Append the Save button to the last cell
     // Add click event to the save button
     saveBtn.addEventListener("click", () => saveBerthChanges(row, data));
 }
 
-// FUNCTIONS FOR CREATING TABLE ---->
+// FUNCTIONS FOR DEFINING DATA FOR TABLE ---->
 
 function findBerthData(data){
     return [data.berthID, data.name, data.length + "m", data.width + "m", data.areal + "m", data.depth + "m", data.utilizationPercentage]; // initializing berth data for cells with berth data
@@ -123,9 +123,54 @@ function findCorrespondingMemberAndBoat(data){
     console.log("No corresponding boat or member found");
 }
 
-function getBerthListSortedBerths(data, table){
+// FUNCTION FOR DEFINING HEADERS ON TABLE ---->
 
+function createTableHeaders(headers, sortedBy){
+    let th;
+
+    const headerRow = document.getElementById("berthListHeaders"); // create new headerRow
+
+    headerRow.innerHTML = ""; // clear out the header row each time the table is rendered
+
+    headers.forEach(header => { // for each header create a cell
+        th = document.createElement("th");
+        th.className = "headercells";
+        th.innerHTML = header;
+        headerRow.appendChild(th);
+    });
+
+    th = document.createElement("th"); //create a new headercell for the export button
+    th.className = "headercells";
+    let exportBtn = document.createElement("button"); //create button element
+    exportBtn.id = "exportBtn" + sortedBy;
+    exportBtn.innerHTML = "Exportér liste til Excel";
+    th.appendChild(exportBtn);
+    headerRow.appendChild(th);
+}
+
+// FUNCTIONS FOR SORTING THE TABLES ------>
+
+function getBerthListSortedBerths(data, table){
     let berthData, memberAndBoatData, row, editableColumns, lengthAndWidthIndexes;
+
+    table.innerHTML = ""; //clear out the table in order to rerender
+
+    createTableHeaders( // create correct headers for the list when sorted by berths
+        ["Plads nr.",
+            "Plads",
+            "Længde",
+            "Bredde",
+            "Areal",
+            "Dybde",
+            "Udnyttelse i %",
+            "Navn",
+            "Medlems nr.",
+            "Bådnavn",
+            "Længde",
+            "Bredde",
+            "Areal",
+            "Telefon nr."],
+        "Berths");
 
     //For each berth, create a row and add cells with the data
         data.forEach(berth => {
@@ -159,6 +204,25 @@ function getBerthListSortedBerths(data, table){
 function getBerthListSortedMembers(data, table){
     let row, berthData, memberAndBoatData, editableColumns, lengthAndWidthIndexes;
 
+    table.innerHTML = ""; //clear out the table in order to rerender
+
+    createTableHeaders( // create correct headers for the list when sorted by berths
+        ["Navn",
+            "Medlems nr.",
+            "Bådnavn",
+            "Længde",
+            "Bredde",
+            "Areal",
+            "Telefon nr.",
+            "Plads nr.",
+            "Plads navn",
+            "Længde",
+            "Bredde",
+            "Areal",
+            "Dybde",
+            "Udnyttelse i %"],
+        "Members");
+
     // filter rows such that only the ones with a boat and member assigned is included
     let filteredRows = data.filter(berth => {
         findCorrespondingMemberAndBoat(berth); // Set correspondingMember here
@@ -166,26 +230,29 @@ function getBerthListSortedMembers(data, table){
     });
 
     filteredRows.forEach(berth => {
+        if (berth.berthID !== 9999) { // do not include the default berth
+            //declare data for each berth
+            berthData = findBerthData(berth);
+            memberAndBoatData = findCorrespondingMemberAndBoat(berth);
 
-        //declare data for each berth
-        berthData = findBerthData(berth);
-        memberAndBoatData = findCorrespondingMemberAndBoat(berth);
+            // initialize table rows for each berth
+            row = table.insertRow();
+            row.className = "berthTableRow";
 
-        // initialize table rows for each berth
-        row = table.insertRow();
-        row.className = "berthTableRow";
+            editableColumns = [1, 2, 3]; // set the columns with name, length and width as editable
 
-        editableColumns = []; // set the columns with name, length and width as editable
+            lengthAndWidthIndexes = [2, 3]; // set the columns with length and width
 
-        lengthAndWidthIndexes = []; // set the columns with length and width
+            addCells(row, memberAndBoatData, [], []); // add member data first
 
-        addCells(row, memberAndBoatData, [], []); // add member data first
+            addCells(row, berthData, editableColumns, lengthAndWidthIndexes); // add berth data after
 
-        addCells(row, berthData, editableColumns, lengthAndWidthIndexes); // add berth data after
-
-        addSaveBtn(row, berth); // add save button in each row
+            addSaveBtn(row, berth); // add save button in each row
+        }
     });
 }
+
+// FUNCTION FOR CREATING TABLE ------>
 
 function getBerthListRefactored(data, sortedBy){
     // Declare table
@@ -200,7 +267,29 @@ function getBerthListRefactored(data, sortedBy){
     }
 }
 
-getBerthListRefactored(berths, "members");
+// Start with the list sorted by berths
+getBerthListRefactored(berths, "berths");
+
+//event handler for the sorting buttons
+function sortingBtnHandler(){
+    let berthSortBtn = document.getElementById("berthSort");
+    let memberSortBtn = document.getElementById("memberSort");
+
+    berthSortBtn.classList.add("selected"); //start with "sorted by berths"-button 'selected'
+
+    berthSortBtn.addEventListener("click", () => {
+        getBerthListRefactored(berths, "berths");
+        berthSortBtn.classList.add('selected');
+        memberSortBtn.classList.remove('selected');
+    });
+    memberSortBtn.addEventListener("click", () => {
+        getBerthListRefactored(berths, 'members')
+        berthSortBtn.classList.remove('selected');
+        memberSortBtn.classList.add('selected');
+    });
+}
+
+sortingBtnHandler();
 
 // FUNCTIONS FOR UPDATING THE CHANGES IN THE EDITABLE CELLS ---->
 
@@ -209,10 +298,6 @@ async function saveBerthChanges(row, berth) {
 
     // collect updated values from the row's cells
     const cells = row.cells;
-
-    //calculate new areal
-/*    const length = parseFloat(cells[2].textContent); // length
-    const width = parseFloat(cells[3].textContent); // width */
 
     const lengthInput = cells[2].querySelector("input");
     const widthInput = cells[3].querySelector("input");
@@ -284,13 +369,12 @@ async function saveBerthChanges(row, berth) {
 
 // IMPORTANT: Maybe add such that users can only search for names and IDs, not areal, length and width
 function searchBarBerthList() {
-    console.log("Search function triggered"); //console logging to make sure that the function runs
     let input, filter, table, tableRows;
+
     input = document.getElementById("berthListSearchBar"); // input field
     filter = input.value.toLowerCase(); // input entered by user converted to lowercase
-    console.log(filter);
+
     table = document.getElementById("berthListBody"); // get the dynamic created table
-    console.log(table);
     tableRows = table.getElementsByClassName("berthTableRow"); // get all rows
 
     //Iterate through all rows
@@ -314,7 +398,6 @@ function searchBarBerthList() {
                 break;
             }
         }
-
         // make sure the rows with no match are hidden while the one with a match are displayed
         if (result){
             tableRows[i].style.display = "table-row";
@@ -334,9 +417,7 @@ searchBarEvent();
 
 // FUNCTIONS FOR EXPORTING TABLE TO EXCEL ---->
 
-//eventhandler for exporting list as Excel fil
-function exportTableToExcel(){
-    const table = document.getElementById("berthList");
+function exportBerthTableToExcel(){
     try {
         window.location.href = '/vesselBerthList/PladsExcel'; // redirect to endpoint for exporting list
     } catch (error) {
@@ -344,123 +425,17 @@ function exportTableToExcel(){
         console.log("List not exported.");
     }
 }
-document.getElementById("exportBtn").addEventListener("click", exportTableToExcel);
+document.getElementById("exportBtnBerths").addEventListener("click", exportBerthTableToExcel);
+
+// exportBtnBerths and exportBtnMembers - remember these.
+
+
+
+
+// eventhandler for exporting list as Excel file
+/*
+
 
 // function fra printService: generateBerthListExcel
 
-// function fra memberListController:
-
-
-
-// OLD FUNCTIONS ---->
-
-/*function getBerthList(data) {
-    const table = document.getElementById("berthListBody"); // get the HTML element for the dynamic table
-
-    // For each berth, find corresponding boat and member
-    data.forEach(berth => {
-        berth.correspondingBoat = boats.find(boat => boat.berthID === berth.berthID);
-        console.log(berth.correspondingBoat);
-
-        if (berth.correspondingBoat) {
-            berth.correspondingMember = members.find(member =>
-                member.member.memberID === berth.correspondingBoat.memberID); //if there is found a boat, find the corresponding member
-
-            if (berth.correspondingMember) {
-                console.log(berth.correspondingMember.member.memberID);
-            }
-        }
-    }); */
-
-//For each berth, create a row and add cells with the data
-/* data.forEach(berth => {
-     // do not include the default berth
-     if (berth.berthID !== 9999) {
-         var row = table.insertRow();
-         row.className = "berthTableRow";
-         const berthData = [berth.berthID, berth.name, berth.length + "m", berth.width + "m", berth.areal + "m", berth.depth + "m", berth.utilizationPercentage];
-
-         // set name, length and width as editable
-         const editableColumns = [1, 2, 3];
-         addCells(row, berthData, editableColumns);
-         berth.correspondingBerthCells = berthData;
-
-         // find boat assigned to berth and corresponding member
-         if (berth.correspondingMember && berth.correspondingBoat) {
-             if (berth.correspondingBoat.memberID === berth.correspondingMember.member.memberID && berth.correspondingBoat.berthID === berth.berthID) {
-
-                 const memberAndBoatData = [
-                     berth.correspondingMember.member.name,
-                     berth.correspondingBoat.memberID,
-                     berth.correspondingBoat.name,
-                     berth.correspondingBoat.length,
-                     berth.correspondingBoat.width,
-                     berth.correspondingBoat.areal,
-                     berth.correspondingMember.member.phonenumber];
-
-                 addCells(row, memberAndBoatData);
-                 berth.correspondingMemberAndBoatCells = memberAndBoatData;
-             }
-         }
-         // else add empty cells
-         else {
-             addCells(row, ["", "", "", "", "", "", ""]);
-         }
-
-         // add a cell  with a save button for each row
-         const saveCell = row.insertCell(); // Insert a final cell for the Save button
-         const saveButton = document.createElement("button");
-         saveButton.textContent = "Gem Ændringer";
-         saveCell.className = "saveBtnCell";
-         saveButton.className = "saveBtn";
-         saveCell.appendChild(saveButton); // Append the Save button to the last cell
-
-         // Add click event to the save button
-         saveButton.addEventListener("click", () => saveBerthChanges(row, berth));
-     }
- });
- return table;
-}
-getBerthList(berths); */
-
-// FUNCTIONS FOR SORTING THE TABLE ---->
-
-/* function sortBerthListMember(data){
-    console.log("Sorting function after members called!");
-
-    let filteredRows, sorted;
-
-    filteredRows = data.filter(row => row.correspondingMember); // filter data to include only the rows with a corresponding member and boat
-    console.log(filteredRows);
-
-    sorted = filteredRows.sort((a,b) => a.correspondingBoat.memberID - b.correspondingBoat.memberID); // sort the filtered rows
-    console.log(sorted);
-
-    const table = document.getElementById("berthListBody");
-    table.innerHTML = ""; //clear out the table
-
-    getBerthList(sorted); //create the new table with the sorted rows
-}
-
-function sortBerthListBerth(data){
-    console.log("Sorting function after berths called!");
-
-    const sorted = data.sort((a,b) => a.name.localeCompare(b.name));
-    console.log(sorted);
-
-    const table = document.getElementById("berthListBody");
-    table.innerHTML = ""; //clear out the table in order to rerender
-
-    /*getBerthList(sorted); //create new table with the sorted rows
-}
-
-//event handler for the sorting buttons
-function sortingBtnHandler(){
-    let berthSortBtn = document.getElementById("berthSort");
-    let memberSortBtn = document.getElementById("memberSort");
-
-    berthSortBtn.addEventListener("click", () => sortBerthListBerth(berths));
-    memberSortBtn.addEventListener("click", () => sortBerthListMember(berths));
-}
-
-sortingBtnHandler(); */
+// function fra memberListController: */
