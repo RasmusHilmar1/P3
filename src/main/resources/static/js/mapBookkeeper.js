@@ -167,18 +167,15 @@ async function initializeMap() {
                     case 0:
                         fillColor = "Crimson";
                         break;
-                    case 2:
-                        fillColor = "orange";
-                        break;
                     default:
                         fillColor = "#F2EFE9";// Default color if status is unknown
                 }
 
                 return {
                     color: "black",
-                    weight: 0.1,
+                    weight: 0.3,
                     fillColor: fillColor,
-                    fillOpacity: 0.8
+                    fillOpacity: 1
                 };
             }
         }).addTo(map);
@@ -220,8 +217,8 @@ function highlightBerth(e) {
         geoJsonLayer.eachLayer(l => {
             l.setStyle({
                 color: "black",
-                weight: 0.1,
-                fillOpacity: 0.8, // Default opacity
+                weight: 0.3,
+                fillOpacity: 1, // Default opacity
             });
         });
     }
