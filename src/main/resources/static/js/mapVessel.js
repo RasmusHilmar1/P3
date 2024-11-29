@@ -370,7 +370,10 @@ function berthListsToMap(geoJsonLayer){
                 berths.forEach(berth => {
                     if (berthName === berth.name) {
                         geoJsonLayer.eachLayer(layer => {
-                            if (Number(layer.featureId) === berth.berthID) {
+                            const name = layer.feature?.properties?.name || "";
+                            const isPier = name.toLowerCase().startsWith("pier");
+
+                            if (Number(layer.featureId) === berth.berthID && !isPier) {
                                 layer.setStyle({
                                     color: "blue",
                                     weight: 2
