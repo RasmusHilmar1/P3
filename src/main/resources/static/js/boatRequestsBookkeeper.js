@@ -80,6 +80,7 @@ class FeeEvent extends EventManagerBoatRequests {
                     console.log("Corrected to fee not sent for boat ID:", boatID);
                 }
                 updateBoatFeeStatus(boatID, "feeSent", feeSent);
+                location.reload();
             });
 
             // Make sure the buttons have the correct styling corresponding to data
@@ -99,7 +100,12 @@ class FeeEvent extends EventManagerBoatRequests {
                     console.log("Corrected to fee not paid for boat ID:", boatID);
                 }
                 updateBoatFeeStatus(boatID, "feePaid", feePaid);
-                approveBoat(boat.id);
+                setTimeout(function() {
+                    approveBoat(boat.id);
+                }, 500);
+                setTimeout(function() {
+                    location.reload();
+                }, 800)
             });
         });
     }
