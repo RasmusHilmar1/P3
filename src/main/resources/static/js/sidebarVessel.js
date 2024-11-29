@@ -705,27 +705,39 @@ function createBerthListUnavailable(member) {
 }
 
 function collapsableListEventListener(button, infoContainer) {
-    // event listener for the collapsable list
     button.addEventListener("click", function (event) {
         const infoCells = infoContainer.querySelectorAll(".infoCell");
-        button.classList.toggle('selectedNameBtn');
 
-        if(currentSelectedButton && currentSelectedButton!== button) {
-            currentSelectedButton.classList.remove("selectedNameBtn");
+        if (currentSelectedButton === button) {
+            // Hvis den samme knap trykkes, fjern CSS og kollaps info-cellerne
+            button.classList.remove("selectedNameBtn");
+            infoCells.forEach(cell => cell.style.maxHeight = null);
+
+            // Nulstil den aktuelle valgte knap og info-celler
+            currentSelectedButton = null;
+            currentInfoCell = null;
+        } else {
+            // Hvis en anden knap trykkes, håndter den tidligere valgte knap og info-celler
+            if (currentSelectedButton) {
+                currentSelectedButton.classList.remove("selectedNameBtn");
+            }
+            if (currentInfoCell) {
+                currentInfoCell.forEach(cell => cell.style.maxHeight = null);
+            }
+
+            // Tilføj CSS til den nye knap og udvid dens info-celler
+            button.classList.add("selectedNameBtn");
+            infoCells.forEach(cell => {
+                cell.style.maxHeight = cell.scrollHeight + "px";
+            });
+
+            // Opdater den aktuelle valgte knap og info-celler
+            currentSelectedButton = button;
+            currentInfoCell = infoCells;
         }
-        if(currentInfoCell && currentInfoCell !== infoCells) {
-            currentInfoCell.forEach(cell => cell.style.maxHeight = null);
-        }
-
-        currentInfoCell = infoCells;
-        //button.classList.toggle("selectedNameBtn");
-        currentSelectedButton = button;
-
-        infoCells.forEach(cell => {
-            cell.style.maxHeight = cell.style.maxHeight ? null : cell.scrollHeight + "px";
-        });
     });
 }
+
 
 function createTable(member, sidebar, berthList, ListTitel){
     var table = document.createElement("table");

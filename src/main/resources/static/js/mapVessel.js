@@ -189,15 +189,58 @@ async function initializeMap() {
 initializeMap();
 
 function onEachFeature(feature, layer) {
-
-    layer.on('click', function(e) {
+    // Tilføj én samlet click-eventlistener for lag
+    layer.on('click', function (e) {
+        // Fremhæv det klikkede berth
         highlightBerth(e);
-        //berthToSideBarBerthList(feature);
+
+        // Mapper feature-data til lister
         mapToThreeLists(feature);
         mapToMemberList(feature);
+
+        // Opdater sidebaren med detaljer fra det valgte berth
+        updateSidebarWithBerth(feature.properties);
     });
 
-    layer.featureId = feature.properties.id;
+    // Funktion til at opdatere sidebaren med det klikkede berth
+    function updateSidebarWithBerth(berth) {
+        const berthList = document.getElementById("berthList");
+        if (!berthList) {
+            console.error("berthList elementet blev ikke fundet.");
+            return;
+        }
+
+        const rows = berthList.querySelectorAll('tr');
+        const scrolledIntoViewOptions = {
+            behavior: 'smooth', // Glidende scroll
+            block: 'center', // Placer elementet vertikalt i midten
+            inline: 'center' // Placer elementet horisontalt i midten
+        };
+
+        rows.forEach(row => {
+            const berthNameBtn = row.querySelector(".berthBtn");
+            const infoContainer = row.querySelector(".infoCell"); // Antag, at infoCell er tilknyttet rækken
+
+            if (berthNameBtn) {
+                const berthName = berthNameBtn.textContent.trim();
+
+                // Sammenlign `berth.name` med knaptekst for at finde match
+                if (berthName === berth.name) {
+                    berthNameBtn.scrollIntoView(scrolledIntoViewOptions); // Scroll knappen i fokus
+
+                    // Åbn infoContainer eksplicit
+                    if (infoContainer && !infoContainer.style.maxHeight) {
+                        infoContainer.style.maxHeight = infoContainer.scrollHeight + "px";
+                    }
+
+                    // Tilføj CSS til den aktive knap, hvis den ikke allerede har det
+                    if (!berthNameBtn.classList.contains("selectedNameBtn")) {
+                        berthNameBtn.click(); // Simuler klik for at tilføje yderligere handlinger (hvis nødvendigt)
+                    }
+                }
+            }
+        });
+    }
 }
 
 let selectedLayer;
