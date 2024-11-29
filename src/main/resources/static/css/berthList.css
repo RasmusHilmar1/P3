@@ -32,9 +32,12 @@
 }
 
 /* styling for sorting buttons when selected */
+
 .sortingBtn.selected {
     background-color: #5c82b5;
     color: white;
+    box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.2), /* Dark inner shadow */
+    inset -2px -2px 5px rgba(255, 255, 255, 0.7); /* Light inner shadow */
 }
 
 /* Style for the dynamic table */
