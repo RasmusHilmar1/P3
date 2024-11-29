@@ -1,5 +1,4 @@
 import { myGeoJson, fetchGeoJson } from "./geojson.js";
-export {addGuestArea};
 import {fetchApprovedMembers, fetchBoats, fetchBerth} from "./fetchMethods.js";
 
 // Create map for leaflet -->
@@ -56,6 +55,7 @@ function addGuestArea() {
         fillOpacity: 0.7
     }).addTo(map);
 }
+
 addGuestArea();
 
 

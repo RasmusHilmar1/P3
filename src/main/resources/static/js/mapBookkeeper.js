@@ -1,6 +1,5 @@
 import {fetchGeoJson, myGeoJson} from "./geojson.js";
 import {fetchApprovedMembers, fetchBerth, fetchBoats} from "./fetchMethods.js";
-import {addGuestArea} from "./map.js";
 
 const approvedMembers = await fetchApprovedMembers();
 const boats = await fetchBoats();
@@ -40,8 +39,27 @@ const bounds = L.latLngBounds(
 
 // Set the max bounds for navigating map as the bounds of picture -->
 map.setMaxBounds(bounds);
+function addGuestArea() {
+    var guestAreaBounds = [
+        [57.05742346980074, 9.90033925763862],
+        [57.05734201796358, 9.90061552466426],
+        [57.05728567822284, 9.900799976274303],
+        [57.05732832447959, 9.900841314225922],
+        [57.057682352673424, 9.90090670180615],
+        [57.05775435796488, 9.900683763958938],
+        [57.05742346980074, 9.90033925763862]
+    ];
+
+// Add an orange polygon for the guest area
+    L.polygon(guestAreaBounds, {
+        color: "purple",
+        weight: 1,
+        fillOpacity: 0.7
+    }).addTo(map);
+}
 
 addGuestArea();
+
 
 const harbor1 = document.getElementById("vestreBaadehavn");
 harbor1.addEventListener("click", function(event) {
@@ -144,10 +162,10 @@ async function initializeMap() {
 
                 switch (status) {
                     case 1:
-                        fillColor = "#00FF00";
+                        fillColor = "LimeGreen";
                         break;
                     case 0:
-                        fillColor = "red";
+                        fillColor = "Crimson";
                         break;
                     case 2:
                         fillColor = "orange";
