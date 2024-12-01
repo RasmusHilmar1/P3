@@ -44,13 +44,21 @@ function calculateAreal(){
 
 calculateAreal();
 
+// calculate new areal for boat in order to calculate proper utilization percentage
+function calculateArealBoatUtil(){
+    boats.forEach(boat => {
+        boat.arealUtil = ((boat.length + 1) * (boat.width + 0.3).toFixed(2));
+    })
+}
+
+calculateArealBoatUtil();
+
 // calculating the utilization of occupied berth in percentage - should be connected to back-end
 function calculateUtilization(){
-    calculateAreal();
     berths.forEach(berth => {
         let boat = boats.find(boat => boat.berthID === berth.berthID); // find a boat with matching berthID
         if (boat){ // if matching boat is found
-            berth.utilizationPercentage = ((boat.areal / berth.areal) * 100).toFixed(2) + "%"; //toFixed rounds the number to percentage with two decimals
+            berth.utilizationPercentage = ((boat.arealUtil / berth.areal) * 100).toFixed(2) + "%"; //toFixed rounds the number to percentage with two decimals
         }
     });
 }
