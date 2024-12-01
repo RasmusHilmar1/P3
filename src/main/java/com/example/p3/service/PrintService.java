@@ -188,7 +188,12 @@ public class PrintService {
             dataRow.createCell(2).setCellValue(berthlistDTO.getBerthLength());
             dataRow.createCell(3).setCellValue(berthlistDTO.getBerthWidth());
             dataRow.createCell(4).setCellValue(berthlistDTO.getBerthAreal());
-            dataRow.createCell(5).setCellValue(Math.round((berthlistDTO.getBerthUtil())));
+            // make sure that only the ones that have a compatibility score gets a %
+            if (berthlistDTO.getBerthUtil() == 0) {
+                dataRow.createCell(5).setCellValue("0");
+            } else {
+                dataRow.createCell(5).setCellValue(Math.round(berthlistDTO.getBerthUtil()) + "%");
+            }
             dataRow.createCell(6).setCellValue(berthlistDTO.getMemberID());
             dataRow.createCell(7).setCellValue(berthlistDTO.getMemberName());
             dataRow.createCell(8).setCellValue(berthlistDTO.getBoatName());
