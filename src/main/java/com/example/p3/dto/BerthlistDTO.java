@@ -45,7 +45,7 @@ public class BerthlistDTO {
         }
     }
 
-    // function for taking the extra space into consideration
+    // function for taking the extra space into consideration when calculating utilization
     private static double getAdjustedBoatAreal(double boatLength, double boatWidth) {
         double adjustedBoatLength, adjustedBoatWidth, adjustedBoatAreal;
         if (boatWidth > 0 && boatLength > 0) {
