@@ -11,6 +11,7 @@ import org.apache.poi.ss.usermodel.BorderStyle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 
 // Service til at håndterer export (hedder print, fordi det var det jeg forbandt det med MB)
@@ -217,6 +218,9 @@ public class PrintService {
 
     public void generateBerthListByMembersExcel(HttpServletResponse response) throws Exception {
         List<BerthlistDTO> berths = berthlistRepository.fetchAllBerthlistDetails();
+
+        //sort the berths by membership number
+        berths.sort(Comparator.comparingInt(BerthlistDTO::getMemberID));
 
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = workbook.createSheet("PladslisteMedlemmer");

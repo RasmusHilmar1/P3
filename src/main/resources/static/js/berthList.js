@@ -131,8 +131,8 @@ function findCorrespondingMemberAndBoat(data){
         if (data.correspondingBoat.memberID === data.correspondingMember.member.memberID && data.correspondingBoat.berthID === data.berthID) {
 
             return [ // initialize the corresponding boat and member ID
-                data.correspondingMember.member.name,
                 data.correspondingBoat.memberID,
+                data.correspondingMember.member.name,
                 data.correspondingBoat.name,
                 data.correspondingBoat.length,
                 data.correspondingBoat.width,
@@ -277,6 +277,18 @@ function getBerthListSortedMembers(data, table){
         }
     });
 
+    // intialize tablebody and rows for the table sorted by members
+    let tableBody = document.getElementById("berthListBody");
+    let rows = Array.from(document.getElementsByClassName("berthTableRow"));
+
+    rows.sort((rowA, rowB) => { // sort the rows after membership number, having the lowest number highest
+        let cellA = rowA.cells[0].textContent;
+        let cellB = rowB.cells[0].textContent;
+        return cellA - cellB;
+    });
+
+    rows.forEach(row => tableBody.appendChild(row)); // append each row in sorted order to the table
+
     // get the corresponding exportBtn
     let exportBtn = document.getElementById("exportBtnMembers");
     console.log(exportBtn);
@@ -399,7 +411,7 @@ async function saveBerthChanges(row, berth) {
 
 // FUNCTION FOR SEARCH FUNCTIONALITY ----->
 
-// IMPORTANT: Maybe add such that users can only search for names and IDs, not areal, length and width
+// IMPORTANT: Maybe add such that the vessel inspector can only search for names and IDs, not areal, length and width
 function searchBarBerthList() {
     let input, filter, table, tableRows;
 
@@ -446,27 +458,3 @@ function searchBarEvent(){
 }
 
 searchBarEvent();
-
-
-
-
-
-/*let exportBtnMembers = document.getElementById("exportBtnMembers");
-console.log(exportBtnMembers);*/
-
-
-
-
-
-// exportBtnBerths and exportBtnMembers - remember these.
-
-
-
-
-// eventhandler for exporting list as Excel file
-/*
-
-
-// function fra printService: generateBerthListExcel
-
-// function fra memberListController: */
