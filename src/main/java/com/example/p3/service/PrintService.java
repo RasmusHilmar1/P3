@@ -240,7 +240,7 @@ public class PrintService {
 
         // Create header row
         HSSFRow headerRow = sheet.createRow(0);
-        String[] headers = {"Medlems nr.", "Navn", "Bådnavn", "Telefonnummer", "Plads nr.", "Plads navn"};
+        String[] headers = {"Medlems nr.", "Navn", "Plads nr.", "Plads navn", "Bådnavn", "Længde", "Bredde", "Areal"};
 
         for (int i = 0; i < headers.length; i++) {
             HSSFCell cell = headerRow.createCell(i);
@@ -252,19 +252,22 @@ public class PrintService {
 
         for (BerthlistDTO berthlistDTO : berths) {
 
+            // only includes the berths with actual members so far - is also sorted by members
             if (berthlistDTO.getMemberID() > 0 &&
                     berthlistDTO.getMemberName() != null && !berthlistDTO.getMemberName().isEmpty() &&
                     berthlistDTO.getBoatName() != null && !berthlistDTO.getBoatName().isEmpty()) {
                 HSSFRow dataRow = sheet.createRow(dataRowIndex);
                 dataRow.createCell(0).setCellValue(berthlistDTO.getMemberID());
                 dataRow.createCell(1).setCellValue(berthlistDTO.getMemberName());
-                dataRow.createCell(2).setCellValue(berthlistDTO.getBoatName());
-                dataRow.createCell(3).setCellValue(berthlistDTO.getMemberPhoneNumber());
-                dataRow.createCell(4).setCellValue(berthlistDTO.getBerthID());
-                dataRow.createCell(5).setCellValue(berthlistDTO.getBerthName());
+                dataRow.createCell(2).setCellValue(berthlistDTO.getBerthID());
+                dataRow.createCell(3).setCellValue(berthlistDTO.getBerthName());
+                dataRow.createCell(4).setCellValue(berthlistDTO.getBoatName());
+                dataRow.createCell(5).setCellValue(berthlistDTO.getBerthLength());
+                dataRow.createCell(6).setCellValue(berthlistDTO.getBerthWidth());
+                dataRow.createCell(7).setCellValue(berthlistDTO.getBerthAreal());
 
                 // Apply data style with highlighted borders to each cell
-                for (int i = 0; i <= 5; i++) {
+                for (int i = 0; i <= 7; i++) {
                     dataRow.getCell(i).setCellStyle(dataStyle);
                 }
 
