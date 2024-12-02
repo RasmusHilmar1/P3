@@ -300,7 +300,7 @@ function createBerthList(berths){
         boats.forEach(boat => {
             if (boat.berthID === berth.berthID) {
                 let infoCell = document.createElement("div");
-                infoCell.textContent = "båd: " + boat.name;
+                infoCell.textContent = "båd: " + boat.name + "   ";
                 infoCell.className = "infoCell";
 
                 var removeBtn = document.createElement("button");
