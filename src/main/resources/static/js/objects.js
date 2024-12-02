@@ -173,6 +173,8 @@ class BtnCreator {
                 return "feeSentBtn" + data.boat.boatID;
             case "Betalt":
                 return "feePaidBtn" + data.boat.boatID;
+            case "Slet":
+                return "deleteBoatBtn" + data.boat.boatID;
             case "Accepter":
                 return "acceptBtn" + data.member.memberID;
             case "Afvis":

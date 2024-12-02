@@ -1,10 +1,12 @@
 package com.example.p3.service;
 
 import com.example.p3.dto.BoatDTO;
+import com.example.p3.model.Berth;
 import com.example.p3.model.ApprovedBoat;
 import com.example.p3.model.Boat;
 import com.example.p3.model.PendingBoat;
 import com.example.p3.repository.ApprovedBoatRepository;
+import com.example.p3.repository.BerthRepository;
 import com.example.p3.repository.BoatRepository;
 import com.example.p3.repository.PendingBoatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,9 @@ public class BoatService {
     private PendingBoatRepository pendingBoatRepository;
     @Autowired
     private ApprovedBoatRepository approvedBoatRepository;
+    @Autowired
+    private BerthRepository berthRepository;
+
 
     public Boat updateBoatName(int boatId, String newName) {
         Boat boat = boatRepository.findByBoatID(boatId);
@@ -158,6 +163,12 @@ public class BoatService {
         }
 
         Boat boat = pendingBoat.getBoat(); // get the corresponding boat object
+
+        Berth berth = berthRepository.findByBerthID(boat.getBerthID());
+        if (boat.getBerthID() != 9999) {
+            berth.setAvailability(1);
+            berthRepository.save(berth);
+        }
 
         pendingBoatRepository.delete(pendingBoat); // delete from both repositories
         boatRepository.delete(boat);

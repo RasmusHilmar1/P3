@@ -35,11 +35,13 @@ class BoatRequestTableBook extends BoatRequestTable {
 
         iconCreator.appendIconToCell(iconCell, data.boat.berthID !== 9999, 'checkmark', 'cross');
 
-        // add buttons for "sendt" and "betalt"
+        // add buttons for "sendt" and "betalt and "delete""
         let sendBtn = new BtnCreator(row);
         sendBtn.createBtn("Sendt", data, "Sendt");
         let paidBtn = new BtnCreator(row);
         paidBtn.createBtn("Betalt", data, "Betalt");
+        let deleteBtn = new BtnCreator(row);
+        deleteBtn.createBtn("Slet", data, "Slet");
     }
 }
 
@@ -51,12 +53,12 @@ class FeeEvent extends EventManagerBoatRequests {
         return super.filterBoats();
     }
     createEvent() {
-        let feeSentBtnId, feePaidBtnId;
+        let feeSentBtnId, feePaidBtnId, deleteBoatBtnId;
 
         this.filterBoats();
 
         this.filteredBoats.forEach(boat => {
-            let {feeSentBtn, feePaidBtn, feeSent, feePaid, boatID} = boat.boat;
+            let {feeSentBtn, feePaidBtn, feeSent, feePaid, boatID, deleteBoatBtn} = boat.boat;
 
             feeSentBtnId = "feeSentBtn" + boatID;
             boat.feeSentBtn = document.getElementById(feeSentBtnId);
@@ -65,6 +67,22 @@ class FeeEvent extends EventManagerBoatRequests {
             feePaidBtnId = "feePaidBtn" + boatID;
             boat.feePaidBtn = document.getElementById(feePaidBtnId);
             feePaidBtn = boat.feePaidBtn;
+
+            deleteBoatBtnId = "deleteBoatBtn" + boatID;
+            boat.deleteBoatBtn = document.getElementById(deleteBoatBtnId)
+            deleteBoatBtn = boat.deleteBoatBtn;
+
+            deleteBoatBtn.classList.add("buttonAssigned");
+
+            deleteBoatBtn.addEventListener("click", () => {
+                setTimeout(function() {
+                    denyBoat(boat.id);
+                }, 500);
+                setTimeout(function() {
+                    location.reload();
+                }, 800)
+            })
+
 
             // make sure the btn is pressed if fee has been sent
             feeSent === 0 ? feeSentBtn.classList.remove("buttonAssigned") : feeSentBtn.classList.add("buttonAssigned");
@@ -111,6 +129,25 @@ class FeeEvent extends EventManagerBoatRequests {
     }
 }
 
+// Deny the boat
+async function denyBoat(boatId) {
+    try {
+        let url = `/boats/update/deny/boat/${boatId}`;
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        if (!response.ok) {
+            console.error("Failed to deny boat.");
+        } else {
+            console.log(`Boat with ID ${boatId} denied successfully.`);
+        }
+    } catch (error) {
+        console.error("Error:", error);
+    }
+}
 
 // Move the pending boat to approved
 async function approveBoat(boatId){
@@ -172,10 +209,10 @@ window.onload = async () => {
         BoatRequestTableBook,
         "boatRequestsContainer",
         "Bådanmodninger",
-        ["Båd ID", "Båd Navn", "Medlemsnr.", "Medlems Navn", "Tildelt Båd", "Sendt Faktura", "Faktura Betalt"],
+        ["Båd ID", "Båd Navn", "Medlemsnr.", "Medlems Navn", "Tildelt Båd", "Sendt Faktura", "Faktura Betalt", "Slet båd"],
         pendingBoats,
         approvedMembers,
-        7 );
+        8 );
     let feeEvent = new FeeEvent(pendingBoats, approvedMembers);
     feeEvent.createEvent();
 };
