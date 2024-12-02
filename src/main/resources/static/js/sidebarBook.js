@@ -89,34 +89,36 @@ function createMemberList(approvedMembers) {
 
 
 
-        // event listener for the collapsable list
-        memberName.addEventListener("click", function () {
+        memberName.addEventListener("click", function (event) {
             const infoCells = infoContainer.querySelectorAll(".infoCell");
-            memberName.classList.toggle('selectedNameBtn');
 
-            if(currentSelectedButton && currentSelectedButton!== memberName) {
-                currentSelectedButton.classList.remove("selectedNameBtn");
+            if (currentSelectedButton === memberName) {
+                // Hvis den samme knap trykkes, fjern CSS og kollaps info-cellerne
+                memberName.classList.remove("selectedNameBtn");
+                infoCells.forEach(cell => cell.style.maxHeight = null);
+
+                // Nulstil den aktuelle valgte knap og info-celler
+                currentSelectedButton = null;
+                currentInfoCell = null;
+            } else {
+                // Hvis en anden knap trykkes, håndter den tidligere valgte knap og info-celler
+                if (currentSelectedButton) {
+                    currentSelectedButton.classList.remove("selectedNameBtn");
+                }
+                if (currentInfoCell) {
+                    currentInfoCell.forEach(cell => cell.style.maxHeight = null);
+                }
+
+                // Tilføj CSS til den nye knap og udvid dens info-celler
+                memberName.classList.add("selectedNameBtn");
+                infoCells.forEach(cell => {
+                    cell.style.maxHeight = cell.scrollHeight + "px";
+                });
+
+                // Opdater den aktuelle valgte knap og info-celler
+                currentSelectedButton = memberName;
+                currentInfoCell = infoCells;
             }
-            if(currentInfoCell && currentInfoCell !== infoCells) {
-                currentInfoCell.forEach(cell => cell.style.maxHeight = null);
-            }
-
-            currentInfoCell = infoCells;
-
-            memberName.classList.toggle("selectedNameBtn");
-
-            currentSelectedButton = memberName;
-
-            infoCells.forEach(cell => {
-                cell.style.maxHeight = cell.style.maxHeight ? null : cell.scrollHeight + "px";
-            });
-            //infoCells.forEach(cell => {
-            //    if (cell.style.maxHeight) {
-            //        cell.style.maxHeight = null;
-            //    } else {
-            //        cell.style.maxHeight = cell.scrollHeight + "px";
-            //    }
-            //});
         });
     });
 }
