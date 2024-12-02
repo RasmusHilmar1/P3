@@ -117,14 +117,14 @@ async function updateGeoJsonWithStatus() {
 
 let geoJsonLayer;
 
-// Wait for GeoJSON to be fetched before using it
 async function initializeMap() {
+    const berths = await loadBerthData(); // Fetch berths before linking them
+
     await fetchGeoJson(); // Ensure that the GeoJSON is fetched
 
     if (myGeoJson) {
         await updateGeoJsonWithStatus(); // Update GeoJSON data with berth statuses
 
-        // Add the updated GeoJSON to the map
         geoJsonLayer = L.geoJSON(myGeoJson, {
             onEachFeature: onEachFeature,
             style: function (feature) {
@@ -150,10 +150,13 @@ async function initializeMap() {
                 };
             }
         }).addTo(map);
+
+        berthListsToMap(geoJsonLayer, berths); // Pass berths to the function
     } else {
         console.error('GeoJSON data not available');
     }
 }
+
 
 // Call initializeMap to start the process
 initializeMap();
@@ -230,5 +233,42 @@ function updateSidebarWithBerth(berth) {
                 berthNameBtn.scrollIntoView(scrolledIntoViewOptions); // Scroll into view with smooth scroll
             }
         }
+    });
+}
+
+function berthListsToMap(geoJsonLayer, berths) {
+    const berthList = document.getElementById("berthList");
+    if (!berthList) {
+        console.error("berthList element not found.");
+        return;
+    }
+
+    berthList.addEventListener("click", (event) => {
+        // Clear all highlights
+        removeHighlight();
+
+        const berthBtn = event.target.closest(".berthBtn");
+        if (!berthBtn) return;
+
+        const berthName = berthBtn.textContent.trim();
+
+        berths.forEach(berth => {
+            if (berthName.toLowerCase() === berth.name.toLowerCase()) {
+                geoJsonLayer.eachLayer(layer => {
+                    const layerName = layer.feature.properties.name || "";
+
+                    // Check if the feature is a pier
+                    const isPier = layerName.toLowerCase().startsWith("pier");
+
+                    if (!isPier && layer.feature.properties.name.toLowerCase() === berth.name.toLowerCase()) {
+                        layer.setStyle({
+                            color: "blue",
+                            weight: 2
+                        });
+                        selectedLayer = layer;
+                    }
+                });
+            }
+        });
     });
 }

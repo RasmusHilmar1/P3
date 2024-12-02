@@ -378,7 +378,7 @@ function berthListsToMap(geoJsonLayer){
                                     color: "blue",
                                     weight: 2
                                 });
-                                selectedLayer=Layer;
+                                selectedLayer=layer;
                             }
                         });
                     }
