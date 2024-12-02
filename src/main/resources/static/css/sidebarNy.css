@@ -183,12 +183,29 @@ td {
     border: none;
     background-color: white;
     border-radius: 6px;
-
+    display: flex; /* ensures child elements can be aligned */
+    align-items: center; /* vertically centers items */
+    justify-content: space-between;
+    position: relative; /* Necessary for :after positioning */
 }
-.selectedNameBtn {
+
+/* Icon style within the button */
+.nameBtn:after, .berthBtn:after {
+    content: "";
+    background-image: url('http://localhost:8080/Images/Icons/arrowDown.png'); /* Update URL if needed */
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 10px;
+    height: 10px;
+    margin-left: 10px;
+    position: absolute;
+    right: 10px;
+    pointer-events: none;
+}
+
+/*.selectedNameBtn {
     background-color: #2b4d73;
-
-}
+}*/
 
 /*
 .nameBtn:after, .berthBtn:after {
@@ -216,9 +233,23 @@ td {
 
 }
 
-.selectedNameBtn, .selected {
+.selectedNameBtn, .selectedBerthBtn, .selected {
     background-color: #5c82b5;
     color: white;
+}
+
+/* Icon styling for the collapsible list */
+.selectedNameBtn:after, .selectedBerthBtn:after {
+    content: "";
+    background-image: url('http://localhost:8080/Images/Icons/arrowUp.png'); /* Update URL if needed */
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 10px;
+    height: 10px;
+    margin-left: 10px;
+    position: absolute;
+    right: 10px;
+    pointer-events: none;
 }
 /*
 .selectedNameBtn:after {
