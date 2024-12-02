@@ -26,7 +26,7 @@ class BoatRequestTableVessel extends BoatRequestTable {
     addSpecificCells(row, data) {
         // add button for "tildelt"
         let assignBtn = new BtnCreator(row);
-        assignBtn.createBtn("Tildelt", data, "Tildelt");
+        assignBtn.createBtn("Tildel", data, "Tildel");
 
         // Initialize the icons' paths
         const iconCreator = new IconCreator({
@@ -55,19 +55,26 @@ class BoatAssignedEvent extends EventManagerBoatRequests {
     createEvent() {
         this.filterBoats();
 
+        // get all buttons with class name addBtn
+        let addBtns = document.querySelectorAll(".addBtn");
+        console.log(addBtns);
+
         this.filteredBoats.forEach(boat => {
             // deconstruct boat object
             let { boatID, berthID } = boat.boat;
-
-            // query all buttons with class 'addBtn'
-            let addBtns = document.querySelectorAll(".addBtn");
+            console.log(boatID);
+            console.log(berthID);
+            console.log(boat);
 
             addBtns.forEach(addBtn => {
-                let addBtnId = "addBtn" + boatID;
-                console.log(addBtn.id === addBtnId);
+                console.log(addBtn.id);
+                let addBtnId = "addBtn" + boat.boat.memberID;
 
                 if (addBtn.id === addBtnId) {
                     boat.assigned = berthID !== 9999;
+                    console.log(boat.boat.memberID);
+                    console.log(addBtnId);
+                    console.log(addBtn.id === addBtnId);
                     if (boat.assigned) {
                         addBtn.classList.add('buttonAssigned');
                         addBtn.disabled = true;
@@ -77,6 +84,13 @@ class BoatAssignedEvent extends EventManagerBoatRequests {
                     }
                 }
             });
+            let addBtn = document.getElementById("addBtn" + boat.boat.memberID);
+            console.log(addBtn);
+            if (addBtn){
+                addBtn.addEventListener('click', () => {
+                    window.location.href = `vesselInspectorStartPage?memberId=${boat.boat.memberID}`;
+                });
+            }
         });
     }
 }

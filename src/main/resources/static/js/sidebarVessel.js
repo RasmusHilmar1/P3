@@ -178,6 +178,7 @@ function createMemberListWithoutBoats(approvedMembers, boats, berths) {
                 var memberName = document.createElement("button");
                 memberName.textContent = member.name;
                 memberName.className = "nameBtn";
+                memberName.id = "nameBtn" + approvedMember.member.memberID;
                 //console.log(`Name: ${member.name}, Address: ${member.address}`)
                 memberCell.appendChild(memberName);
 

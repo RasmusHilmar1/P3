@@ -176,18 +176,32 @@ td {
     width: 100%;
 }
 
-.nameBtn, .berthBtn {
+.nameBtn, .berthBtn, .memberBtn {
     font-size: 18px;
     cursor: pointer;
     width: 100%;
     border: none;
     background-color: white;
     border-radius: 6px;
+    display: flex; /* ensures child elements can be aligned */
+    align-items: center; /* vertically centers items */
+    justify-content: space-between;
+    position: relative; /* Necessary for :after positioning */
 
 }
-.selectedNameBtn {
-    background-color: #2b4d73;
 
+/* Icon style within the button */
+.nameBtn:after, .berthBtn:after, .memberBtn:after {
+    content: "";
+    background-image: url('http://localhost:8080/Images/Icons/arrowDown.svg'); /* Update URL if needed */
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 10px;
+    height: 10px;
+    margin-left: 10px;
+    position: absolute;
+    right: 10px;
+    pointer-events: none;
 }
 
 /*
@@ -201,7 +215,7 @@ td {
     margin-bottom: 5px; /* Lille afstand under cellen *//*
 }
 */
-.nameBtn:hover, .berthBtn:hover{
+.nameBtn:hover, .berthBtn:hover, .memberBtn:hover{
     background-color: #5c82b5;
     color: white;
     border-radius: 6px;
@@ -216,9 +230,21 @@ td {
 
 }
 
-.selectedNameBtn, .selected {
+.selectedNameBtn, .selectedBerthBth, .selected {
     background-color: #5c82b5;
     color: white;
+}
+.selectedNameBtn:after, .selectedBerthBtn:after {
+    content: "";
+    background-image: url('http://localhost:8080/Images/Icons/arrowUp.svg'); /* Update URL if needed */
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 10px;
+    height: 10px;
+    margin-left: 10px;
+    position: absolute;
+    right: 10px;
+    pointer-events: none;
 }
 /*
 .selectedNameBtn:after {
@@ -264,7 +290,7 @@ td {
 
 }*/
 
-#searchBarSidebar {
+#searchBarSidebar, #searchBar {
     border: 0 solid;
     width: 87%;
     line-height: 22px;
@@ -277,7 +303,7 @@ td {
     color: #5c82b5;
 }
 
-#searchBarSidebar:focus {
+#searchBarSidebar:focus, #searchBar:focus {
     outline:none;
     /*border: none;*/
     width: 87%;
@@ -371,4 +397,23 @@ td {
     line-height: 1.3;
 }
 
+/* Styling for scrollbar in sidebar */
+.sidebar::-webkit-scrollbar {
+    width: 10px; /* Adjust width as needed */
+}
+
+.sidebar::-webkit-scrollbar-track {
+    border: none;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: linear-gradient(45deg, #5c82b5, #7598c7);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    transition: background 0.3s ease;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(45deg, #7598c7, #5c82b5);
+}
 
