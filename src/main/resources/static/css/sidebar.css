@@ -118,6 +118,7 @@
 
 .berthList {
     display: none;
+    width: 100%;
 }
 
 .memberBtn:active{
@@ -228,14 +229,16 @@ td {
     background-color: lightblue;
     margin-top: 20px;
 }
-
-
-#berthList {
-    width: 100%;
+*/
+/*
+.berthList {
     padding: 50px 0;
     text-align: center;
-    background-color: lightblue;
-    margin-top: 20px;
+    border: 1px solid;
+    border-collapse: separate;
+    table-border-color-dark: #222222;
+    width: 100%;
+    table-layout: auto;
+    margin-top: 10px;
 }
-
- */
+*/

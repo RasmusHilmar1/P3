@@ -12,49 +12,52 @@
     margin-top: 120px;
     overflow-y:scroll;
 }
-
+/*
 .sidebar input{
     margin-top: 10px;
     margin-left: 15px;
-    width: 300px;
+    /*width: 300px;*//*
     font-size: 24px;
     border:1px solid #5c82b5;
     border-radius:5px
 }
-
+*/
 ::placeholder {
     color: #5c82b5;
     opacity: 1;
     font-size: 18px;
 }
 
+
 .sidebarMenuBtn {
     text-decoration: none;
-    font-size: 17px;
+    font-size: 19px;
     display: inline;
-    transition: 0.1s;
     width: 160px;
     margin-top: 10px;
     margin-left: 1px;
-    border-radius: 10px;
+    border-radius: 6px;
     color: #5c82b5;
     background: white;
     border-color: #5c82b5;
+    border-style: solid;
 }
 
 
 .sidebarMenuBtn.pressed {
     text-decoration: none;
-    font-size: 17px;
+    font-size: 19px;
     display: inline;
-    transition: 0.1s;
     width: 160px;
     margin-top: 10px;
     margin-left: 1px;
-    border-radius: 10px;
+    margin-bottom: 10px;
+    border-radius: 6px;
     color: white;
     background: #5c82b5;
     border-color: #5c82b5;
+    border-style: solid;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
 
@@ -132,7 +135,7 @@ table {
         border-radius: 6px; /* Bløde hjørner */
         margin-top: 5px; /* Lille afstand over cellen */
         margin-bottom: 5px; /* Lille afstand under cellen */
-
+        width: 100%;
 }
 
 thead {
@@ -225,65 +228,68 @@ td {
 
 .berthListAv {
     display: none;
+    width: 100%;
 }
 
-/* Tilføj/Add Standard knap  #5c82b5*/
-.addBtn {
-    background-color: white;
-    color: black;
-    border-radius: 5px;
-    border: solid black;
-    padding: 2px 11px; /* Indre afstand (gør knappen mere behagelig at klikke på) */
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s ease;
+#searchWithIcon {
+    position: relative;
+    margin-top: 10px;
+    margin-left: 15px;
+    font-size: 24px;
+    border:1px solid #5c82b5;
+    border-radius: 10px;
+    padding: 5px
 }
 
-/* Når musen er over knappen */
-.addBtn:hover {
-    background-color: #5c82b5; /* Mørkere baggrundsfarve 2b4d73 */
-    color: white;
+#searchWithIcon .vector {
+    position: relative;
+    left: 5px;
+    top: 50%;
+    transform: translateY(15%);
+    width: 20px; /* Billedets bredde */
+    height: 20px; /* Billedets højde */
+}
+/*
+.searchWithIcon input {
+    padding-left: 35px; /* Gør plads til ikonet *//*
+    position: relative;
+    margin-top: 10px;
+    margin-left: 15px;
+    font-size: 24px;
+    border:1px solid #5c82b5;
+    border-radius: 10px;
+
+}*/
+
+#searchBarSidebar {
+    border: none;
+    /*width: 90%;*/
+    line-height: 22px;
+    /* padding-left: 35px; */
+    position: relative;
+    margin-top: 10px;
+    /* margin-left: 15px; */
+    font-size: 24px;
+    /* border-radius: 10px;*/
 }
 
-/* Remove Standard knap  #5c82b5*/
-#removeBtn {
-    background-color: white;
-    color: black;
-    border-radius: 5px;
-    border: solid black;
-    padding: 2px 11px; /* Indre afstand (gør knappen mere behagelig at klikke på) */
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s ease;
+.vector,
+.vector * {
+    box-sizing: border-box;
+    color: #5c82b5;
+}
+.vector {
+    width: 21px;
+    height: 21px;
+    position: relative;
+    overflow: visible;
+    color: #5c82b5;
 }
 
-/* Når musen er over knappen */
-#removeBtn:hover {
-    background-color: #5c82b5; /* Mørkere baggrundsfarve 2b4d73 */
-    color: white;
+/* Figma Styles of your File */
+:root {
+    /* Fonts */
+    /* Effects */
 }
 
-/* Assign/Tildel Standard knap  #5c82b5*/
-.assignBtn {
-    background-color: white;
-    color: black;
-    border-radius: 5px;
-    border: solid black;
-    padding: 2px 11px; /* Indre afstand (gør knappen mere behagelig at klikke på) */
-    cursor: pointer;
-    font-size: 14px;
-    display: block;
-    margin: 0 auto;
-    transition: background-color 0.3s ease;
-}
-
-/* Når musen er over knappen */
-.assignBtn:hover {
-    background-color: #5c82b5; /* Mørkere baggrundsfarve 2b4d73 */
-    color: white;
-}
-
-.berthCell {
-    line-height: 1.3;
-}
 

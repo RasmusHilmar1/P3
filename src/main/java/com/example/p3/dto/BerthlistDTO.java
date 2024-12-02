@@ -1,6 +1,5 @@
 package com.example.p3.dto;
 
-
 // DTO som får de nødvendige værdier fra Member, Boat og Berth klasserne
 public class BerthlistDTO {
     private int berthID;
@@ -16,9 +15,10 @@ public class BerthlistDTO {
     private double boatAreal;
     private int memberID;
     private String memberName;
+    private String phoneNumber;
 
     public BerthlistDTO(int berthID, String berthName, double berthLength, double berthWidth,
-                        int boatID, String boatName, double boatLength, double boatWidth, int memberID, String memberName) {
+                        int boatID, String boatName, double boatLength, double boatWidth, int memberID, String memberName, String phoneNumber) {
 
         this.berthID = berthID;
         this.berthName = berthName;
@@ -32,8 +32,33 @@ public class BerthlistDTO {
         this.boatAreal = boatLength * boatWidth;
         this.memberID = memberID;
         this.memberName = memberName;
-        this.berthUtil = boatAreal/berthAreal*100;
+        this.phoneNumber = phoneNumber;
+
+        // revised boat size to use in utilization calculation
+        double adjustedBoatAreal = getAdjustedBoatAreal(boatLength, boatWidth);
+
+        // calculate the utilization percentage
+        if (this.berthAreal > 0) {
+            this.berthUtil = (adjustedBoatAreal / this.berthAreal) * 100.0;
+        } else {
+            this.berthUtil = 0.0; // Avoid division by zero
+        }
     }
+
+    // function for taking the extra space into consideration when calculating utilization
+    private static double getAdjustedBoatAreal(double boatLength, double boatWidth) {
+        double adjustedBoatLength, adjustedBoatWidth, adjustedBoatAreal;
+        if (boatWidth > 0 && boatLength > 0) {
+            adjustedBoatLength = boatLength + 1.0;  // add 1 meter to the boat's length
+            adjustedBoatWidth = boatWidth + 0.3;    // add 0.3 meters to the boat's width
+        } else {
+            adjustedBoatLength = boatLength;
+            adjustedBoatWidth = boatWidth;
+        }
+        adjustedBoatAreal = adjustedBoatLength * adjustedBoatWidth;  // calculation of adjusted boat areal
+        return adjustedBoatAreal;
+    }
+
     public int getBerthID() {return berthID;}
     public String getBerthName() {return berthName;}
     public double getBerthLength() {return berthLength;}
@@ -47,6 +72,7 @@ public class BerthlistDTO {
     public double getBoatAreal() {return boatAreal;}
     public int getMemberID() {return memberID;}
     public String getMemberName() {return memberName;}
+    public String getMemberPhoneNumber() {return phoneNumber;}
 
     public void setBerthID(int berthID) {this.berthID = berthID;}
     public void setBerthName(String berthName) {this.berthName = berthName;}
@@ -61,5 +87,6 @@ public class BerthlistDTO {
     public void setBoatAreal(double boatAreal) {this.boatAreal = boatAreal;}
     public void setMemberID(int memberID) {this.memberID = memberID;}
     public void setMemberName(String memberName) {this.memberName = memberName;}
+    public void setMemberPhoneNumber(String memberPhoneNumber) {this.phoneNumber = memberPhoneNumber;}
 }
 

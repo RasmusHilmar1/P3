@@ -28,18 +28,20 @@
     </nav>
 </header>
 <div id="closeSidebar" class="closeSidebar">
-    <button id="closeSidebarBtn" class="closeSidebarBtn" onclick="openClose()">
+    <button id="closeSidebarBtn" class="closeSidebarBtn">
         <img id="sidebarBtn" src="/Images/Icons/closeIcon.svg" alt="Close sidebar">
     </button>
 </div>
 <div id="sidebar" class="sidebar">
-    <label for="searchBarSidebar"></label><input type="text" id="searchBarSidebar" class="searchBar" placeholder="Søg på medlem, båd eller bådplads">
-
+    <div id="searchWithIcon">
+        <img class="vector" src="/Images/vector.svg" alt="Icon"/>
+        <label for="searchBarSidebar"></label>
+        <input type="text" id="searchBarSidebar" class="searchBar" placeholder="Søg på medlem, båd eller bådplads">
+    </div>
     <form action="/default" method="post" style="display:inline;">
-        <button id="memberBtn" class="sidebarMenuBtn">Medlemmer</button>
+        <button id="memberBtn" class="sidebarMenuBtn pressed">Medlemmer</button>
     </form>
     <button id="berthBtn" class="sidebarMenuBtn">Bådpladser</button>
-
 
     <table id="memberListWithoutBoat" class="memberList" style="display: table;">
         <thead id="memberWithoutBoatTableHeader" class="tableHeader">
@@ -73,6 +75,10 @@
         </form>
         -->
 </div>
+
+<div id="memberBox" class="member-box">
+</div>
+
 <!-- Knapper til at skifte havn-->
 <div id="harbor" class="harbor">
     <button id="vestreBaadehavn" class="btnHarbor pressed">Vestre Bådehavn</button>

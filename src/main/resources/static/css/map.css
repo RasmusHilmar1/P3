@@ -7,7 +7,7 @@
 
 
 .harbor {
-    width: 250px;
+    text-align: center;
     padding-top: 120px;
     overflow: hidden;
     display: flex;
@@ -42,6 +42,28 @@
     color: white;
     background: #5c82b5;
     border-color: #5c82b5;
+}
+
+.member-box {
+    position: absolute;
+    top: 120px; /* Placeres lige under navigationbaren */
+    left: 350px; /* Placeres lige ved siden af sidebaren */
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    z-index: 100; /* Sikrer at den vises oven på baggrundselementer */
+    display: none;
+    line-height: 1.3; /* Giver afstand mellem linjer */
+}
+
+.member-box .size-item {
+    margin-left: 14px; /* Rykker teksten til højre */
+    font-size: 16px; /* Juster fontstørrelse, hvis nødvendigt */
+}
+
+.member-box .member-name {
+    font-size: 20px;
 }
 
 .map-legend {

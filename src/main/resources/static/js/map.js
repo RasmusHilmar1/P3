@@ -1,6 +1,9 @@
 import { myGeoJson, fetchGeoJson } from "./geojson.js";
 import {fetchApprovedMembers, fetchBoats, fetchBerth} from "./fetchMethods.js";
 
+const boats = await fetchBoats();
+const berths = await fetchBerth();
+
 // Create map for leaflet -->
 var map = L.map('map', {
    // minZoom: 17,
@@ -37,26 +40,23 @@ const bounds = L.latLngBounds(
 
 // Set the max bounds for navigating map as the bounds of picture -->
 map.setMaxBounds(bounds);
-function addGuestArea() {
-    var guestAreaBounds = [
-        [57.05742346980074, 9.90033925763862],
-        [57.05734201796358, 9.90061552466426],
-        [57.05728567822284, 9.900799976274303],
-        [57.05732832447959, 9.900841314225922],
-        [57.057682352673424, 9.90090670180615],
-        [57.05775435796488, 9.900683763958938],
-        [57.05742346980074, 9.90033925763862]
-    ];
+
+var guestAreaBounds = [
+    [57.05742346980074, 9.90033925763862],
+    [57.05734201796358, 9.90061552466426],
+    [57.05728567822284, 9.900799976274303],
+    [57.05732832447959, 9.900841314225922],
+    [57.057682352673424, 9.90090670180615],
+    [57.05775435796488, 9.900683763958938],
+    [57.05742346980074, 9.90033925763862]
+];
 
 // Add an orange polygon for the guest area
-    L.polygon(guestAreaBounds, {
-        color: "purple",
-        weight: 1,
-        fillOpacity: 0.7
-    }).addTo(map);
-}
-
-addGuestArea();
+L.polygon(guestAreaBounds, {
+    color: "purple",
+    weight: 2,
+    fillOpacity: 0.6
+}).addTo(map);
 
 
 const harbor1 = document.getElementById("vestreBaadehavn");
@@ -168,10 +168,13 @@ async function initializeMap() {
 
                 switch (status) {
                     case 1:
-                        fillColor = "LimeGreen";
+                        fillColor = "#00FF00";
                         break;
                     case 0:
-                        fillColor = "Crimson";
+                        fillColor = "red";
+                        break;
+                    case 2:
+                        fillColor = "orange";
                         break;
                     default:
                         fillColor = "#F2EFE9";// Default color if status is unknown
@@ -179,12 +182,15 @@ async function initializeMap() {
 
                 return {
                     color: "black",
-                    weight: 0.3,
+                    weight: 0.1,
                     fillColor: fillColor,
-                    fillOpacity: 1
+                    fillOpacity: 0.8
                 };
             }
         }).addTo(map);
+
+        berthListsToMap(geoJsonLayer)
+
     } else {
         console.error('GeoJSON data not available');
     }
@@ -193,47 +199,15 @@ async function initializeMap() {
 // Call initializeMap to start the process
 initializeMap();
 
-let selectedLayer;
-
-function highlightBerth(e) {
-    const layer = e.target;
-
-    // Reset all layers to default style
-    if (geoJsonLayer) {
-        geoJsonLayer.eachLayer(l => {
-            l.setStyle({
-                color: "black",
-                weight: 0.3,
-                fillOpacity: 1, // Default opacity
-            });
-        });
-    }
-
-    // Highlight the selected layer
-    layer.setStyle({
-        color: "blue",
-        weight: 2,
-    });
-
-    selectedLayer = layer; // Update the selected layer reference
-}
-
 
 function onEachFeature(feature, layer) {
-    const name = feature.properties?.name || "";
-    const isPier = name.toLowerCase().startsWith("pier");
 
-    layer.on("click", function (e) {
-        if (!isPier) {
-            highlightBerth(e); // Highlight only berths
-            updateSidebarWithBerth(feature.properties); // Update the sidebar
-        } else {
-            console.log("Piers are not interactive.");
-        }
+    layer.featureId = feature.properties.id;
+
+    layer.on('click', function (e) {
+        highlightBerth(e);
+        updateSidebarWithBerth(feature.properties);
     });
-
-    layer.featureId = feature.properties?.id; // Assign a unique ID to each feature
-}
 
 // Define scroll options
     const scrolledIntoViewOptions = {
@@ -257,6 +231,62 @@ function onEachFeature(feature, layer) {
                     berthNameBtn.click(); // Simulate a click on the berth button
                     berthNameBtn.scrollIntoView(scrolledIntoViewOptions); // Scroll into view with smooth scroll
                 }
+            }
+        });
+    }
+}
+
+
+let selectedLayer;
+
+function highlightBerth(e) {
+    let layer = e.target;
+    removeHighlight(layer);
+    layer.setStyle({
+        color: "blue",
+        weight: 2,
+        //fillOpacity: 0.5
+    });
+    selectedLayer = layer;
+}
+
+function removeHighlight(layer) {
+    if (selectedLayer && (selectedLayer !== layer)){
+        selectedLayer.setStyle({
+            color: "black",
+            weight: 0.1,
+        });
+    }
+}
+
+function berthListsToMap(geoJsonLayer){
+    const berthList = document.getElementById("berthList");
+    berthList.addEventListener("click", (event) => {
+            geoJsonLayer.eachLayer(layer => {
+                layer.setStyle({
+                    color: "black",
+                    weight: 0.1
+                })
+            });
+
+            const berthBtn = event.target.closest(".berthBtn");
+            console.log("button: " + berthBtn.outerHTML);
+
+            if (berthBtn) {
+                const berthName = berthBtn.textContent.trim();
+
+                berths.forEach(berth => {
+                    if (berthName === berth.name) {
+                        geoJsonLayer.eachLayer(layer => {
+                            if (Number(layer.featureId) === berth.berthID) {
+                                layer.setStyle({
+                                    color: "blue",
+                                    weight: 2
+                                })
+                            }
+                        });
+                    }
+                });
             }
         });
 }

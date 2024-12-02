@@ -6,10 +6,12 @@ import {colorButtons} from "./mapVessel.js";
 let sidebar = document.getElementById("sidebar");
 
 // Open or close sidebar -->
-let menuState = 0;
+let menuState = 1;
+
+const sidebarBtnIcon = document.getElementById("sidebarBtn");
+sidebarBtnIcon.addEventListener("click", openClose);
 
 function openClose(){
-    const sidebarBtnIcon = document.getElementById("sidebarBtn");
     if(menuState === 0){
         menuState = 1;
         document.getElementById("sidebar").style.width = "0";
@@ -22,7 +24,9 @@ function openClose(){
         sidebarBtnIcon.src = "Images/Icons/closeIcon.svg";
     }
 }
-//openClose();
+openClose();
+
+
 
 // Floating button for opening sidebar -->
 let button = document.createElement("Button");
@@ -216,6 +220,7 @@ function createMemberListWithoutBoats(approvedMembers, boats, berths) {
 
                         addBtn.addEventListener("click", function () {
                             colorButtons(member, boat, berths);
+                            memberBox (member);
                         });
 
                     }
@@ -235,6 +240,7 @@ function createBerthList(berths){
     var table = document.getElementById("berthList");
     var tableHeader = table.createTHead();
     tableHeader.textContent = "Bådpladser";
+
 
     berths.forEach(berth => {
         // Creating a row for each berth
@@ -283,7 +289,7 @@ function createBerthList(berths){
                 //infoSize.className = "infoCell";
                 //infoSize.id = berth.name;
                 size.appendChild(infoSize);
-                infoSize.className = "infoSize";
+                infoSize.className = "size-item";
                 infoSize.id = berth.berthID;
                 infoContainer.appendChild(size);
             }
@@ -317,7 +323,7 @@ function createBerthList(berths){
                         utilCell.className = "infoCell";
                         infoContainer.appendChild(utilCell);
                     }
-                })
+                });
             }
         });
 
@@ -337,12 +343,22 @@ function switchHeader(){
     var memberBtn = document.getElementById("memberBtn");
     var berthBtn = document.getElementById("berthBtn");
 
-    memberBtn.onclick = function (){
+    function clearPressedClass() {
+        memberBtn.classList.remove("pressed");
+        berthBtn.classList.remove("pressed");
+    }
+
+
+    memberBtn.addEventListener('click', function (event) {
         memberTableNoBoat.style.display = 'table';
-        memberTableBoat.style.display = 'table'
-        berthTable.style.display = 'none'
-    };
-    berthBtn.onclick = function () {
+        memberTableBoat.style.display = 'table';
+        berthTable.style.display = 'none';
+
+        clearPressedClass();
+        memberBtn.classList.add("pressed");
+
+    });
+    berthBtn.addEventListener('click', function (event) {
         // Finder alle elementer med klassen berthList
         const berthTables = document.querySelectorAll('.berthList');
 
@@ -357,8 +373,11 @@ function switchHeader(){
         // Skjul medlemslisterne
         memberTableNoBoat.style.display = 'none';
         memberTableBoat.style.display = 'none';
-        currentSelectedButton = null;
-    };
+
+        // Opdater knapstilstand
+        clearPressedClass();
+        berthBtn.classList.add("pressed");
+    });
 }
 switchHeader();
 
@@ -369,6 +388,7 @@ function showThreeTables(member, addBtn) {
     var berthListAvailable = document.getElementById(`berthListAv${member}`);
     var berthListSmall = document.getElementById(`berthListSmall${member}`);
     var berthListUav = document.getElementById(`berthListUav${member}`);
+    const memberBox = document.getElementById("memberBox");
     //var berthListAvailable = document.querySelector(".berthListAv")
 
     console.log("listen: "+ `berthListAv${member}`);
@@ -381,7 +401,49 @@ function showThreeTables(member, addBtn) {
         berthListAvailable.style.display = 'table';
         berthListSmall.style.display = 'table';
         berthListUav.style.display = 'table';
+        memberBox.style.display = 'block';
+
     }
+}
+
+function memberBox (member) {
+    const memberBox = document.getElementById("memberBox");
+
+
+        boats.forEach(boat => {
+            if ((member.memberID === boat.memberID) && (boat.berthID === 9999)) {
+
+                let memberName = document.createElement("div");
+                memberName.textContent = member.name;
+                memberName.className = "member-name";
+                memberBox.appendChild(memberName);
+
+                for (const key in member) {
+                    if ((key === 'name') || (key === 'memberID')) {
+                        var memberInfo = document.createElement("div");
+                        memberInfo.textContent = key + ":  " + member[key];
+                        memberInfo.className = "member-item";
+                        memberBox.appendChild(memberInfo);
+                    }
+                }
+
+                var size = document.createElement("div");
+                size.textContent = "størrelse: ";
+                size.className = "member-item";
+
+                for (const key in boat) {
+                    if ((key === 'length') || (key === 'width')) {
+                        let sizeInfo = document.createElement("div");
+                        //console.log("key : " + boat[key]);
+                        sizeInfo.textContent = key + ":  " + boat[key];
+                        sizeInfo.className = "size-item"; // Tilføjer klassen
+                        size.appendChild(sizeInfo);
+                    }
+                }
+                memberBox.appendChild(size);
+            }
+
+        });
 }
 
 function showBerthsForBoat() {
@@ -437,6 +499,7 @@ function getCompatibilityScore(boat, berth) {
         });
 }
 
+
 export async function createBerthListAvailable(member) {
     var sidebar = document.getElementById("sidebar");
 
@@ -485,7 +548,7 @@ export async function createBerthListAvailable(member) {
         berthCell.appendChild(infoContainer);
 
         var size = document.createElement("div");
-        size.textContent = "størrelse";
+        size.textContent = "størrelse: ";
         size.className = "infoCell";
 
                     for (const key in berth) {
@@ -696,22 +759,6 @@ function collapsableListEventListener(button, infoContainer) {
 }
 
 
-/*
-function collapsableListEventListener(nameList, infoContainer) {
-    nameList.addEventListener("click", function () {
-        const infoCells = infoContainer.querySelectorAll(".infoCell");
-        infoCells.forEach(cell => {
-            if (cell.style.maxHeight) {
-                nameList.classList.remove('selectedNameBtn');
-                cell.style.maxHeight = null;
-            } else {
-                nameList.classList.add('selectedNameBtn');
-                cell.style.maxHeight = cell.scrollHeight + "px";
-            }
-        });
-    });
-}
-*/
 function createTable(member, sidebar, berthList, ListTitel){
     var table = document.createElement("table");
     table.id = berthList + member;
