@@ -13,7 +13,7 @@ import java.util.List;
 public interface MemberlistRepository extends JpaRepository<Member, Integer> {
     //Query til at lave memberlistDTO'er
     @Query("SELECT new com.example.p3.dto.MemberlistDTO(m.memberID, m.name, m.address, m.email, m.phonenumber, " +
-            "b.boatID, " + // Altid få bådID
+            "CASE WHEN b.boatID IS NOT NULL THEN b.boatID ELSE 0 END, " + // Altid få bådID
             "CASE WHEN ab.boat IS NOT NULL THEN b.name ELSE 'No Boat' END, " + // Bådnavn er "No Boat", hvis båden ikke findes i Approvedboat
             "CASE WHEN ab.boat IS NOT NULL THEN b.length ELSE 0 END, " + // Længden er 0 hvis....
             "CASE WHEN ab.boat IS NOT NULL THEN b.width ELSE 0 END, " + // Bredden er 0 hvis....
