@@ -1,5 +1,5 @@
-import {fetchGeoJson, myGeoJson} from "./geojson.js";
-import {fetchApprovedMembers, fetchBerth, fetchBoats} from "./fetchMethods.js";
+import { myGeoJson, fetchGeoJson } from "./geojson.js";
+import {fetchApprovedMembers, fetchBoats, fetchBerth} from "./fetchMethods.js";
 
 const approvedMembers = await fetchApprovedMembers();
 const boats = await fetchBoats();
@@ -112,7 +112,8 @@ harbors.addEventListener('click', function (event) {
 async function loadBerthData() {
     try {
         const response = await fetch('berths/get'); // Replace with your actual API endpoint
-        return await response.json();
+        const berths = await response.json();
+        return berths;
     } catch (error) {
         console.error('Error fetching berth data:', error);
         return [];
@@ -188,8 +189,6 @@ function onEachFeature(feature, layer) {
             highlightBerth(e);
             mapToThreeLists(feature);
             mapToMemberList(feature);
-
-            updateSidebarWithBerth(feature.properties);
         } else {
             console.log("Highlighting disabled for piers.");
         }
@@ -283,8 +282,8 @@ function mapToMemberList(feature) {
                 boats.forEach(boat => {
                     if ((Number(memberId) === boat.memberID) && (boat.berthID !== 9999) &&
                         (boat.berthID === Number(feature.properties.id)) && (table.style.display === "table")) {
-                            nameBtn.scrollIntoView(scrolledIntoViewOptions);
-                            nameBtn.click();
+                        nameBtn.scrollIntoView();
+                        nameBtn.click();
                     }
                 })
             }
@@ -292,12 +291,6 @@ function mapToMemberList(feature) {
     });
 
 }
-
-const scrolledIntoViewOptions = {
-    behavior: 'smooth', // Enables smooth scrolling
-    block: 'center', // Scroll the element to the center of the viewport
-    inline: 'center' // Align the element horizontally to the center
-};
 
 function mapToThreeLists(feature){
     const tables = document.querySelectorAll("[id^='berthList']");
@@ -313,7 +306,7 @@ function mapToThreeLists(feature){
                 //console.log("berthName: " + berthName);
 
                 if ((berthName === feature.properties.name) && (table.style.display === "table")) {
-                    berthNameBtn.scrollIntoView(scrolledIntoViewOptions);
+                    berthNameBtn.scrollIntoView();
                     berthNameBtn.click();
                 }
             }
@@ -346,11 +339,11 @@ function memberToMap(geoJsonLayer){
                             });
                             selectedLayer = layer;
                             //console.log("fundet");
-                        /*} else {
-                            layer.setStyle({
-                                color: "black",
-                                weight: 0.1
-                            })*/
+                            /*} else {
+                                layer.setStyle({
+                                    color: "black",
+                                    weight: 0.1
+                                })*/
                         }
                     })
                 }
