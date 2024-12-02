@@ -192,7 +192,7 @@ td {
 /* Icon style within the button */
 .nameBtn:after, .berthBtn:after {
     content: "";
-    background-image: url('http://localhost:8080/Images/Icons/arrowDown.png'); /* Update URL if needed */
+    background-image: url('http://localhost:8080/Images/Icons/arrowDown.png'); 
     background-repeat: no-repeat;
     background-size: contain;
     width: 10px;
@@ -241,7 +241,7 @@ td {
 /* Icon styling for the collapsible list */
 .selectedNameBtn:after, .selectedBerthBtn:after {
     content: "";
-    background-image: url('http://localhost:8080/Images/Icons/arrowUp.png'); /* Update URL if needed */
+    background-image: url('http://localhost:8080/Images/Icons/arrowUp.png');
     background-repeat: no-repeat;
     background-size: contain;
     width: 10px;
