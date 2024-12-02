@@ -31,8 +31,6 @@ public class MemberlistService {
     private ApprovedBoatRepository approvedBoatRepository;
 
     @Autowired
-    private PendingBoatService pendingBoatService;
-    @Autowired
     private PendingBoatRepository pendingBoatRepository;
 
     // Fetch all member list details
@@ -98,6 +96,7 @@ public class MemberlistService {
     public MemberlistDTO deleteMemberFromDatabase(MemberlistDTO member) {
         int memberId = member.getMemberID();
         int boatId = member.getBoatID();
+        int berthId = member.getBerthID();
 
         // Find Boat entiteten ved hjælp af boatId
         Boat boat = boatRepository.findById(boatId).orElse(null);
@@ -123,11 +122,19 @@ public class MemberlistService {
             boatRepository.deleteById(boatId); // Slet båden
         }
 
+        Berth berth = berthRepository.findByBerthID(berthId);
+        if (berth != null) {
+            if (berthId != 9999) {
+                berth.setAvailability(1);
+                berthRepository.save(berth);
+            }
+        }
         // Find og slet det tilknyttede medlem
         Member memberFromList = memberRepository.findByMemberID(memberId); // Find medlem fra medlems-ID
         ApprovedMember approvedMember = approvedMemberRepository.findByMember(memberFromList); // Find godkendt medlem
         approvedMemberRepository.delete(approvedMember); // Slet godkendt medlem
         memberRepository.delete(memberFromList); // Slet medlem
+
 
         return member; // Returnér den oprindelige MemberlistDTO
     }
