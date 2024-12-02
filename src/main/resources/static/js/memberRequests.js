@@ -188,6 +188,9 @@ class MemberEvent {
                         }
 
                     }
+                    setTimeout(function() {
+                        location.reload();
+                    }, 500);
                 });
             }
         });
