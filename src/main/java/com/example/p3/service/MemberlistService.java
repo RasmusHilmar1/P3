@@ -63,14 +63,16 @@ public class MemberlistService {
         // Opdater den tilhørende båd, hvis der er en til stede, samme måde som før
         if (boatID != 0) {
             Boat boat = boatRepository.findByBoatID(boatID);
+            ApprovedBoat aB = approvedBoatRepository.findByBoat(boat);
             if (boat == null) {
                 throw new IllegalArgumentException("Boat not found with ID: " + boatID);
             }
-
-            boat.setName(dto.getBoatName());
-            boat.setLength(dto.getBoatLength());
-            boat.setWidth(dto.getBoatWidth());
-            boatRepository.save(boat);
+            if (aB != null) {
+                boat.setName(dto.getBoatName());
+                boat.setLength(dto.getBoatLength());
+                boat.setWidth(dto.getBoatWidth());
+                boatRepository.save(boat);
+            }
         }
 
         // Opdater berth på samme måde som båd
