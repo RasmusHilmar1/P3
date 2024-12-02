@@ -8,6 +8,21 @@ console.log(boats);
 const berths = await fetchBerth();
 console.log(berths);
 
+function getFullBerthName(shorthand) {
+    const prefixMapping = {
+        FB: "Fiskebro",
+        NB: "Nørrebro",
+        NVB: "Ny Vestre Bro",
+        NM: "Nordmolen",
+        VN: "Vestre Nordmole"
+    };
+
+    const prefix = shorthand.slice(0, 2);
+    const number = shorthand.slice(2).padStart(2, '0');
+    return prefixMapping[prefix] ? `${prefixMapping[prefix]} ${number}` : shorthand;
+}
+
+
 // FUNCTIONS FOR EXPORTING TABLE TO EXCEL ---->
 
 function exportBerthTableBerthsToExcel(){
@@ -69,8 +84,16 @@ calculateUtilization();
 
 function addCells(tr, data, editableIndexes = [], lengthAndWidthIndexes = []){
     let td;
+
     // insert a new cell for each of the item in the data
     data.forEach((item, index) => {
+        //check if the data in the foreach statement is a number
+        if(index === 0 && typeof item === 'number'){
+            return;
+        }
+        if(index === 7 && item === undefined){
+            item = "";
+        }
         td = tr.insertCell();
         tr.className = "berthTableRow";
         console.log(item);
@@ -115,13 +138,15 @@ function addSaveBtn(row, data) {
 
 // FUNCTIONS FOR DEFINING DATA FOR TABLE ---->
 
-function findBerthData(data){
-    return [data.berthID, data.name, data.length + "m", data.width + "m", data.areal + "m", data.depth + "m", data.utilizationPercentage]; // initializing berth data for cells with berth data
+function findBerthData(data) {
+    const fullName = getFullBerthName(data.name); // Convert shorthand to full name
+    console.log(fullName);
+    return [data.berthID, data.name, fullName, data.length + "m", data.width + "m", data.areal + "m", data.depth + "m", data.utilizationPercentage];
 }
+
 
 function findCorrespondingMemberAndBoat(data){
 
-    console.log(data);
     data.correspondingBoat = boats.find(boat => boat.berthID === data.berthID); // find corresponding boat
     console.log(data.correspondingBoat);
 
@@ -139,8 +164,8 @@ function findCorrespondingMemberAndBoat(data){
         if (data.correspondingBoat.memberID === data.correspondingMember.member.memberID && data.correspondingBoat.berthID === data.berthID) {
 
             return [ // initialize the corresponding boat and member ID
-                data.correspondingBoat.memberID,
                 data.correspondingMember.member.name,
+                data.correspondingBoat.memberID,
                 data.correspondingBoat.name,
                 data.correspondingBoat.length,
                 data.correspondingBoat.width,
@@ -206,15 +231,16 @@ function getBerthListSortedBerths(data, table){
 
             // declare data for each berth
             berthData = findBerthData(berth);
+            console.log(berthData);
             memberAndBoatData = findCorrespondingMemberAndBoat(berth);
 
             // initialize table rows for each berth
             row = table.insertRow();
             row.className = "berthTableRow";
 
-            editableColumns = [1, 2, 3]; // set the columns with name, length, and width as editable
+            editableColumns = [3, 4]; // set the columns with name, length, and width as editable
 
-            lengthAndWidthIndexes = [2, 3]; // set the columns with length and width
+            lengthAndWidthIndexes = [3, 4]; // set the columns with length and width
 
             addCells(row, berthData, editableColumns, lengthAndWidthIndexes); // call addCells with berth data first
 
@@ -363,7 +389,6 @@ async function saveBerthChanges(row, berth) {
 
     const updatedBerth = {
         berthID: berth.berthID,
-        name: name, // name
         length: length, // length
         width: width, // width
     };
@@ -409,6 +434,10 @@ async function saveBerthChanges(row, berth) {
         row.cells[4].textContent = newAreal + "m";
         row.cells[6].textContent = newUtilizationPercentage;
 
+        //reload the page
+        setTimeout(function () {
+            location.reload();
+        }, 300)
         alert("Ændringer på bådplads gemt!");
 
     } catch (error) {
