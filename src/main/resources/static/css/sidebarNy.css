@@ -226,3 +226,64 @@ td {
 .berthListAv {
     display: none;
 }
+
+/* Tilføj/Add Standard knap  #5c82b5*/
+.addBtn {
+    background-color: white;
+    color: black;
+    border-radius: 5px;
+    border: solid black;
+    padding: 2px 11px; /* Indre afstand (gør knappen mere behagelig at klikke på) */
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+/* Når musen er over knappen */
+.addBtn:hover {
+    background-color: #5c82b5; /* Mørkere baggrundsfarve 2b4d73 */
+    color: white;
+}
+
+/* Remove Standard knap  #5c82b5*/
+#removeBtn {
+    background-color: white;
+    color: black;
+    border-radius: 5px;
+    border: solid black;
+    padding: 2px 11px; /* Indre afstand (gør knappen mere behagelig at klikke på) */
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+/* Når musen er over knappen */
+#removeBtn:hover {
+    background-color: #5c82b5; /* Mørkere baggrundsfarve 2b4d73 */
+    color: white;
+}
+
+/* Assign/Tildel Standard knap  #5c82b5*/
+.assignBtn {
+    background-color: white;
+    color: black;
+    border-radius: 5px;
+    border: solid black;
+    padding: 2px 11px; /* Indre afstand (gør knappen mere behagelig at klikke på) */
+    cursor: pointer;
+    font-size: 14px;
+    display: block;
+    margin: 0 auto;
+    transition: background-color 0.3s ease;
+}
+
+/* Når musen er over knappen */
+.assignBtn:hover {
+    background-color: #5c82b5; /* Mørkere baggrundsfarve 2b4d73 */
+    color: white;
+}
+
+.berthCell {
+    line-height: 1.3;
+}
+
