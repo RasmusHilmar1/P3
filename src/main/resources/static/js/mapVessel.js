@@ -409,7 +409,7 @@ export async function colorButtons(member, boat, berths) {
             }
 
             const compatibleBerth = compatibleBerths.find(b => b.berth.name === feature.properties.name);
-            console.log(compatibleBerth);
+            console.log("Checking compatibility for berth:", feature.properties.name);
 
             // Find the corresponding layer for this GeoJSON feature
             const layer = getLayerByFeature(feature);
@@ -432,11 +432,46 @@ export async function colorButtons(member, boat, berths) {
                 layer.setStyle({
                     color: "black",
                     weight: 0.3,
-                    fillColor: "red",
+                    fillColor: "Crimson",
                     fillOpacity: 1
                 });
             }
         });
+
+        // Add highlighting logic for the selected berth
+        const berthList = document.querySelectorAll(".berthList");
+        berthList.forEach(list => {
+            list.addEventListener("click", event => {
+                const berthBtn = event.target.closest(".berthBtn");
+                if (!berthBtn) return;
+
+                // Clear previous highlights
+                removeHighlight();
+
+                const selectedBerthName = berthBtn.textContent.trim();
+                console.log("Selected berth from sidebar:", selectedBerthName);
+
+                // Highlight the selected berth on the map
+                myGeoJson.features.forEach(feature => {
+                    if (feature.properties.name === selectedBerthName) {
+                        const layer = getLayerByFeature(feature);
+                        if (layer) {
+                            layer.setStyle({
+                                color: "blue",
+                                weight: 2
+                            });
+                            selectedLayer = layer;
+
+                            console.log("Highlighted selected berth on map:", feature.properties.name);
+
+                            // Scroll the button into view in the sidebar
+                            berthBtn.scrollIntoView({ behavior: "smooth", block: "center" });
+                        }
+                    }
+                });
+            });
+        });
+
     } catch (error) {
         console.error("Error in colorButtons:", error);
     }
