@@ -234,20 +234,23 @@ td {
 #searchWithIcon {
     position: relative;
     margin-top: 10px;
-    margin-left: 15px;
+    /*margin-left: 15px;*/
     font-size: 24px;
     border:1px solid #5c82b5;
     border-radius: 10px;
-    padding: 5px
+    padding-bottom: 5px;
 }
+
 
 #searchWithIcon .vector {
     position: relative;
-    left: 5px;
+    left: 6px;
     top: 50%;
     transform: translateY(15%);
     width: 20px; /* Billedets bredde */
     height: 20px; /* Billedets højde */
+    color: #5c82b5;
+    border: 0 solid;
 }
 /*
 .searchWithIcon input {
@@ -262,14 +265,14 @@ td {
 }*/
 
 #searchBarSidebar {
-    border: 0px solid;
-    width: 90%;*
+    border: 0 solid;
+    width: 87%;
     line-height: 22px;
     /* padding-left: 35px; */
     position: relative;
     margin-top: 10px;
-    /* margin-left: 15px; */
-    font-size: 24px;
+    margin-left: 7px;
+    font-size: 20px;
     /* border-radius: 10px;*/
     color: #5c82b5;
 }
@@ -277,12 +280,12 @@ td {
 #searchBarSidebar:focus {
     outline:none;
     /*border: none;*/
-    width: 90%;*
+    width: 87%;
     line-height: 22px;
     /* padding-left: 35px; */
     position: relative;
     margin-top: 10px;
-    /* margin-left: 15px; */
+    margin-left: 7px;
     font-size: 20px;
     /* border-radius: 10px;*/
     color: #5c82b5;
