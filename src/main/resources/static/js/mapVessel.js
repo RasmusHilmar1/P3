@@ -6,13 +6,11 @@ const boats = await fetchBoats();
 const berths = await fetchBerth();
 
 // Create map for leaflet -->
-var map = L.map('map', {
-   // minZoom: 17,
-    //maxZoom: 23
-});
+var map = L.map('map');
 
 // Set the center for when you open the application-->
-map.setView([57.05778747921157, 9.902244340136367], 18.5);
+map.setView([57.05986605976934, 9.901956256639835], 15.5);
+
 
 // Use map from OSM -->
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -66,47 +64,33 @@ addGuestArea();
 
 
 const harbor1 = document.getElementById("vestreBaadehavn");
-harbor1.addEventListener("click", function(event) {
-    event.preventDefault();
+if (harbor1) {
+    harbor1.addEventListener("click", function(event) {
+        event.preventDefault();
 
-    var imageBounds = [
-        [57.05861, 9.89969], // Top-left
-        [57.05692, 9.90523]  // Bottom-right
-    ];
+        const bounds = L.latLngBounds(
+            [57.05861, 9.89969],
+            [57.05692, 9.90523]
+        );
 
-    //var imageUrl = '../../Images/vestre_badelaug_kort_kopi.jpeg';
-    //var imageOverlay = L.imageOverlay(imageUrl, imageBounds).addTo(map);
-
-    const bounds = L.latLngBounds(
-        [57.05861, 9.89969],
-        [57.05692, 9.90523]
-    );
-
-    map.setMaxBounds(bounds);
-
-});
+        map.setMaxBounds(bounds);
+    });
+}
 
 //Hvis knappen for "skudehavn" trykket vil kortet for den havn vises
 const harbor2 = document.getElementById("skudehavn");
+if (harbor2) {
+    harbor2.addEventListener("click", function(event) {
+        const bounds2 = L.latLngBounds(
+            [57.06018973534202, 9.894721266122263],
+            [57.057196830597924, 9.897628780728576]
+        );
 
-harbor2.addEventListener("click", function(event) {
+        map.setMaxBounds(bounds2);
 
-    var imageBounds2 = [
-        [57.060017, 9.893899], // Top-left
-        [57.057100, 9.898600]  // Bottom-right
-    ];
-
-    //var imageUrl2 = '../../Images/skudehavn.jpeg';
-    //var imageOverlay2 = L.imageOverlay(imageUrl2, imageBounds2).addTo(map);
-
-    const bounds2 = L.latLngBounds(
-        [57.060017, 9.893899], // Top-left
-        [57.057100, 9.898600]
-    );
-
-    map.setMaxBounds(bounds2);
-
-});
+        map.setView([57.05885016317979, 9.895671278476893], 15.5);
+    });
+}
 
 // Move zoom buttons -->
 map.zoomControl.setPosition('bottomright');
@@ -342,8 +326,7 @@ function memberToMap(geoJsonLayer){
     const memberList = document.getElementById("memberListBoat");
 
     memberList.addEventListener("click", (event) => {
-        // Clear all highlights
-        removeHighlight();
+        removeHighlight(); // Clear all highlights
 
         const button = event.target.closest(".nameBtn");
         console.log("button member: " + button.outerHTML);
@@ -354,7 +337,9 @@ function memberToMap(geoJsonLayer){
             boats.forEach(boat => {
                 if ((Number(memberId) === boat.memberID) && (boat.berthID !== 9999)) {
                     geoJsonLayer.eachLayer(layer => {
-                        if(Number(layer.featureId) === boat.berthID) {
+                        const name = layer.feature?.properties?.name || "";
+                        const isPier = name.toLowerCase().startsWith("pier");
+                        if(Number(layer.featureId) === boat.berthID && !isPier) {
                             layer.setStyle({
                                 color: "blue",
                                 weight: 2
@@ -392,12 +377,15 @@ function berthListsToMap(geoJsonLayer){
                 berths.forEach(berth => {
                     if (berthName === berth.name) {
                         geoJsonLayer.eachLayer(layer => {
-                            if (Number(layer.featureId) === berth.berthID) {
+                            const name = layer.feature?.properties?.name || "";
+                            const isPier = name.toLowerCase().startsWith("pier");
+
+                            if (Number(layer.featureId) === berth.berthID && !isPier) {
                                 layer.setStyle({
                                     color: "blue",
                                     weight: 2
                                 });
-                                selectedLayer=Layer;
+                                selectedLayer=layer;
                             }
                         });
                     }
