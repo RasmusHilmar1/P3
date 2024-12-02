@@ -184,7 +184,7 @@ function createMemberListWithoutBoats(approvedMembers, boats, berths) {
                 for (const key in member) {
                     if (key === 'memberID') {
                         var infoCell = document.createElement("div");
-                        infoCell.textContent = key + " : " + member[key];
+                        infoCell.textContent = "Medlemsnummer" + " : " + member[key];
                         infoCell.className = "infoCell";
                         infoContainer.appendChild(infoCell);
                     }
@@ -194,7 +194,16 @@ function createMemberListWithoutBoats(approvedMembers, boats, berths) {
                     if ((key === 'name') || (key === 'length') || (key === 'width')) {
                         var infoCell = document.createElement("div");
                         //console.log("key : " + boat[key]);
-                        infoCell.textContent = key + " : " + boat[key];
+                        var name;
+                        if(key === "name")
+                        {
+                            name = "Båd Navn";
+                        }else if (key === "length")
+                        {
+                            name = "Længde";
+                        }else
+                            name = "Bredde";
+                        infoCell.textContent = name + " : " + boat[key];
                         infoCell.className = "infoCell";
                         infoContainer.appendChild(infoCell);
 
@@ -202,7 +211,7 @@ function createMemberListWithoutBoats(approvedMembers, boats, berths) {
                     if (key === 'berthID') {
                         var infoCell = document.createElement("div");
                         //console.log("key : " + boat[key]);
-                        infoCell.textContent = key + " : ";
+                        infoCell.textContent = "Bådplads" + " : ";
                         infoCell.className = "infoCell";
                         infoContainer.appendChild(infoCell);
 
@@ -266,20 +275,26 @@ function createBerthList(berths){
                 var infoCell = document.createElement("div");
 
                 if (berth[key] === 0 ) {
-                    infoCell.textContent = "status: utilgængelig";
+                    infoCell.textContent = "Status: utilgængelig";
 
                 } else if (berth[key] === 1) {
-                    infoCell.textContent = "status: tilgængelig";
+                    infoCell.textContent = "Status: tilgængelig";
 
                 } else if (berth[key] === 2) {
-                    infoCell.textContent = "status: midlertidig tilgængelig";
+                    infoCell.textContent = "Status: midlertidig tilgængelig";
                 }
                 infoCell.className = "infoCell";
                 infoContainer.appendChild(infoCell);
             }
             if ((key === 'length') || (key === 'width')) {
                 var infoSize = document.createElement("div");
-                infoSize.textContent = " - " + key + ": " + berth[key] + " m";
+                var name;
+                if (key === "length")
+                {
+                    name = "Længde";
+                }else
+                    name = "Bredde";
+                infoSize.textContent = " - " + name + ": " + berth[key] + " m";
                 //infoSize.className = "infoCell";
                 //infoSize.id = berth.name;
                 size.appendChild(infoSize);
@@ -293,7 +308,7 @@ function createBerthList(berths){
         boats.forEach(boat => {
             if (boat.berthID === berth.berthID) {
                 let infoCell = document.createElement("div");
-                infoCell.textContent = "båd: " + boat.name;
+                infoCell.textContent = "Båd Navn: " + boat.name;
                 infoCell.className = "infoCell";
 
                 var removeBtn = document.createElement("button");
@@ -308,7 +323,7 @@ function createBerthList(berths){
                 approvedMembers.forEach(approvedMember => {
                     if (approvedMember.member.memberID === boat.memberID) {
                         let infoCell = document.createElement("div");
-                        infoCell.textContent = "medlem: " + approvedMember.member.name;
+                        infoCell.textContent = "Medlems Navn: " + approvedMember.member.name;
                         infoCell.className = "infoCell";
                         infoContainer.appendChild(infoCell);
                         let utilCell = document.createElement("div");
@@ -386,11 +401,6 @@ function showThreeTables(member, addBtn) {
 
 function showBerthsForBoat() {
 
-    console.log("memberinfo: " + approvedMembers);
-
-    console.log("objectLength:" + Object.keys(approvedMembers).length);
-
-
     //for (let i = 0, l = Object.keys(approvedMembers).length; i < l; i++) {
 
         approvedMembers.forEach(approvedMember => {
@@ -401,11 +411,6 @@ function showBerthsForBoat() {
 
             if (addBtn) {
                 if (addBtn.id === "addBtn" + members.memberID) {
-                    console.log("her kommer memeber:" + members.memberID);
-
-                    console.log("1:", memberID);
-                    console.log("2:", addBtn);
-                    //console.log("3:", addBtnID);
 
                     var addBtnID = addBtn.id;
                     createBerthListAvailable(memberID);
@@ -485,20 +490,26 @@ export async function createBerthListAvailable(member) {
         berthCell.appendChild(infoContainer);
 
         var size = document.createElement("div");
-        size.textContent = "størrelse";
+        size.textContent = "Størrelse";
         size.className = "infoCell";
 
                     for (const key in berth) {
                         if (key === 'availability') {
                             var infoCell = document.createElement("div");
-                            infoCell.textContent = "status: tilgængelig";
+                            infoCell.textContent = "Status: Tilgængelig";
                             infoCell.className = "infoCell";
                             infoCell.id = berth.name;
                             infoContainer.appendChild(infoCell);
                         }
                         if ((key === 'length') || (key === 'width')) {
                             var infoSize = document.createElement("div");
-                            infoSize.textContent = " - " + key + ": " + berth[key] + " m";
+                            var name;
+                            if (key === "length")
+                            {
+                                name = "Længde";
+                            }else
+                                name = "Bredde";
+                            infoSize.textContent = " - " + name + ": " + berth[key] + " m";
                             size.appendChild(infoSize);
                             infoContainer.appendChild(size);
                         }
@@ -516,7 +527,7 @@ export async function createBerthListAvailable(member) {
         formForRedirect.classList = "infoCell";
 
         var assignBtn = document.createElement("button");
-        assignBtn.textContent = "tildel";
+        assignBtn.textContent = "Tildel";
         assignBtn.classList = "assignBtn";
         assignBtn.id = `assignBtn${member}`;
         assignBtn.onclick = function () {
@@ -563,20 +574,26 @@ function createBerthListSmall (member) {
                     berthCell.appendChild(infoContainer);
 
                     var size = document.createElement("div");
-                    size.textContent = "størrelse";
+                    size.textContent = "Størrelse";
                     size.className = "infoCell";
 
                     for (const key in berth) {
                         if (key === 'availability') {
                             var infoCell = document.createElement("div");
-                            infoCell.textContent = "status: tilgængelig";
+                            infoCell.textContent = "Status: tilgængelig";
                             infoCell.className = "infoCell";
                             infoCell.id = berth.name;
                             infoContainer.appendChild(infoCell);
                         }
                         if ((key === 'length') || (key === 'width')) {
                             var infoSize = document.createElement("div");
-                            infoSize.textContent = " - " + key + ": " + berth[key] + " m";
+                            var name;
+                            if (key === "length")
+                            {
+                                name = "Længde";
+                            }else
+                                name = "Bredde";
+                            infoSize.textContent = " - " + name + ": " + berth[key] + " m";
                             size.appendChild(infoSize);
                             infoContainer.appendChild(size);
 
@@ -589,7 +606,7 @@ function createBerthListSmall (member) {
                     formForRedirect.classList = "infoCell";
 
                     var assignBtn = document.createElement("button");
-                    assignBtn.textContent = "tildel";
+                    assignBtn.textContent = "Tildel";
                     assignBtn.classList = "assignBtn";
                     assignBtn.id = `assignBtn${member}`;
                     assignBtn.onclick = function () {
@@ -633,20 +650,26 @@ function createBerthListUnavailable(member) {
                     berthCell.appendChild(infoContainer);
 
                     var size = document.createElement("div");
-                    size.textContent = "størrelse";
+                    size.textContent = "Størrelse";
                     size.className = "infoCell";
 
                     for (const key in berth) {
                         if (key === 'availability') {
                             var infoCell = document.createElement("div");
-                            infoCell.textContent = "status: utilgængelig";
+                            infoCell.textContent = "Status: Utilgængelig";
                             infoCell.className = "infoCell";
                             infoCell.id = berth.name;
                             infoContainer.appendChild(infoCell);
                         }
                         if ((key === 'length') || (key === 'width')) {
                             var infoSize = document.createElement("div");
-                            infoSize.textContent = " - " + key + ": " + berth[key] + " m";
+                            var name;
+                            if (key === "length")
+                            {
+                                name = "Længde";
+                            }else
+                                name = "Bredde";
+                            infoSize.textContent = " - " + name + ": " + berth[key] + " m";
                             //infoSize.className = "infoCell";
                             //infoSize.id = berth.name;
                             size.appendChild(infoSize);
@@ -695,23 +718,6 @@ function collapsableListEventListener(button, infoContainer) {
     });
 }
 
-
-/*
-function collapsableListEventListener(nameList, infoContainer) {
-    nameList.addEventListener("click", function () {
-        const infoCells = infoContainer.querySelectorAll(".infoCell");
-        infoCells.forEach(cell => {
-            if (cell.style.maxHeight) {
-                nameList.classList.remove('selectedNameBtn');
-                cell.style.maxHeight = null;
-            } else {
-                nameList.classList.add('selectedNameBtn');
-                cell.style.maxHeight = cell.scrollHeight + "px";
-            }
-        });
-    });
-}
-*/
 function createTable(member, sidebar, berthList, ListTitel){
     var table = document.createElement("table");
     table.id = berthList + member;
