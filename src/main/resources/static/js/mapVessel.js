@@ -9,7 +9,7 @@ const berths = await fetchBerth();
 var map = L.map('map');
 
 // Set the center for when you open the application-->
-map.setView([57.05986605976934, 9.901956256639835], 15.5);
+map.setView([57.05986605976934, 9.901956256639835], 12.5);
 
 
 // Use map from OSM -->
@@ -430,7 +430,7 @@ export async function colorButtons(member, boat, berths) {
                 if (layer) {
                     layer.setStyle({
                         color: "black",
-                        weight: 0.1,
+                        weight: 0.3,
                         fillColor: `rgb(${red}, ${green}, ${blue})`,
                         fillOpacity: 1
                     });
@@ -438,7 +438,7 @@ export async function colorButtons(member, boat, berths) {
             } else if (layer) {
                 layer.setStyle({
                     color: "black",
-                    weight: 0.1,
+                    weight: 0.3,
                     fillColor: "red",
                     fillOpacity: 1
                 });
