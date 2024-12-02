@@ -31,6 +31,7 @@ openClose();
 // Floating button for opening sidebar -->
 let button = document.createElement("Button");
 button.innerHTML = "Title";
+button.classList = "buttonToClick";
 document.body.appendChild(button);
 
 sidebar.addEventListener('click', function (event) {
