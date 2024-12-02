@@ -87,6 +87,14 @@ class FeeEvent extends EventManagerBoatRequests {
             // make sure the btn is pressed if fee has been sent
             feeSent === 0 ? feeSentBtn.classList.remove("buttonAssigned") : feeSentBtn.classList.add("buttonAssigned");
 
+            if(boat.boat.berthID === 9999) {
+                feeSentBtn.disabled = true;
+                feePaidBtn.disabled = true;
+            } else {
+                feeSentBtn.disabled = false;
+                feePaidBtn.disabled = false;
+            }
+
             feeSentBtn.addEventListener("click", () => {
                 if (feeSent === 0){
                     feeSent = 1;
