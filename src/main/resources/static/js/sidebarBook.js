@@ -160,7 +160,7 @@ class SearchHandler {
 
 // Opret en instans og giv den de id'er som den skal bruge.
 const searchHandler = new SearchHandler(
-    "searchBar",
+    "searchBarSidebar",
     "memberList"
 );
 

@@ -178,6 +178,7 @@ function createMemberListWithoutBoats(approvedMembers, boats, berths) {
                 var memberName = document.createElement("button");
                 memberName.textContent = member.name;
                 memberName.className = "nameBtn";
+                memberName.id = "nameBtn" + approvedMember.member.memberID;
                 //console.log(`Name: ${member.name}, Address: ${member.address}`)
                 memberCell.appendChild(memberName);
 
@@ -419,19 +420,26 @@ function memberBox (member) {
                 memberBox.appendChild(memberName);
 
                 for (const key in member) {
-                    if ((key === 'name') || (key === 'memberID')) {
+                    if (key === 'memberID') {
                         var memberInfo = document.createElement("div");
-                        memberInfo.textContent = key + ":  " + member[key];
+                        memberInfo.textContent = "Medlemsnummer:  " + member[key];
                         memberInfo.className = "member-item";
                         memberBox.appendChild(memberInfo);
                     }
                 }
 
                 var size = document.createElement("div");
-                size.textContent = "størrelse: ";
+                size.textContent = "Bådstørrelse: ";
                 size.className = "member-item";
 
                 for (const key in boat) {
+                    if (key === 'name') {
+                        var memberInfo = document.createElement("div");
+                        memberInfo.textContent = "Bådnavn:  " + boat[key];
+                        memberInfo.className = "member-item";
+                        memberBox.appendChild(memberInfo);
+                    }
+
                     if ((key === 'length') || (key === 'width')) {
                         let sizeInfo = document.createElement("div");
                         //console.log("key : " + boat[key]);

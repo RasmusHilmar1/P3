@@ -91,12 +91,19 @@ function addCells(tr, data, editableIndexes = [], lengthAndWidthIndexes = []){
         if(index === 0 && typeof item === 'number'){
             return;
         }
-        if(index === 7 && item === undefined){
+        if(index === 6 && item === undefined){
             item = "";
         }
         td = tr.insertCell();
         tr.className = "berthTableRow";
         console.log(item);
+
+        // make some of the cells narrow
+        if (index === 0 || index === 2 || index === 3 || index === 7 || index === 9 || index === 10){
+            td.classList.add("narrowCell");
+        } else {
+            td.classList.add("normalCell");
+        }
 
         if (editableIndexes.includes(index)) {
             const input = document.createElement("input");
@@ -141,7 +148,7 @@ function addSaveBtn(row, data) {
 function findBerthData(data) {
     const fullName = getFullBerthName(data.name); // Convert shorthand to full name
     console.log(fullName);
-    return [data.berthID, data.name, fullName, data.length + "m", data.width + "m", data.areal + "m", data.depth + "m", data.utilizationPercentage];
+    return [data.berthID, data.name, fullName, data.length + "m", data.width + "m", data.areal + "m", data.utilizationPercentage];
 }
 
 
@@ -187,14 +194,22 @@ function createTableHeaders(headers, sortedBy){
 
     headers.forEach(header => { // for each header create a cell
         th = document.createElement("th");
-        th.className = "headercells";
+
+        if (header === "Plads nr." || header === "Medlems nr." || header === "Længde" || header === "Bredde") {
+            th.className = "narrowHeader"; // Apply the narrowHeader class for these columns
+        } else {
+            th.className = "headerCell";
+        }
+
         th.innerHTML = header;
+
         headerRow.appendChild(th);
     });
 
     th = document.createElement("th"); //create a new headercell for the export button
     th.className = "headercells";
     let exportBtn = document.createElement("button"); //create button element
+    exportBtn.className = "exportBtn";
     exportBtn.id = "exportBtn" + sortedBy;
     exportBtn.innerHTML = "Exportér liste til Excel";
     th.appendChild(exportBtn);
@@ -214,7 +229,6 @@ function getBerthListSortedBerths(data, table){
             "Længde",
             "Bredde",
             "Areal",
-            "Dybde",
             "Udnyttelse i %",
             "Navn",
             "Medlems nr.",
@@ -238,7 +252,7 @@ function getBerthListSortedBerths(data, table){
             row = table.insertRow();
             row.className = "berthTableRow";
 
-            editableColumns = [3, 4]; // set the columns with name, length, and width as editable
+            editableColumns = [2, 3, 4]; // set the columns with name, length, and width as editable
 
             lengthAndWidthIndexes = [3, 4]; // set the columns with length and width
 
@@ -279,7 +293,6 @@ function getBerthListSortedMembers(data, table){
             "Længde",
             "Bredde",
             "Areal",
-            "Dybde",
             "Udnyttelse i %"],
         "Members");
 

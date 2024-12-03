@@ -1,7 +1,70 @@
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
 /* Style for the table container */
 #berthListContainer {
     padding-top: 150px;
     background-color: #f4f4f4;
+    width: 100%;
+}
+
+/* Style for the dynamic table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+#berthListHeader {
+    font-size: 35px;
+    padding-top: 20px;
+    text-align: center; /* Ensure the text is centered */
+    border: none;
+    width: 100%;
+    vertical-align: middle;
+}
+
+.berthListInfo {
+    font-size: 25px;
+    padding: 20px 10px; /* Increased padding to add more space above and below */
+    text-align: left;
+    border: none;
+    margin-top: 10px; /* Adds more space above */
+    margin-bottom: 10px; /* Adds more space below */
+    vertical-align: middle;
+}
+
+td {
+    padding: 10px; /* Ensures consistent padding in both headers and cells */
+    text-align: left; /* Aligns text to the left */
+    vertical-align: middle; /* Vertically centers text */
+    font-size: 20px;
+    word-wrap: break-word;
+    width: fit-content;
+}
+
+/* Table row styling for better differentiation */
+.berthTableRow {
+    background-color: white;
+    width: 100%;
+}
+
+/* Row hover effect */
+.berthTableRow:hover {
+    background-color: #d3cfcc;
+}
+
+.berthTableRow:nth-child(odd) {
+    background-color: #e8e5e2; /* Color for odd rows */
+    width: 100%;
+}
+
+.berthTableRow:nth-child(odd):hover {
+    background-color: #d3cfcc;
 }
 
 /* Styling for the sorting buttons */
@@ -25,74 +88,66 @@
 }
 
 .sortingBtn {
+    text-decoration: none;
+    font-size: 19px;
     display: inline;
-    border-color: #5c82b5;
-    border-radius: 10px;
+    width: 300px;
+    margin-top: 10px;
+    margin-left: 1px;
+    border-radius: 6px;
     color: #5c82b5;
+    background: white;
+    border-color: #5c82b5;
+    border-style: solid;
 }
 
-/* styling for sorting buttons when selected */
 
 .sortingBtn.selected {
-    background-color: #5c82b5;
     color: white;
-    box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.2), /* Dark inner shadow */
-    inset -2px -2px 5px rgba(255, 255, 255, 0.7); /* Light inner shadow */
+    background: #5c82b5;
+    border-color: #5c82b5;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
-/* Style for the dynamic table */
-table {
-    width: 100%;
-    border-collapse: collapse;
+
+.sortingBtn:hover {
+    color: white;
+    background: #5c82b5;
+    border-color: #5c82b5;
 }
 
-#berthListHeader {
-    font-size: 28px;
-    padding-top: 20px;
-    text-align: center; /* Ensure the text is centered */
-    border: none;
-    font-weight: bold;
-    width: 100%;
-    vertical-align: middle;
+/* Styling for the export buttonn */
+.exportBtn {
+    text-decoration: none;
+    font-size: 19px;
+    display: inline;
+    margin-top: 10px;
+    margin-left: 1px;
+    border-radius: 6px;
+    color: #5c82b5;
+    background: white;
+    border-color: #5c82b5;
+    border-style: solid;
 }
 
-.berthListInfo {
-    font-size: 18px;
-    padding: 20px 10px; /* Increased padding to add more space above and below */
-    text-align: left;
-    border: none;
-    font-weight: bold;
-    margin-top: 10px; /* Adds more space above */
-    margin-bottom: 10px; /* Adds more space below */
-    vertical-align: middle;
+
+.exportBtnBtn:active {
+    color: white;
+    background: #5c82b5;
+    border-color: #5c82b5;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
-td {
-    padding: 10px; /* Ensures consistent padding in both headers and cells */
-    text-align: left; /* Aligns text to the left */
-    vertical-align: middle; /* Vertically centers text */
-    font-size: 18px;
-    word-wrap: break-word;
-    max-width: 250px;
-}
 
-/* Row hover effect */
-.berthTableRow:hover {
-    background-color: #d3cfcc;
-}
-
-.berthTableRow:nth-child(odd) {
-    background-color: #e8e5e2; /* Color for odd rows */
-}
-
-.berthTableRow:nth-child(odd):hover {
-    background-color: #d3cfcc;
+.exportBtn:hover {
+    color: white;
+    background: #5c82b5;
+    border-color: #5c82b5;
 }
 
 /* Specific styling for editable cells */
 .editableCells {
     max-width: 100px; /* Limit cell width to prevent overly wide cells */
-    padding: 5px; /* Add padding for a centered look */
     text-align: left; /* Center text in cell */
 }
 .editableInput {
@@ -100,7 +155,7 @@ td {
     border-radius: 4px;
     margin: 2px auto; /* Center the input field within the cell */
     font-size: 18px;
-    max-width: 70px;
+    max-width: 100px;
 }
 
 .editableInput:focus {
@@ -138,6 +193,8 @@ td {
     border: none;
     cursor: pointer;
     border-radius: 4px;
+    margin: 0 auto;
+    display: block;
     font-size: 14px;
 }
 
@@ -146,6 +203,8 @@ td {
 }
 
 .saveBtnCell {
+    text-align: center;
+    width: auto;
     border: none;
     background-color: transparent;
 }
@@ -153,6 +212,7 @@ td {
 /* Search bar styling */
 #searchBarCell {
     padding: 10px;
+    text-align: center;
 }
 
 #berthListSearchBar {
@@ -172,7 +232,20 @@ td {
     box-shadow: 0 0 5px 2px rgb(92, 130, 181); /* Creates a blue glow */
 }
 
-/* Table row styling for better differentiation */
-.berthTableRow {
-    background-color: white;
+/* Style for narrow headers */
+.narrowHeader {
+    max-width: 50px;
+    text-align: left;
+}
+
+/* Style for narrow data cells */
+.narrowCell {
+    max-width: 30px;
+    text-align: center;
+}
+
+/* Normal header styling */
+.headerCell {
+    width: auto;
+    text-align: left;
 }

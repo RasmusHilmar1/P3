@@ -2,9 +2,9 @@
 .memberRequestsContainer {
     padding-top: 150px;
     z-index: 20;
-    background-color: white;
     font-size: 25px;
     max-width: 800px; /* Limit the width for better readability */
+    background-color: white;
     margin: 0 auto; /* Center the container */
     border-radius: 10px;
     height: 100%

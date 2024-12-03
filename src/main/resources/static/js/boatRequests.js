@@ -1,6 +1,6 @@
 //import fetch function and objects
 import {fetchApprovedMembers, fetchBoats, fetchBerth, fetchPendingMembers, fetchPendingBoats, parseData} from "./fetchMethods.js";
-import {Berth, Boat, PendingBoat, Member, Table, IconCreator} from "./objects.js";
+import {Berth, Boat, PendingBoat, Member, Table} from "./objects.js";
 
 export {BoatRequestTable, EventManagerBoatRequests};
 export {createTable};
