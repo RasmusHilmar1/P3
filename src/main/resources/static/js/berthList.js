@@ -91,7 +91,7 @@ function addCells(tr, data, editableIndexes = [], lengthAndWidthIndexes = []){
         if(index === 0 && typeof item === 'number'){
             return;
         }
-        if(index === 7 && item === undefined){
+        if(index === 6 && item === undefined){
             item = "";
         }
         td = tr.insertCell();
