@@ -1,22 +1,22 @@
-/* General body styling */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-}
-
 /* Style for table container */
 .boatRequestsContainer {
+    padding-top: 150px;
     z-index: 20;
-    gap: 10px;
-    padding-top: 110px;
-    background-color: #f4f4f4;
     font-size: 25px;
+    max-width: 1200px; /* Limit the width for better readability */
+    margin: 0 auto; /* Center the container */
+    border-radius: 10px;
+    height: 100%
 }
 
 table {
     width: 100%;
-    border-collapse: collapse;
     border: none;
+    border-radius: 10px;
+    margin: 25px 0;
+    font-size: 1em;
+    font-family: sans-serif;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 /* Title of table */
@@ -30,19 +30,7 @@ table {
     text-align: center;
 }
 
-/* Row with header cells */
-.headerCellsLeft {
-    font-size: 18px;
-    padding: 20px 10px; /* Increased padding to add more space above and below */
-    text-align: left;
-    border: none;
-    font-weight: bold;
-    margin-top: 10px; /* Adds more space above */
-    margin-bottom: 10px; /* Adds more space below */
-    vertical-align: middle;
-}
-
-.headerCellsCenter {
+.headercells {
     font-size: 18px;
     padding: 20px 10px; /* Increased padding to add more space above and below */
     text-align: center;
