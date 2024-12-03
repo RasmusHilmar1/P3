@@ -171,7 +171,7 @@ public class PrintService {
 
         // Create header row
         HSSFRow headerRow = sheet.createRow(0);
-        String[] headers = {"Plads nr.", "Plads", "Længde", "Bredde", "Areal", "Udnyttelse i %",
+        String[] headers = {"Plads", "Længde", "Bredde", "Areal", "Udnyttelse i %",
                 "Medlems nr.", "Navn", "Bådnavn", "Længde", "Bredde", "Areal", "Telefon nr."};
         for (int i = 0; i < headers.length; i++) {
             HSSFCell cell = headerRow.createCell(i);
@@ -183,27 +183,26 @@ public class PrintService {
 
         for (BerthlistDTO berthlistDTO : berths) {
             HSSFRow dataRow = sheet.createRow(dataRowIndex);
-            dataRow.createCell(0).setCellValue(berthlistDTO.getBerthID());
-            dataRow.createCell(1).setCellValue(berthlistDTO.getBerthName());
-            dataRow.createCell(2).setCellValue(berthlistDTO.getBerthLength());
-            dataRow.createCell(3).setCellValue(berthlistDTO.getBerthWidth());
-            dataRow.createCell(4).setCellValue(berthlistDTO.getBerthAreal());
+            dataRow.createCell(0).setCellValue(berthlistDTO.getBerthName());
+            dataRow.createCell(1).setCellValue(berthlistDTO.getBerthLength());
+            dataRow.createCell(2).setCellValue(berthlistDTO.getBerthWidth());
+            dataRow.createCell(3).setCellValue(berthlistDTO.getBerthAreal());
             // make sure that only the ones that have a compatibility score gets a %
             if (berthlistDTO.getBerthUtil() == 0) {
-                dataRow.createCell(5).setCellValue("0");
+                dataRow.createCell(4).setCellValue("0");
             } else {
-                dataRow.createCell(5).setCellValue(Math.round(berthlistDTO.getBerthUtil()) + "%");
+                dataRow.createCell(4).setCellValue(Math.round(berthlistDTO.getBerthUtil()) + "%");
             }
-            dataRow.createCell(6).setCellValue(berthlistDTO.getMemberID());
-            dataRow.createCell(7).setCellValue(berthlistDTO.getMemberName());
-            dataRow.createCell(8).setCellValue(berthlistDTO.getBoatName());
-            dataRow.createCell(9).setCellValue(berthlistDTO.getBoatLength());
-            dataRow.createCell(10).setCellValue(berthlistDTO.getBoatWidth());
-            dataRow.createCell(11).setCellValue(berthlistDTO.getBoatAreal());
-            dataRow.createCell(12).setCellValue(berthlistDTO.getMemberPhoneNumber());
+            dataRow.createCell(5).setCellValue(berthlistDTO.getMemberID());
+            dataRow.createCell(6).setCellValue(berthlistDTO.getMemberName());
+            dataRow.createCell(7).setCellValue(berthlistDTO.getBoatName());
+            dataRow.createCell(8).setCellValue(berthlistDTO.getBoatLength());
+            dataRow.createCell(9).setCellValue(berthlistDTO.getBoatWidth());
+            dataRow.createCell(10).setCellValue(berthlistDTO.getBoatAreal());
+            dataRow.createCell(11).setCellValue(berthlistDTO.getMemberPhoneNumber());
 
             // Apply data style with highlighted borders to each cell
-            for (int i = 0; i <= 12; i++) {
+            for (int i = 0; i <= 11; i++) {
                 dataRow.getCell(i).setCellStyle(dataStyle);
             }
 
