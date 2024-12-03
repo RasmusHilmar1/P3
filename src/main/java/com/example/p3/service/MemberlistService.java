@@ -46,7 +46,6 @@ public class MemberlistService {
         // initierer 3 ID'er på baggrund af værdierne i DTO'en
         int memberID = dto.getMemberID();
         int boatID = dto.getBoatID();
-        int berthID = dto.getBerthID();
 
         // Opdater member tabel ved brug af klassen. Finder de rigtige member objekt gennem DTO ID
         Member member = memberRepository.findByMemberID(memberID);
@@ -73,17 +72,6 @@ public class MemberlistService {
                 boat.setWidth(dto.getBoatWidth());
                 boatRepository.save(boat);
             }
-        }
-
-        // Opdater berth på samme måde som båd
-        if (berthID != 0) {
-            Berth berth = berthRepository.findByBerthID(berthID);
-            if (berth == null) {
-                throw new IllegalArgumentException("Berth not found with ID: " + berthID);
-            }
-
-            berth.setName(dto.getBerthName());
-            berthRepository.save(berth);
         }
 
         // Return den opdatered DTO
