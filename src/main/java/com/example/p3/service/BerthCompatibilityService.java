@@ -20,7 +20,7 @@ public class BerthCompatibilityService {
     }
 
     // Method to calculate compatibility score for a boat and a berth
-    private double calculateCompatibilityScore(Boat boat, Berth berth) {
+    public double calculateCompatibilityScore(Boat boat, Berth berth) {
         if (boat.getLength() <= 0 || boat.getWidth() <= 0) {
             throw new IllegalArgumentException("Boat dimensions must be greater than zero.");
         }
