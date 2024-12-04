@@ -168,6 +168,7 @@ function removeHighlight() {
                 color: "black",
                 weight: 0.3,
                 fillOpacity: 1, // Default opacity
+                backgroundColor: "transparent",
             });
         });
     }
@@ -181,7 +182,7 @@ function highlightBerth(e) {
     removeHighlight(); // Reset previous highlight
     layer.setStyle({
         color: "blue",
-        weight: 2,
+        weight: 5,
     });
 
     selectedLayer = layer; // Update the selected layer reference
@@ -260,7 +261,7 @@ function berthListsToMap(geoJsonLayer, berths) {
                     if (!isPier && layer.feature.properties.name.toLowerCase() === berth.name.toLowerCase()) {
                         layer.setStyle({
                             color: "blue",
-                            weight: 2
+                            weight: 5
                         });
                         selectedLayer = layer;
                     }

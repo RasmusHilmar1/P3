@@ -88,6 +88,12 @@ public class MemberController {
         return memberService.updateMemberBoatOwnershipStatus(id, newStatus);
     }
 
+    // Endpoint to update member note
+    @PutMapping("/updateNote/{id}")
+    public Member updateMemberNote(@PathVariable int id, @RequestBody String newNote) {
+        return memberService.updateMemberNote(id, newNote);
+    }
+
     @GetMapping("/public/{id}")
     public MemberDTO getConvertDTO(@PathVariable int id) {
 

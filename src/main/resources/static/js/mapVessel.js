@@ -243,8 +243,8 @@ function highlightBerth(e) {
     removeHighlight();
     layer.setStyle({
         color: "blue",
-        weight: 2,
-        //fillOpacity: 0.5
+        weight: 4,
+        fillColor: "blue",
     });
     selectedLayer = layer;
 }

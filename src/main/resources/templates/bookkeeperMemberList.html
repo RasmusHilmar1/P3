@@ -106,7 +106,7 @@
           <button th:onclick="'updateMemberInformation(' + ${iterStat.index} + ')'" th:data-row="${iterStat.index}">Gem</button>
         </td>
         <td>
-          <button th:onclick="'deleteMember(' + ${iterStat.index} + ')'" th:data-row="${iterStat.index}">Slet</button>
+          <button th:onclick="'deleteMember(' + ${iterStat.index} + ')'" th:data-row="${iterStat.index}" class="delete">Slet</button>
         </td>
       </tr>
 

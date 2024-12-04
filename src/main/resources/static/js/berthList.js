@@ -82,16 +82,16 @@ calculateUtilization();
 
 // FUNCTIONS FOR ADDING CELLS TO TABLE ----->
 
-function addCells(tr, data, editableIndexes = [], lengthAndWidthIndexes = []){
+function addCells(tr, data, editableIndexes = [], lengthAndWidthIndexes = []) {
     let td;
 
     // insert a new cell for each of the item in the data
     data.forEach((item, index) => {
         //check if the data in the foreach statement is a number
-        if(index === 0 && typeof item === 'number'){
+        if (index === 0 && typeof item === 'number') {
             return;
         }
-        if(index === 6 && item === undefined){
+        if (index === 6 && item === undefined) {
             item = "";
         }
         td = tr.insertCell();
@@ -99,7 +99,7 @@ function addCells(tr, data, editableIndexes = [], lengthAndWidthIndexes = []){
         console.log(item);
 
         // make some of the cells narrow
-        if (index === 0 || index === 2 || index === 3 || index === 7 || index === 9 || index === 10){
+        if (index === 1 || index === 3 || index === 7 || index === 9 || index === 10) {
             td.classList.add("narrowCell");
         } else {
             td.classList.add("normalCell");
@@ -110,11 +110,20 @@ function addCells(tr, data, editableIndexes = [], lengthAndWidthIndexes = []){
             td.appendChild(input);
             input.type = "text";
             input.value = item;
-            td.className = "editableCells";// divided them into two classes for styling
+            td.className = "editableCells"; // divided them into two classes for styling
             input.className = "editableInput";
         } else {
             td.innerHTML = item;
             td.className = "uneditableCells";
+        }
+
+        if (index === 7) {
+            td.classList.add("editableNote");
+            const input = document.createElement("input");
+            td.appendChild(input);
+            input.type = "text";
+            input.value = item || "";  // default to empty if no note exists
+            input.classList.add("noteInput");
         }
 
         if (lengthAndWidthIndexes.includes(index)) { // if the edited cells are length or width column
@@ -126,9 +135,9 @@ function addCells(tr, data, editableIndexes = [], lengthAndWidthIndexes = []){
                 tr.cells[4].textContent = newAreal + "m"; // update cell
             });
         }
-        console.log(item);
     });
 }
+
 
 function addSaveBtn(row, data) {
     let saveCell, saveBtn;
@@ -177,7 +186,9 @@ function findCorrespondingMemberAndBoat(data){
                 data.correspondingBoat.length,
                 data.correspondingBoat.width,
                 data.correspondingBoat.areal,
-                data.correspondingMember.member.phonenumber];
+                data.correspondingMember.member.phonenumber,
+                data.correspondingMember.member.note || ""]
+
         }
     }
     console.log("No corresponding boat or member found");
@@ -252,7 +263,7 @@ function getBerthListSortedBerths(data, table){
             row = table.insertRow();
             row.className = "berthTableRow";
 
-            editableColumns = [2, 3, 4]; // set the columns with name, length, and width as editable
+            editableColumns = [1, 3, 4]; // set the columns with name, length, and width as editable
 
             lengthAndWidthIndexes = [3, 4]; // set the columns with length and width
 
@@ -396,12 +407,34 @@ async function saveBerthChanges(row, berth) {
     const length = lengthInput ? parseFloat(lengthInput.value.trim().replace("m", "")) : NaN;
     const width = widthInput ? parseFloat(widthInput.value.trim().replace("m", "")) : NaN;
 
-    const nameInput = cells[1].querySelector("input");
+    const nameInput = cells[0].querySelector("input");
     const name = nameInput ? nameInput.value.trim() : "";
-    
+
+    console.log("This is the name" + cells[0].querySelector("input"));
+
+    const noteInput = row.querySelector(".noteInput"); // Get the note input field
+    const note = noteInput ? noteInput.value.trim() : "";
+    // Here, send the note value to your back-end or update the member object
+    try {
+        const response = await fetch(`/members/updateNote/${berth.correspondingBoat.memberID}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: note
+        });
+        if (response.ok) {
+            console.log("Note saved successfully");
+        } else {
+            console.log("Error saving note");
+        }
+    } catch (error) {
+        console.error("Error saving note:", error);
+    }
 
     const updatedBerth = {
         berthID: berth.berthID,
+        name: name,
         length: length, // length
         width: width, // width
     };
