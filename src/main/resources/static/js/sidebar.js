@@ -275,11 +275,10 @@ class BerthList {
                 .then(response => response.json())
                 .then(member => {
                     const memberName = member && member.name ? member.name : 'N/A';
-                    const memberPhone = member && member.phoneNumber ? member.phoneNumber : 'N/A';
 
                     // Create a cell for member's name and phone number
                     const memberCell = document.createElement("div");
-                    memberCell.textContent = `Medlem: ${memberName}, Telefon Nummer: ${memberPhone}`;
+                    memberCell.innerHTML = `Medlem: ${memberName}`;
                     memberCell.className = "infoCell memberCell";
                     infoContainer.appendChild(memberCell);
                 })

@@ -54,7 +54,6 @@ function createMemberList(approvedMembers) {
         var memberName = document.createElement("button");
         memberName.textContent = member.name;
         memberName.className = "memberBtn";
-        console.log(`Name: ${member.name}, Address: ${member.address}`)
         memberCell.appendChild(memberName);
 
         // Creating a div element under each button
@@ -73,14 +72,14 @@ function createMemberList(approvedMembers) {
                 boatsArray.forEach(boat => {
                    if (boat.memberID === approvedMember.member.memberID) {
                        var infoCell = document.createElement("div");
-                       infoCell.textContent = "bådnavn: " + boat.name;
+                       infoCell.textContent = "Bådnavn: " + boat.name;
                        infoCell.className = "infoCell";
                        infoContainer.appendChild(infoCell);
 
                        berthArray.forEach(berth => {
                           if ((berth.berthID === boat.berthID) && (boat.berthID !== 9999)) {
                               var infoCell = document.createElement("div");
-                              infoCell.textContent = "berth: " + berth.name;
+                              infoCell.textContent = "Bådplads: " + berth.name;
                               infoCell.className = "infoCell";
                               infoContainer.appendChild(infoCell);
                           }

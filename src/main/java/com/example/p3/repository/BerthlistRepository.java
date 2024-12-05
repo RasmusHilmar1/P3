@@ -13,7 +13,7 @@ import java.util.List;
 public interface BerthlistRepository extends JpaRepository<Berth, Integer> {
     @Query("SELECT new com.example.p3.dto.BerthlistDTO(br.berthID, br.name, br.length, br.width," +
             "COALESCE(b.boatID, ''), COALESCE(b.name, ''), COALESCE(b.length, ''), COALESCE(b.width, ''), " +
-            "COALESCE(m.memberID, ''), COALESCE(m.name, ''), COALESCE(m.phonenumber, '') " + ") " +
+            "COALESCE(m.memberID, ''), COALESCE(m.name, ''), COALESCE(m.phonenumber, ''), COALESCE(m.note,'') " + ") " +
             "FROM Berth br " +
             "LEFT JOIN Boat b ON b.berthID = br.berthID " +
             "LEFT JOIN Member m ON b.memberID = m.memberID " +

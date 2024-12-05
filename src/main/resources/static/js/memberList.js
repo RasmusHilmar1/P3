@@ -144,7 +144,7 @@ function searchMembers() {
                         <button onclick="updateMemberInformation(${index})" data-row="${index}">Gem</button>
                     </td>
                     <td>
-                        <button onclick="deleteMember(${index})" data-row="${index}">Slet</button>    
+                        <button onclick="deleteMember(${index})" data-row="${index}" class="delete">Slet</button>    
                     </td>
                 </tr>`;
                 tableBody.insertAdjacentHTML('beforeend', row);

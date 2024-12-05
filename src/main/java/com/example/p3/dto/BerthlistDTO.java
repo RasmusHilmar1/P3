@@ -16,9 +16,10 @@ public class BerthlistDTO {
     private int memberID;
     private String memberName;
     private String phoneNumber;
+    private String note;
 
     public BerthlistDTO(int berthID, String berthName, double berthLength, double berthWidth,
-                        int boatID, String boatName, double boatLength, double boatWidth, int memberID, String memberName, String phoneNumber) {
+                        int boatID, String boatName, double boatLength, double boatWidth, int memberID, String memberName, String phoneNumber, String note) {
 
         this.berthID = berthID;
         this.berthName = berthName;
@@ -33,6 +34,7 @@ public class BerthlistDTO {
         this.memberID = memberID;
         this.memberName = memberName;
         this.phoneNumber = phoneNumber;
+        this.note = note;
 
         // revised boat size to use in utilization calculation
         double adjustedBoatAreal = getAdjustedBoatAreal(boatLength, boatWidth);
@@ -73,6 +75,7 @@ public class BerthlistDTO {
     public int getMemberID() {return memberID;}
     public String getMemberName() {return memberName;}
     public String getMemberPhoneNumber() {return phoneNumber;}
+    public String getNote() {return note;}
 
     public void setBerthID(int berthID) {this.berthID = berthID;}
     public void setBerthName(String berthName) {this.berthName = berthName;}
@@ -88,5 +91,6 @@ public class BerthlistDTO {
     public void setMemberID(int memberID) {this.memberID = memberID;}
     public void setMemberName(String memberName) {this.memberName = memberName;}
     public void setMemberPhoneNumber(String memberPhoneNumber) {this.phoneNumber = memberPhoneNumber;}
+    public void setNote(String note) {this.note = note;}
 }
 

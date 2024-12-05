@@ -112,6 +112,15 @@ public class MemberService {
         return null;
     }
 
+    public Member updateMemberNote( int memberId, String newNote) {
+        Member member = memberRepository.findByMemberID(memberId);
+        if (member != null) {
+            member.setNote(newNote);
+            return memberRepository.save(member);
+        }
+        return null; // Return null if member not found
+    }
+
     public MemberDTO convertToDTO(Member member) {
         if (member == null) {
             return null;

@@ -31,6 +31,19 @@ button {
     font-size: 12px; /* Decrease font size to match the smaller button */
 }
 
+.delete {
+    background-color: red;   /* Red background */
+    color: white;
+    border: none;
+    border-radius: 3px; /* Slightly smaller border radius for compact look */
+    cursor: pointer;
+    font-size: 12px; /* Decrease font size to match the smaller button */
+}
+
+.delete:hover {
+    background-color: darkred; /* Darker red on hover */
+}
+
 button:hover {
     background-color: #0056b3;
     font-size: 12px; /* Keep hover state consistent */

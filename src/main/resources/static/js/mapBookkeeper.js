@@ -185,7 +185,7 @@ function highlightBerth(e) {
     removeHighlight(); // Reset previous highlight
     layer.setStyle({
         color: "blue",
-        weight: 2,
+        weight: 4,
     });
 
     selectedLayer = layer; // Update the selected layer reference

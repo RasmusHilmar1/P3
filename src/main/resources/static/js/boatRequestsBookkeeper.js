@@ -37,9 +37,18 @@ class BoatRequestTableBook extends BoatRequestTable {
 
         // add buttons for "sendt" and "betalt and "delete""
         let sendBtn = new BtnCreator(row);
-        sendBtn.createBtn("Sendt", data, "Sendt");
+        //check if paid
+        if(data.boat.feeSent){
+            sendBtn.createBtn("Sendt", data, "Sendt");}
+        else{
+            sendBtn.createBtn("Ikke Sendt", data, "Sendt");
+        }
         let paidBtn = new BtnCreator(row);
-        paidBtn.createBtn("Betalt", data, "Betalt");
+       if (data.boat.feePaid){
+           paidBtn.createBtn("Betalt", data, "Betalt");
+       }
+       else{paidBtn.createBtn("Ikke Betalt", data, "Betalt");
+       }
         let deleteBtn = new BtnCreator(row);
         deleteBtn.createBtn("Slet", data, "Slet");
     }
@@ -72,7 +81,7 @@ class FeeEvent extends EventManagerBoatRequests {
             boat.deleteBoatBtn = document.getElementById(deleteBoatBtnId)
             deleteBoatBtn = boat.deleteBoatBtn;
 
-            deleteBoatBtn.classList.add("buttonAssigned");
+            deleteBoatBtn.classList.add("delete");
 
             deleteBoatBtn.addEventListener("click", () => {
                 setTimeout(function() {
@@ -99,11 +108,11 @@ class FeeEvent extends EventManagerBoatRequests {
                 if (feeSent === 0){
                     feeSent = 1;
                     feeSentBtn.classList.add("buttonAssigned");
-                    console.log("Fee sent for boat ID:", boatID);
+                    feeSentBtn.innerText = "Sendt";
                 } else if (feeSent === 1){
                     feeSent = 0;
                     feeSentBtn.classList.remove("buttonAssigned");
-                    console.log("Corrected to fee not sent for boat ID:", boatID);
+                    feeSentBtn.innerText = "Ikke Sendt";
                 }
                 updateBoatFeeStatus(boatID, "feeSent", feeSent);
                 location.reload();
@@ -118,12 +127,13 @@ class FeeEvent extends EventManagerBoatRequests {
                     if (confirm("Er du sikker på at medlemmet har betalt for bådpladsen?")){
                         feePaid = 1;
                         feePaidBtn.classList.add('buttonAssigned');
-                        console.log("Fee paid for boat ID:", boatID);
+                        feeSentBtn.innerText = "Betalt";
+                        console.log(feePaidBtn)
                     }
                 } else if (feePaid === 1){
                     feePaid = 0;
                     feePaidBtn.classList.remove("buttonAssigned");
-                    console.log("Corrected to fee not paid for boat ID:", boatID);
+                    feeSentBtn.innerText = "Ikke Sendt";
                 }
                 updateBoatFeeStatus(boatID, "feePaid", feePaid);
                 setTimeout(function() {

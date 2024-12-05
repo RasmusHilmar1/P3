@@ -18,6 +18,7 @@ public class Member {
     private LocalDate dateofbirth;
     private String phonenumber;
     private Boolean boatownership;
+    private String note;
 
     @OneToOne(mappedBy = "member")
     private
@@ -51,6 +52,10 @@ public class Member {
         return boatownership;
     }
 
+    public String getNote() { // Add this method to get the note
+        return note;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -70,5 +75,11 @@ public class Member {
     public void setBoatownership(Boolean boatownership) {
         this.boatownership = boatownership;
     }
+
+    public void setNote(String note) { // Add this method to set the note
+        this.note = note;
+    }
+
+
 
 }

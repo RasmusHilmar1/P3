@@ -92,25 +92,36 @@ a {
 
 /* Button styling */
 .addBtn {
-    background-color: white;
+    background-color: #4f74a3;
     padding: 8px 15px;
     cursor: pointer;
     border-radius: 4px;
     font-size: 14px;
-    color: #5c82b5;
+    color: white;
     vertical-align: center;
     border: none;
 }
 
 .addBtn:hover{
-    background-color: #4f74a3;
-    color: white;
+    background-color: white;
+    color: #4f74a3;
     border: none;
 }
 
 .buttonAssigned{
-    background-color: #4f74a3;
-    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.2);
+    background-color: white;
+    /*box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.2);*/
+    padding: 8px 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #4f74a3;
+    vertical-align: center;
+}
+
+.delete{
+    background-color: red;
     padding: 8px 15px;
     border: none;
     cursor: pointer;
