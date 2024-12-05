@@ -185,7 +185,7 @@ function highlightBerth(e) {
     removeHighlight(); // Reset previous highlight
     layer.setStyle({
         color: "blue",
-        weight: 4,
+        weight: 5,
     });
 
     selectedLayer = layer; // Update the selected layer reference
@@ -261,7 +261,7 @@ function memberToMap(geoJsonLayer){
                                 if(Number(layer.featureId) === boat.berthID && !isPier) {
                                     layer.setStyle({
                                         color: "blue",
-                                        weight: 2
+                                        weight: 5
                                     });
                                     selectedLayer = layer;
                                 }

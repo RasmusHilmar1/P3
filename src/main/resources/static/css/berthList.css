@@ -147,15 +147,20 @@ td {
 
 /* Specific styling for editable cells */
 .editableCells {
-    max-width: 50px;
-    text-align: left; /* Center text in cell */
+    max-width: none; /* Remove max-width to avoid conflicts */
+    white-space: nowrap; /* Prevent text wrapping */
+    text-align: center;
 }
+
 .editableInput {
     border: 1px solid #ccc;
     border-radius: 4px;
-    margin: 2px auto; /* Center the input field within the cell */
+    margin: 2px auto;
     font-size: 18px;
-    max-width: 100px;
+    padding: 2px;
+    min-width: 13px;
+    max-width: 60px; /* Prevent excessive expansion */
+    width: auto; /* Let it adjust dynamically */
 }
 
 .editableInput:focus {
@@ -168,7 +173,7 @@ td {
 .uneditableCells {
     max-width: 100px; /* Limit cell width to prevent overly wide cells */
     padding: 5px; /* Add padding for a centered look */
-    text-align: left; /* Center text in cell */
+    text-align: center; /* Center text in cell */
 }
 .uneditableInput {
     border: 1px solid #ccc;
@@ -235,7 +240,7 @@ td {
 /* Style for narrow headers */
 .narrowHeader {
     max-width: 50px;
-    text-align: left;
+    text-align: center;
 }
 
 /* Style for narrow data cells */
@@ -247,7 +252,7 @@ td {
 /* Normal header styling */
 .headerCell {
     width: auto;
-    text-align: left;
+    text-align: center;
 }
 
 /* Modal styling */

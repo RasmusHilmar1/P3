@@ -214,7 +214,7 @@ function createMemberListWithoutBoats(approvedMembers, boats, berths) {
                     if (key === 'berthID') {
                         var infoCell = document.createElement("div");
                         //console.log("key : " + boat[key]);
-                        infoCell.textContent = "Plads" + " : ";
+                        infoCell.textContent = "Båd Plads" + " : ";
                         infoCell.className = "infoCell";
                         infoContainer.appendChild(infoCell);
 
