@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.Comparator;
 import java.util.List;
 
-// Service til at håndterer export (hedder print, fordi det var det jeg forbandt det med MB)
+// Service til at håndterer export (hedder print, MB)
 @Service
 public class PrintService {
 
@@ -83,7 +83,7 @@ public class PrintService {
             dataRow.createCell(10).setCellValue(memberlistDTO.getBerthName());
 
             // Apply data style with highlighted borders to each cell
-            for (int i = 0; i <= 10; i++) {
+            for (int i = 0; i < headers.length; i++) {
                 dataRow.getCell(i).setCellStyle(dataStyle);
             }
 
