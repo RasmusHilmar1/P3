@@ -243,8 +243,7 @@ function highlightBerth(e) {
     removeHighlight();
     layer.setStyle({
         color: "blue",
-        weight: 4,
-        fillColor: "blue",
+        weight: 5,
     });
     selectedLayer = layer;
 }
@@ -335,7 +334,7 @@ function memberToMap(geoJsonLayer){
                         if(Number(layer.featureId) === boat.berthID && !isPier) {
                             layer.setStyle({
                                 color: "blue",
-                                weight: 2
+                                weight: 5
                             });
                             selectedLayer = layer;
                             //console.log("fundet");
@@ -376,7 +375,7 @@ function berthListsToMap(geoJsonLayer){
                             if (Number(layer.featureId) === berth.berthID && !isPier) {
                                 layer.setStyle({
                                     color: "blue",
-                                    weight: 2
+                                    weight: 5
                                 });
                                 selectedLayer=layer;
                             }
@@ -458,7 +457,7 @@ export async function colorButtons(member, boat, berths) {
                         if (layer) {
                             layer.setStyle({
                                 color: "blue",
-                                weight: 2
+                                weight: 5
                             });
                             selectedLayer = layer;
 
