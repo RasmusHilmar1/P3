@@ -103,8 +103,26 @@ function createMemberListBoats(approvedMembers, boats, berths) {
                         infoCell.textContent = "Medlemsnummer" + " : " + member[key];
                         infoCell.className = "infoCell";
                         infoContainer.appendChild(infoCell);
+                    } else if (key === 'note') {
+                        var infoCell = document.createElement("div");
+
+                        const noteIcon = document.createElement("img");
+                        noteIcon.classList.add("noteIcon");
+                        noteIcon.src = "/Images/Icons/noteIcon.svg";
+                        noteIcon.alt = "Note Icon";
+
+                        infoCell.textContent = "Note" + " : " + member[key];
+
+                        infoCell.appendChild(noteIcon);
+
+                        infoCell.className = "infoCell";
+                        infoContainer.appendChild(infoCell);
+                        //Create on click event that uses the Show modul function
+
+                        noteIcon.addEventListener("click", () => showNoteModal(approvedMember.member.memberID, member[key]));
                     }
                 }
+
                 if (member.memberID === boat.memberID) {
                     for (const key in boat) {
                         if ((key === 'name') || (key === 'length') || (key === 'width')) {
@@ -190,6 +208,12 @@ function createMemberListWithoutBoats(approvedMembers, boats, berths) {
                     if (key === 'memberID') {
                         var infoCell = document.createElement("div");
                         infoCell.textContent = "Medlemsnummer" + " : " + member[key];
+                        infoCell.className = "infoCell";
+                        infoContainer.appendChild(infoCell);
+                    }
+                    else if(key === 'note'){
+                        var infoCell = document.createElement("div");
+                        infoCell.textContent = "Note" + " : " + member[key];
                         infoCell.className = "infoCell";
                         infoContainer.appendChild(infoCell);
                     }
@@ -903,3 +927,57 @@ class SearchHandlerAfterTildel {
 const searchHandlerAfterTildel = new SearchHandlerAfterTildel(
     "searchBarSidebar",
     "addBtn");
+
+function showNoteModal(data, note) {
+    // Open the modal
+    const modal = document.getElementById("noteModal");
+    const noteText = document.getElementById("noteText");
+    const saveNoteBtn = document.getElementById("saveNoteBtn");
+
+    // Set the current note for the selected member (or berth)
+    noteText.value = note || "";  // Display the note (if any)
+
+    // Show the modal
+    modal.style.display = "block";
+
+    // Add save functionality
+    saveNoteBtn.onclick = async function() {
+        // Save the note for the member (or berth)
+        let note = noteText.value;
+        console.log("Note saved:", note);
+
+        // Call saveNoteForMember to save the note in the backend
+        await saveNoteForMember(data, note);
+
+        // Close the modal
+        modal.style.display = "none";
+    };
+}
+
+// Close the modal
+document.querySelector(".close").onclick = function() {
+    document.getElementById("noteModal").style.display = "none";
+};
+
+async function saveNoteForMember(data, note) {
+
+    // Send the note value to your back-end
+    try {
+        const response = await fetch(`/members/updateNote/${data}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: note  // Wrap note in an object
+        });
+
+        if (response.ok) {
+            console.log("Note saved successfully");
+        } else {
+            console.log("Error saving note");
+        }
+    } catch (error) {
+        console.error("Error saving note:", error);
+    }
+    setTimeout( function () { location.reload(); }, 300)
+}

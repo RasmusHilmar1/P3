@@ -252,7 +252,7 @@ class BerthList {
                 console.log('Fetched boat:', boat); // Debugging step
 
                 // Ensure the boat name is being accessed correctly
-                const boatName = boat && boat.name ? boat.name : 'N/A';
+                const boatName = boat && boat.name ? boat.name : 'Ingen båd';
 
                 const boatCell = document.createElement("div");
                 boatCell.textContent = `Båd: ${boatName}`;
@@ -263,7 +263,7 @@ class BerthList {
             .catch(error => {
                 console.error('Error fetching boat for berth ID ' + berthId, error);
                 const boatCell = document.createElement("div");
-                boatCell.textContent = `Boat: N/A`;
+                boatCell.textContent = `Båd: Ingen båd`;
                 boatCell.className = "infoCell";
                 infoContainer.appendChild(boatCell);
             });
