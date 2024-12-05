@@ -193,7 +193,7 @@ td {
 /* Icon style within the button */
 .nameBtn:after, .berthBtn:after, .memberBtn:after {
     content: "";
-    background-image: url('http://localhost:8080/Images/Icons/arrowDown.svg'); /* Update URL if needed */
+    background-image: url('http://localhost:8080/Images/Icons/arrow_down_blue.svg'); /* Update URL if needed */
     background-repeat: no-repeat;
     background-size: contain;
     width: 10px;
@@ -236,7 +236,7 @@ td {
 }
 .selectedNameBtn:after, .selectedBerthBtn:after {
     content: "";
-    background-image: url('http://localhost:8080/Images/Icons/arrowUp.svg'); /* Update URL if needed */
+    background-image: url('http://localhost:8080/Images/Icons/arrow_up_white.svg'); /* Update URL if needed */
     background-repeat: no-repeat;
     background-size: contain;
     width: 10px;
