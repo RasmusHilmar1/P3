@@ -3,13 +3,13 @@ package com.example.p3.dto;
 public class MemberDTO {
     private final int memberID;
     private String name;
-    private String PhoneNumber;
+
 
     // Constructor
     public MemberDTO(int memberID, String name, String phoneNumber) {
         this.memberID = memberID;
         this.name = name;
-        this.PhoneNumber = phoneNumber;
+
     }
 
     public int getMemberID(){
@@ -24,11 +24,5 @@ public class MemberDTO {
         this.name = name;
     }
 
-    public String getPhoneNumber() {
-        return PhoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.PhoneNumber = phoneNumber;
-    }
+    
 }

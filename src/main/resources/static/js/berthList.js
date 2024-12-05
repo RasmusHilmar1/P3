@@ -82,9 +82,14 @@ calculateUtilization();
 
 // FUNCTIONS FOR ADDING CELLS TO TABLE ----->
 
-function addCells(tr, data, editableIndexes = [], lengthAndWidthIndexes = []) {
+function addCells(tr, data, editableIndexes = [], lengthAndWidthIndexes = [], berth) {
     let td;
 
+    const valueAtIndex0 = data[1];
+    const valueAtIndex7 = data[7];
+    const valueAtIndex6 = data[6];
+
+    console.log("Value at index 1:", valueAtIndex0);
     // insert a new cell for each of the item in the data
     data.forEach((item, index) => {
         //check if the data in the foreach statement is a number
@@ -117,13 +122,17 @@ function addCells(tr, data, editableIndexes = [], lengthAndWidthIndexes = []) {
             td.className = "uneditableCells";
         }
 
-        if (index === 7) {
-            td.classList.add("editableNote");
-            const input = document.createElement("input");
-            td.appendChild(input);
-            input.type = "text";
-            input.value = item || "";  // default to empty if no note exists
-            input.classList.add("noteInput");
+        if (index === 7 && valueAtIndex6 !== "") {
+            const noteIconCell = tr.insertCell();
+            noteIconCell.classList.add("noteIconCell");
+
+            const noteIcon = document.createElement("img");
+            noteIcon.classList.add("noteIcon");
+            noteIcon.src = "/Images/Icons/noteIcon.svg";
+            noteIcon.alt = "Note Icon";
+            noteIconCell.appendChild(noteIcon);
+
+            noteIcon.addEventListener("click", () => showNoteModal(valueAtIndex0, valueAtIndex7));
         }
 
         if (lengthAndWidthIndexes.includes(index)) { // if the edited cells are length or width column
@@ -144,7 +153,7 @@ function addSaveBtn(row, data) {
     // add a cell  with a save button for each row
     saveCell = row.insertCell(); // Insert a final cell for the Save button
     saveBtn = document.createElement("button");
-    saveBtn.textContent = "Gem Ændringer";
+    saveBtn.textContent = "Gem";
     saveCell.className = "saveBtnCell";
     saveBtn.className = "saveBtn";
     saveCell.appendChild(saveBtn); // Append the Save button to the last cell
@@ -247,7 +256,8 @@ function getBerthListSortedBerths(data, table){
             "Længde",
             "Bredde",
             "Areal",
-            "Telefon nr."],
+            "Telefon nr.",
+        "Note", "Tilføj Note"],
         "Berths");
 
     //For each berth, create a row and add cells with the data
@@ -273,7 +283,7 @@ function getBerthListSortedBerths(data, table){
                 // call addCells with member data after with empty arrays in order to add member data cells
                 addCells(row, memberAndBoatData, [], []);
             } else {
-                addCells(row, ["", "", "", "", "", "", ""], [], []);
+                addCells(row, ["", "", "", "", "", "", "", "", ""], [], []);
             }
             addSaveBtn(row, berth); // add save button in each row
         }
@@ -292,13 +302,15 @@ function getBerthListSortedMembers(data, table){
     table.innerHTML = ""; //clear out the table in order to rerender
 
     createTableHeaders( // create correct headers for the list when sorted by berths
-        ["Medlems nr.",
-            "Navn",
+        ["Navn",
+            "Medlems nr.",
             "Bådnavn",
             "Længde",
             "Bredde",
             "Areal",
             "Telefon nr.",
+            "Note",
+            "Tilføj",
             "Plads nr.",
             "Plads navn",
             "Længde",
@@ -412,26 +424,6 @@ async function saveBerthChanges(row, berth) {
 
     console.log("This is the name" + cells[0].querySelector("input"));
 
-    const noteInput = row.querySelector(".noteInput"); // Get the note input field
-    const note = noteInput ? noteInput.value.trim() : "";
-    // Here, send the note value to your back-end or update the member object
-    try {
-        const response = await fetch(`/members/updateNote/${berth.correspondingBoat.memberID}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: note
-        });
-        if (response.ok) {
-            console.log("Note saved successfully");
-        } else {
-            console.log("Error saving note");
-        }
-    } catch (error) {
-        console.error("Error saving note:", error);
-    }
-
     const updatedBerth = {
         berthID: berth.berthID,
         name: name,
@@ -541,3 +533,63 @@ function searchBarEvent(){
 }
 
 searchBarEvent();
+
+function showNoteModal(data, note) {
+    // Open the modal
+    const modal = document.getElementById("noteModal");
+    const noteText = document.getElementById("noteText");
+    const saveNoteBtn = document.getElementById("saveNoteBtn");
+
+    // Set the current note for the selected member (or berth)
+    noteText.value = note || "";  // Display the note (if any)
+
+    // Show the modal
+    modal.style.display = "block";
+
+    // Add save functionality
+    saveNoteBtn.onclick = async function() {
+        // Save the note for the member (or berth)
+        let note = noteText.value;
+        console.log("Note saved:", note);
+
+        // Call saveNoteForMember to save the note in the backend
+        await saveNoteForMember(data, note);
+
+        // Close the modal
+        modal.style.display = "none";
+    };
+}
+
+// Close the modal
+document.querySelector(".close").onclick = function() {
+    document.getElementById("noteModal").style.display = "none";
+};
+
+
+// Close the modal
+document.querySelector(".close").onclick = function() {
+    document.getElementById("noteModal").style.display = "none";
+};
+
+async function saveNoteForMember(data, note) {
+
+    // Send the note value to your back-end
+    try {
+        const response = await fetch(`/members/updateNote/${data}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: note  // Wrap note in an object
+        });
+
+        if (response.ok) {
+            console.log("Note saved successfully");
+        } else {
+            console.log("Error saving note");
+        }
+    } catch (error) {
+        console.error("Error saving note:", error);
+    }
+    setTimeout( function () { location.reload(); }, 300)
+}
