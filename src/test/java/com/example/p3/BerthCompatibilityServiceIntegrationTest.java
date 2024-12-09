@@ -21,7 +21,7 @@ public class BerthCompatibilityServiceIntegrationTest {
 
 
     @Test
-    public void testCompatibilityReport() {
+    public void testCompatibilityReport() { // Virker kun hvis man ændrer databasen til v2
         // Set up a boat with specific dimensions for testing
         Boat boat = new Boat();
         boat.setLength(10.0); // Length of the boat
