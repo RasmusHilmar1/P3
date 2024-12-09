@@ -321,7 +321,6 @@ function memberToMap(geoJsonLayer){
         removeHighlight(); // Clear all highlights
 
         const button = event.target.closest(".nameBtn");
-        console.log("button member: " + button.outerHTML);
 
         if(button) {
             const memberId = button.id.replace("memberName", "");
