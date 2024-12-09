@@ -39,33 +39,4 @@ public class MemberlistController {
         return memberlistService.deleteMemberFromDatabase(dto);
     }
 
-    @GetMapping("/bookkeeperMemberlist/MemberExcel")
-    public void generateMemberlistExcel(HttpServletResponse response) throws Exception{
-
-        response.setContentType("application/octet-stream");
-
-        String headerKey = "Content-Disposition";
-        String headerValue = "attachment;filename=Medlems liste.xls";
-
-        response.setHeader(headerKey, headerValue);
-
-        printService.generateMemberlistExcel(response);
-
-        response.flushBuffer();
-    }
-
-    @GetMapping("/bookkeeperMemberlist/EmailExcel")
-    public void generateEmailListExcel(HttpServletResponse response) throws Exception{
-
-        response.setContentType("application/octet-stream");
-
-        String headerKey = "Content-Disposition";
-        String headerValue = "attachment;filename=Email liste.xls";
-
-        response.setHeader(headerKey, headerValue);
-
-        printService.generateEmailExcel(response);
-
-        response.flushBuffer();
-    }
 }

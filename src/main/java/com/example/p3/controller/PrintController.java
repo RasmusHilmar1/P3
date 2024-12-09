@@ -16,6 +16,32 @@ public class PrintController {
     @Autowired
     private PrintService printService;
 
+    @GetMapping("/bookkeeperMemberlist/MemberExcel")
+    public void generateMemberlistExcel(HttpServletResponse response) throws Exception{
+
+        response.setContentType("application/octet-stream");
+
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment;filename=Medlems liste.xls";
+
+        response.setHeader(headerKey, headerValue);
+
+        printService.generateMemberlistExcel(response);
+    }
+
+    @GetMapping("/bookkeeperMemberlist/EmailExcel")
+    public void generateEmailListExcel(HttpServletResponse response) throws Exception{
+
+        response.setContentType("application/octet-stream");
+
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment;filename=Email liste.xls";
+
+        response.setHeader(headerKey, headerValue);
+
+        printService.generateEmailExcel(response);
+    }
+
     // Function for exporting Excel document list from vessel inspector's berth list - list sorted by berths
     @GetMapping("/vesselBerthListByBerths/PladsExcel")
     public void generateBerthListByBerthsExcel(HttpServletResponse response) throws Exception{
@@ -27,8 +53,6 @@ public class PrintController {
         response.setHeader(headerKey, headerValue);
 
         printService.generateBerthListByBerthsExcel(response); // calls the method from PrintService
-
-        response.flushBuffer(); //remaining data in the response buffer is sent to the client immediately
     }
 
     // Function for exporting Excel document list from vessel inspector's berth list - list sorted by members
@@ -42,8 +66,6 @@ public class PrintController {
         response.setHeader(headerKey, headerValue);
 
         printService.generateBerthListByMembersExcel(response);
-
-        response.flushBuffer();
     }
 
 }
