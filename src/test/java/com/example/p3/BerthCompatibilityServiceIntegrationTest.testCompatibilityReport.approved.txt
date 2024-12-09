@@ -1,10 +1,8 @@
-Berth: VN08, Length: 14,10, Width: 4,00, Availability: 1, Compatibility Score: 97,01, 🟩
-Berth: NB14, Length: 15,00, Width: 4,00, Availability: 1, Compatibility Score: 93,80, 🟩
-Berth: VN03, Length: 14,20, Width: 4,80, Availability: 1, Compatibility Score: 86,13, 🟨
-Berth: VN04, Length: 14,20, Width: 4,80, Availability: 1, Compatibility Score: 86,13, 🟨
-Berth: VN13, Length: 14,00, Width: 5,20, Availability: 1, Compatibility Score: 81,58, 🟨
-Berth: VN11, Length: 14,10, Width: 5,20, Availability: 1, Compatibility Score: 81,22, 🟨
-Berth: NM36, Length: 14,50, Width: 5,10, Availability: 1, Compatibility Score: 81,11, 🟨
-Berth: NM37, Length: 14,50, Width: 5,10, Availability: 1, Compatibility Score: 81,11, 🟨
-Berth: NM38, Length: 14,50, Width: 5,10, Availability: 1, Compatibility Score: 81,11, 🟨
-Berth: NB61, Length: 15,00, Width: 5,80, Availability: 1, Compatibility Score: 70,11, 🟨
+Rank: 1, Berth: Plads 3, Length: 11,00, Width: 2,80, Availability: 1, Compatibility Score: 100,00, 🟩
+Rank: 2, Berth: Plads 8, Length: 11,00, Width: 3,00, Availability: 1, Compatibility Score: 96,43, 🟩
+Rank: 3, Berth: Plads 4, Length: 13,00, Width: 3,00, Availability: 1, Compatibility Score: 87,34, 🟨
+Rank: 4, Berth: Plads 7, Length: 11,00, Width: 4,00, Availability: 1, Compatibility Score: 78,57, 🟨
+Rank: 5, Berth: Plads 1, Length: 12,00, Width: 4,00, Availability: 1, Compatibility Score: 74,03, 🟨
+Rank: 6, Berth: Plads 5, Length: 14,30, Width: 3,90, Availability: 1, Compatibility Score: 65,36, 🟧
+Rank: 7, Berth: Plads 2, Length: 16,00, Width: 4,00, Availability: 1, Compatibility Score: 55,84, 🟧
+Rank: 8, Berth: Plads 6, Length: 16,00, Width: 5,00, Availability: 1, Compatibility Score: 37,99, 🟥

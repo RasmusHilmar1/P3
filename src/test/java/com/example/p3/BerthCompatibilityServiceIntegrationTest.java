@@ -19,34 +19,36 @@ public class BerthCompatibilityServiceIntegrationTest {
     @Autowired
     private BerthCompatibilityService berthCompatibilityService;
 
-    private Boat boat;
 
     @Test
     public void testCompatibilityReport() {
         // Set up a boat with specific dimensions for testing
         Boat boat = new Boat();
-        boat.setLength(13.0); // Length of the boat
-        boat.setWidth(3.5);  // Width of the boat
+        boat.setLength(10.0); // Length of the boat
+        boat.setWidth(2.5);  // Width of the boat
 
         // Call the method to find compatible berths from the real database
         List<BerthWithCompatibility> compatibleBerths = berthCompatibilityService.findCompatibleBerthsWithScore(boat);
 
-        // Generate the compatibility report and verify using ApprovalTests
-        String report = compatibleBerths.stream()
-                .map(berthWithCompatibility -> {
-                    Berth berth = berthWithCompatibility.getBerth();
-                    double compatibilityScore = berthWithCompatibility.getCompatibilityScore();
-                    String compatibilitySquare = getCompatibilitySquare(compatibilityScore);
-                    return String.format("Berth: %s, Length: %.2f, Width: %.2f, Availability: %d, " +
-                                    "Compatibility Score: %.2f, %s",
-                            berth.getName(), berth.getLength(), berth.getWidth(),
-                            berth.getAvailability(), compatibilityScore, compatibilitySquare);
-                })
-                .collect(Collectors.joining("\n"));
+        // Generate the compatibility report with ranks
+        StringBuilder report = new StringBuilder();
+        for (int i = 0; i < compatibleBerths.size(); i++) {
+            int rank = i + 1; // Rank starts at 1
+            BerthWithCompatibility berthWithCompatibility = compatibleBerths.get(i);
+            Berth berth = berthWithCompatibility.getBerth();
+            double compatibilityScore = berthWithCompatibility.getCompatibilityScore();
+            String compatibilitySquare = getCompatibilitySquare(compatibilityScore);
+            report.append(String.format("Rank: %d, Berth: %s, Length: %.2f, Width: %.2f, Availability: %d, " +
+                            "Compatibility Score: %.2f, %s%n",
+                    rank, berth.getName(), berth.getLength(), berth.getWidth(),
+                    berth.getAvailability(), compatibilityScore, compatibilitySquare));
+        }
 
         // Use ApprovalTests to verify the report
-        Approvals.verify(report);
+        Approvals.verify(report.toString());
     }
+
+
 
 
     // Method to get the colored square emoji based on compatibility score
