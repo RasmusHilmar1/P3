@@ -221,9 +221,20 @@ function createMemberListWithoutBoats(approvedMembers, boats, berths) {
                     }
                     else if(key === 'note'){
                         var infoCell = document.createElement("div");
+                        const noteIcon = document.createElement("img");
+                        noteIcon.classList.add("noteIcon");
+                        noteIcon.src = "/Images/Icons/noteIcon.svg";
+                        noteIcon.alt = "Note Icon";
+
                         infoCell.textContent = "Note" + " : " + member[key];
+
+                        infoCell.appendChild(noteIcon);
+
                         infoCell.className = "infoCell";
                         infoContainer.appendChild(infoCell);
+                        //Create on click event that uses the Show modul function
+
+                        noteIcon.addEventListener("click", () => showNoteModal(approvedMember.member.memberID, member[key]));
                     }
                 }
 

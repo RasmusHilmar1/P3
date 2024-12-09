@@ -63,7 +63,19 @@ function createMemberList(approvedMembers) {
         for (const key in member) {
             if ((key !== 'name') && (key !== 'boatownership')) {
                 var infoCell = document.createElement("div");
-                infoCell.textContent = key + " : " + member[key];
+                if(key === "memberID"){
+                    infoCell.textContent = "Medlems nr.: " + member[key];
+                }else if(key === "adress"){
+                    infoCell.textContent = "Adresse: " + member[key];
+                }else if(key === "email"){
+                    infoCell.textContent = "Email: " + member[key];
+                }else if(key === "dateofbirth"){
+                    infoCell.textContent = "Fødselsdag: " + member[key];
+                }else if(key === "phonenumber"){
+                    infoCell.textContent = "Telefon nr.: " + member[key];
+                }else if(key === "width"){
+                    infoCell.textContent = "Bredde: " + member[key] + " m";
+                }
                 infoCell.className = "infoCell";
                 infoContainer.appendChild(infoCell);
             }
