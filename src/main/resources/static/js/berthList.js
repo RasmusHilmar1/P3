@@ -352,8 +352,8 @@ function getBerthListSortedMembers(data, table){
     let rows = Array.from(document.getElementsByClassName("berthTableRow"));
 
     rows.sort((rowA, rowB) => { // sort the rows after membership number, having the lowest number highest
-        let cellA = rowA.cells[0].textContent;
-        let cellB = rowB.cells[0].textContent;
+        let cellA = rowA.cells[1].textContent;
+        let cellB = rowB.cells[1].textContent;
         return cellA - cellB;
     });
 
