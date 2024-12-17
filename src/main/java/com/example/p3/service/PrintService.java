@@ -239,7 +239,7 @@ public class PrintService {
 
         // Create header row
         HSSFRow headerRow = sheet.createRow(0);
-        String[] headers = {"Medlems nr.", "Navn", "Bådnavn", "Telefonnummer", "Plads nr.", "Plads navn"};
+        String[] headers = {"Medlems nr.", "Navn", "Bådnavn", "Telefonnummer", "Plads"};
 
         for (int i = 0; i < headers.length; i++) {
             HSSFCell cell = headerRow.createCell(i);
@@ -259,11 +259,10 @@ public class PrintService {
                 dataRow.createCell(1).setCellValue(berthlistDTO.getMemberName());
                 dataRow.createCell(2).setCellValue(berthlistDTO.getBoatName());
                 dataRow.createCell(3).setCellValue(berthlistDTO.getMemberPhoneNumber());
-                dataRow.createCell(4).setCellValue(berthlistDTO.getBerthID());
-                dataRow.createCell(5).setCellValue(berthlistDTO.getBerthName());
+                dataRow.createCell(4).setCellValue(berthlistDTO.getBerthName());
 
                 // Apply data style with highlighted borders to each cell
-                for (int i = 0; i <= 5; i++) {
+                for (int i = 0; i <= 4; i++) {
                     dataRow.getCell(i).setCellStyle(dataStyle);
                 }
 
