@@ -97,7 +97,7 @@ function deleteMember(rowIndex){
 // Funktion der genindlæser siden
 function refreshMemberList() {
     // Redirects the page to /bookkeeperMemberList
-    window.location.href = '/bookkeeperMemberList'; // or use window.location.replace('/bookkeeperMemberList') to avoid adding the page to history
+    window.location.href = '/bookkeeperMemberList';
 }
 
 // Function der henter og filtrerer søgning

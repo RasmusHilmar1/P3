@@ -178,7 +178,7 @@ public class BoatService {
 
     public List<Boat> getAllBoats() {
         // Method to fetch all boats
-            return boatRepository.findAll(); // Assuming you have a BoatRepository extending JpaRepository
+            return boatRepository.findAll();
     }
 
     public BoatDTO convertToDTO(Boat boat) {
