@@ -221,10 +221,6 @@ function createMemberListWithoutBoats(approvedMembers, boats, berths) {
                     }
                     else if(key === 'note'){
                         var infoCell = document.createElement("div");
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
                         const noteIcon = document.createElement("img");
                         noteIcon.classList.add("noteIcon");
                         noteIcon.src = "/Images/Icons/noteIcon.svg";
