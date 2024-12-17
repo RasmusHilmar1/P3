@@ -84,13 +84,15 @@ class FeeEvent extends EventManagerBoatRequests {
             deleteBoatBtn.classList.add("delete");
 
             deleteBoatBtn.addEventListener("click", () => {
-                setTimeout(function() {
-                    denyBoat(boat.id);
-                }, 500);
-                setTimeout(function() {
-                    location.reload();
-                }, 800)
-            })
+                if (confirm("Er du sikker på at du vil slette båden?")){
+                    setTimeout(function() {
+                        denyBoat(boat.id);
+                    }, 500);
+                    setTimeout(function() {
+                        location.reload();
+                    }, 800)
+                }
+            });
 
 
             // make sure the btn is pressed if fee has been sent
