@@ -58,11 +58,10 @@ public class BerthController {
             @RequestParam double length,
             @RequestParam double width) {
 
-        Boat boat = new Boat(); // Create the boat object
-        boat.setLength(length); // Set the length
-        boat.setWidth(width);  // Set the width
+        Boat boat = new Boat();
+        boat.setLength(length);
+        boat.setWidth(width);
 
-        // Now correctly call the method on the instance of the service
         return berthCompatibilityService.findCompatibleBerthsWithScore(boat);
     }
 }

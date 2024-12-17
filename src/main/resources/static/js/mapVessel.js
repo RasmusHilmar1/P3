@@ -111,7 +111,7 @@ harbors.addEventListener('click', function (event) {
 // Load berth data from the backend
 async function loadBerthData() {
     try {
-        const response = await fetch('berths/get'); // Replace with your actual API endpoint
+        const response = await fetch('berths/get');
         const berths = await response.json();
         return berths;
     } catch (error) {

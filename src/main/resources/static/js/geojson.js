@@ -13,6 +13,4 @@ async function fetchGeoJson() {
         console.error('Error fetching GeoJSON:', error);
     }
 }
-
-// Export the GeoJSON (note: it will be `null` initially, until fetched)
 export { myGeoJson, fetchGeoJson };

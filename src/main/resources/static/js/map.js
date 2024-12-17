@@ -93,7 +93,7 @@ if (harbors) {
 // Load berth data from the backend
 async function loadBerthData() {
     try {
-        const response = await fetch('/berths/get'); // Ensure the correct API endpoint with a leading slash
+        const response = await fetch('/berths/get');
         const berths = await response.json();
         return berths;
     } catch (error) {
