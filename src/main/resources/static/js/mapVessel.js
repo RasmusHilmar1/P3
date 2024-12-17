@@ -22,8 +22,8 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 // Initialize the bounds of the image used for overlay -->
 var imageBounds = [
-    [57.05861, 9.89969], // Top-left
-    [57.05692, 9.90523]  // Bottom-right
+    [57.059050, 9.898944], // Top-left
+    [57.056390, 9.904337]  // Bottom-right
 ];
 
 // Get picture for overlay -->
@@ -34,8 +34,8 @@ var imageBounds = [
 
 //Initialize bounds for map as the bounds of picture in coordinates -->
 const bounds = L.latLngBounds(
-    [57.05861, 9.89969],
-    [57.05692, 9.90523]
+    [57.059050, 9.898944], // Top-left
+    [57.056390, 9.904337]  // Bottom-right
 );
 
 // Set the max bounds for navigating map as the bounds of picture -->
@@ -69,8 +69,8 @@ if (harbor1) {
         event.preventDefault();
 
         const bounds = L.latLngBounds(
-            [57.05861, 9.89969],
-            [57.05692, 9.90523]
+            [57.059050, 9.898944], // Top-left
+            [57.056390, 9.904337]  // Bottom-right
         );
 
         map.setMaxBounds(bounds);

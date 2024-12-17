@@ -16,8 +16,8 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 // Define the bounds for the map
 const bounds = L.latLngBounds(
-    [57.05861, 9.70969],
-    [57.05692, 9.99093]
+    [57.059050, 9.898944],
+    [57.056390, 9.904337]
 );
 
 // Set the max bounds for navigating the map
@@ -52,8 +52,8 @@ if (harbor1) {
         event.preventDefault();
 
         const bounds = L.latLngBounds(
-            [57.05861, 9.89969],
-            [57.05692, 9.90523]
+            [57.059050, 9.898944],
+            [57.056390, 9.904337]
         );
 
         map.setMaxBounds(bounds);
