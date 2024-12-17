@@ -21,7 +21,7 @@ public class WebControllerTest {
 
     @Test
     public void testShowDefaultPageAsVesselUser() {
-        // Mocking the request to simulate "VESSEL_USER" role
+      
         when(request.isUserInRole("VESSEL_USER")).thenReturn(true);
 
         // Act

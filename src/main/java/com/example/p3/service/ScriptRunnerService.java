@@ -34,7 +34,7 @@ public class ScriptRunnerService {
                 throw new UnsupportedOperationException("Unsupported operating system: " + osName);
             }
 
-            // Ensure the Python executable exists
+
             File pythonFile = new File(pythonExecutable);
             if (!pythonFile.exists()) {
                 throw new RuntimeException("Python executable not found at: " + pythonExecutable);
@@ -52,7 +52,6 @@ public class ScriptRunnerService {
             // Merge error stream with output stream
             pb.redirectErrorStream(true);
 
-            // Optional: Set environment variables if needed
             Map<String, String> env = pb.environment();
             env.put("PYTHONUNBUFFERED", "1"); // To prevent output buffering
 

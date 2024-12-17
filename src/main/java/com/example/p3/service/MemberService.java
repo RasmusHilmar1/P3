@@ -131,7 +131,7 @@ public class MemberService {
 
     public List<Member> getAllMembers() {
         // Method to fetch all members
-        return memberRepository.findAll(); // Assuming you have a MemberRepository extending JpaRepository
+        return memberRepository.findAll();
 
     }
 
