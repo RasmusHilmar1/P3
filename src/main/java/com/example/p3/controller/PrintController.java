@@ -22,7 +22,7 @@ public class PrintController {
         response.setContentType("application/octet-stream");
 
         String headerKey = "Content-Disposition";
-        String headerValue = "attachment;filename=Medlems liste.xls";
+        String headerValue = "attachment;filename=Medlemsliste.xls";
 
         response.setHeader(headerKey, headerValue);
 
